@@ -1,0 +1,24 @@
+{
+  "name": "helixwallet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^5.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netobjex/wallet.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/netobjex/wallet/issues"
+  },
+  "homepage": "https://github.com/netobjex/wallet#readme"
+}
