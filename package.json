@@ -1,24 +1,59 @@
 {
-  "name": "helixwallet",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
-  "dependencies": {},
-  "devDependencies": {
-    "electron": "^5.0.0"
+  "name": "wallet",
+  "author": "Netobjex",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop wallet for Helix",
+  "dependencies": {
+    "concurrently": "^4.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "3.0.0",
+    "redux": "^4.0.1",
+    "redux-freeze": "^0.1.7",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "typescript": "^3.4.5",
+    "wait-on": "^3.2.0"
   },
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "electron-builder -c.extraMetadata.main = build/main.js",
+    "preelectron-pack": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/netobjex/wallet.git"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/netobjex/wallet/issues"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
-  "homepage": "https://github.com/netobjex/wallet#readme"
+  "main": "public/main.js",
+  "build": {
+    "appId": "com.helix.electron-cra",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    }
+  },
+  "homepage": "./",
+  "devDependencies": {
+    "electron": "^5.0.1",
+    "electron-builder": "^20.39.0",
+    "electron-is-dev": "^1.1.0"
+  }
 }
