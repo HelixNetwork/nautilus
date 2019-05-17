@@ -1,8 +1,8 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import logger from "redux-logger";
 import freeze from "redux-freeze";
 import thunk from "redux-thunk";
-import { reducers } from "./reducers";
+import home from "./reducers/home";
 
 /**
  *  This defines base configuration for setting up redux with react.
@@ -10,6 +10,15 @@ import { reducers } from "./reducers";
  */
 
 let middlewares = [];
+
+const reducers = combineReducers({
+  home
+});
+
+const rootReducer = (state, action) => {
+  /* eslint-disable no-param-reassign */
+  return reducers(state, action);
+};
 
 //for async operations, network calls
 middlewares.push(thunk);
@@ -27,7 +36,7 @@ if (process.env.NODE_ENV !== "production") {
 let middleware = applyMiddleware(...middlewares);
 
 // create store
-const store = createStore(reducers, middleware);
+const store = createStore(rootReducer, compose(middleware));
 
 // export
-export { store };
+export default store;
