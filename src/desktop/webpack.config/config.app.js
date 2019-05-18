@@ -34,11 +34,11 @@ const config = {
           devMode
             ? "style-loader"
             : {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  publicPath: "../"
-                }
-              },
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: "../"
+              }
+            },
           {
             loader: "css-loader",
             options: {
@@ -74,6 +74,9 @@ const config = {
       },
       { test: /\.node$/, loader: "node-loader" }
     ]
+  },
+  devServer: {
+    historyApiFallback: true
   },
   resolve: {
     modules: [
