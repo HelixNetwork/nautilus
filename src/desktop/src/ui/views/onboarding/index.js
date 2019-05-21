@@ -31,24 +31,17 @@ class Onboarding extends React.PureComponent {
     render() {
 
         return (
-            <div>
-                <h1>Ajith</h1>
-                <div>
-                    <h1>Hi ajith</h1>
-                    <Switch >
-                        <Route path="/onboarding/seed-intro" component={SeedIntro} />
-                        <Route path="/onboarding/seed-ledger" component={Ledger} />
-                        <Route path="/onboarding/seed-generate" component={GenerateSeed} />
-                        <Route path="/onboarding/seed-save" component={SaveYourSeedOptions} />
-                        <Route path="/onboarding/seed-verify" component={SeedEnter} />
-                        <Route path="/onboarding/account-name" component={SeedName} />
-                        <Route path="/onboarding/account-password" component={SecurityEnter} />
-                        <Route path="/onboarding/done" component={Done} />
-                        <Route path="/onboarding/login" component={Login} />
-                        <Route path="/" component={Login} />
-                    </Switch>
-                </div>
-            </div>
+            <Switch >
+                <Route path="/onboarding/seed-intro" component={SeedIntro} />
+                <Route path="/onboarding/seed-generate" component={GenerateSeed} />
+                <Route path="/onboarding/seed-save" component={SaveYourSeedOptions} />
+                <Route path="/onboarding/seed-verify" component={SeedEnter} />
+                <Route path="/onboarding/account-name" component={SeedName} />
+                <Route path="/onboarding/account-password" component={SecurityEnter} />
+                <Route path="/onboarding/done" component={Done} />
+                <Route path="/onboarding/login" component={Login} />
+                <Route path="/" component={Welcome} />
+            </Switch>
         );
     }
 }
