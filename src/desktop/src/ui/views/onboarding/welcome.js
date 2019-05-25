@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import css from './welcome.scss';
 
+/**
+ * Helix Welcome Screen component
+ */
 class Welcome extends React.PureComponent {
     render() {
         return (

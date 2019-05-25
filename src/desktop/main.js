@@ -1,4 +1,6 @@
 const electron = require("electron");
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
+import electronSettings from 'electron-settings';
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
@@ -6,24 +8,129 @@ const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
 const devMode = process.env.NODE_ENV === "development";
-
+import { initMenu, contextMenu } from './native/Menu.js';
 let mainWindow;
+
+/**
+ * Expose Garbage Collector flag for manual trigger after seed usage
+ */
+app.commandLine.appendSwitch('js-flags', '--expose-gc');
+
+/**
+ * Terminate application if Node remote debugging detected
+ */
+const argv = process.argv.join();
+if (argv.includes('inspect') || argv.includes('remote') || typeof v8debug !== 'undefined') {
+  app.quit();
+}
+
+const paths = {
+  assets: path.resolve(devMode ? __dirname : app.getAppPath(), 'assets'),
+  preload: path.resolve(devMode ? __dirname : app.getAppPath(), 'dist'),
+};
+
+
+let tray = null;
+
+let windowSizeTimer = null;
+
+/**
+ * Define wallet windows
+ */
+const windows = {
+  main: null,
+  tray: null,
+};
+
+let windowState = {
+  width: 1280,
+  height: 720,
+  x: null,
+  y: null,
+  maximized: false,
+};
+
+try {
+  const windowStateData = electronSettings.get('window-state');
+  if (windowStateData) {
+    windowState = windowStateData;
+  }
+} catch (error) { }
 
 function createWindow() {
   const windowOptions = {
-    width: 1080,
-    minWidth: 768,
-    height: 840,
-    minHeight: 620,
-    title: app.getName(),
+    width: windowState.width,
+    height: windowState.height,
+    minWidth: 500,
+    minHeight: 720,
+    x: windowState.x,
+    y: windowState.y,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+      webviewTag: false,
+      preload: path.resolve(paths.preload, devMode ? 'preloadDev.js' : 'preloadProd.js'),
+    },
   };
-  mainWindow = new BrowserWindow(windowOptions);
-  mainWindow.loadURL("http://localhost:1074");
-  mainWindow.on("closed", () => (mainWindow = null));
+
+  /**
+     * Reinitate window maximize
+     */
+  if (windowState.maximized) {
+    windows.main.maximize();
+  }
+
+  windows.main = new BrowserWindow(windowOptions);
+  windows.main.loadURL("http://localhost:1074");
+  windows.main.on("closed", () => (windows.main = null));
+
+  /**
+     * Add right click context menu for input elements
+     */
+  windows.main.webContents.on('context-menu', (e, props) => {
+    const { isEditable } = props;
+    if (isEditable) {
+      const InputMenu = contextMenu();
+      InputMenu.popup(windows.main);
+    }
+  });
+
+  /**
+   * Disallow external link navigation in wallet window
+   * Open only whitelisted domain urls externally
+   */
+  windows.main.webContents.on('will-navigate', (e, targetURL) => {
+    if (url.indexOf(targetURL) !== 0) {
+      e.preventDefault();
+
+      const termsAndConditionsLinks = [];
+      const privacyPolicyLinks = [];
+      const ledgerOnboarding = [];
+
+      const externalWhitelist = [...privacyPolicyLinks, ...termsAndConditionsLinks, ...ledgerOnboarding];
+
+      try {
+        if (
+          externalWhitelist.indexOf(
+            URL.parse(targetURL)
+              .host.replace('www.', '')
+              .replace('mailto:', ''),
+          ) > -1
+        ) {
+          shell.openExternal(targetURL);
+        }
+      } catch (error) { }
+    }
+  });
 }
+
+/**
+ * Get Window instance helper
+ * @param {string} windowName -  Target window name
+ */
+const getWindow = function (windowName) {
+  return windows[windowName];
+};
+initMenu(app, getWindow);
 
 app.on("ready", createWindow);
 
@@ -34,8 +141,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
-  console.log("here");
-  if (mainWindow === null) {
+  if (windows.main === null) {
     createWindow();
   }
 });

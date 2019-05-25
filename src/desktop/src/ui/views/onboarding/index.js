@@ -21,7 +21,10 @@ import css from './index.scss';
  */
 class Onboarding extends React.PureComponent {
     static propTypes = {
-
+        isAuthorised: PropTypes.bool,
+        complete: PropTypes.bool,
+        location: PropTypes.object,
+        history: PropTypes.object,
     };
 
     state = {
@@ -29,7 +32,9 @@ class Onboarding extends React.PureComponent {
     };
 
     render() {
-
+        console.log('props', this.props);
+        const { history, location, complete, isAuthorised } = this.props;
+        const indexComponent = complete ? Login : Welcome;
         return (
             <Switch >
                 <Route path="/onboarding/seed-intro" component={SeedIntro} />
@@ -40,7 +45,7 @@ class Onboarding extends React.PureComponent {
                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                 <Route path="/onboarding/done" component={Done} />
                 <Route path="/onboarding/login" component={Login} />
-                <Route path="/" component={Welcome} />
+                <Route path="/" component={indexComponent} />
             </Switch>
         );
     }

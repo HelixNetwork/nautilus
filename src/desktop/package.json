@@ -1,5 +1,6 @@
 {
   "name": "wallet",
+  "productName": "Helix Wallet",
   "author": "Netobjex",
   "version": "0.1.0",
   "private": true,
@@ -10,11 +11,14 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "dart-sass": "^1.20.1",
+    "electron-settings": "^3.2.0",
+    "electron-updater": "^4.0.6",
     "express": "^4.17.0",
     "i18next": "^15.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-i18next": "^9.0.10",
+    "react-lottie": "^1.2.3",
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
@@ -60,6 +64,8 @@
   },
   "main": "public/main.js",
   "build": {
+    "productName": "Helix Wallet",
+    "artifactName": "${name}-${version}.${ext}",
     "appId": "com.helix.electron-cra",
     "directories": {
       "buildResources": "assets",
@@ -75,6 +81,7 @@
     "babel-loader": "^8.0.6",
     "electron": "^5.0.1",
     "electron-builder": "^20.40.2",
+    "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2",
