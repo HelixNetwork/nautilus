@@ -8,7 +8,7 @@ const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
 const devMode = process.env.NODE_ENV === "development";
-import { initMenu, contextMenu } from './native/Menu.js';
+import { initMenu, contextMenu } from './native/menu.js';
 let mainWindow;
 
 /**
