@@ -3,6 +3,7 @@ import logger from "redux-logger";
 import freeze from "redux-freeze";
 import thunk from "redux-thunk";
 import home from "./reducers/home";
+import settings from './reducers/settings';
 
 /**
  *  This defines base configuration for setting up redux with react.
@@ -12,7 +13,8 @@ import home from "./reducers/home";
 let middlewares = [];
 
 const reducers = combineReducers({
-  home
+  home,
+  settings
 });
 
 const rootReducer = (state, action) => {

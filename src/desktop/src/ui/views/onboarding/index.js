@@ -32,7 +32,6 @@ class Onboarding extends React.PureComponent {
     };
 
     render() {
-        console.log('props', this.props);
         const { history, location, complete, isAuthorised } = this.props;
         const indexComponent = complete ? Login : Welcome;
         return (
@@ -52,7 +51,7 @@ class Onboarding extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-
+    
 });
 
 const mapDispatchToProps = {

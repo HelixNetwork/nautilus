@@ -1,7 +1,7 @@
 import i18n from "i18next";
-import { reactI18nextModule, initReactI18next } from "react-i18next";
+import { reactI18nextModule } from "react-i18next";
 
-export default i18n.use(reactI18nextModule).init(
+i18n.use(reactI18nextModule).init(
     {
         fallbackLng: 'en',
         fallbackNS: 'global',
@@ -34,3 +34,4 @@ export default i18n.use(reactI18nextModule).init(
         }
     },
 );
+export default i18n;
