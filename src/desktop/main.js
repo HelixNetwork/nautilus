@@ -80,6 +80,7 @@ function createWindow() {
   }
 
   windows.main = new BrowserWindow(windowOptions);
+  windows.main.setTitle(require('./package.json').productName);
   windows.main.loadURL("http://localhost:1074");
   windows.main.on("closed", () => (windows.main = null));
 
