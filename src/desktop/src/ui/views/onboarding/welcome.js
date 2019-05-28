@@ -23,6 +23,7 @@ class Welcome extends React.PureComponent {
     };
 
     onNextClick = () => {
+        const { history } = this.props;
         const { step } = this.state;
 
         switch (step) {
@@ -51,54 +52,41 @@ class Welcome extends React.PureComponent {
         return (
             <div>
                 <section className={css.home}>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-12">
-                                {step === 'language' ? (
-                                    <React.Fragment>
-                                        <h1>Thank You</h1>
-                                        <h6>for downloading the HellixWallet</h6>
-                                        <br></br>
-                                        <h5>Language</h5>
-                                        <br></br>
-                                        <div className={css['custom-select']}>
-                                            <select>
-                                                <option value="0">English(International)</option>
-                                                <option value="1">German</option>
-                                                <option value="2">French</option>
-                                                <option value="3">English</option>
-                                            </select>
-                                        </div>
-                                        <br></br>
-                                    </React.Fragment>
-                                ) : (
-                                        <React.Fragment>
-                                            <article>
-                                                <Scrollbar contentId={step} onScrollEnd={() => this.setState({ scrollEnd: true })}>
-                                                    <ReactMarkdown source={markdown} />
-                                                </Scrollbar>
-                                            </article>
-                                        </React.Fragment>
-                                    )}
-                                <a disabled={step !== 'language' && !scrollEnd} onClick={this.onNextClick} className={css.cont}>
-                                    {step === 'language'
-                                        ? 'Continue'
-                                        : !scrollEnd ? 'Read all to Continue' : 'Accept'}
-                                    <span> ></span></a>
+                    {step === 'language' ? (
+                        <React.Fragment>
+                            <h1>Thank You</h1>
+                            <h6>for downloading the HellixWallet</h6>
+                            <br></br>
+                            <h5>Language</h5>
+                            <br></br>
+                            <div className={css['custom-select']}>
+                                <select>
+                                    <option value="0">English(International)</option>
+                                    <option value="1">German</option>
+                                    <option value="2">French</option>
+                                    <option value="3">English</option>
+                                </select>
                             </div>
-                        </div>
-                    </div>
+                            <br></br>
+                        </React.Fragment>
+                    ) : (
+                            <React.Fragment>
+                                <h1>
+                                    {step === 'terms' ? 'Terms and Conditions' : 'Privacy Policy'}
+                                </h1>
+                                <article>
+                                    <Scrollbar contentId={step} onScrollEnd={() => this.setState({ scrollEnd: true })}>
+                                        <ReactMarkdown source={markdown} />
+                                    </Scrollbar>
+                                </article>
+                            </React.Fragment>
+                        )}
+                    <a disabled={step !== 'language' && !scrollEnd} onClick={this.onNextClick} className={css.cont}>
+                        {step === 'language'
+                            ? 'Continue'
+                            : !scrollEnd ? 'Read all to Continue' : 'Accept'}
+                        <span> ></span></a>
                 </section>
-                <footer>
-                    <ul>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                </footer>
             </div>
         )
     }
