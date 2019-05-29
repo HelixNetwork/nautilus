@@ -16,7 +16,8 @@ class Welcome extends React.PureComponent {
     static propTypes = {
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
-        }).isRequired
+        }).isRequired,
+        t: PropTypes.func.isRequired,
     }
     state = {
         step: 'language',
@@ -46,6 +47,7 @@ class Welcome extends React.PureComponent {
     }
 
     render() {
+        const { language, t } = this.props;
         const { step, scrollEnd } = this.state;
         let markdown = '';
         markdown = step === 'terms' ? enTermsAndConditionsIOS : enPrivacyPolicyIOS;
@@ -55,8 +57,8 @@ class Welcome extends React.PureComponent {
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
-                            <h1>Thank You</h1>
-                            <h6>for downloading the HellixWallet</h6>
+                            <h1>{t('welcome:thankYou')}</h1>
+                            <h6>{t('welcome:thankYouDescription')}</h6>
                             <br></br>
                             <Language></Language>
                             <br></br>
@@ -75,8 +77,8 @@ class Welcome extends React.PureComponent {
                         )}
                     <a disabled={step !== 'language' && !scrollEnd} onClick={this.onNextClick} className={css.cont}>
                         {step === 'language'
-                            ? 'Continue'
-                            : !scrollEnd ? 'Read all to Continue' : 'Accept'}
+                            ? t('continue')
+                            : !scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
                         <span> ></span></a>
                 </section>
             </div>
@@ -87,4 +89,4 @@ class Welcome extends React.PureComponent {
 const mapDispatchToProps = {
 };
 
-export default connect(null, mapDispatchToProps)(Welcome);
+export default connect(null, mapDispatchToProps)(withI18n()(Welcome));

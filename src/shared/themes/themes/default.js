@@ -4,8 +4,8 @@ export default {
     bar: { bg: 'rgb(20, 23, 37)', hover: 'rgb(25, 39, 51)', alt: 'rgb(33, 51, 67)', color: 'rgb(240, 242, 246)' },
     label: { color: 'rgb(240, 242, 246)', hover: 'rgb(65, 220, 243)' },
     input: {
-        bg: 'rgb(15, 62, 88)',
-        border: 'rgba(255, 255, 255, 0.1)',
+        bg: 'rgb(234,172,50)',
+        border: 'rgba(234,172,50, 0.1)',
         alt: 'rgb(148, 168, 172)',
         hover: 'rgba(255, 255, 255, 0.4)',
         color: 'rgb(255, 255, 255)',
@@ -20,7 +20,7 @@ export default {
         border: 'rgba(255, 255, 255, 0)',
         body: 'rgb(0, 50, 65)',
     },
-    body: { bg: 'rgb(3, 41, 62)', color: 'rgb(240, 242, 246)', alt: 'rgba(240, 240, 240, 0.25)' },
+    body: { bg: 'rgb(1,19,39)', color: 'rgb(240, 242, 246)', alt: 'rgba(240, 240, 240, 0.25)' },
     wave: { primary: 'rgba(49, 94, 119, 0.3)', secondary: 'rgba(11, 27, 31, 0.6)' },
     isDark: true,
 };

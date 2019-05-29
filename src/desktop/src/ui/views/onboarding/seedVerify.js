@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withI18n, Trans } from 'react-i18next';
 
 class SeedVerify extends React.PureComponent {
     render() {
@@ -12,4 +14,4 @@ class SeedVerify extends React.PureComponent {
 const mapDispatchToProps = {
 };
 
-export default connect(null, mapDispatchToProps)(SeedVerify);
+export default connect(null, mapDispatchToProps)(withI18n()(SeedVerify));

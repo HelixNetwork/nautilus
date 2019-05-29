@@ -438,8 +438,9 @@
         "reset": "Reset"
     },
     "walletSetup": {
+        "seed": "seed",
         "okay": "Okay. Let's set up your wallet!",
-        "doYouNeedASeed": "Do you need to create a new seed?",
+        "doYouNeedASeed": "Do you need to create a new",
         "seedExplanation": "Your IOTA seed is the master key to your funds. It is 81 characters long, using only letters A-Z or the number 9.",
         "noIHaveOne": "No, I have one",
         "yesINeedASeed": "Yes, I need a seed",
@@ -448,7 +449,8 @@
         "keepSafe": "Please keep your seed safe."
     },
     "welcome": {
-        "thankYou": "Thank you for downloading Trinity"
+        "thankYou": "Thank you ",
+        "thankYouDescription": "for downloading the Hellix Wallet"
     },
     "writeSeedDown": {
         "writeDownYourSeed": "<0> Write down your seed and checksum and </0><1>triple check</1><2> that they are correct.</2>",
