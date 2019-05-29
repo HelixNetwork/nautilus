@@ -34,14 +34,14 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others  \"npm run devserver \"  \"cross-env NODE_ENV=development wait-on http://localhost:1074 && electron -r @babel/register main.js\"",
+    "start": "concurrently --kill-others  \"yarn run devserver \"  \"cross-env NODE_ENV=development wait-on http://localhost:1074 && electron -r @babel/register main.js\"",
     "devserver": "node server.js",
     "postinstall": "electron-builder install-app-deps",
     "style:shots": "node scripts/puppeteer.js",
-    "build": "rimraf dist && concurrently \"npm run build-main\" \"npm run build-app\"",
+    "build": "rimraf dist && concurrently \"yarn run build-main\" \"yarn run build-app\"",
     "build-main": "./node_modules/.bin/cross-env NODE_ENV=production webpack --env=production --config webpack.config/config.main.js",
     "build-app": "./node_modules/.bin/cross-env NODE_ENV=production webpack --env=production --config webpack.config/config.app.js",
-    "compile": "npm run build && npm run compile:linux && npm run compile:mac && npm run compile:win",
+    "compile": "yarn run build && yarn run compile:linux && yarn run compile:mac && yarn run compile:win",
     "compile:linux": "./node_modules/.bin/electron-builder --linux --x64",
     "compile:mac": "./node_modules/.bin/cross-env electron-builder --mac --x64",
     "compile:win": "./node_modules/.bin/electron-builder --win --x64",
