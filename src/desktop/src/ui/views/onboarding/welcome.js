@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
-import Scrollbar from 'ui/components/Scrollbar';
+import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
 import { enTermsAndConditionsIOS, enPrivacyPolicyIOS } from 'terms-conditions';
 
