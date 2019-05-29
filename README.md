@@ -20,15 +20,15 @@ cd wallet
 
 3. Install the shared dependencies
 ```
-npm run deps:shared
+yarn run deps:shared
 ```
 
 4. Install the desktop dependencies
 ```
-npm run deps:desktop
+yarn run deps:desktop
 ```
 
 5. Run desktop appplication
 ```
-npm run start:desktop
+yarn run start:desktop
 ```
