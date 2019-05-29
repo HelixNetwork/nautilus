@@ -1,14 +1,15 @@
-const electron = require("electron");
+import electron, { ipcMain as ipc, app, protocol, shell, Tray } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import electronSettings from 'electron-settings';
-const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
+console.log("env",process.env.NODE_ENV);
 const devMode = process.env.NODE_ENV === "development";
 import { initMenu, contextMenu } from './native/menu.js';
+
 let mainWindow;
 
 /**
@@ -56,7 +57,7 @@ try {
     windowState = windowStateData;
   }
 } catch (error) { }
-
+console.log("moded",devMode);
 function createWindow() {
   const windowOptions = {
     width: windowState.width,
@@ -65,10 +66,11 @@ function createWindow() {
     minHeight: 720,
     x: windowState.x,
     y: windowState.y,
+    backgroundColor: '#011327',
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
       webviewTag: false,
-      preload: path.resolve(paths.preload, devMode ? 'preloadDev.js' : 'preloadProd.js'),
+      preload: path.resolve(paths.preload, devMode ? 'development.js' : 'preloadProd.js'),
     },
   };
 

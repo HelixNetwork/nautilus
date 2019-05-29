@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
-import Scrollbar from 'ui/components/Scrollbar';
+import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
 import { enTermsAndConditionsIOS, enPrivacyPolicyIOS } from 'terms-conditions';
+import Language from 'ui/components/input/language';
 
 import css from './welcome.scss';
 
@@ -57,16 +58,7 @@ class Welcome extends React.PureComponent {
                             <h1>Thank You</h1>
                             <h6>for downloading the HellixWallet</h6>
                             <br></br>
-                            <h5>Language</h5>
-                            <br></br>
-                            <div className={css['custom-select']}>
-                                <select>
-                                    <option value="0">English(International)</option>
-                                    <option value="1">German</option>
-                                    <option value="2">French</option>
-                                    <option value="3">English</option>
-                                </select>
-                            </div>
+                            <Language></Language>
                             <br></br>
                         </React.Fragment>
                     ) : (

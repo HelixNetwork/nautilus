@@ -1,3 +1,4 @@
+import { ActionTypes } from '../actions/settings';
 const initialState = {
     /**
      * Selected locale for wallet
@@ -37,6 +38,18 @@ const initialState = {
     completedMigration: false,
 };
 const settingsReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case ActionTypes.SET_LOCALE:
+            return {
+                ...state,
+                locale: action.payload,
+            };
+        case ActionTypes.UPDATE_THEME:
+            return {
+                ...state,
+                themeName: action.payload,
+            };
+    }
     return state;
 };
 export default settingsReducer;
