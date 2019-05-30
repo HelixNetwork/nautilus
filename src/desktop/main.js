@@ -6,7 +6,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
-console.log("env",process.env.NODE_ENV);
+console.log("env", process.env.NODE_ENV);
 const devMode = process.env.NODE_ENV === "development";
 import { initMenu, contextMenu } from './native/menu.js';
 
@@ -57,7 +57,7 @@ try {
     windowState = windowStateData;
   }
 } catch (error) { }
-console.log("moded",devMode);
+console.log("moded", devMode);
 function createWindow() {
   const windowOptions = {
     width: windowState.width,
