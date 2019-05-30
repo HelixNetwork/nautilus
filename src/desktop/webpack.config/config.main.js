@@ -6,7 +6,9 @@ module.exports = {
   mode: "production",
   target: "electron-main",
   entry: {
-    main: "./main.js"
+    main: "./main.js",
+    preloadDev: './native/preload/development.js',
+    preloadProd: './native/preload/production.js',
   },
   node: {
     __dirname: false

@@ -6,7 +6,6 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
-console.log("env",process.env.NODE_ENV);
 const devMode = process.env.NODE_ENV === "development";
 import { initMenu, contextMenu } from './native/menu.js';
 
@@ -29,7 +28,6 @@ const paths = {
   assets: path.resolve(devMode ? __dirname : app.getAppPath(), 'assets'),
   preload: path.resolve(devMode ? __dirname : app.getAppPath(), 'dist'),
 };
-
 
 let tray = null;
 
@@ -70,7 +68,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       webviewTag: false,
-      preload: path.resolve(paths.preload, devMode ? 'development.js' : 'preloadProd.js'),
+      preload: path.resolve(paths.preload, devMode ? 'preloadDev.js' : 'preloadProd.js'),
     },
   };
 
