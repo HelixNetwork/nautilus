@@ -91,7 +91,7 @@ const config = {
       filename: "css/[name].css"
     }),
     new HtmlWebpackPlugin({
-      title: "Trinity",
+      title: "Helix",
       inject: false,
       template: __dirname + "/index.html"
     })
