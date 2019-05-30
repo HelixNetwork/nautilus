@@ -60,7 +60,7 @@ class Welcome extends React.PureComponent {
                             <h1>{t('welcome:thankYou')}</h1>
                             <h6>{t('welcome:thankYouDescription')}</h6>
                             <br></br>
-                            <Language></Language>
+                            <Language></Language>  
                             <br></br>
                         </React.Fragment>
                     ) : (

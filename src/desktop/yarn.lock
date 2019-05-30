@@ -3838,7 +3838,7 @@ ejs@^2.6.1:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
   integrity sha512-0xy4A/twfrRCnkhfk8ErDi5DqdAsAqeGxht4xkCUrsvhhbQNs7E+4jV0CN7+NKIY0aHE72+XvqtBIXzD31ZbXQ==
 
-electron-builder@^20.40.2:
+electron-builder@^20.41.0:
   version "20.41.0"
   resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.41.0.tgz#560b214e6496b0086a605e3d479733bf71333a66"
   integrity sha512-NgVD3UKyr9AjKumYeLfdLDmefhXj+XwAXan1CvgfjjiR6IZdh8oPPfpNJvpX3CWJi/aEUfZn0B7PcIzzsZT8FQ==
@@ -3940,7 +3940,7 @@ electron-updater@^4.0.6:
     semver "^5.6.0"
     source-map-support "^0.5.9"
 
-electron@^5.0.1:
+electron@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/electron/-/electron-5.0.2.tgz#0f6b38ae7e344b94f433d9171e50568f56962fc7"
   integrity sha512-bUHKQhyuOen/q8iHTkrnzqB9CAwBDI+vHbeu21kpq2bqAD+t25yfrmUEcYHaPL4fZOAhk6nnRqskF6/Xd+aZxg==

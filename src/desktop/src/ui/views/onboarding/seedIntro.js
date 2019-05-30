@@ -45,6 +45,7 @@ class SeedIntro extends React.PureComponent {
                             <span className={css.navleft} onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}</span>
                             <span className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}></span>
                         </div>
+                        {/* <a className={css.cont} onClick={history.push('/onboarding/seed-intro')}>Continue ></a> */}
                     </div>
                 </div>
             </section>

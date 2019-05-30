@@ -30,7 +30,6 @@ const paths = {
   preload: path.resolve(devMode ? __dirname : app.getAppPath(), 'dist'),
 };
 
-
 let tray = null;
 
 let windowSizeTimer = null;
@@ -70,7 +69,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       webviewTag: false,
-      preload: path.resolve(paths.preload, devMode ? 'development.js' : 'preloadProd.js'),
+      preload: path.resolve(paths.preload, devMode ? 'preloadDev.js' : 'preloadProd.js'),
     },
   };
 
