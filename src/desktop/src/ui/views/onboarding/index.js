@@ -42,6 +42,7 @@ class Onboarding extends React.PureComponent {
             'seed-verify',
             'account-password',
             'done',
+            'helixcoin',
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;

@@ -39,7 +39,7 @@ class SeedVerify extends React.PureComponent {
                     </div>
                     <div className={css.onboard_nav}>
                         {/* <span className={css.navleft} onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}</span>
-                        <span className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}></span> */}
+                        <span className={css.navright} onClick={() => this.stepForward('helixcoin')}>{t('walletSetup:coin')}></span> */}
                     </div>
                    
                 </div>
