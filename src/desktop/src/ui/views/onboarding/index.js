@@ -7,6 +7,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
 import Welcome from 'ui/views/onboarding/welcome';
+import HelixCoin from 'ui/views/onboarding/helixcoin';
 import Login from 'ui/views/onboarding/login';
 import SeedIntro from 'ui/views/onboarding/seedIntro';
 import GenerateSeed from 'ui/views/onboarding/seedGenerate';
