@@ -10,7 +10,6 @@ import Onboarding from 'ui/views/onboarding/index';
 import Wallet from 'ui/views/wallet/index';
 import Loading from 'ui/components/loading';
 import { updateTheme } from 'actions/settings';
-
 import Theme from 'ui/global/theme';
 
 import css from './index.scss';
@@ -33,7 +32,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        console.log(Electron);
+        // console.log(Electron);
     }
 
     componentWillReceiveProps(nextProps) {

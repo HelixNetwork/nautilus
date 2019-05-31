@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import css from './index.scss';
-import classNames from 'classnames'
+import classNames from 'classnames';
+import images  from 'ui/images/ic1.png';
 
 
 
@@ -25,8 +26,8 @@ class HelixCoin extends React.PureComponent {
                                      <span className={className(css.sseed_box2)}>1337,00</span>
                                 </div>
                                 <h5>Enter Reciever Address</h5>
-                                <input type="text" name="receive_address" className="recieve_address"></input>
-                                <a href="" className="send_bts"><img  src="" alt="">send</img></a>
+                                <input type="text" className={classNames(css.sseed_text)}></input>
+                                <img src={images} alt="send" className={(classNames(css.img))}/>
                             </div>
                         </div>
                     </div>

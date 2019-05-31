@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
+import image from 'ui/images/ex_mark.png';
 
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 
@@ -37,7 +38,7 @@ class SeedIntro extends React.PureComponent {
                             <h1>{t('walletSetup:doYouNeedASeed')}<span> {t('walletSetup:seed')}</span>?</h1>
                         </div>
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                            <img src="images/ex_mark.png" alt="" />
+                            <img src={image} alt="" />
                             <h5>Your helix seed is your account access.</h5>
                             <h6>You can use it access your funds from any wallet, or any device</h6>
                         </div>
