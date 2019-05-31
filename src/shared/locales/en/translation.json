@@ -452,7 +452,7 @@
     },
     "welcome": {
         "thankYou": "Thank you ",
-        "thankYouDescription": "for downloading the Hellix Wallet"
+        "thankYouDescription": "for downloading the Helix Wallet"
     },
     "writeSeedDown": {
         "writeDownYourSeed": "<0> Write down your seed and checksum and </0><1>triple check</1><2> that they are correct.</2>",

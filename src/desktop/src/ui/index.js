@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Switch, Route, withRouter, Link } from "react-router-dom";
-import { withI18n, useTranslation,translate, Trans } from 'react-i18next';
+import { withI18n, useTranslation, translate, Trans } from 'react-i18next';
 import i18next from 'libs/i18next';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -36,7 +36,7 @@ class App extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("this prpps",this.props);
+        console.log("this prpps", this.props);
         /* On language change */
         if (nextProps.locale !== this.props.locale) {
             i18next.changeLanguage(nextProps.locale);
@@ -50,7 +50,7 @@ class App extends React.Component {
     };
 
     render() {
-        console.log("index",this.props);
+        console.log("index", this.props);
         const { location, history } = this.props;
         const { fatalError } = this.state;
         const currentKey = location.pathname.split('/')[1] || '/';
@@ -60,9 +60,9 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/wallet" component={Wallet} />
                     <Route path="/onboarding" component={Onboarding} />
-                
+
                     <Route exact path="/" loop={false} component={this.Init} />
-                    
+
                 </Switch>
             </div>
         );
