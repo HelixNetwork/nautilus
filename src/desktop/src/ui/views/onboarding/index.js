@@ -79,6 +79,7 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
                                 <Route path="/onboarding/login" component={Login} />
+                                <Route path="/onboarding/helixcoin" component={HelixCoin}/>
                                 <Route path="/" component={indexComponent} />
                             </Switch>
                         </div>

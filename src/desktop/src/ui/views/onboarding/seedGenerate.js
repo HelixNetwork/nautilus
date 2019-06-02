@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import css from './index.scss';
+import classNames from 'classnames';
 
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
