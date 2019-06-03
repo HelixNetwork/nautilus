@@ -15,9 +15,14 @@ class Done extends React.PureComponent {
         const { t } = this.props;
         return (
             <div>
-                <header className={classNames(css.header)}>
+                <div className={classNames(css.top_sec)}>
 
-                </header>
+
+                    <a href="#" className={classNames(css.main_mn)}><img src="" alt="" /></a>
+                    <a href="#" className={classNames(css.setting)}><img src="" alt="" />Logout <span>></span></a>
+                    <a href="#" className={classNames(css.setting)}><img src="" alt="" />Settings<span>></span></a>
+
+                </div>
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
@@ -29,11 +34,11 @@ class Done extends React.PureComponent {
                                 </div>
                                 <div className={classNames(css.icon_secs)}>
 
-                                    <div className={(classNames(css.img_sr ,css.img_sr_imgss1))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr ,css.img_sr_imgss2))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr,css.img_sr_imgss3))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>                             
-                                    <div className={(classNames(css.img_sr,css.img_sr_imgss4))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr,css.img_sr_imgss5))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Address Book <span>></span></h2></div>
+                                    <div className={(classNames(css.img_sr, css.img_sr_imgss1))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
+                                    <div className={(classNames(css.img_sr, css.img_sr_imgss2))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
+                                    <div className={(classNames(css.img_sr, css.img_sr_imgss3))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
+                                    <div className={(classNames(css.img_sr, css.img_sr_imgss4))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
+                                    <div className={(classNames(css.img_sr, css.img_sr_imgss5))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Address Book <span>></span></h2></div>
 
                                 </div>
 

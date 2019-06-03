@@ -44,7 +44,7 @@ class SeedVerify extends React.PureComponent {
                             <h5>Set your Account Name</h5>
                             <input type="text" className={classNames(css.sseed_text)}></input><br /><br />
                             {/* <img src={images} alt="send" className={(classNames(css.img))}/> */}
-                            <button onClick={() => this.stepForward('receive')}>Confirm</button>
+                            <button onClick={() => this.stepForward('done')}>Confirm</button>
                            
                         </div>
                        
