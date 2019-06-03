@@ -1,4 +1,4 @@
-$header: 110px;
+$header: 70px;
 $footer: 350px;
 .onboarding {
   flex-direction: column;
@@ -66,7 +66,7 @@ $footer: 350px;
     background-color: #dee1e3;
     position: absolute;
     bottom: 0px;
-    height: $footer;
+    height: 285px;
     width: 100%;
     display: flex;
     align-items: stretch;
@@ -190,7 +190,7 @@ footer li::after {
   min-height: 50px;
   position: absolute;
   left: 50%;
-  bottom: 164px;
+  bottom: 160px;
   margin-left: -350px;
   background-color: #06182b;
   border-radius: 5px;
@@ -220,7 +220,7 @@ padding-bottom: 70px;
   bottom: 164px;
   margin-left: -350px;
   z-index: 1000;
-  top: 430px;
+  top: 450px;
 }
 .top_sec {
   width: 100%;
@@ -353,15 +353,28 @@ padding-bottom: 70px;
 }
 .sseed_box2 {
   width: 850px;
-  padding: 40px 100px;
+  padding: 30px 10px;
   min-height: 300px;
   position: absolute;
-  left: 163px;
-  bottom: 115px;
+  left: 204px;
+  bottom: 145px;
   background-color: #06182b;
   border-radius: 5px;
   box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
 }
+.text_ff {
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 22px;
+  letter-spacing: 7px;
+  margin-bottom: 20px;
+  float: left;
+  margin-left: 125px;
+}
+.text_ff span {
+  color: #dcab49;
+}
+
 .sseed_box h5 {
   padding-top: 20px;
   padding-bottom: 20px;
@@ -416,8 +429,26 @@ padding-bottom: 70px;
 .sseed_box2 h3 {
   font-size: 20px;
   border-bottom: 1px solid #8e9ba9;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
+.arrow_bx {
+  position: absolute;
+  top:195px;
+  right: 50px;
+  display: inline-block;
+  color: #fff;
+  margin: 0px;
+  transition: all 0.5s;
+}
+.arrow_bx:hover {
+  text-decoration: none;
+  color: #fff;
+  opacity: 0.8;
+}
+.arrow_bx span {
+  color: #e8b349;
+}
+
 
 .steps {
   display: flex;
@@ -473,5 +504,18 @@ padding-bottom: 70px;
     &:after {
       width: 36px;
     }
+  }
+}
+@media  screen and (max-width: 1920px) {
+  /* insert styles here */
+  footer ul{
+    bottom: 120px;
+    margin-top:0px
+  }
+  footer{
+    height:390px;
+  }
+  .sseed_box{
+    bottom: 225px;
   }
 }

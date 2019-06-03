@@ -43,7 +43,10 @@
   },
   "dependencies": {
     "@ljharb/eslint-config": "^13.1.1",
+    "electron-packager": "^13.1.1",
     "eslint-config-react-app": "^4.0.1",
+    "express": "^4.17.1",
+    "global": "^4.3.2",
     "snyk": "^1.165.0"
   },
   "resolutions": {

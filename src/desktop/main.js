@@ -1,6 +1,7 @@
 import electron, { ipcMain as ipc, app, protocol, shell, Tray } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import electronSettings from 'electron-settings';
+import { initMenu, contextMenu } from './native/menu.js';
 const BrowserWindow = electron.BrowserWindow;
 
 const path = require("path");
@@ -8,7 +9,7 @@ const url = require("url");
 const isDev = require("electron-is-dev");
 console.log("env", process.env.NODE_ENV);
 const devMode = process.env.NODE_ENV === "development";
-import { initMenu, contextMenu } from './native/menu.js';
+
 
 let mainWindow;
 
@@ -61,11 +62,13 @@ function createWindow() {
   const windowOptions = {
     width: windowState.width,
     height: windowState.height,
-    minWidth: 500,
+    minWidth: 1280,
     minHeight: 720,
     x: windowState.x,
     y: windowState.y,
     backgroundColor: '#011327',
+    resizable: false,
+    fullscreen: true,
     webPreferences: {
       nodeIntegration: false,
       webviewTag: false,
@@ -81,8 +84,11 @@ function createWindow() {
   }
 
   windows.main = new BrowserWindow(windowOptions);
+  let url = process.env.NODE_ENV === "production"? "file://"+__dirname+"/index.html" : "http://localhost:1074";
   windows.main.setTitle(require('./package.json').productName);
-  windows.main.loadURL("http://localhost:1074");
+  windows.main.loadURL(url);
+  console.log(__dirname);
+  // windows.main.loadURL("file://"+__dirname+"/index.html");
   windows.main.on("closed", () => (windows.main = null));
 
   /**
@@ -95,6 +101,7 @@ function createWindow() {
       InputMenu.popup(windows.main);
     }
   });
+  windows.main.webContents.openDevTools();
 
   /**
    * Disallow external link navigation in wallet window
