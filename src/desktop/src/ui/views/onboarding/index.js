@@ -15,6 +15,7 @@ import SaveYourSeedOptions from 'ui/views/onboarding/seedSave';
 import SeedEnter from 'ui/views/onboarding/seedVerify';
 import SeedName from 'ui/views/onboarding/accountName';
 import SecurityEnter from 'ui/views/onboarding/accountPassword';
+import Receive from 'ui/views/onboarding/receive';
 import Done from 'ui/views/onboarding/done';
 import css from './index.scss';
 
@@ -43,6 +44,7 @@ class Onboarding extends React.PureComponent {
             'account-password',
             'done',
             'helixcoin',
+            'receive',
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
@@ -79,7 +81,8 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
                                 <Route path="/onboarding/login" component={Login} />
-                                <Route path="/onboarding/helixcoin" component={HelixCoin}/>
+                               <Route path="/onboarding/receive" component={Receive}/>
+                               <Route path="/onboarding/helixcoin" component={HelixCoin}/>
                                 <Route path="/" component={indexComponent} />
                             </Switch>
                         </div>
