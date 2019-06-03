@@ -79,10 +79,10 @@ function createWindow() {
   if (windowState.maximized) {
     windows.main.maximize();
   }
-
+  const url = devMode ? 'http://localhost:1074' : `file://${path.join(__dirname, 'dist/index.html')}`;
   windows.main = new BrowserWindow(windowOptions);
   windows.main.setTitle(require('./package.json').productName);
-  windows.main.loadURL("http://localhost:1074");
+  windows.main.loadURL(url);
   windows.main.on("closed", () => (windows.main = null));
 
   /**

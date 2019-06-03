@@ -6,7 +6,7 @@ import images from 'ui/images/ic1.png';
 
 
 
-class Receive extends React.PureComponent {
+class HelixCoin extends React.PureComponent {
     render() {
         return (
             <div>
@@ -27,23 +27,27 @@ class Receive extends React.PureComponent {
 
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx)}>
-                                        <h3 >Recieve HLX Coins<span>.</span></h3>
+                                        <h3 >Send HLX Coins<span>.</span></h3>
                                         <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
-                                        {/* <div className={classNames(css.sseed_box2,css.sec_bxc)}>
-                                             <h3 >Press 10 more letters to randomise your seed even more</h3>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                        </div> */}
+                                        <div className={classNames(css.bbx_box, css.tr_box)}>
+                                            <span className={classNames(css.er1)}>EUR</span>
+                                            <span className={classNames(css.er2)}>26,74</span>
+                                        </div>
+                                        <div className={classNames(css.bbx_box)}>
+                                            <span className={classNames(css.er1)}>mHLX</span>
+                                            <span className={classNames(css.er2)}>1337,00</span>
+                                        </div>
+                                        <h5>Enter Receiver Address</h5>
+                                        <input type="text" name="name" className={classNames(css.reci_text)} /> <br />
+                                        <a href="#" className={classNames(css.send_bts)}><img src="" alt="" /> <br />send ></a>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                
-                
+
+
                     <ul>
                         <li className={classNames(css.footer)}><a href="#">0</a></li>
                         <li><a href="#">1</a></li>
@@ -52,7 +56,7 @@ class Receive extends React.PureComponent {
                         <li><a href="#">4</a></li>
                         <li className="db_none"><a href="#">5</a></li>
                     </ul>
-                                </section>
+                </section>
             </div>
         )
     }
@@ -60,4 +64,4 @@ class Receive extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(Receive);
+export default connect(null, mapDispatchToProps)(HelixCoin);

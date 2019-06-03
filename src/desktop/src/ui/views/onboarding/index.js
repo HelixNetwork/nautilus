@@ -7,7 +7,6 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
 import Welcome from 'ui/views/onboarding/welcome';
-import HelixCoin from 'ui/views/onboarding/helixcoin';
 import Login from 'ui/views/onboarding/login';
 import SeedIntro from 'ui/views/onboarding/seedIntro';
 import GenerateSeed from 'ui/views/onboarding/seedGenerate';
@@ -15,7 +14,6 @@ import SaveYourSeedOptions from 'ui/views/onboarding/seedSave';
 import SeedEnter from 'ui/views/onboarding/seedVerify';
 import SeedName from 'ui/views/onboarding/accountName';
 import SecurityEnter from 'ui/views/onboarding/accountPassword';
-import Receive from 'ui/views/onboarding/receive';
 import Done from 'ui/views/onboarding/done';
 import css from './index.scss';
 
@@ -81,8 +79,6 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
                                 <Route path="/onboarding/login" component={Login} />
-                               <Route path="/onboarding/receive" component={Receive}/>
-                               <Route path="/onboarding/helixcoin" component={HelixCoin}/>
                                 <Route path="/" component={indexComponent} />
                             </Switch>
                         </div>

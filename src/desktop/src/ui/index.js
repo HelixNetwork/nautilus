@@ -60,9 +60,7 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/wallet" component={Wallet} />
                     <Route path="/onboarding" component={Onboarding} />
-
                     <Route exact path="/" loop={false} component={this.Init} />
-
                 </Switch>
             </div>
         );
