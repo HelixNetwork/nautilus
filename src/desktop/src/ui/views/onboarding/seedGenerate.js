@@ -26,12 +26,12 @@ class SeedGenerate extends React.PureComponent {
                     <div className="col-lg-12">
                         <h1>Generate Seed </h1>
                     </div>
-                    <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                    {/* <div className={classNames(css.sseed_box, css.cre_pgs)}>
                         <img src="images/ex_mark.png" alt="" />
-                        <h5>Login with your seed</h5>
-                        <h6>Create seed </h6>
-                        <h3>Press 10 more letters to randomise your seed even more</h3>
-                    </div>
+                        <h5></h5>
+                        <h6></h6>
+                        <h3></h3>
+                    </div> */}
                     <div className={css.onboard_nav}>
                         <span className={css.navleft}>Login With Your seed</span>
                         <span className={css.navright}>Create Seed ></span>
