@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import css from './index.scss';
 import classNames from 'classnames';
-import images from 'ui/images/ic1.png';
+import main from 'ui/images/main.png';
+import logout from 'ui/images/logout.png';
+import setting from 'ui/images/setting.png';
+import log from 'ui/images/log_icon.png';
 
 
 
@@ -16,10 +19,10 @@ class Receive extends React.PureComponent {
                         <div className={classNames(css.bal_bx)}>Balance<br /><span>0,02€ /mHLX</span></div>
                         <div className={classNames(css.bal_bxs)}>1337,00 &nbsp; mHLX<br /><span>26,67 &nbsp; EUR</span></div>
 
-                        <a href="#" className={classNames(css.main_mn)}><img src="" alt="" /></a>
-                        <a href="#" className={classNames(css.setting)}><img src="" alt="" />Logout <span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src="" alt="" />Settings<span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src="" alt="" />Main Menu<span>></span></a>
+                        <a href="#" className={classNames(css.main_mn)}><img src={main} alt="" /></a>
+                        <a href="#" className={classNames(css.setting)}><img src={logout} alt="" />Logout <span>></span></a>
+                        <a href="#" className={classNames(css.setting)}><img src={setting} alt="" />Settings<span>></span></a>
+                        <a href="#" className={classNames(css.setting)}><img src={log} alt="" />Main Menu<span>></span></a>
                     </div>
                     <div className={classNames(css.pg1_foo3)}>
                         <div className="container">

@@ -26,7 +26,8 @@
     min-height: 50px;
     position: absolute;
     left: 50%;
-    bottom: 120px;
+    bottom: 85px;
+    top:100px;
     margin-left: -350px;
     background-color: #06182b;
     border-radius: 5px;
@@ -61,6 +62,10 @@
         margin-top: 50px;
     text-align: center;
   }
+  .img_sr img {
+    padding-bottom: 30px;
+
+  }
   .img_sr_imgss1{
  
     margin-top: 51px;
@@ -70,7 +75,7 @@
   }
   .img_sr_h2{
     font-size: 19px;
-  
+    height:28px;
   }
   .img_sr_h2:hover{
     color: #dcab49;
@@ -209,4 +214,7 @@
     text-decoration: none;
     color: #081726;
     opacity: 0.8;
-  }                              
+  }     
+  .img{
+    height:36px;
+  }                         
