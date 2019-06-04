@@ -71,6 +71,7 @@ typings/
 
 # production
 /build
+release/
 
 # misc
 .DS_Store
@@ -87,3 +88,5 @@ yarn-error.log*
 
 # NPM lockfiles
 package-lock.json
+
+

@@ -506,3 +506,38 @@ padding-bottom: 70px;
     }
   }
 }
+@media  screen and (max-width: 1920px) {
+  /* insert styles here */
+  footer ul{
+    bottom: 100px;
+    margin-top:0px;
+    top:200px;
+  }
+  footer{
+    height:390px;
+  }
+  .sseed_box{
+    bottom: 165px;
+    top:85px;
+  }
+  .sseed_box2{
+    top:85px;
+    bottom: 165px;
+  }
+}
+
+@media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
+  /* insert styles here */
+  .sseed_box{
+    top:83px;
+    margin-left: -365px;
+  }
+  .sseed_box2{
+    top:85px;
+    bottom: 195px;
+  }
+  .arrow_bx{
+    top:202px;
+    right:30px;
+  }
+}

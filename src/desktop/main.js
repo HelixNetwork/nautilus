@@ -68,7 +68,7 @@ function createWindow() {
     y: windowState.y,
     backgroundColor: '#011327',
     resizable: false,
-    fullscreen: true,
+    fullscreen: false,
     webPreferences: {
       nodeIntegration: false,
       webviewTag: false,
