@@ -12,7 +12,7 @@ class HelixCoin extends React.PureComponent {
             <div>
                 <section className={css.home}>
 
-                    <div className={classNames(css.top_sec)}>
+                    <div className={classNames(css.top_sec1)}>
                         <div className={classNames(css.bal_bx)}>Balance<br /><span>0,02€ /mHLX</span></div>
                         <div className={classNames(css.bal_bxs)}>1337,00 &nbsp; mHLX<br /><span>26,67 &nbsp; EUR</span></div>
 
@@ -26,14 +26,14 @@ class HelixCoin extends React.PureComponent {
                             <div className="row">
 
                                 <div className="col-lg-12">
-                                    <div className={classNames(css.foo_bxx)}>
+                                    <div className={classNames(css.foo_bxx1)}>
                                         <h3 >Send HLX Coins<span>.</span></h3>
                                         <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
-                                        <div className={classNames(css.bbx_box, css.tr_box)}>
+                                        <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
                                         </div>
-                                        <div className={classNames(css.bbx_box)}>
+                                        <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div>

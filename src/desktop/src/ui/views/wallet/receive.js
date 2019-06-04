@@ -12,7 +12,7 @@ class Receive extends React.PureComponent {
             <div>
                 <section className={css.home}>
 
-                    <div className={classNames(css.top_sec)}>
+                    <div className={classNames(css.top_sec1)}>
                         <div className={classNames(css.bal_bx)}>Balance<br /><span>0,02€ /mHLX</span></div>
                         <div className={classNames(css.bal_bxs)}>1337,00 &nbsp; mHLX<br /><span>26,67 &nbsp; EUR</span></div>
 
@@ -26,7 +26,7 @@ class Receive extends React.PureComponent {
                             <div className="row">
 
                                 <div className="col-lg-12">
-                                    <div className={classNames(css.foo_bxx)}>
+                                    <div className={classNames(css.foo_bxx1)}>
                                         <h3 >Recieve HLX Coins<span>.</span></h3>
                                         <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
                                         {/* <div className={classNames(css.sseed_box2,css.sec_bxc)}>
