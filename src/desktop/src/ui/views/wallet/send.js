@@ -3,24 +3,27 @@ import { connect } from 'react-redux';
 import css from './index.scss';
 import classNames from 'classnames';
 import images from 'ui/images/ic1.png';
+import Top from '../../components/topbar';
+import PropTypes from 'prop-types';
+import ic1 from 'ui/images/send_bt.png';
 
-
-
-class HelixCoin extends React.PureComponent {
+class Send extends React.PureComponent {
+    static propTypes = {
+        location: PropTypes.object,
+        history: PropTypes.shape({
+            push: PropTypes.func.isRequired,
+        }).isRequired,
+        t: PropTypes.func.isRequired,
+    }
     render() {
+        const {history} = this.props;
         return (
             <div>
                 <section className={css.home}>
 
-                    <div className={classNames(css.top_sec1)}>
-                        <div className={classNames(css.bal_bx)}>Balance<br /><span>0,02€ /mHLX</span></div>
-                        <div className={classNames(css.bal_bxs)}>1337,00 &nbsp; mHLX<br /><span>26,67 &nbsp; EUR</span></div>
-
-                        <a href="#" className={classNames(css.main_mn)}><img src="" alt="" /></a>
-                        <a href="#" className={classNames(css.setting)}><img src="" alt="" />Logout <span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src="" alt="" />Settings<span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src="" alt="" />Main Menu<span>></span></a>
-                    </div>
+                   <Top
+                   history = {history}
+                   />
                     <div className={classNames(css.pg1_foo3)}>
                         <div className="container">
                             <div className="row">
@@ -33,13 +36,14 @@ class HelixCoin extends React.PureComponent {
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
                                         </div>
+                                       <h1 className={css.eq}>=</h1> 
                                         <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div>
                                         <h5>Enter Receiver Address</h5>
                                         <input type="text" name="name" className={css.reci_text} /> <br />
-                                        <a href="#" className={css.send_bts}><img src="" alt="" /> <br />send ></a>
+                                        <a href="#" className={css.send_bts}><img src={ic1} alt="" /></a>
                                     </div>
                                 </div>
                             </div>
@@ -57,4 +61,4 @@ class HelixCoin extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(HelixCoin);
+export default connect(null, mapDispatchToProps)(Send);

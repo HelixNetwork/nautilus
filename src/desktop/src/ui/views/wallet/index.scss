@@ -212,3 +212,70 @@
   .img{
     height:36px;
   }                         
+
+  @media  screen and (max-width: 1920px) {
+
+    .foo_bxx1{
+      top:100px;
+      bottom: 90px;
+      left:200px;
+      width: 70%;
+      min-height: 515px;
+    }
+    .foo_bxx1 h3{
+      margin-bottom: 0px;
+      margin-left: 300px;
+      margin-top: 40px;
+    }
+    .foo_bxx1 h6{
+      margin-left: 200px;
+      margin-top: 5px;
+    }
+    .foo_bxx1 h5{
+      margin-top: 24px;
+      margin-bottom: 25px;
+      margin-left: 355px;
+    }
+    .bbx_box1{
+      margin-top: 0px;
+      margin-bottom: 10px;
+      padding-top: 24px;
+      height: 26px
+    }
+    .reci_text{
+      margin-top: 0px;
+      width: 400px !important;
+      outline: 0;
+      margin-left: 250px !important;
+    }
+    .send_bts{
+      margin-top: 5px;
+      margin-left: 415px;
+    } 
+    .send_bts img{
+      margin-top: 15px;
+      margin-left: 15px;
+      width: 40px;
+    }
+    .eq{
+      font-size: 50px;
+      font-weight: 100;
+      margin-bottom: 0px;
+      margin-left: 430px;
+      color: black;
+      margin-top: 0px;
+    }
+    .topul{
+      list-style-type: none;
+      float: right;
+    }
+    .icon_secs1{
+      margin-top: -250px;
+    }
+    .main_mn{
+      width: 50px;
+    }
+  }
+a{
+  text-decoration-line: none;
+}

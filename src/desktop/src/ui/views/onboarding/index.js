@@ -16,6 +16,7 @@ import SeedName from 'ui/views/onboarding/accountName';
 import SecurityEnter from 'ui/views/onboarding/accountPassword';
 import Done from 'ui/views/onboarding/done';
 import css from './index.scss';
+import Wallet from 'ui/views/wallet/index';
 
 /**
  * Onboarding main router wrapper component
@@ -80,6 +81,7 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/done" component={Done} />
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
+                                <Route path="/wallet" component={Wallet}/>
                             </Switch>
                         </div>
                     </CSSTransition>

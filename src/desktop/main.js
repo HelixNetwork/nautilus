@@ -82,7 +82,7 @@ function createWindow() {
   if (windowState.maximized) {
     windows.main.maximize();
   }
-  const url = devMode ? 'http://localhost:1074' : `file://${path.join(__dirname, 'dist/index.html')}`;
+  const url = process.env.NODE_ENV !== 'production' ? 'http://localhost:1074' : `file://${path.join(__dirname, 'dist/index.html')}`;
   windows.main = new BrowserWindow(windowOptions);
   windows.main.setTitle(require('./package.json').productName);
   windows.main.loadURL(url);

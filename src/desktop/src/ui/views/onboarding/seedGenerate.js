@@ -41,7 +41,7 @@ class SeedGenerate extends React.PureComponent {
                     </div>
                     <div className={css.onboard_nav}>
                         <a onClick={() => this.stepBack()} className={css.navleft}>Login With Your seed</a>
-                        <span className={css.navright}>Create Seed ></span>
+                        <a className={css.navright} onClick={() => this.props.history.push('/wallet')}>Create Seed ></a>
                     </div>
                 </div>
             </div>
