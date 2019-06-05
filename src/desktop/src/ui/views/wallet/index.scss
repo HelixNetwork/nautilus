@@ -1,0 +1,220 @@
+.top_sec1 {
+    width: 100%;
+    min-height: 50px;
+    position: absolute;
+    top: -83px;
+    left: 0;
+    z-index: 999;
+    padding-right: 40px;
+    padding-top: 112px;
+  }
+  .main_mn {
+    float: right;
+    padding: 0 0 0 20px;
+  }
+  .setting {
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+    padding: 10px;
+    color: #fff;
+    transition: all 0.5s;
+  }
+  .sseed_box1 {
+    width: 700px;
+    padding: 35px 20px;
+    min-height: 50px;
+    position: absolute;
+    left: 50%;
+    bottom: 85px;
+    top:100px;
+    margin-left: -350px;
+    background-color: #06182b;
+    border-radius: 5px;
+    box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
+    z-index: 1000;
+  }
+  .sseed_box1 h4{
+      font-size: 32px;
+      font-weight: 200;
+      color:#dcab49;
+      margin-left:200px;
+  
+  }
+  .sseed_box31{
+    width: 400px;
+  min-height: 100px;
+  border: 5px solid #dcab49;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-bottom: 50px;
+  text-align: center;
+  padding: 15px;
+  }
+  .icon_secs1{
+    width: 100%;
+  padding-bottom: 70px;
+  }
+  .img_sr {
+    float: left;
+    margin: 1px 24px;
+        margin-top: 50px;
+    text-align: center;
+  }
+  .img_sr img {
+    padding-bottom: 30px;
+
+  }
+  .img_sr_imgss1{
+ 
+    margin-top: 51px;
+  }
+  .img_sr_imgss2{
+    margin-top: 51px;
+  }
+  .img_sr_h2{
+    font-size: 19px;
+    height:28px;
+  }
+  .img_sr_h2:hover{
+    color: #dcab49;
+  }
+  .footer_none {
+    display: none !important;
+  }
+  .bal_bx {
+    float: left;
+    padding-left: 58px;
+    font-size: 15;
+    padding-top: 14px;
+  }
+  .bal_bxs1 {
+    float: left;
+    padding-left: 40px;
+    font-size: 22px;
+    padding-top: 10px;
+    text-align: right;
+    color: #e8b349;
+  }
+
+.bal_bx span {
+    color: #e8b349;
+    font-size: 12px;
+    margin-top: -5px;
+    float: left;
+  }
+  .bal_bxs span {
+    color: #fff;
+  }
+  .main_mn {
+    float: right;
+    padding: 0 0 0 20px;
+  }
+  .setting {
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+    padding: 10px;
+    color: #fff;
+    transition: all 0.5s;
+  }
+  .pg1_foo3 {
+    position: static;
+    height: 700px;
+    margin-top: 300px;
+  }
+  .foo_bxx1 {
+    width: 100%;
+    min-height: 570px;
+    background-color: #ffffff;
+    position: absolute;
+    top: -180px;
+    bottom:100px;
+    left: 0;
+    box-shadow: -5px 4px 5px 0px rgba(0, 0, 0, 0.15);
+  }
+  .foo_bxx1 h3 {
+    font-size: 40px;
+    color: #000;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    margin-left:424px;
+  }
+  .foo_bxx1 h3 span {
+    color: #e8b349;
+  }
+  .foo_bxx1 h5 {
+    color: #000;
+    font-size: 18px;
+    margin-top: 42px;
+    margin-bottom: 50px;
+    margin-left:486px;
+ 
+  } 
+  .foo_bxx1 h6 {
+    font-size: 16px;
+    color: #000;
+    border-bottom: 2px solid #e8b349;
+    display: inline-block;
+    padding-bottom: 20px;
+    margin-left: 316px;
+  }
+  .bbx_box1 {
+    width: 250px;
+    background-color: #081726;
+    height: 60px;
+    border-radius: 5px;
+    margin: 42px auto;
+    padding: 16px 20px;
+  }
+  .tr_box1 {
+    position: relative;
+  }
+  .tr_box1::after {
+    content: "";
+    position: absolute;
+    bottom: -34px;
+    left: 115px;
+    width: 20px;
+    height: 20px;
+    //background-image: url("../images/equal.png");
+    background-repeat: no-repeat;
+  }
+  .er1 {
+    float: left;
+    font-weight: bold;
+  }
+  .er2 {
+    float: right;
+    font-weight: bold;
+  }        
+  .reci_text {
+    border: 0;
+    border-bottom: 2px solid #e8b349;
+    margin-top: -24px;
+    width: 500px;
+    outline: 0;
+    margin-left:303px;
+    margin-bottom:-16px;
+  }
+  .send_bts img {
+    height: auto;
+    width: 50px;
+    padding-bottom: 10px;
+  }
+  .send_bts {
+    display: inline-block;
+    margin-top: -83px;
+    margin-left:553px;
+    color: #081726;
+    transition: all 0.5s;
+  }
+  .send_bts:hover {
+    text-decoration: none;
+    color: #081726;
+    opacity: 0.8;
+  }     
+  .img{
+    height:36px;
+  }                         

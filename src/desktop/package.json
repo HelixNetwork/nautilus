@@ -5,6 +5,11 @@
   "version": "0.1.0",
   "private": true,
   "description": "Desktop wallet for Helix",
+  "moduleRoots": [
+    ".",
+    "src",
+    "../shared"
+  ],
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "bootstrap": "^4.3.1",
@@ -80,10 +85,61 @@
   "build": {
     "productName": "Helix Wallet",
     "artifactName": "${name}-${version}.${ext}",
-    "appId": "com.helix.electron-cra",
+    "appId": "ai.helix.wallet",
+    "asar": true,
     "directories": {
-      "buildResources": "assets",
-      "output": "dist"
+      "buildResources": "./assets",
+      "output": "./out"
+    },
+    "extends": null,
+    "files": [
+      "dist/",
+      "assets/",
+      "package.json",
+      "!node_modules/realm/android${/*}",
+      "!node_modules/realm/build${/*}",
+      "!node_modules/realm/react-native${/*}",
+      "!node_modules/realm/scripts${/*}",
+      "!node_modules/realm/src${/*}",
+      "!node_modules/realm/vendor${/*}"
+    ],
+    "dmg": {
+      "iconSize": 120,
+      "title": "${productName}",
+      "contents": [
+        {
+          "x": 520,
+          "y": 250,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 170,
+          "y": 250,
+          "type": "file"
+        }
+      ]
+    },
+    "win": {
+      "publisherName": "",
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "desktop": {
+        "Name": "Helix",
+        "Comment": "Desktop wallet for Helix",
+        "Categories": "Office;Network;Finance"
+      }
+    },
+    "mac": {
+      "category": "public.app-category.finance",
+      "target": [
+        "dmg",
+        "zip"
+      ]
     }
   },
   "homepage": "./",

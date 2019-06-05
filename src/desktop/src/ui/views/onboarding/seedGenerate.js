@@ -16,6 +16,9 @@ class SeedGenerate extends React.PureComponent {
 
     state = {
     }
+    stepBack(){
+        this.props.history.goBack();
+    }
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
@@ -37,7 +40,7 @@ class SeedGenerate extends React.PureComponent {
 
                     </div>
                     <div className={css.onboard_nav}>
-                        <span className={css.navleft}>Login With Your seed</span>
+                        <a onClick={() => this.stepBack()} className={css.navleft}>Login With Your seed</a>
                         <span className={css.navright}>Create Seed ></span>
                     </div>
                 </div>

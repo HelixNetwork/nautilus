@@ -11,34 +11,34 @@ class Done extends React.PureComponent {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
     };
+
+    /**
+     * Navigate to Login view
+     * @returns {undefined}
+     */
+    setComplete = () => {
+        const { history } = this.props;
+        history.push('/onboarding/login');
+    };
+
     render() {
         const { t } = this.props;
         return (
             <div>
-                <header className={classNames(css.header)}>
-
-                </header>
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                                <h4>Welcome Marcel</h4>
-                                <div className={classNames(css.sseed_box3)}>
-                                    <h5>1337,00 mHLX</h5>
-                                    <h5>26,67 EUR</h5>
-                                </div>
+                                <h1>{t('onboardingComplete:allDone')}</h1>
+                                <p>{t('onboardingComplete:walletReady')}</p>
                                 <div className={classNames(css.icon_secs)}>
-
-                                    <div className={(classNames(css.img_sr ,css.img_sr_imgss1))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr ,css.img_sr_imgss2))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr,css.img_sr_imgss3))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>                             
-                                    <div className={(classNames(css.img_sr,css.img_sr_imgss4))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr,css.img_sr_imgss5))}><img src="" alt="" /><h2 className={classNames(css.img_sr_h2)}>Address Book <span>></span></h2></div>
-
+                                    <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
+                                        <img src="" alt="" />
+                                        <h2 onClick={() => this.setComplete()}  className={classNames(css.img_sr_h2)}>Login<span>></span>
+                                        </h2>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </section>

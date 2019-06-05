@@ -7,7 +7,6 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
 import Welcome from 'ui/views/onboarding/welcome';
-import HelixCoin from 'ui/views/onboarding/helixcoin';
 import Login from 'ui/views/onboarding/login';
 import SeedIntro from 'ui/views/onboarding/seedIntro';
 import GenerateSeed from 'ui/views/onboarding/seedGenerate';
@@ -43,6 +42,7 @@ class Onboarding extends React.PureComponent {
             'account-password',
             'done',
             'helixcoin',
+            'receive',
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
@@ -79,7 +79,6 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
                                 <Route path="/onboarding/login" component={Login} />
-                                <Route path="/onboarding/helixcoin" component={HelixCoin}/>
                                 <Route path="/" component={indexComponent} />
                             </Switch>
                         </div>
