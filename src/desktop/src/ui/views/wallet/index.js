@@ -6,13 +6,9 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Dashboard from 'ui/views/wallet/dashboard'
 import css from './index.scss';
-import ic1 from 'ui/images/ic1.png';
-import ic2 from 'ui/images/ic2.png';
-import ic3 from 'ui/images/ic3.png';
-import ic4 from 'ui/images/ic4.png';
-import ic5 from 'ui/images/ic5.png';
 import Top from '../../components/topbar';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane,faDownload, faChartLine, faHistory, faAddressBook} from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Wallet functionallity router wrapper component
@@ -25,7 +21,9 @@ class Wallet extends React.PureComponent {
         }).isRequired,
         t: PropTypes.func.isRequired,
     }
+    
     render() {
+        
         const { location, history, t } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
         if (currentKey == '/') {
@@ -45,11 +43,11 @@ class Wallet extends React.PureComponent {
                                         <h3>26,67 EUR</h3>
                                     </div>
                                     <div className={classNames(css.icon_secs1)}>
-                                        <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><img src={ic1} className={classNames(css.img)} alt="" /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
-                                        <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><img src={ic2} className={classNames(css.img)} alt="" /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
-                                        <div className={(classNames(css.img_sr1))}><img src={ic3} className={classNames(css.img)} alt="" /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
-                                        <div className={(classNames(css.img_sr1))}><img src={ic4} className={classNames(css.img)} alt="" /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
-                                        <div className={(classNames(css.img_sr1))}><img src={ic5} className={classNames(css.img)} alt="" /><h2 className={classNames(css.img_sr_h2)}>Address Book <span>></span></h2></div>
+                                        <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faPaperPlane} size='3x'/><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
+                                        <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faDownload} size='3x'/><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
+                                        <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faChartLine} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
+                                        <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory}size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
+                                        <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faAddressBook}size='3x' /><h2 className={classNames(css.img_sr_h2)}>Address Book <span>></span></h2></div>
                                     </div>
                                 </div>
 
