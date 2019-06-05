@@ -2,28 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import css from './index.scss';
 import classNames from 'classnames';
-import main from 'ui/images/main.png';
-import logout from 'ui/images/logout.png';
-import setting from 'ui/images/setting.png';
-import log from 'ui/images/log_icon.png';
-
-
-
+import Top from '../../components/topbar';
+import PropTypes from 'prop-types';
+import reload from 'ui/images/refresh.svg';
 class Receive extends React.PureComponent {
+    static propTypes = {
+        location: PropTypes.object,
+        history: PropTypes.shape({
+            push: PropTypes.func.isRequired,
+        }).isRequired,
+        t: PropTypes.func.isRequired,
+    }
     render() {
         return (
             <div>
                 <section className={css.home}>
 
-                    <div className={classNames(css.top_sec1)}>
-                        <div className={classNames(css.bal_bx)}>Balance<br /><span>0,02€ /mHLX</span></div>
-                        <div className={classNames(css.bal_bxs)}>1337,00 &nbsp; mHLX<br /><span>26,67 &nbsp; EUR</span></div>
-
-                        <a href="#" className={classNames(css.main_mn)}><img src={main} alt="" /></a>
-                        <a href="#" className={classNames(css.setting)}><img src={logout} alt="" />Logout <span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src={setting} alt="" />Settings<span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src={log} alt="" />Main Menu<span>></span></a>
-                    </div>
+                <Top
+                   disp={'block'}
+                   history = {this.props.history}
+                   />
                     <div className={classNames(css.pg1_foo3)}>
                         <div className="container">
                             <div className="row">
@@ -32,13 +30,14 @@ class Receive extends React.PureComponent {
                                     <div className={classNames(css.foo_bxx1)}>
                                         <h3 >Recieve HLX Coins<span>.</span></h3>
                                         <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
-                                        {/* <div className={classNames(css.sseed_box2,css.sec_bxc)}>
-                                             <h3 >Press 10 more letters to randomise your seed even more</h3>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                             <div className={classNames(css.text_ff)}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                                        </div> */}
+                                        <div className={classNames(css.sseed_box2,css.sec_bxc)}>
+                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div><br/>
+                                             
+                                        </div>
+                                        <div><a className={css.reload}><img src={reload} alt=""/></a></div>
                                     </div>
                                 </div>
                             </div>

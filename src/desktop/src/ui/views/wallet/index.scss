@@ -212,7 +212,19 @@
   .img{
     height:36px;
   }                         
-
+  .text_ff1 {
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 22px;
+    letter-spacing: 7px;
+    margin-bottom: 20px;
+    float: left;
+    color: rgb(1,19,39);
+    margin-left: 170px;
+  }
+  .text_ff1 span {
+    color: #dcab49;
+  }
   @media  screen and (max-width: 1920px) {
 
     .foo_bxx1{
@@ -274,6 +286,12 @@
     }
     .main_mn{
       width: 50px;
+    }
+    .reload{
+      position: absolute;
+    right: 175px;
+    bottom: -190px;
+
     }
   }
 a{

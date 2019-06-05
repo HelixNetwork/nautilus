@@ -1003,6 +1003,7 @@ footer li::after {
 .index__icon_secs {
   width: 100%;
   padding-bottom: 70px;
+  margin-left: 275px;
 }
 
 .index__onboard_nav {
@@ -1430,7 +1431,8 @@ footer li::after {
   min-height: 50px;
   position: absolute;
   left: 50%;
-  bottom: 120px;
+  bottom: 85px;
+  top: 100px;
   margin-left: -350px;
   background-color: #06182b;
   border-radius: 5px;
@@ -1462,23 +1464,20 @@ footer li::after {
   padding-bottom: 70px;
 }
 
-.index__img_sr {
+.index__img_sr1 {
   float: left;
   margin: 1px 24px;
-  margin-top: 50px;
+  margin-top: 280px;
   text-align: center;
 }
 
-.index__img_sr_imgss1 {
-  margin-top: 51px;
-}
-
-.index__img_sr_imgss2 {
-  margin-top: 51px;
+.index__img_sr img {
+  padding-bottom: 7px;
 }
 
 .index__img_sr_h2 {
   font-size: 19px;
+  height: 28px;
 }
 
 .index__img_sr_h2:hover {
@@ -1637,6 +1636,87 @@ footer li::after {
   text-decoration: none;
   color: #081726;
   opacity: 0.8;
+}
+
+.index__img {
+  height: 36px;
+}
+
+@media screen and (max-width: 1920px) {
+  .index__foo_bxx1 {
+    top: 100px;
+    bottom: 90px;
+    left: 200px;
+    width: 70%;
+    min-height: 515px;
+  }
+
+  .index__foo_bxx1 h3 {
+    margin-bottom: 0px;
+    margin-left: 300px;
+    margin-top: 40px;
+  }
+
+  .index__foo_bxx1 h6 {
+    margin-left: 200px;
+    margin-top: 5px;
+  }
+
+  .index__foo_bxx1 h5 {
+    margin-top: 24px;
+    margin-bottom: 25px;
+    margin-left: 355px;
+  }
+
+  .index__bbx_box1 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-top: 24px;
+    height: 26px;
+  }
+
+  .index__reci_text {
+    margin-top: 0px;
+    width: 400px !important;
+    outline: 0;
+    margin-left: 250px !important;
+  }
+
+  .index__send_bts {
+    margin-top: 5px;
+    margin-left: 415px;
+  }
+
+  .index__send_bts img {
+    margin-top: 15px;
+    margin-left: 15px;
+    width: 40px;
+  }
+
+  .index__eq {
+    font-size: 50px;
+    font-weight: 100;
+    margin-bottom: 0px;
+    margin-left: 430px;
+    color: black;
+    margin-top: 0px;
+  }
+
+  .index__topul {
+    list-style-type: none;
+    float: right;
+  }
+
+  .index__icon_secs1 {
+    margin-top: -250px;
+  }
+
+  .index__main_mn {
+    width: 50px;
+  }
+}
+a {
+  text-decoration-line: none;
 }
 .loading__loading {
   display: flex;

@@ -11,9 +11,7 @@ import ic2 from 'ui/images/ic2.png';
 import ic3 from 'ui/images/ic3.png';
 import ic4 from 'ui/images/ic4.png';
 import ic5 from 'ui/images/ic5.png';
-import logout from 'ui/images/logout.png';
-import setting from 'ui/images/setting.png';
-
+import Top from '../../components/topbar';
 
 
 /**
@@ -33,11 +31,10 @@ class Wallet extends React.PureComponent {
         if (currentKey == '/') {
             return (
                 <div>
-                    <div className={classNames(css.top_sec1)}>
-                        <a href="#" className={classNames(css.main_mn)}><img src="" alt="" /></a>
-                        <a href="#" className={classNames(css.setting)}><img src={logout} alt="" />Logout <span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src={setting} alt="" />Settings<span>></span></a>
-                    </div>
+                   <Top
+                   disp={'none'}
+                   history = {this.props.history}
+                   />
                     <section className="spage_1">
                         <div className="container">
                             <div className="row">
