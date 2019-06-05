@@ -14,7 +14,9 @@
     "lint": "./node_modules/.bin/eslint .",
     "deps:shared": "cd src/shared && yarn install && cd ../..",
     "deps:desktop": "cd src/desktop && yarn install && cd ../..",
-    "start:desktop": "cd src/desktop && yarn run start"
+    "start:desktop": "cd src/desktop && yarn run start",
+    "package:win":"cd src/desktop && yarn run package:win",
+    "package:linux":"cd src/desktop && yarn run package:linux"
   },
   "homepage": "https://hlx.ai",
   "lint-staged": {

@@ -45,6 +45,9 @@ class AccountName extends React.PureComponent {
                    
                 </div>
             </div>
+            <footer className={classNames(css.footer)}>
+
+                </footer>
         </section>
 
         )

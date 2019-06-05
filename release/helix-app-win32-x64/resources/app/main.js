@@ -82,13 +82,10 @@ function createWindow() {
   if (windowState.maximized) {
     windows.main.maximize();
   }
-
+  const url = process.env.NODE_ENV !== 'production' ? 'http://localhost:1074' : `file://${path.join(__dirname, '/index.html')}`;
   windows.main = new BrowserWindow(windowOptions);
-  let url = process.env.NODE_ENV === "production"? "file://"+__dirname+"/index.html" : "http://localhost:1074";
   windows.main.setTitle(require('./package.json').productName);
   windows.main.loadURL(url);
-  console.log(__dirname);
-  // windows.main.loadURL("file://"+__dirname+"/index.html");
   windows.main.on("closed", () => (windows.main = null));
 
   /**
@@ -101,7 +98,9 @@ function createWindow() {
       InputMenu.popup(windows.main);
     }
   });
+  if(process.env.NODE_ENV !== 'production'){
   windows.main.webContents.openDevTools();
+  }
 
   /**
    * Disallow external link navigation in wallet window

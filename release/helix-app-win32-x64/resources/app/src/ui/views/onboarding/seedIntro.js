@@ -44,8 +44,8 @@ class SeedIntro extends React.PureComponent {
                             <h6>You can use it access your funds from any wallet, or any device</h6>
                         </div>
                         <div className={css.onboard_nav}>
-                            <span className={css.navleft} onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}>></span>
-                            <span className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></span>
+                            <a className={css.navleft} onClick={() => this.props.history.push('/wallet')}>{t('walletSetup:noIHaveOne')}>></a>
+                            <a className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></a>
                         </div>
                         {/* <a className={css.cont} onClick={history.push('/onboarding/seed-intro')}>Continue ></a> */}
                     </div>
