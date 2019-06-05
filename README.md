@@ -32,3 +32,14 @@ yarn run deps:desktop
 ```
 yarn run start:desktop
 ```
+
+6. Package app for Windows
+
+```
+yarn run package:win
+```
+7. Package app for Linux
+
+```
+yarn run package:linux
+```
