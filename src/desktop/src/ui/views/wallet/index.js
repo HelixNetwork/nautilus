@@ -41,8 +41,8 @@ class Wallet extends React.PureComponent {
                                 <div className={classNames(css.sseed_box1, css.cre_pgs)}>
                                     <h4>Welcome Marcel</h4>
                                     <div className={classNames(css.sseed_box31)}>
-                                        <h5>1337,00 mHLX</h5>
-                                        <h5>26,67 EUR</h5>
+                                        <h2 style={{color: '#e8b349'}}>1337,00 mHLX</h2>
+                                        <h3>26,67 EUR</h3>
                                     </div>
                                     <div className={classNames(css.icon_secs1)}>
                                         <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><img src={ic1} className={classNames(css.img)} alt="" /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>

@@ -98,7 +98,9 @@ function createWindow() {
       InputMenu.popup(windows.main);
     }
   });
+  if(process.env.NODE_ENV !== 'production'){
   windows.main.webContents.openDevTools();
+  }
 
   /**
    * Disallow external link navigation in wallet window

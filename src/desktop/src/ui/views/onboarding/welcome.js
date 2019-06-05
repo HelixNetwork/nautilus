@@ -57,7 +57,7 @@ class Welcome extends React.PureComponent {
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
-                            <h1>{t('welcome:thankYou')}</h1>
+                            <h1 style={{fontSize:'60px'}}>{t('welcome:thankYou')}</h1>
                             <h6>{t('welcome:thankYouDescription')}</h6>
                             <br></br>
                             <Language></Language>  

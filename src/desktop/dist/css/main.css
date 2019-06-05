@@ -1175,6 +1175,7 @@ footer li::after {
   letter-spacing: 7px;
   margin-bottom: 20px;
   float: left;
+  color: white;
 }
 
 .index__text_ff span {
@@ -1642,6 +1643,21 @@ footer li::after {
   height: 36px;
 }
 
+.index__text_ff1 {
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 22px;
+  letter-spacing: 7px;
+  margin-bottom: 20px;
+  float: left;
+  color: #011327;
+  margin-left: 170px;
+}
+
+.index__text_ff1 span {
+  color: #dcab49;
+}
+
 @media screen and (max-width: 1920px) {
   .index__foo_bxx1 {
     top: 100px;
@@ -1713,6 +1729,12 @@ footer li::after {
 
   .index__main_mn {
     width: 50px;
+  }
+
+  .index__reload {
+    position: absolute;
+    right: 175px;
+    bottom: -190px;
   }
 }
 a {
