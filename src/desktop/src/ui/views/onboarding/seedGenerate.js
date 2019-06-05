@@ -32,10 +32,10 @@ class SeedGenerate extends React.PureComponent {
                     </div>
                     <div className={classNames(css.sseed_box2, css.cre_pgs)}>
                         <h3>Press 10 more letters to randomise your seed even more</h3>
-                        <div className={css.text_ff}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                        <div className={css.text_ff}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                        <div className={css.text_ff}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
-                        <div className={css.text_ff}><span>A</span> A H H 1 M B 3 H I I U T Z H D F H</div>
+                        <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                        <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                        <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                        <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
                         <div><a className={css.arrow_bx}><img src={reload} alt=""/></a></div>
 
                     </div>
