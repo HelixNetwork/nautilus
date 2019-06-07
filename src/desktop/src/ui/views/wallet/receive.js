@@ -30,7 +30,7 @@ class Receive extends React.PureComponent {
 
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx1)}>
-                                        <h3 >Recieve HLX Coins<span>.</span></h3>
+                                        <h3>Recieve HLX Coins<span>.</span></h3>
                                         <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
                                         {/* <div className={classNames(css.sseed_box2,css.sec_bxc)}>
                                              <h3 >Press 10 more letters to randomise your seed even more</h3>

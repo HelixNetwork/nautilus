@@ -35,8 +35,8 @@ class Wallet extends React.PureComponent {
                 <div>
                     <div className={classNames(css.top_sec1)}>
                         <a href="#" className={classNames(css.main_mn)}><img src="" alt="" /></a>
-                        <a href="#" className={classNames(css.setting)}><img src={logout} alt="" />Logout <span>></span></a>
-                        <a href="#" className={classNames(css.setting)}><img src={setting} alt="" />Settings<span>></span></a>
+                        <a href="#" className={classNames(css.setting)}><img src={logout} alt="" />{t('settings:logout')} <span>></span></a>
+                        <a href="#" className={classNames(css.setting)}><img src={setting} alt="" />{t('settings:settings')}<span>></span></a>
                     </div>
                     <section className="spage_1">
                         <div className="container">

@@ -21,24 +21,24 @@ class SeedGenerate extends React.PureComponent {
 
         return (
             <section className="spage_1">
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <h1>Generate Seed </h1>
-                    </div>
-                    {/* <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                        <img src="images/ex_mark.png" alt="" />
-                        <h5></h5>
-                        <h6></h6>
-                        <h3></h3>
-                    </div> */}
-                    <div className={css.onboard_nav}>
-                        <span className={css.navleft}>Login With Your seed</span>
-                        <span className={css.navright}>Create Seed ></span>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <h1>{t('newSeedSetup:generateSeed')}</h1>
+                        </div>
+                        {/* <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                            <img src="images/ex_mark.png" alt="" />
+                            <h5></h5>
+                            <h6></h6>
+                            <h3></h3>
+                        </div> */}
+                        <div className={css.onboard_nav}>
+                            <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
+                            <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
         )
     }
 }

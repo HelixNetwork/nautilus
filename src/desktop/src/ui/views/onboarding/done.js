@@ -34,7 +34,7 @@ class Done extends React.PureComponent {
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
                                         <img src="" alt="" />
-                                        <h2 onClick={() => this.setComplete()}  className={classNames(css.img_sr_h2)}>Login<span>></span>
+                                        <h2 onClick={() => this.setComplete()} className={classNames(css.img_sr_h2)}>{t('login:login')}<span>></span>
                                         </h2>
                                     </div>
                                 </div>

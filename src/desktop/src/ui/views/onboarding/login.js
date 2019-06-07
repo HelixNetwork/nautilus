@@ -32,9 +32,9 @@ class Login extends React.PureComponent {
                     <div className="row">
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
                             <form onSubmit={(e) => this.handleSubmit(e)}>
-                                <h5>Enter your account password</h5>
+                                <h5>{t('login:enterPassword')}</h5>
                                 <input type="text" className={classNames(css.sseed_text)}></input><br /><br />
-                                <button type="submit">Login</button>
+                                <button type="submit">{t('login:login')}</button>
                             </form>
                         </div>
                     </div>

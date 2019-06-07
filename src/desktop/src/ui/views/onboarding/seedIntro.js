@@ -32,27 +32,27 @@ class SeedIntro extends React.PureComponent {
 
         return (
             <div>
-            <section className="spage_1">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <h1>{t('walletSetup:doYouNeedASeed')}<span> {t('walletSetup:seed')}</span>?</h1>
+                <section className="spage_1">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <h1>{t('walletSetup:doYouNeedASeed')}<span> {t('walletSetup:seed')}</span>?</h1>
+                            </div>
+                            <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                                <img src={image} alt="" />
+                                <h5>{t('walletSetup:helixSeedIsAccess')}</h5>
+                                <h6>{t('walletSetup:explanation')}</h6>
+                            </div>
+                            <div className={css.onboard_nav}>
+                                <span className={css.navleft} onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}>></span>
+                                <span className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></span>
+                            </div>
+                            {/* <a className={css.cont} onClick={history.push('/onboarding/seed-intro')}>Continue ></a> */}
                         </div>
-                        <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                            <img src={image} alt="" />
-                            <h5>Your helix seed is your account access.</h5>
-                            <h6>You can use it access your funds from any wallet, or any device</h6>
-                        </div>
-                        <div className={css.onboard_nav}>
-                            <span className={css.navleft} onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}>></span>
-                            <span className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></span>
-                        </div>
-                        {/* <a className={css.cont} onClick={history.push('/onboarding/seed-intro')}>Continue ></a> */}
                     </div>
-                </div>
-            </section>
-            <footer className={classNames(css.footer)}>
-            </footer>
+                </section>
+                <footer className={classNames(css.footer)}>
+                </footer>
             </div>
         )
     }

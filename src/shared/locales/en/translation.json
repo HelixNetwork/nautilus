@@ -19,7 +19,7 @@
         "invalidResponse": "Node error",
         "invalidResponseExplanation": "The node returned an error. Try changing node.",
         "invalidResponseFetchingAccount": "The node returned an error while fetching your account information. Try changing node.",
-        "invalidResponseFetchingAccountDesktop": "The node returned an error while fetching your account information. If your problem persists, try changing node or disabling your system proxy in Trinity Settings.",
+        "invalidResponseFetchingAccountDesktop": "The node returned an error while fetching your account information. If your problem persists, try changing node or disabling your system proxy in Helix Settings.",
         "nodeOutOfSync": "Node out of sync",
         "nodeOutOfSyncExplanation": "Your currently selected node is out of sync. Please change node or try again.",
         "experimentalNode": "Node version not supported",
@@ -107,7 +107,7 @@
         "cannotSendToOwnExplanation": "You cannot send to an address that is being used as an input in the transaction.",
         "pleaseWait": "Please wait",
         "pleaseWaitEllipses": "Please wait...",
-        "pleaseWaitExplanation": "Trinity is performing another function. Please wait and try again.",
+        "pleaseWaitExplanation": "Helix is performing another function. Please wait and try again.",
         "pleaseWaitTransferExplanation": "Your available balance is currently being used in other transfers. Please wait for one to confirm before trying again.",
         "pleaseWaitIncomingTransferExplanation": "You have incoming transfers. Please wait for them to confirm before trying again.",
         "snapshotTransitionInProgress": "Snapshot transition in progress",
@@ -141,7 +141,7 @@
         "isYourBalanceCorrect": "Is your balance correct?",
         "ifYourBalanceIsNotCorrect": "If your balance is not correct, it is likely that you are using a pre-snapshot seed.",
         "headToAdvancedSettingsForTransition": "Head to Advanced Settings and perform a Snapshot Transition.",
-        "usingTrinityWalletWithKeePass": "Using Trinity Wallet with Keepass2Android",
+        "usingHelixWalletWithKeePass": "Using Helix Wallet with Keepass2Android",
         "signedTrytesBroadcastErrorExplanation": "There was a network error while broadcasting your transaction.",
         "broadcastError": "Could not broadcast transfer",
         "addressesAlreadySpentFrom": "One or more of the addresses have already been spent from.",
@@ -246,12 +246,12 @@
     "login": {
         "emptyPassword": "Empty password",
         "emptyPasswordExplanation": "You must enter a password to log in. Please try again.",
-        "enterPassword": "Please enter your password.",
+        "enterPassword": "Enter your account password.",
         "login": "Log In",
         "setNode": "Set Node",
         "whyBiometricDisabled": "Why is biometric authentication disabled?",
         "whyBiometricDisabledExplanationPart1": "Biometric authentication is disabled on first app load for your security.",
-        "whyBiometricDisabledExplanationPart2": "When using Trinity you will be logged out for inactivity. You can then log back in with biometric authentication."
+        "whyBiometricDisabledExplanationPart2": "When using Helix you will be logged out for inactivity. You can then log back in with biometric authentication."
     },
     "loading": {
         "loadingFirstTime": "Loading seed for the first time.",
@@ -260,6 +260,9 @@
         "takingAWhile": "This seems to be taking a while"
     },
     "newSeedSetup": {
+        "generateSeed": "Generate Seed",
+        "loginWithYourSeed": "Login With Your seed",
+        "createSeed": "Create Seed",
         "generatedSeed": "Generated seed",
         "seedNotGenerated": "Seed has not been generated",
         "seedNotGeneratedExplanation": "Please generate a new seed.",
@@ -329,7 +332,7 @@
     },
     "seedReentry": {
         "pleaseConfirmYourSeed": "Please confirm your seed",
-        "trinityWillNeverAskToReenter": "Trinity will never ask you to re-enter this seed unless you reset your wallet or delete the app.",
+        "helixWillNeverAskToReenter": "Helix will never ask you to re-enter this seed unless you reset your wallet or delete the app.",
         "enterYourSeed": "Enter your seed",
         "incorrectSeed": "Incorrect seed",
         "incorrectSeedExplanation": "The seed you entered is incorrect. Please try again.",
@@ -381,6 +384,7 @@
         "modeUpdatedExplanation": "You have changed to {{mode}} mode"
     },
     "settings": {
+        "settings": "Settings",
         "transferSending": "Transfer sending",
         "transferSendingExplanation": "Please wait until your transfer has been sent.",
         "mode": "Mode",
@@ -424,7 +428,7 @@
         "fetchedConversionRatesExplanation": "Successfully fetched latest conversion rate for {{currency}}.",
         "undo": "Undo",
         "redo": "Redo",
-        "aboutTrinity": "About Trinity",
+        "aboutHelix": "About Helix",
         "lockScreenTimeout": "Lock Screen Timeout (Minutes)",
         "autoNodeSwitching": "Automatically switch node when selected is unreachable",
         "nodeChangeSuccess": "Successfully changed node",
@@ -447,9 +451,9 @@
         "explanation": "<0><0>You can use it to access your funds from</0><1> any wallet</1><2>, on</2><3> any device.</3></0>",
         "loseSeed": "But if you lose your seed, you also lose your IOTA.",
         "keepSafe": "Please keep your seed safe.",
-        "Seed Verify":"Verify",
-        "coin":"sent coin"
-
+        "Seed Verify": "Verify",
+        "coin": "sent coin",
+        "helixSeedIsAccess": "Your helix seed is your account access."
     },
     "welcome": {
         "thankYou": "Thank you ",
@@ -475,7 +479,7 @@
         "retrying": "Retrying",
         "yesterday": "Yesterday",
         "promotingAnotherBundle": "Promoting another bundle",
-        "pleaseWait": "Please wait, Trinity is promoting another bundle.",
+        "pleaseWait": "Please wait, Helix is promoting another bundle.",
         "typeHelp": "Type !help for available commands",
         "searchHelpText": "Search by bundle hash or message content",
         "searchHelpValue": "Find transactions by exact iota value",
@@ -658,7 +662,7 @@
         "seedFileError": "Failed to open SeedVault",
         "seedFileErrorExplanation": "There was a problem opening the SeedVault. If you selected the correct file then it may be corrupted.",
         "invalidSeedFileError": "Invalid SeedVault file",
-        "invalidSeedFileErrorExplanation": "This file format is not supported. Only SeedVault files (.kdbx) created via Trinity or a password manager are supported.",
+        "invalidSeedFileErrorExplanation": "This file format is not supported. Only SeedVault files (.kdbx) created via Helix or a password manager are supported.",
         "seedVaultKeyExplanation": "First we need to secure your SeedVault. Please choose a key to encrypt the file. You will use this key if you need to restore your seed from the SeedVault back up.",
         "retypeKey": "Retype key",
         "key": "Key"
@@ -727,8 +731,8 @@
     "deepLink": {
         "autofill": "Autofill success",
         "autofillExplanation": "Transaction data autofilled from link.",
-        "deepLinkingOverview": "Deep links are clickable links (iota://...) that automatically fill transaction data in Trinity.",
-        "deepLinkingWarning": "Be aware of phishing scams. Make sure the link you open navigates to the official Trinity app.",
+        "deepLinkingOverview": "Deep links are clickable links (iota://...) that automatically fill transaction data in Helix.",
+        "deepLinkingWarning": "Be aware of phishing scams. Make sure the link you open navigates to the official Helix app.",
         "deepLinkingUpdated": "Deep linking settings",
         "deepLinkingEnabled": "You have enabled deep linking.",
         "deepLinkingDisabled": "You have disabled deep linking.",
@@ -738,11 +742,11 @@
     "updates": {
         "errorRetrievingUpdateData": "Error retrieving update data",
         "noUpdatesAvailable": "No updates available",
-        "noUpdatesAvailableExplanation": "You have the latest version of Trinity!",
+        "noUpdatesAvailableExplanation": "You have the latest version of Helix!",
         "newVersionAvailable": "New version available",
-        "newVersionAvailableExplanation": "A new Trinity version is available. Do you want to update now?",
+        "newVersionAvailableExplanation": "A new Helix version is available. Do you want to update now?",
         "installUpdate": "Install update and restart",
-        "installUpdateExplanation": "Download complete, Trinity will now restart to install the update.",
+        "installUpdateExplanation": "Download complete, Helix will now restart to install the update.",
         "downloadingUpdate": "Downloading update",
         "downloadProgress": "{{transferred}} of {{total}} downloaded"
     },
@@ -786,17 +790,17 @@
         "sweepError": "Error unlocking funds",
         "sweepErrorExplanation": "Something went wrong while unlocking your funds. Trying again.",
         "warningTitle": "Warning: Locked funds detected",
-        "explanation": "Trinity Desktop version 0.3.4 contained a bug that can temporarily lock funds. This affects a small number of users that performed transactions with 0.3.4.",
-        "explanationAccounts": "Locked funds have been detected on your accounts: {{accounts}}. Trinity will now automatically recover your funds, by moving them to a new address.",
+        "explanation": "Helix Desktop version 0.3.4 contained a bug that can temporarily lock funds. This affects a small number of users that performed transactions with 0.3.4.",
+        "explanationAccounts": "Locked funds have been detected on your accounts: {{accounts}}. Helix will now automatically recover your funds, by moving them to a new address.",
         "proceed": "Proceed to Recovery",
         "sweepConfirmation": "You are about to sweep {{amount}} to the address {{address}}. Account: {{accountName}}, address index: {{index}}",
         "sweepConfirmationTitle": "Sweep confirmation"
     },
     "migration": {
         "dataMigration": "Data migration",
-        "dataMigrationExplanation": "Due to performance and storage limitations, Trinity is using a new database for storing settings and account data. Please wait while Trinity automatically migrates your existing data.",
+        "dataMigrationExplanation": "Due to performance and storage limitations, Helix is using a new database for storing settings and account data. Please wait while Helix automatically migrates your existing data.",
         "problemMigratingYourData": "There was a problem migrating your data. Please try again",
-        "seedMigrationExplanation": "As part of Trinity's continued effort to improve wallet security, your seed will be migrated to an enhanced storage methodology. Please wait while Trinity automatically migrates seed storage."
+        "seedMigrationExplanation": "As part of Helix's continued effort to improve wallet security, your seed will be migrated to an enhanced storage methodology. Please wait while Helix automatically migrates seed storage."
     },
     "ledger": {
         "ready": "Ledger device connected and ready",
@@ -818,7 +822,7 @@
         "transactionTitle": "Scroll through and approve the transaction on your Ledger",
         "transactionExplanation": "Use your Ledger device to approve the outgoing transaction.",
         "applicationTitle": "Open Ledger IOTA app",
-        "applicationExplanation": "Go to your Ledger and open the IOTA app to continue using Trinity.",
+        "applicationExplanation": "Go to your Ledger and open the IOTA app to continue using Helix.",
         "cannotSendZeroValueTitle": "Cannot send zero value transfer",
         "cannotSendZeroValueExplanation": "Cannot send zero value transfers with a Ledger device.",
         "ledgerDisconnectedTitle": "Ledger device disconnected",
@@ -832,6 +836,6 @@
         "applicationNotInitialised": "Warning unconfirmed",
         "applicationNotInitialisedExplanation": "Reopen the IOTA app on your Ledger device, accept the informational warning and try again.",
         "udevError": "Could not communicate with Ledger device",
-        "udevErrorExplanation": "Trinity could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
+        "udevErrorExplanation": "Helix could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
     }
 }
