@@ -71,8 +71,8 @@ typings/
 
 # production
 /build
-release/
-
+/release/
+/src/desktop/dist
 # misc
 .DS_Store
 .env.local
