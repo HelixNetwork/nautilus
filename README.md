@@ -5,6 +5,7 @@
 
 - Node.js (8+)
 - Electron (npm install electron -g)
+- Yarn >= v1.16.0
 
 ## Instructions
 
@@ -28,7 +29,7 @@ yarn run deps:shared
 yarn run deps:desktop
 ```
 
-5. Run desktop appplication
+5. Run desktop application
 ```
 yarn run start:desktop
 ```
