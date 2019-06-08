@@ -6,6 +6,7 @@ import { withI18n, Trans } from 'react-i18next';
 import image from 'ui/images/ex_mark.png';
 
 import { setAccountInfoDuringSetup } from 'actions/accounts';
+import Button from 'ui/components/button'
 
 import css from './index.scss';
 class SeedIntro extends React.PureComponent {
@@ -44,10 +45,9 @@ class SeedIntro extends React.PureComponent {
                                 <h6>{t('walletSetup:explanation')}</h6>
                             </div>
                             <div className={css.onboard_nav}>
-                                <span className={css.navleft} onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}>></span>
-                                <span className={css.navright} onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></span>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}>></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></Button>
                             </div>
-                            {/* <a className={css.cont} onClick={history.push('/onboarding/seed-intro')}>Continue ></a> */}
                         </div>
                     </div>
                 </section>
