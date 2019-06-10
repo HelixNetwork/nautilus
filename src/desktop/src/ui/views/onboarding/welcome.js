@@ -6,6 +6,7 @@ import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
 import { enTermsAndConditionsIOS, enPrivacyPolicyIOS } from 'terms-conditions';
 import Language from 'ui/components/input/language';
+import Button from 'ui/components/button'
 
 import css from './welcome.scss';
 
@@ -60,7 +61,7 @@ class Welcome extends React.PureComponent {
                             <h1 style={{fontSize:'60px'}}>{t('welcome:thankYou')}</h1>
                             <h6>{t('welcome:thankYouDescription')}</h6>
                             <br></br>
-                            <Language></Language>  
+                            <Language></Language>
                             <br></br>
                         </React.Fragment>
                     ) : (
@@ -77,11 +78,13 @@ class Welcome extends React.PureComponent {
                                 </div>
                             </React.Fragment>
                         )}
-                    <a disabled={step !== 'language' && !scrollEnd} onClick={this.onNextClick} className={css.cont}>
+                    <Button disabled={step !== 'language' && !scrollEnd}
+                        onClick={this.onNextClick}
+                        className="backgroundNone">
                         {step === 'language'
                             ? t('continue')
                             : !scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
-                        <span> ></span></a>
+                        <span> ></span></Button>
                 </section>
             </div>
         )

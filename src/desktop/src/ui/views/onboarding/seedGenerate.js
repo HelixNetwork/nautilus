@@ -25,12 +25,12 @@ class SeedGenerate extends React.PureComponent {
 
         return (
             <section className="spage_1">
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <h1>Generate Seed </h1>
-                    </div>
-                    <div className={classNames(css.sseed_box2, css.cre_pgs)}>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <h1>{t('newSeedSetup:generateSeed')}</h1>
+                        </div>
+                        <div className={classNames(css.sseed_box2, css.cre_pgs)}>
                         <h3>Press 10 more letters to randomise your seed even more</h3>
                         <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
                         <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
@@ -39,13 +39,13 @@ class SeedGenerate extends React.PureComponent {
                         <div><a className={css.arrow_bx}><img src={reload} alt=""/></a></div>
 
                     </div>
-                    <div className={css.onboard_nav}>
-                        <a onClick={() => this.stepBack()} className={css.navleft}>Login With Your seed</a>
-                        <a className={css.navright} onClick={() => this.props.history.push('/wallet')}>Create Seed ></a>
+                        <div className={css.onboard_nav}>
+                            <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
+                            <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
         )
     }
 }
