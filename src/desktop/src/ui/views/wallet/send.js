@@ -16,33 +16,33 @@ class Send extends React.PureComponent {
         t: PropTypes.func.isRequired,
     }
     render() {
-        const {history} = this.props;
+        const { t, history } = this.props;
         return (
             <div>
                 <section className={css.home}>
 
-                   <Top
-                   disp={'block'}
-                   history = {history}
-                   />
+                    <Top
+                        disp={'block'}
+                        history={history}
+                    />
                     <div className={classNames(css.pg1_foo3)}>
                         <div className="container">
                             <div className="row">
 
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx1)}>
-                                        <h3 >Send HLX Coins<span>.</span></h3>
-                                        <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
+                                        <h3>{t('send:sendCoins')}<span>.</span></h3>
+                                        <h6>{t('send:irrevocableTransactionWarning')}</h6>
                                         <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
                                         </div>
-                                       <h1 className={css.eq}>=</h1> 
+                                        <h1 className={css.eq}>=</h1>
                                         <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div>
-                                        <h5>Enter Receiver Address</h5>
+                                        <h5>{t('send:enterReceiverAddress')}</h5>
                                         <input type="text" name="name" className={css.reci_text} /> <br />
                                         <a href="#" className={css.send_bts}><img src={ic1} alt="" /></a>
                                     </div>

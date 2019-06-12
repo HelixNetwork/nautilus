@@ -14,30 +14,31 @@ class Receive extends React.PureComponent {
         t: PropTypes.func.isRequired,
     }
     render() {
+        const { t } = this.props;
         return (
             <div>
                 <section className={css.home}>
 
-                <Top
-                   disp={'block'}
-                   history = {this.props.history}
-                   />
+                    <Top
+                        disp={'block'}
+                        history={this.props.history}
+                    />
                     <div className={classNames(css.pg1_foo3)}>
                         <div className="container">
                             <div className="row">
 
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx1)}>
-                                        <h3>Recieve HLX Coins<span>.</span></h3>
-                                        <h6>Please note once funds are submitted, the transactions are irrevocable!</h6>
-                                        <div className={classNames(css.sseed_box2,css.sec_bxc)}>
-                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                             <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div><br/>
-                                             
+                                        <h3>{t('receive:receiveCoins')}<span>.</span></h3>
+                                        <h6>{t('receive:irrevocableTransactionWarning')}</h6>
+                                        <div className={classNames(css.sseed_box2, css.sec_bxc)}>
+                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div><br />
+
                                         </div>
-                                        <div><a className={css.reload}><img src={reload} alt=""/></a></div>
+                                        <div><a className={css.reload}><img src={reload} alt="" /></a></div>
                                     </div>
                                 </div>
                             </div>

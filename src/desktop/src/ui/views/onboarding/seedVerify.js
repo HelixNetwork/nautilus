@@ -41,13 +41,13 @@ class SeedVerify extends React.PureComponent {
                         </div>
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
 
-                            <h5>Set your Account Name</h5>
+                            <h5>{t('setSeedName:setAccountName')}</h5>
                             <input type="text" className={classNames(css.sseed_text)}></input><br /><br />
                             {/* <img src={images} alt="send" className={(classNames(css.img))}/> */}
-                            <button onClick={() => this.stepForward('done')}>Confirm</button>
-                           
+                            <button onClick={() => this.stepForward('done')}>{t('global:confirm')}</button>
+
                         </div>
-                       
+
                     </div>
                 </div>
             </section>

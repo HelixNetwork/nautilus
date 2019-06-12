@@ -262,6 +262,7 @@
     "newSeedSetup": {
         "generateSeed": "Generate Seed",
         "loginWithYourSeed": "Login With Your seed",
+        "randomiseSeedMore": "Press 10 more letters to randomise your seed even more",
         "createSeed": "Create Seed",
         "generatedSeed": "Generated seed",
         "seedNotGenerated": "Seed has not been generated",
@@ -310,7 +311,9 @@
         "generateAnAddress": "Generate address",
         "generateAnAddressTitle": "Generate an address",
         "generateAnAddressExplanation": "Please generate an address before using this function.",
-        "generateAddressInformation": "Generate a new deposit address every time you wish to receive IOTA"
+        "generateAddressInformation": "Generate a new deposit address every time you wish to receive IOTA",
+        "receiveCoins": "Receive HLX Coins",
+        "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
     },
     "saveYourSeed": {
         "saveYourSeed": "Back up your seed",
@@ -368,10 +371,14 @@
         "addressPasteDetected": "Address paste detected",
         "addressPasteExplanation": "It looks like you have pasted an address. Make sure that the address matches the one you want to send to.",
         "invalid": "INVALID",
-        "swipeToSend": "Swipe to send"
+        "swipeToSend": "Swipe to send",
+        "sendCoins": "Send HLX Coins",
+        "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!",
+        "enterReceiverAddress": "Enter Receiver Address"
     },
     "setSeedName": {
         "letsAddName": "Let's add a name",
+        "setAccountName": "Set your Account Name",
         "canUseMultipleSeeds": "You can use multiple seeds with this wallet. Each seed requires an account name.",
         "youCanAdd": "You can add more seeds in the Settings menu."
     },
@@ -456,6 +463,7 @@
         "helixSeedIsAccess": "Your helix seed is your account access."
     },
     "welcome": {
+        "welcome": "Welcome",
         "thankYou": "Thank you ",
         "thankYouDescription": "for downloading the Helix Wallet"
     },
