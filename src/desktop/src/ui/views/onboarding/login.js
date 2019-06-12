@@ -26,6 +26,7 @@ class Login extends React.PureComponent {
         history.push('/wallet');
     }
     render() {
+        const { t } = this.props
         return (
             <section className="spage_1">
                 <div className="container">
