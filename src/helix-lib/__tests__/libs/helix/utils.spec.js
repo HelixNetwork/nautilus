@@ -1,7 +1,7 @@
 import map from 'lodash/map';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import * as extendedApis from '../../../libs/iota/extendedApi';
+import * as extendedApis from '../../../libs/helix/extendedApi';
 import {
     convertFromTrytes,
     getRandomNodes,
@@ -9,9 +9,9 @@ import {
     throwIfNodeNotHealthy,
     isLastTritZero,
     getChecksum,
-} from '../../../libs/iota/utils';
+} from '../../../libs/helix/utils';
 import { latestAddressWithoutChecksum, latestAddressChecksum } from '../../__samples__/addresses';
-import { trytesToTrits, tritsToChars } from '../../../libs/iota/converter';
+import { trytesToTrits, tritsToChars } from '../../../libs/helix/converter';
 
 describe('libs: iota/utils', () => {
     describe('#isLastTritZero', () => {

@@ -26,9 +26,9 @@ import {
     filterZeroValueBundles,
     isBundleTraversable,
     isBundle,
-} from '../../../libs/iota/transfers';
+} from '../../../libs/helix/transfers';
 import { confirmedValueBundles, unconfirmedValueBundles, confirmedZeroValueBundles } from '../../__samples__/bundles';
-import { iota } from '../../../libs/iota';
+import { iota } from '../../../libs/helix';
 import {
     newValueTransactionTrytes,
     newValueAttachedTransactionTrytes,
@@ -48,7 +48,7 @@ import {
     LATEST_MILESTONE_INDEX,
     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 } from '../../__samples__/transactions';
-import { EMPTY_HASH_TRYTES, EMPTY_TRANSACTION_TRYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/iota/utils';
+import { EMPTY_HASH_TRYTES, EMPTY_TRANSACTION_TRYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/helix/utils';
 import { IRI_API_VERSION } from '../../../config';
 
 describe('libs: iota/transfers', () => {

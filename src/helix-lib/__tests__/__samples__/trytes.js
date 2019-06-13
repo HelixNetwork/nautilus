@@ -1,5 +1,5 @@
 import IOTA from 'iota.lib.js';
-import { EMPTY_TRANSACTION_TRYTES } from '../../libs/iota/utils';
+import { EMPTY_TRANSACTION_TRYTES } from '../../libs/helix/utils';
 import { latestMilestoneTransactionObject } from './transactions';
 
 const invalidTrytes = [EMPTY_TRANSACTION_TRYTES];

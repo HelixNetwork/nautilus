@@ -3,10 +3,10 @@ import isEqual from 'lodash/isEqual';
 import map from 'lodash/map';
 import { expect } from 'chai';
 import nock from 'nock';
-import { getIotaInstance, isNodeHealthy, allowsRemotePow } from '../../../libs/iota/extendedApi';
-import { iota } from '../../../libs/iota/index';
+import { getIotaInstance, isNodeHealthy, allowsRemotePow } from '../../../libs/helix/extendedApi';
+import { iota } from '../../../libs/helix/index';
 import { newZeroValueTransactionTrytes } from '../../__samples__/trytes';
-import { EMPTY_HASH_TRYTES } from '../../../libs/iota/utils';
+import { EMPTY_HASH_TRYTES } from '../../../libs/helix/utils';
 import { IRI_API_VERSION, MAX_MILESTONE_FALLBEHIND } from '../../../config';
 
 describe('libs: iota/extendedApi', () => {

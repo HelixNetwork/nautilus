@@ -10,7 +10,7 @@ import size from 'lodash/size';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import nock from 'nock';
-import * as addressesUtils from '../../../libs/iota/addresses';
+import * as addressesUtils from '../../../libs/helix/addresses';
 import {
     addressData as mockAddressData,
     latestAddressWithoutChecksum,
@@ -36,9 +36,9 @@ import {
     newZeroValueAttachedTransactionTrytes,
 } from '../../__samples__/trytes';
 import mockAccounts from '../../__samples__/accounts';
-import { iota, quorum } from '../../../libs/iota/index';
+import { iota, quorum } from '../../../libs/helix/index';
 import { IRI_API_VERSION } from '../../../config';
-import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_TRYTES } from '../../../libs/iota/utils';
+import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_TRYTES } from '../../../libs/helix/utils';
 
 describe('libs: iota/addresses', () => {
     describe('#preserveAddressLocalSpendStatus', () => {

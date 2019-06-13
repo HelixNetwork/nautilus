@@ -8,7 +8,7 @@ import random from 'lodash/random';
 import reduce from 'lodash/reduce';
 import { expect } from 'chai';
 import nock from 'nock';
-import { prepareInputs, getInputs, isValidInput } from '../../../libs/iota/inputs';
+import { prepareInputs, getInputs, isValidInput } from '../../../libs/helix/inputs';
 import { addressData as mockAddressData, balance as totalBalanceOfMockAddressData } from '../../__samples__/addresses';
 import mockTransactions, {
     LATEST_MILESTONE,
@@ -18,7 +18,7 @@ import mockTransactions, {
 } from '../../__samples__/transactions';
 import { milestoneTrytes } from '../../__samples__/trytes';
 import { IRI_API_VERSION } from '../../../config';
-import { EMPTY_TRANSACTION_TRYTES } from '../../../libs/iota/utils';
+import { EMPTY_TRANSACTION_TRYTES } from '../../../libs/helix/utils';
 
 describe('libs: iota/inputs', () => {
     describe('#prepareInputs', () => {

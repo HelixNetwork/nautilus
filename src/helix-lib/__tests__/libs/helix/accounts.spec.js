@@ -8,7 +8,7 @@ import {
     syncAccountOnValueTransactionFailure,
     syncAccountOnSuccessfulRetryAttempt,
     syncAccountDuringSnapshotTransition,
-} from '../../../libs/iota/accounts';
+} from '../../../libs/helix/accounts';
 import mockAccounts from '../../__samples__/accounts';
 import { latestAddressObject, latestAddressIndex } from '../../__samples__/addresses';
 import { newValueTransaction as mockValueTransactionObjects } from '../../__samples__/transactions';
