@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Dashboard from 'ui/views/wallet/dashboard'
 import css from './index.scss';
 import Top from '../../components/topbar';
+import Button from '../../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faDownload, faChartLine, faHistory, faAddressBook } from '@fortawesome/free-solid-svg-icons';
 

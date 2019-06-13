@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import classNames from 'classnames';
 import images from 'ui/images/ic1.png';
+import Button from 'ui/components/button';
 
 
 import css from './index.scss';
@@ -42,9 +43,9 @@ class SeedVerify extends React.PureComponent {
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
 
                             <h5>{t('setSeedName:setAccountName')}</h5>
-                            <input type="text" className={classNames(css.sseed_text)}></input><br /><br />
+                            <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
                             {/* <img src={images} alt="send" className={(classNames(css.img))}/> */}
-                            <button onClick={() => this.stepForward('done')}>{t('global:confirm')}</button>
+                            <Button onClick={() => this.stepForward('done')}>{t('global:confirm')}</Button>
 
                         </div>
 

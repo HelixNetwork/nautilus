@@ -6,6 +6,7 @@ import images from 'ui/images/ic1.png';
 import Top from '../../components/topbar';
 import PropTypes from 'prop-types';
 import ic1 from 'ui/images/send_bt.png';
+import { withI18n } from 'react-i18next';
 
 class Send extends React.PureComponent {
     static propTypes = {
@@ -16,7 +17,7 @@ class Send extends React.PureComponent {
         t: PropTypes.func.isRequired,
     }
     render() {
-        const { t, history } = this.props;
+        const { history, t } = this.props;
         return (
             <div>
                 <section className={css.home}>
@@ -62,4 +63,4 @@ class Send extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(Send);
+export default connect(null, mapDispatchToProps)(withI18n()(Send));

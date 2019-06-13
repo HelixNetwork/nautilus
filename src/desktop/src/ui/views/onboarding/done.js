@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { withI18n, Trans } from 'react-i18next';
 import PropTypes from 'prop-types';
 import images from 'ui/images/ic1.png';
+import Button from 'ui/components/button';
 
 class Done extends React.PureComponent {
     static propTypes = {
@@ -34,8 +35,7 @@ class Done extends React.PureComponent {
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
                                         <img src="" alt="" />
-                                        <h2 onClick={() => this.setComplete()} className={classNames(css.img_sr_h2)}>{t('login:login')}<span>></span>
-                                        </h2>
+                                        <Button variant="backgroundNone" onClick={() => this.setComplete()} className={classNames(css.img_sr_h2)}>{t('login:login')} <span>></span> </Button>
                                     </div>
                                 </div>
                             </div>

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Top from '../../components/topbar';
 import PropTypes from 'prop-types';
 import reload from 'ui/images/refresh.svg';
+import { withI18n } from 'react-i18next';
 class Receive extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
@@ -63,4 +64,4 @@ class Receive extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(Receive);
+export default connect(null, mapDispatchToProps)(withI18n()(Receive));

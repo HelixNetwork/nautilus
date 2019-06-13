@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { withI18n, Trans } from 'react-i18next';
 import PropTypes from 'prop-types';
+import Button from 'ui/components/button';
 
 import css from './index.scss';
 
@@ -26,7 +27,7 @@ class Login extends React.PureComponent {
         history.push('/wallet');
     }
     render() {
-        const { t } = this.props
+        const { t } = this.props;
         return (
             <section className="spage_1">
                 <div className="container">
@@ -34,8 +35,8 @@ class Login extends React.PureComponent {
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
                             <form onSubmit={(e) => this.handleSubmit(e)}>
                                 <h5>{t('login:enterPassword')}</h5>
-                                <input type="text" className={classNames(css.sseed_text)}></input><br /><br />
-                                <button type="submit">{t('login:login')}</button>
+                                <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
+                                <Button type="submit">{t('login:login')}</Button>
                             </form>
                         </div>
                     </div>
