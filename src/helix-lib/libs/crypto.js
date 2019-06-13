@@ -1,4 +1,4 @@
-import { MAX_SEED_LENGTH } from './iota/utils';
+import { MAX_SEED_LENGTH } from './helix/utils';
 
 /**
  * Generates a new seed

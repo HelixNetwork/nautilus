@@ -10,8 +10,8 @@ import map from 'lodash/map';
 import pick from 'lodash/pick';
 import reduce from 'lodash/reduce';
 import size from 'lodash/size';
-import { syncAccount } from '../libs/iota/accounts';
-import { fetchRemoteNodes } from '../libs/iota/utils';
+import { syncAccount } from '../libs/helix/accounts';
+import { fetchRemoteNodes } from '../libs/helix/utils';
 import { Account, Node, Wallet } from '../storage';
 
 /**
