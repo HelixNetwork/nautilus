@@ -1,9 +1,9 @@
 {
-  "name": "shared-modules",
+  "name": "Helix-Lib",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "author": "IOTA Foundation",
+  "author": "Helix Foundation",
   "contributors": [
     "Manuel Bieh <info@manuelbieh.de>",
     "Umair Sarfraz",
