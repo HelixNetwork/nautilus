@@ -11,7 +11,7 @@ import Wallet from 'ui/views/wallet/index';
 import Loading from 'ui/components/loading';
 import { updateTheme } from 'actions/settings';
 import Theme from 'ui/global/theme';
-
+import Settings from 'ui/views/settings/settings';
 import css from './index.scss';
 
 /**
@@ -60,6 +60,7 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/wallet" component={Wallet} />
                     <Route path="/onboarding" component={Onboarding} />
+                    <Route path="/setting" component={Settings} />
                     <Route exact path="/" loop={false} component={this.Init} />
                 </Switch>
             </div>

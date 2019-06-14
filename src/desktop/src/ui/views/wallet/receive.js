@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import css from './index.scss';
+import css from './wallet.scss';
 import classNames from 'classnames';
 import Top from '../../components/topbar';
 import PropTypes from 'prop-types';

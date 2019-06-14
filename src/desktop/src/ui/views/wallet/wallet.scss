@@ -58,8 +58,8 @@
   }
   .img_sr1 {
     float: left;
-    margin: 1px 24px;
-        margin-top: 280px;
+    margin: 1px 55px;
+        margin-top: 120px;
     text-align: center;
   }
   .img_sr img {
@@ -225,6 +225,38 @@
   .text_ff1 span {
     color: #dcab49;
   }
+  .drop_fxbx {
+    width: 100%;
+    min-height: 125px;
+    margin-top: 170px;
+    background-color: #fff;
+    padding: 30px 0px;
+    box-shadow: -5px 4px 5px 0px rgba(0, 0, 0, 0.15);
+  }
+  .marc_bx {
+    float: left;
+    color: hsl(210, 87%, 15%);
+    font-size: 22px;
+    font-weight: bold;
+    padding: 0 57px;
+  }
+  .marc_bx span {
+    color: rgb(207, 207, 207);
+    font-size: 17px;
+  }
+  .cc_clr {
+    color: #afafaf;
+  }
+  .cc_clrs {
+    color: #d0d0d0;
+    font-size: 19px;
+    margin-top: 3px;
+  }
+  .lg_logos {
+    float: left;
+    padding-top: 0px;
+    padding-left: 30px;
+}
   @media  screen and (max-width: 1920px) {
 
     .foo_bxx1{
@@ -282,7 +314,7 @@
       float: right;
     }
     .icon_secs1{
-      margin-top: -250px;
+      margin-top: -153px;
     }
     .main_mn{
       width: 50px;
@@ -296,4 +328,22 @@
   }
 a{
   text-decoration-line: none;
+}
+.welcome {
+  font-size: 50px !important;
+  margin-bottom: -173px !important;
+  margin-left: 180px;
+  margin-top:100px;
+}
+.welcome_box{
+  width: 400px;
+  min-height: 100px;
+  border: 1px solid #fff;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-bottom: 100px;
+  margin-top: 185px;
+  text-align: center;
+  padding: 15px;
 }
