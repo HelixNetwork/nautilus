@@ -17,10 +17,17 @@ class Done extends React.PureComponent {
      * Navigate to Login view
      * @returns {undefined}
      */
-    setComplete = () => {
-        const { history } = this.props;
-        history.push('/onboarding/login');
-    };
+
+    // stepForward(route) {
+    // this.handleClick=this.handleClick.bind(this);
+
+    //     this.props.history.push(`/onboarding/${route}`);
+    // }
+
+    // setComplete = () => {
+    //     const { history } = this.props;
+    //     history.push('/onboarding/login');
+    // };
 
     render() {
         const { t } = this.props;
@@ -35,9 +42,12 @@ class Done extends React.PureComponent {
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
                                         <img src="" alt="" />
-                                        <Button variant="backgroundNone" onClick={() => this.setComplete()} className={classNames(css.img_sr_h2)}>{t('login:login')} <span>></span> </Button>
                                     </div>
                                 </div>
+                            </div>
+                            <div className={css.onboard_nav}>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-verify')} ><span>>></span>Back</Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/login')} >{t('login:login')} <span>>></span> </Button>
                             </div>
                         </div>
                     </div>

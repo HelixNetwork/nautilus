@@ -14,12 +14,20 @@ class Login extends React.PureComponent {
         t: PropTypes.func.isRequired,
     };
 
+    stepForward(route) {
+        // this.handleClick=this.handleClick.bind(this);
+
+        this.props.history.push(`/onboarding/${route}`);
+    }
+
     /**
      * Verify password and trigger account setup
      * @param {event} Event - Form submit event
      * @returns {undefined}
      */
     handleSubmit = async (e) => {
+        console.log("Handle Submit");
+
         if (e) {
             e.preventDefault();
         }
@@ -36,9 +44,11 @@ class Login extends React.PureComponent {
                             <form onSubmit={(e) => this.handleSubmit(e)}>
                                 <h5>{t('login:enterPassword')}</h5>
                                 <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
-                                <Button type="submit">{t('login:login')}</Button>
+                                <Button type="submit" >{t('login:login')}</Button>
                             </form>
                         </div>
+                        <div className={css.onboard_nav}>
+                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('done')} > <span>>></span> Back</Button>                            </div>
                     </div>
                 </div>
             </section>

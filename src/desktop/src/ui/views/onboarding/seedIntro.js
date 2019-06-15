@@ -45,7 +45,7 @@ class SeedIntro extends React.PureComponent {
                                 <h6>{t('walletSetup:explanation')}</h6>
                             </div>
                             <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('walletSetup:noIHaveOne')}>></Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}> >>{t('walletSetup:noIHaveOne')}</Button>
                                 <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></Button>
                             </div>
                         </div>

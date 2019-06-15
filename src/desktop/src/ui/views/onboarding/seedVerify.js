@@ -19,6 +19,7 @@ class SeedVerify extends React.PureComponent {
     state = {
         ledger: false,
     };
+
     stepForward(route) {
         // this.handleClick=this.handleClick.bind(this);
 
@@ -45,8 +46,11 @@ class SeedVerify extends React.PureComponent {
                             <h5>{t('setSeedName:setAccountName')}</h5>
                             <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
                             {/* <img src={images} alt="send" className={(classNames(css.img))}/> */}
-                            <Button onClick={() => this.stepForward('done')}>{t('global:confirm')}</Button>
 
+                        </div>
+                        <div className={css.onboard_nav}>
+                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-intro')}> >> Back</Button>
+                            <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('done')}>{t('global:confirm')}>></Button>
                         </div>
 
                     </div>
