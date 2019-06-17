@@ -9,12 +9,13 @@ import { MAX_SEED_LENGTH } from './helix/utils';
  * @returns {Promise<string>}
  */
 export const generateNewSeed = async (randomBytesFn) => {
-    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ9';
+    const charset = 'abcdef0123456789';
     let seed = '';
     while (seed.length < MAX_SEED_LENGTH) {
         const byte = await randomBytesFn(1);
-        if (byte[0] < 243) {
-            seed += charset.charAt(byte[0] % 27);
+        // Recheck
+        if (byte[0] < 192) { // 243
+            seed += charset.charAt(byte[0] % 16); // 27
         }
     }
     return seed;
@@ -31,13 +32,13 @@ export const generateNewSeed = async (randomBytesFn) => {
  * @returns {Promise<string>}
  */
 export const randomiseSeedCharacter = async (seed, charId, randomBytesFn) => {
-    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ9';
+    const charset = 'abcdef0123456789';
     let updatedSeed = '';
     let complete = false;
     while (!complete) {
         const byte = await randomBytesFn(1);
-        if (byte[0] < 243) {
-            updatedSeed = seed.substr(0, charId) + charset.charAt(byte[0] % 27) + seed.substr(charId + 1, 80);
+        if (byte[0] < 192) { // 243
+            updatedSeed = seed.substr(0, charId) + charset.charAt(byte[0] % 16) + seed.substr(charId + 1, 64);
             complete = true;
         }
     }

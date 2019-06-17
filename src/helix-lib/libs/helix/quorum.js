@@ -15,7 +15,7 @@ import unionBy from 'lodash/unionBy';
 import uniqBy from 'lodash/uniqBy';
 import { isNodeHealthy, getIotaInstance, getApiTimeout } from './extendedApi';
 import { QUORUM_THRESHOLD, QUORUM_SIZE, QUORUM_SYNC_CHECK_INTERVAL, DEFAULT_BALANCES_THRESHOLD } from '../../config';
-import { EMPTY_HASH_TRYTES } from './utils';
+import { EMPTY_HASH_BYTES } from './utils';
 import { findMostFrequent } from '../utils';
 import Errors from '../errors';
 
@@ -37,20 +37,20 @@ const rejectIfNotEnoughSyncedNodes = (nodes, quorumSize) => {
 };
 
 /**
- * Resolves only if provided trytes argument is not equal to empty hash trytes (999...999)
+ * Resolves only if provided bytes argument is not equal to empty hash bytes (000...000)
  *
  * @method rejectIfEmptyHashTrytes
  *
- * @param {string} trytes
+ * @param {string} bytes
  *
  * @returns {Promise<string>}
  */
-const rejectIfEmptyHashTrytes = (trytes) => {
-    if (trytes === EMPTY_HASH_TRYTES) {
+const rejectIfEmptyHashTrytes = (bytes) => {
+    if (bytes === EMPTY_HASH_BYTES) {
         return Promise.reject(new Error(Errors.COULD_NOT_GET_QUORUM_FOR_LATEST_SOLID_SUBTANGLE_MILESTONE));
     }
 
-    return Promise.resolve(trytes);
+    return Promise.resolve(bytes);
 };
 
 /**
@@ -90,7 +90,7 @@ const fallbackToSafeResult = (method) => {
         wereAddressesSpentFrom: true,
         getInclusionStates: false,
         'getBalances:balances': '0',
-        'getNodeInfo:latestSolidSubtangleMilestone': EMPTY_HASH_TRYTES,
+        'getNodeInfo:latestSolidSubtangleMilestone': EMPTY_HASH_BYTES,
     };
 
     if (!includes(keys(allowedMethodsMap), method)) {

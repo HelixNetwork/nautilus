@@ -11,7 +11,7 @@ import size from 'lodash/size';
 import cloneDeep from 'lodash/cloneDeep';
 import URL from 'url-parse';
 import { BigNumber } from 'bignumber.js';
-import { iota } from './index';
+import { helix } from './index';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
@@ -60,7 +60,7 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 //  */
 // export const convertFromTrytes = (trytes) => {
 //     const trytesWithoutNines = trytes.replace(/9+$/, '');
-//     const message = iota.utils.fromTrytes(trytesWithoutNines);
+//     const message = helix.utils.fromTrytes(trytesWithoutNines);
 
 //     /* eslint-disable no-control-regex */
 //     if (trytesWithoutNines && message && /^[\x00-\xFF]*$/.test(message)) {
@@ -82,10 +82,10 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
  */
 export const getChecksum = (
     input,
-    // Trinity trytes to trits conversion creates Int8Array
-    length = isArray(input) || input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 3 : SEED_CHECKSUM_LENGTH,
+    // Trinity  to trits conversion creates Int8Array
+    length = isArray(input) || input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
 ) => {
-    return iota.utils
+    return helix.utils
         .addChecksum(
             // https://github.com/iotaledger/iota.js/blob/develop/lib/utils/utils.js#L64
             // iota.lib.js throws an exception for typed arrays
