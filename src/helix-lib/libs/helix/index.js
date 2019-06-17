@@ -1,19 +1,20 @@
 import assign from 'lodash/assign';
-import IOTA from 'iota.lib.js';
+import { composeAPI } from '@helixnetwork/core'
+// TODO
+// import IOTA from 'iota.lib.js';
 import 'proxy-polyfill';
 import Quorum from './quorum';
 import { DEFAULT_NODE, DEFAULT_NODES, DEFAULT_NODE_REQUEST_TIMEOUT, QUORUM_SIZE } from '../../config';
 
-/** Globally defined IOTA instance */
-const iotaAPI = new IOTA(
-    assign({}, DEFAULT_NODE, {
-        provider: DEFAULT_NODE.url,
-    }),
-);
+/** Globally defined HELIX instance */
+const helixAPI =  composeAPI({
+    provider:DEFAULT_NODE.url
+});
 
 // Set node request timeout
-iotaAPI.api.setApiTimeout(DEFAULT_NODE_REQUEST_TIMEOUT);
-
+// TODO
+// helixAPI.api.setApiTimeout(DEFAULT_NODE_REQUEST_TIMEOUT);
+IOTA
 /** Globally defined Quorum instance */
 export const quorum = new Quorum({
     nodes: DEFAULT_NODES,
@@ -21,16 +22,18 @@ export const quorum = new Quorum({
 });
 
 /**
- * Changes IOTA node
+ * Changes Helix node
  *
- * @method changeIotaNode
+ * @method changeHelixNode
  *
  * @param {object} settings
  *
  * @returns {void}
  */
-export const changeIotaNode = (settings) => {
-    iotaAPI.changeNode(settings);
+export const changeHelixNode = (NODE_URI) => {
+    helixAPI =  composeAPI({
+        provider:NODE_URI
+    });
 };
 
-export const iota = iotaAPI;
+export const helix = helixAPI;
