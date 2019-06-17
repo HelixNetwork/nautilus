@@ -18,46 +18,35 @@ const shorten = (input, length) => {
 };
 
 /**
- * Tryte trit mapping
+ * Byte bit mapping
  */
-const trytesTrits = [
-    [0, 0, 0],
-    [1, 0, 0],
-    [-1, 1, 0],
-    [0, 1, 0],
-    [1, 1, 0],
-    [-1, -1, 1],
-    [0, -1, 1],
-    [1, -1, 1],
-    [-1, 0, 1],
-    [0, 0, 1],
-    [1, 0, 1],
-    [-1, 1, 1],
-    [0, 1, 1],
-    [1, 1, 1],
-    [-1, -1, -1],
-    [0, -1, -1],
-    [1, -1, -1],
-    [-1, 0, -1],
-    [0, 0, -1],
-    [1, 0, -1],
-    [-1, 1, -1],
-    [0, 1, -1],
-    [1, 1, -1],
-    [-1, -1, 0],
-    [0, -1, 0],
-    [1, -1, 0],
-    [-1, 0, 0],
+// TODO
+const bytesBits = [
+   [0,0,1,1,0,0,0,0],
+   [0,0,1,1,0,0,0,1],
+   [0,0,1,1,0,0,1,0],
+   [0,0,1,1,0,0,1,1],
+   [0,0,1,1,0,1,0,0],
+   [0,0,1,1,0,1,0,1],
+   [0,0,1,1,0,1,1,0],
+   [0,0,1,1,0,1,1,1],
+   [0,0,1,1,1,0,0,0],
+   [0,0,1,1,1,0,0,1],
+   [0,1,1,0,0,0,1,0],
+   [0,1,1,0,0,0,1,1],
+   [0,1,1,0,0,1,0,0],
+   [0,1,1,0,0,1,0,1],
+   [0,1,1,0,0,1,1,0]
 ];
 
-const tritStrings = trytesTrits.map((trit) => trit.toString());
+const bitStrings = bytesBits.map((bit) => bit.toString());
 
 /**
- * Convert trit to an ASCII character
- * @param {trit} trit - raw Trit input
+ * Convert bit to an ASCII character
+ * @param {bit} bit - raw Trit input
  */
-const byteToChar = (trit) => {
-    return '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(trit % 27);
+const byteToChar = (bit) => {
+    return 'abcdef0123456789'.charAt(bit % 16);
 };
 
 /**
@@ -66,7 +55,7 @@ const byteToChar = (trit) => {
  * @returns {array} Output trit array
  */
 const charToByte = (char) => {
-    return '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(char.toUpperCase());
+    return 'abcdef0123456789'.indexOf(char.toUpperCase());
 };
 
 /**
@@ -74,8 +63,8 @@ const charToByte = (char) => {
  * @param {number} byte - Input byte
  * @returns {array} Output trit array
  */
-const byteToTrit = (byte) => {
-    return trytesTrits[byte % 27];
+const byteToBit = (byte) => {
+    return bytesBits[byte % 16];
 };
 
 /**
@@ -83,47 +72,47 @@ const byteToTrit = (byte) => {
  * @param {array} bytes - Input byte array
  * @returns {array} Output trit array
  */
-const bytesToTrits = (bytes) => {
-    let trits = [];
+const bytesToBits = (bytes) => {
+    let bits = [];
     for (let i = 0; i < bytes.length; i++) {
-        trits = trits.concat(byteToTrit(bytes[i]));
+        bits = bits.concat(byteToBit(bytes[i]));
     }
-    return trits;
+    return bits;
 };
 
 /**
- * Converts tryte string to trits
+ * Converts tryte string to bits
  *
  * @method trytesToTrits
  * @param {String} input - Tryte string to be converted.
  *
- * @return {Int8Array} trits
+ * @return {Int8Array} bits
  */
 const trytesToTrits = (input) => {
     const result = new Int8Array(input.length * 3);
     for (let i = 0; i < input.length; i++) {
         const index = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(input.charAt(i));
-        result[i * 3] = trytesTrits[index][0];
-        result[i * 3 + 1] = trytesTrits[index][1];
-        result[i * 3 + 2] = trytesTrits[index][2];
+        result[i * 3] = bytesBits[index][0];
+        result[i * 3 + 1] = bytesBits[index][1];
+        result[i * 3 + 2] = bytesBits[index][2];
     }
     return result;
 };
 
 /**
  * Convert trit array to string
- * @param {array} trits - Input trit array
+ * @param {array} bits - Input trit array
  * @returns {string} Output string
  */
-const tritsToChars = (trits) => {
-    if (!trits || !trits.length) {
+const bitsToChars = (bits) => {
+    if (!bits || !bits.length) {
         return null;
     }
     let chars = '';
-    for (let i = 0; i < trits.length; i += 3) {
-        const trit = trits.slice(i, i + 3).toString();
-        for (let x = 0; x < tritStrings.length; x++) {
-            if (tritStrings[x] === trit) {
+    for (let i = 0; i < bits.length; i += 3) {
+        const trit = bits.slice(i, i + 3).toString();
+        for (let x = 0; x < bitStrings.length; x++) {
+            if  bitStrings[x] === trit) {
                 chars += '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(x);
             }
         }
@@ -131,4 +120,4 @@ const tritsToChars = (trits) => {
     return chars;
 };
 
-module.exports = { capitalize, shorten, byteToChar, byteToTrit, bytesToTrits, tritsToChars, charToByte, trytesToTrits };
+module.exports = { capitalize, shorten, byteToChar, byteToTrit, bytesToTrits, bitsToChars, charToByte, trytesToTrits };

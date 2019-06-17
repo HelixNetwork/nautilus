@@ -17,7 +17,7 @@ import maxBy from 'lodash/maxBy';
 import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import size from 'lodash/size';
-import { iota } from './index';
+import { helix } from './index';
 import { getBalancesAsync, wereAddressesSpentFromAsync, findTransactionsAsync, sendTransferAsync } from './extendedApi';
 import { prepareTransferArray } from './transfers';
 import Errors from '../errors';
