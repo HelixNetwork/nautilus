@@ -10,8 +10,8 @@ import css from './wallet.scss';
 import Top from '../../components/topbar';
 import Button from '../../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faDownload, faChartLine, faHistory, faAddressBook } from '@fortawesome/free-solid-svg-icons';
-
+import { faDownload, faChartLine, faHistory, faAddressBook } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 /**
  * Wallet functionallity router wrapper component
  */
@@ -24,11 +24,18 @@ class Wallet extends React.PureComponent {
         t: PropTypes.func.isRequired,
     }
 
+
     render() {
+        let styles = {
+            color: '#E9B339',
+            fontSize: '50px'
+            
+        };
 
         const { location, history, t } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
-        if (currentKey == '/') {
+        if (currentKey == '/') 
+        {
             return (
                 <div>
                     <Top
@@ -41,7 +48,7 @@ class Wallet extends React.PureComponent {
                                 {/* <div className={classNames(css.sseed_box1, css.cre_pgs)}>
                                     
                                 </div> */}
-                                <h4 className={classNames(css.welcome)}>{t('welcome:welcome')} Marcel</h4>
+                                <h4 className={classNames(css.welcome)}>{t('welcome:welcome')} Marcel <span style={styles}>.</span> </h4>
                                     <div className={classNames(css.welcome_box)}>
                                         <h2 style={{ color: '#e8b349' }}>1337,00 mHLX</h2>
                                         <h3>26,67 EUR</h3>
@@ -55,19 +62,20 @@ class Wallet extends React.PureComponent {
                                     </div>
                             </div>
                         </div>
-                        <div className="row">
+                        {/* <div className="row">
 
                             <div className={(classNames(css.drop_fxbx))}>
-                                <div className={(classNames(css.marc_bx))}>Marcel - Private<br /><span>Account1</span></div>
-                                <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Business<br /><span>Account2</span></div>
-                                <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Family<br /><span>Account3</span></div>
-                                <div className={(classNames(css.marc_bx,css.cc_clrs))}>+Add Account</div>
-
+                                
                             </div>
-                        </div>
+                        </div> */}
                     </section>
                     <footer className={classNames(css.footer)}>
-
+                                <div className={classNames(css.box)}>
+                                    <div className={(classNames(css.marc_bx))}>Marcel - Private<br /><span>Account1</span></div>
+                                    <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Business<br /><span>Account2</span></div>
+                                    <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Family<br /><span>Account3</span></div>
+                                    <div className={(classNames(css.marc_bx,css.cc_clrs))}>+Add Account</div>
+                                </div>
                     </footer>
                 </div>
 

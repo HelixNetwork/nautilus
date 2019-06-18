@@ -41,6 +41,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-transition-group": "^4.0.1",
+    "realm": "^3.0.0-beta.1",
     "redux": "^4.0.1",
     "redux-freeze": "^0.1.7",
     "redux-logger": "^3.0.6",
