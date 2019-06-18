@@ -28,14 +28,8 @@ class SettingsLanguage extends React.PureComponent {
         const { selection } = this.state;
         return (
             <div>
-                    <Top
-                        bal={'none'}
-                        main={'block'}
-                        user={'none'}
-                        history={this.props.history}
-                    />
-                    <section className="spage_1">
-                        <div className="container">
+                <section className="spage_1">
+                    <div className="container">
                         <div className="col-lg-4">
 
                         </div>

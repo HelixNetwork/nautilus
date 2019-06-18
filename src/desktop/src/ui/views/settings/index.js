@@ -2,12 +2,11 @@ import React from 'react';
 import css from './settings.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withI18n, Trans } from 'react-i18next';
+import { withI18n } from 'react-i18next';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Top from '../../components/topbar';
 import Sidebar from '../../components/sidebar';
-import Button from 'ui/components/button';
 import SettingsLanguage from 'ui/views/settings/language';
 import SettingsNode from 'ui/views/settings/node';
 import Currency from 'ui/views/settings/currency';
@@ -29,31 +28,26 @@ class Settings extends React.PureComponent {
     }
     render() {
 
-        const { location, history, t } = this.props;
-
+        const { history } = this.props;
         return (
             <div>
-                    <Top
-                         bal={'none'}
-                         main={'block'}
-                         user={'none'}
-                        history={this.props.history}
-                    />
-                    <section className="spage_1">
-                        <div className="container">
+                <Top
+                    bal={'none'}
+                    main={'block'}
+                    user={'none'}
+                    history={history}
+                />
+                <section className="spage_1">
+                    <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_box)}>
-
                                 <Sidebar
                                     disp={'none'}
-                                    history={this.props.history}
+                                    history={history}
                                 />
-                                {/* <hr className={classNames(css.ser_bts)}/> */}
                                 <a ></a>
                             </div>
-
                         </div>
-
                     </div>
                 </section>
                 <Switch>
