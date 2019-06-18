@@ -39,7 +39,9 @@ class Wallet extends React.PureComponent {
             return (
                 <div>
                     <Top
-                        disp={'none'}
+                        bal={'none'}
+                        main={'none'}
+                        user={'none'}
                         history={this.props.history}
                     />
                     <section className="spage_1">
@@ -71,9 +73,9 @@ class Wallet extends React.PureComponent {
                     </section>
                     <footer className={classNames(css.footer)}>
                                 <div className={classNames(css.box)}>
-                                    <div className={(classNames(css.marc_bx))}>Marcel - Private<br /><span>Account1</span></div>
+                                    {/* <div className={(classNames(css.marc_bx))}>Marcel - Private<br /><span>Account1</span></div>
                                     <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Business<br /><span>Account2</span></div>
-                                    <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Family<br /><span>Account3</span></div>
+                                    <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Family<br /><span>Account3</span></div> */}
                                     <div className={(classNames(css.marc_bx,css.cc_clrs))}>+Add Account</div>
                                 </div>
                     </footer>

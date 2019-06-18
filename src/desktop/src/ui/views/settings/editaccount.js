@@ -36,7 +36,9 @@ import Button from 'ui/components/button';
          return(
             <div>
                     <Top
-                        disp={'none'}
+                        bal={'none'}
+                        main={'block'}
+                        user={'none'}
                         history={this.props.history}
                     />
                     <section className="spage_1">

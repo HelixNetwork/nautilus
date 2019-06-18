@@ -13,13 +13,13 @@ class Top extends React.PureComponent {
         return (
             <div className={classNames(css.top_sec1)}>
             <div className={classNames(css.lg_logos)}><img src={logo} alt=""/></div>
-            <div className={classNames(css.bal_bx)} style={{display:this.props.disp}}><span style={{color: 'white',fontSize: '22px'}}>Balance</span><br /><br/><span>0,02€ /mHLX</span></div>
-            <div className={classNames(css.bal_bxs)} style={{display:this.props.disp}}>1337,00 &nbsp; <span style={{color: '#e8b349',fontSize: '14px'}}> mHLX</span><br /><span>26,67 &nbsp;&nbsp;&nbsp;&nbsp;  <span style={{fontSize: '15px',marginRight: '9px'}}>EUR</span></span></div>
+            <div className={classNames(css.bal_bx)} style={{display:this.props.bal}}><span style={{color: 'white',fontSize: '22px'}}>Balance</span><br /><br/><span>0,02€ /mHLX</span></div>
+            <div className={classNames(css.bal_bxs)} style={{display:this.props.bal}}>1337,00 &nbsp; <span style={{color: '#e8b349',fontSize: '14px'}}> mHLX</span><br /><span>26,67 &nbsp;&nbsp;&nbsp;&nbsp;  <span style={{fontSize: '15px',marginRight: '9px'}}>EUR</span></span></div>
             <div style={{marginRight:'30px',marginTop:'-36px'}}>
-            <a href="#" className={classNames(css.main_mn)} style={{display:this.props.disp}}><img src={log} style={{width: '40px'}} alt="" /></a>
+            <a href="#" className={classNames(css.main_mn)} style={{display:this.props.user}}><img src={log} style={{width: '40px'}} alt="" /></a>
             <a onClick={()=>this.props.history.push('/')} className={classNames(css.setting)}><FontAwesomeIcon icon={faPowerOff}/> Logout </a>
             <a onClick={()=>this.props.history.push('/settings')} className={classNames(css.setting)}><FontAwesomeIcon icon={faCog}/> Settings</a>
-            <a onClick={()=>this.props.history.push('/wallet')} className={classNames(css.setting)} style={{display:this.props.disp}}><FontAwesomeIcon icon={faTh}/> Main Menu</a>
+            <a onClick={()=>this.props.history.push('/wallet')} className={classNames(css.setting)} style={{display:this.props.main}}><FontAwesomeIcon icon={faTh}/> Main Menu</a>
             </div>
             
         </div>
