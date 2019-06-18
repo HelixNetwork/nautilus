@@ -44,6 +44,7 @@
     "prettier": "^1.17.1"
   },
   "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@ljharb/eslint-config": "^13.1.1",
     "electron-packager": "^13.1.1",
     "eslint-config-react-app": "^4.0.1",

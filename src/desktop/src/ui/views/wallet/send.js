@@ -23,7 +23,9 @@ class Send extends React.PureComponent {
                 <section className={css.home}>
 
                     <Top
-                        disp={'block'}
+                        bal={'block'}
+                        main={'block'}
+                        user={'block'}
                         history={history}
                     />
                     <div className={classNames(css.pg1_foo3)}>
