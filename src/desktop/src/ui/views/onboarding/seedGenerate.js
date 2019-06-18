@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import css from './index.scss';
 import classNames from 'classnames';
-import reload from 'ui/images/arrows.png'
+import reload from 'ui/images/arrows.png';
+import Button from 'ui/components/button';
 
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
@@ -28,7 +29,7 @@ class SeedGenerate extends React.PureComponent {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h1>{t('newSeedSetup:generateSeed')}</h1>
+                            <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_ff)}>.</span></h1>
                         </div>
                         <div className={classNames(css.sseed_box2, css.cre_pgs)}>
                             <h3>{t('newSeedSetup:randomiseSeedMore')}</h3>
@@ -40,8 +41,11 @@ class SeedGenerate extends React.PureComponent {
 
                         </div>
                         <div className={css.onboard_nav}>
-                            <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
-                            <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span>
+                            <Button className="navleft" onClick={() => this.props.history.push('/onboarding/seed-intro')} ><span>>></span>Back</Button>
+                            <Button className="navright"> {t('global:continue')}<span>>></span> </Button>
+
+                            {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
+                            <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span> */}
                         </div>
                     </div>
                 </div>

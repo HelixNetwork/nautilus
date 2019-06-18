@@ -42,7 +42,7 @@ class SeedIntro extends React.PureComponent {
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <img src={image} alt="" />
                                 <h5>{t('walletSetup:helixSeedIsAccess')}</h5>
-                                <h6>{t('walletSetup:explanation')}</h6>
+                                <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}> >>{t('walletSetup:noIHaveOne')}</Button>
@@ -51,8 +51,6 @@ class SeedIntro extends React.PureComponent {
                         </div>
                     </div>
                 </section>
-                <footer className={classNames(css.footer)}>
-                </footer>
             </div>
         )
     }
