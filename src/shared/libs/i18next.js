@@ -8,11 +8,11 @@ i18n.use(reactI18nextModule).init(
         debug: false,
         parseMissingKeyHandler: (value) => `Translation not available for ${value}`,
         resources: {
-            en: require('../locales/en/translation.json'),
-            ar: require('../locales/en/translation.json'),
-            cs: require('../locales/en/translation.json'),
-            da: require('../locales/en/translation.json'),
-            de: require('../locales/en/translation.json'),
+            en: require('../locales/en.json'),
+            ar: require('../locales/en.json'),
+            cs: require('../locales/en.json'),
+            da: require('../locales/en.json'),
+            de: require('../locales/en.json'),
         },
         interpolation: {
             escapeValue: false,

@@ -53,13 +53,19 @@ class Welcome extends React.PureComponent {
         let markdown = '';
         markdown = step === 'terms' ? enTermsAndConditionsIOS : enPrivacyPolicyIOS;
 
+        let styles = {
+            color: '#E9B339',
+            fontSize: '20px'
+            
+        };
+
         return (
             <div>
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
                             <h1 style={{fontSize:'60px'}}>{t('welcome:thankYou')}</h1>
-                            <h6>{t('welcome:thankYouDescription')}</h6>
+                            <h6>{t('welcome:thankYouDescription')} <span style={styles}> <b>.</b> </span> </h6>
                             <br></br>
                             <Language></Language>
                             <br></br>
@@ -84,7 +90,7 @@ class Welcome extends React.PureComponent {
                         {step === 'language'
                             ? t('continue')
                             : !scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
-                        <span> ></span></Button>
+                        <span style={styles}> ></span></Button>
                 </section>
             </div>
         )
