@@ -20,23 +20,24 @@ const shorten = (input, length) => {
 /**
  * Byte bit mapping
  */
-// TODO
+
 const bytesBits = [
-   [0,0,1,1,0,0,0,0],
-   [0,0,1,1,0,0,0,1],
-   [0,0,1,1,0,0,1,0],
-   [0,0,1,1,0,0,1,1],
-   [0,0,1,1,0,1,0,0],
-   [0,0,1,1,0,1,0,1],
-   [0,0,1,1,0,1,1,0],
-   [0,0,1,1,0,1,1,1],
-   [0,0,1,1,1,0,0,0],
-   [0,0,1,1,1,0,0,1],
-   [0,1,1,0,0,0,1,0],
-   [0,1,1,0,0,0,1,1],
-   [0,1,1,0,0,1,0,0],
-   [0,1,1,0,0,1,0,1],
-   [0,1,1,0,0,1,1,0]
+   [0,1,1,0,0,0,0,1], // a
+   [0,1,1,0,0,0,1,0], // b
+   [0,1,1,0,0,0,1,1], // c
+   [0,1,1,0,0,1,0,0], // d
+   [0,1,1,0,0,1,0,1], // e
+   [0,1,1,0,0,1,1,0]  // f
+   [0,0,1,1,0,0,0,0], // 0
+   [0,0,1,1,0,0,0,1], // 1
+   [0,0,1,1,0,0,1,0], // 2
+   [0,0,1,1,0,0,1,1], // 3
+   [0,0,1,1,0,1,0,0], // 4
+   [0,0,1,1,0,1,0,1], // 5
+   [0,0,1,1,0,1,1,0], // 6
+   [0,0,1,1,0,1,1,1], // 7
+   [0,0,1,1,1,0,0,0], // 8
+   [0,0,1,1,1,0,0,1], // 9
 ];
 
 const bitStrings = bytesBits.map((bit) => bit.toString());
@@ -50,27 +51,27 @@ const byteToChar = (bit) => {
 };
 
 /**
- * Convert single character string to trit array
+ * Convert single character string to bit array
  * @param {string} char - Input character
- * @returns {array} Output trit array
+ * @returns {array} Output bit array
  */
 const charToByte = (char) => {
-    return 'abcdef0123456789'.indexOf(char.toUpperCase());
+    return 'abcdef0123456789'.indexOf(char.toLowerCase());
 };
 
 /**
- * Convert single byte to trit array
+ * Convert single byte to bit array
  * @param {number} byte - Input byte
- * @returns {array} Output trit array
+ * @returns {array} Output bit array
  */
 const byteToBit = (byte) => {
     return bytesBits[byte % 16];
 };
 
 /**
- * Convert byte array to trit array
+ * Convert byte array to bit array
  * @param {array} bytes - Input byte array
- * @returns {array} Output trit array
+ * @returns {array} Output bit array
  */
 const bytesToBits = (bytes) => {
     let bits = [];
@@ -81,27 +82,27 @@ const bytesToBits = (bytes) => {
 };
 
 /**
- * Converts tryte string to bits
+ * Converts byte string to bits
  *
- * @method trytesToTrits
+ * @method bytesTo
  * @param {String} input - Tryte string to be converted.
  *
  * @return {Int8Array} bits
  */
-const trytesToTrits = (input) => {
-    const result = new Int8Array(input.length * 3);
+const bytesTo = (input) => {
+    const result = new Int8Array(input.length * 8);
     for (let i = 0; i < input.length; i++) {
-        const index = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(input.charAt(i));
-        result[i * 3] = bytesBits[index][0];
-        result[i * 3 + 1] = bytesBits[index][1];
-        result[i * 3 + 2] = bytesBits[index][2];
+        const index = 'abcdef0123456789'.indexOf(input.charAt(i));
+        for ( let j=0;j<8;j++){
+            result[i * 8 + j] = bytesBits[index][j];
+        }
     }
     return result;
 };
 
 /**
- * Convert trit array to string
- * @param {array} bits - Input trit array
+ * Convert bit array to string
+ * @param {array} bits - Input bit array
  * @returns {string} Output string
  */
 const bitsToChars = (bits) => {
@@ -109,15 +110,15 @@ const bitsToChars = (bits) => {
         return null;
     }
     let chars = '';
-    for (let i = 0; i < bits.length; i += 3) {
-        const trit = bits.slice(i, i + 3).toString();
+    for (let i = 0; i < bits.length; i += 8) {
+        const bit = bits.slice(i, i + 8).toString();
         for (let x = 0; x < bitStrings.length; x++) {
-            if  bitStrings[x] === trit) {
-                chars += '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(x);
+            if  (bitStrings[x] === bit) {
+                chars += 'abcdef0123456789'.charAt(x);
             }
         }
     }
     return chars;
 };
 
-module.exports = { capitalize, shorten, byteToChar, byteToTrit, bytesToTrits, bitsToChars, charToByte, trytesToTrits };
+module.exports = { capitalize, shorten, byteToChar, byteToTrit, bytesTo, bitsToChars, charToByte, bytesToTrits };
