@@ -1,6 +1,8 @@
+import i18next from '../libs/i18next';
 export const ActionTypes = {
     SET_LOCALE: 'HELIX/SETTINGS/LOCALE',
     UPDATE_THEME: 'HELIX/SETTINGS/UPDATE_THEME',
+    SET_LANGUAGE: 'HELIX/SETTINGS/SET_LANGUAGE',
 }
 /**
  * Change wallet's active language
@@ -12,6 +14,7 @@ export const ActionTypes = {
  */
 export function setLocale(locale) {
     return (dispatch) => {
+        i18next.changeLanguage(locale);
         return dispatch({
             type: ActionTypes.SET_LOCALE,
             payload: locale,

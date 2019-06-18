@@ -61,7 +61,7 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/wallet" component={Wallet} />
                     <Route path="/onboarding" component={Onboarding} />
-                    <Route path="/setting" component={Settings} />
+                    <Route path="/settings" component={Settings} />
                     <Route exact path="/" loop={false} component={this.Init} />
                 </Switch>
             </div>

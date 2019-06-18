@@ -49,6 +49,11 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 themeName: action.payload,
             };
+        case ActionTypes.SET_LANGUAGE:
+            return {
+                ...state,
+                language: action.payload,
+            };
     }
     return state;
 };
