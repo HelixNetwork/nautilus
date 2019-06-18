@@ -2,8 +2,6 @@ import React from 'react';
 import css from 'ui/views/wallet/wallet.scss';
 import fa from './fontawesome.css';
 import classNames from 'classnames';
-
-
 import log from 'ui/images/log_icon.png';
 import logo from 'ui/images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

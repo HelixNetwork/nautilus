@@ -15,7 +15,7 @@
         margin-left: 50px;	
         }
 .acco_pg li{
-        list-style: square;
+        
         font-size: 20px;
         color: #FFFFFF;
         margin-bottom: 20px;
@@ -92,3 +92,13 @@
             padding-block-end: 10px;
             box-shadow: -5px 4px 5px 0px rgba(0, 0, 0, 0.15);
           }
+          .ssetting_textline{
+                width:40vw;
+                height:3vw;
+                border-radius: -1%;
+                border: 0;
+                color: white;
+                background-color: #06182b;
+                border-bottom: 2px solid #e8b349;
+                outline: 0;
+              }

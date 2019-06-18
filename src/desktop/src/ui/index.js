@@ -11,7 +11,8 @@ import Wallet from 'ui/views/wallet/index';
 import Loading from 'ui/components/loading';
 import { updateTheme } from 'actions/settings';
 import Theme from 'ui/global/theme';
-import Settings from 'ui/views/settings/settings';
+import Settings from 'ui/views/settings/index';
+import SettingsLanguage from 'ui/views/settings/language';
 import css from './index.scss';
 
 /**
