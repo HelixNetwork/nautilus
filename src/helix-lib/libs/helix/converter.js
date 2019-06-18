@@ -18,16 +18,16 @@ const shorten = (input, length) => {
 };
 
 /**
- * Byte bit mapping
+ * HexaDecimal bit mapping
  */
 
-const bytesBits = [
+const hexBits = [
    [0,1,1,0,0,0,0,1], // a
    [0,1,1,0,0,0,1,0], // b
    [0,1,1,0,0,0,1,1], // c
    [0,1,1,0,0,1,0,0], // d
    [0,1,1,0,0,1,0,1], // e
-   [0,1,1,0,0,1,1,0]  // f
+   [0,1,1,0,0,1,1,0], // f
    [0,0,1,1,0,0,0,0], // 0
    [0,0,1,1,0,0,0,1], // 1
    [0,0,1,1,0,0,1,0], // 2
@@ -40,61 +40,61 @@ const bytesBits = [
    [0,0,1,1,1,0,0,1], // 9
 ];
 
-const bitStrings = bytesBits.map((bit) => bit.toString());
+const bitStrings = hexBits.map((bit) => bit.toString());
 
 /**
- * Convert bit to an ASCII character
+ * Convert index of hexBits  to an ASCII character
  * @param {bit} bit - raw Trit input
  */
-const byteToChar = (bit) => {
+const indexToChar = (bit) => {
     return 'abcdef0123456789'.charAt(bit % 16);
 };
 
 /**
- * Convert single character string to bit array
+ * Convert single character hex to index
  * @param {string} char - Input character
  * @returns {array} Output bit array
  */
-const charToByte = (char) => {
+const charToIndex = (char) => {
     return 'abcdef0123456789'.indexOf(char.toLowerCase());
 };
 
 /**
- * Convert single byte to bit array
+ * Convert single index of hexBit to bit array
  * @param {number} byte - Input byte
  * @returns {array} Output bit array
  */
-const byteToBit = (byte) => {
-    return bytesBits[byte % 16];
+const indexToBit = (byte) => {
+    return hexBits[byte % 16];
 };
 
 /**
- * Convert byte array to bit array
+ * Convert index of hexBits array to bit array
  * @param {array} bytes - Input byte array
  * @returns {array} Output bit array
  */
-const bytesToBits = (bytes) => {
+const indexesToBits = (bytes) => {
     let bits = [];
     for (let i = 0; i < bytes.length; i++) {
-        bits = bits.concat(byteToBit(bytes[i]));
+        bits = bits.concat(indexToBit(bytes[i]));
     }
     return bits;
 };
 
 /**
- * Converts byte string to bits
+ * Converts hex string to bits
  *
- * @method bytesTo
- * @param {String} input - Tryte string to be converted.
+ * @method hexToBits
+ * @param {String} input - hex string to be converted.
  *
  * @return {Int8Array} bits
  */
-const bytesTo = (input) => {
+const hexToBits = (input) => {
     const result = new Int8Array(input.length * 8);
     for (let i = 0; i < input.length; i++) {
         const index = 'abcdef0123456789'.indexOf(input.charAt(i));
         for ( let j=0;j<8;j++){
-            result[i * 8 + j] = bytesBits[index][j];
+            result[i * 8 + j] = hexBits[index][j];
         }
     }
     return result;
@@ -121,4 +121,4 @@ const bitsToChars = (bits) => {
     return chars;
 };
 
-module.exports = { capitalize, shorten, byteToChar, byteToTrit, bytesTo, bitsToChars, charToByte, bytesToTrits };
+module.exports = { capitalize, shorten, indexToChar, indexToBit, hexToBits, bitsToChars, charToIndex, indexesToBits };
