@@ -4,9 +4,8 @@ import has from 'lodash/has';
 import includes from 'lodash/includes';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
-import IOTA from 'iota.lib.js';
-import { composeAPI } from '@iota/core';
-import { iota, quorum } from './index';
+import { composeAPI } from '@helixnetwork/core';
+import { helix, quorum } from './index';
 import Errors from '../errors';
 import { isWithinMinutes } from '../date';
 import {
@@ -28,7 +27,7 @@ import {
     isBundle,
     isBundleTraversable,
 } from './transfers';
-import { EMPTY_HASH_TRYTES, withRequestTimeoutsHandler } from './utils';
+import { EMPTY_HASH_BYTES, withRequestTimeoutsHandler } from './utils';
 
 /**
  * Returns timeouts for specific quorum requests
@@ -606,7 +605,7 @@ const getTrytesAsync = (settings) => (hashes) =>
  */
 const isNodeHealthy = (settings) => {
     const cached = {
-        latestMilestone: EMPTY_HASH_TRYTES,
+        latestMilestone: EMPTY_HASH_BYTES,
     };
 
     return getNodeInfoAsync(settings)()
@@ -625,7 +624,7 @@ const isNodeHealthy = (settings) => {
                 if (
                     (cached.latestMilestone === latestSolidSubtangleMilestone ||
                         latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <= latestSolidSubtangleMilestoneIndex) &&
-                    cached.latestMilestone !== EMPTY_HASH_TRYTES
+                    cached.latestMilestone !== EMPTY_HASH_BYTES
                 ) {
                     return getTrytesAsync(settings)([cached.latestMilestone]);
                 }

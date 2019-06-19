@@ -1,4 +1,3 @@
-import assign from 'lodash/assign';
 import { composeAPI } from '@helixnetwork/core'
 // TODO
 // import IOTA from 'iota.lib.js';
