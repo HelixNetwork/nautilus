@@ -6,6 +6,7 @@ import css from './index.scss';
 import classNames from 'classnames';
 import reload from 'ui/images/arrows.png';
 import Button from 'ui/components/button';
+import Top from '../../components/topbar';
 
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
@@ -25,31 +26,41 @@ class SeedGenerate extends React.PureComponent {
         const { ledger } = this.state;
 
         return (
-            <section className="spage_1">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_ff)}>.</span></h1>
-                        </div>
-                        <div className={classNames(css.sseed_box2, css.cre_pgs)}>
-                            <h3>{t('newSeedSetup:randomiseSeedMore')}</h3>
-                            <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                            <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                            <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                            <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                            <div><a className={css.arrow_bx}><img src={reload} alt="" /></a></div>
+            <div>
+                <Top
+                    main={'none'}
+                    user={'none'}
+                    bal={'none'}
+                    common={'none'}
+                    history={history}
+                />
 
-                        </div>
-                        <div className={css.onboard_nav}>
-                            <Button className="navleft" onClick={() => this.props.history.push('/onboarding/seed-intro')} ><span>>></span>Back</Button>
-                            <Button className="navright"> {t('global:continue')}<span>>></span> </Button>
+                <section className="spage_1">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_color)}>.</span></h1>
+                            </div>
+                            <div className={classNames(css.sseed_box2, css.cre_pgs)}>
+                                <h3>{t('newSeedSetup:randomiseSeedMore')}</h3>
+                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
+                                <div className={classNames(css.img_align)}><a><img src={reload} alt="" /></a></div>
+                                <div className={classNames(css.text_align)}>{t('newSeedSetup:clickForNewSeed')}</div>
+                            </div>
+                            <div className={css.onboard_nav}>
+                                <Button className="navleft" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
+                                <Button className="navright">{t('global:continue')} <span>></span> </Button>
 
-                            {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
+                                {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
                             <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span> */}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         )
     }
 }

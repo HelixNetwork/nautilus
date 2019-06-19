@@ -258,7 +258,13 @@
     padding-top: 0px;
     padding-left: 30px;
 }
-  @media  screen and (max-width: 1920px) {
+@media  screen and (max-width: 1366px) {
+  .top_sec1{
+    padding-top: 40px;
+  }
+}
+
+  @media  screen and (min-width: 1920px) {
     .bal_bxs{
       position: absolute;
       left: 225px;

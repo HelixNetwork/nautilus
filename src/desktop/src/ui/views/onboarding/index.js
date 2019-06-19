@@ -81,7 +81,7 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/done" component={Done} />
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
-                                <Route path="/wallet" component={Wallet}/>
+                                <Route path="/wallet" component={Wallet} />
                             </Switch>
                         </div>
                     </CSSTransition>
