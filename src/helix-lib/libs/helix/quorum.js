@@ -13,7 +13,7 @@ import split from 'lodash/split';
 import sampleSize from 'lodash/sampleSize';
 import unionBy from 'lodash/unionBy';
 import uniqBy from 'lodash/uniqBy';
-import { isNodeHealthy, getIotaInstance, getApiTimeout } from './extendedApi';
+import { isNodeHealthy, getHelixInstance, getApiTimeout } from './extendedApi';
 import { QUORUM_THRESHOLD, QUORUM_SIZE, QUORUM_SYNC_CHECK_INTERVAL, DEFAULT_BALANCES_THRESHOLD } from '../../config';
 import { EMPTY_HASH_BYTES } from './utils';
 import { findMostFrequent } from '../utils';
@@ -39,13 +39,13 @@ const rejectIfNotEnoughSyncedNodes = (nodes, quorumSize) => {
 /**
  * Resolves only if provided bytes argument is not equal to empty hash bytes (000...000)
  *
- * @method rejectIfEmptyHashTrytes
+ * @method rejectIfEmptyHashBytes
  *
  * @param {string} bytes
  *
  * @returns {Promise<string>}
  */
-const rejectIfEmptyHashTrytes = (bytes) => {
+const rejectIfEmptyHashBytes = (bytes) => {
     if (bytes === EMPTY_HASH_BYTES) {
         return Promise.reject(new Error(Errors.COULD_NOT_GET_QUORUM_FOR_LATEST_SOLID_SUBTANGLE_MILESTONE));
     }
@@ -210,9 +210,6 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
             return prepare;
         case 'getBalances:balances':
             return (...args) => {
-                // Unlike responses from other methods, getBalances returns an object (https://iota.readme.io/reference#getbalances)
-                // However, we're only interested in preparing a quorum result for balances prop
-                // So, tranform the response into an array of balances -> [['0', '2'], ['0', '2'], ..., ['0', '2']]
                 const [results, ...restArgs] = args;
 
                 const balances = prepare(
@@ -222,17 +219,11 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
 
                 // Tips is the last argument for getBalances endpoint
                 const [tips] = requestArgs.slice(-1);
-
-                // Before returning the quorum results for getBalances,
-                // transform the quorum result into the original result format (https://iota.readme.io/reference#getbalances)
                 return { references: [tips], balances };
             };
         case 'getNodeInfo:latestSolidSubtangleMilestone':
             return (...args) => {
-                // Unlike responses from other methods, getNodeInfo returns an object (https://iota.readme.io/reference#getnodeinfo)
-                // However, we're only interested in preparing a quorum result for latestSolidSubtangleMilestone
-                // So, transform the response into an array of latestSolidSubtangleMilestone -> [['XYZ...999'], ['XYZ...999'], ['XYZ...999']]
-                const [results, ...restArgs] = args;
+               const [results, ...restArgs] = args;
 
                 const preparedResults = prepare(
                     map(results, (result) =>
@@ -268,7 +259,7 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
  */
 const getQuorum = (quorumSize) => (method, syncedNodes, payload, ...args) => {
     const requestArgs = [...(isEmpty(payload) ? [] : [payload]), ...(isEmpty(args) ? [] : args)];
-    const iotaApiMethod = head(split(method, ':'));
+    const helixApiMethod = head(split(method, ':'));
 
     return rejectIfNotEnoughSyncedNodes(syncedNodes, quorumSize)
         .then(() =>
@@ -277,14 +268,14 @@ const getQuorum = (quorumSize) => (method, syncedNodes, payload, ...args) => {
                     syncedNodes,
                     ({ url, token, password }) =>
                         new Promise((resolve) => {
-                            getIotaInstance(
+                            getHelixInstance(
                                 {
                                     token,
                                     password,
                                     url,
                                 },
-                                getApiTimeout(iotaApiMethod, payload),
-                            ).api[iotaApiMethod](
+                                getApiTimeout(helixApiMethod, payload),
+                            ).api[helixApiMethod](
                                 ...[
                                     ...requestArgs,
                                     (err, result) =>
@@ -308,7 +299,7 @@ const getQuorum = (quorumSize) => (method, syncedNodes, payload, ...args) => {
 };
 
 /**
- *   Wrapper for quorum enabled iota methods
+ *   Wrapper for quorum enabled helix methods
  *
  *   @method Quorum
  *
@@ -409,7 +400,7 @@ export default function Quorum(config) {
                       getQuorum(quorumSize)('getNodeInfo:latestSolidSubtangleMilestone', syncedNodes)
                           // If nodes cannot agree on the latestSolidSubtangleMilestone
                           // No need to proceed further.
-                          .then(rejectIfEmptyHashTrytes)
+                          .then(rejectIfEmptyHashBytes)
                           .then((latestSolidSubtangleMilestone) =>
                               getQuorum(quorumSize)('getInclusionStates', syncedNodes, hashes, [
                                   latestSolidSubtangleMilestone,
@@ -435,7 +426,7 @@ export default function Quorum(config) {
                       getQuorum(quorumSize)('getNodeInfo:latestSolidSubtangleMilestone', syncedNodes)
                           // If nodes cannot agree on the latestSolidSubtangleMilestone
                           // No need to proceed further.
-                          .then(rejectIfEmptyHashTrytes)
+                          .then(rejectIfEmptyHashBytes)
                           .then((latestSolidSubtangleMilestone) =>
                               getQuorum(quorumSize)('getBalances:balances', syncedNodes, addresses, threshold, [
                                   latestSolidSubtangleMilestone,
