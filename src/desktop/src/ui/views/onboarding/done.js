@@ -52,9 +52,6 @@ class Done extends React.PureComponent {
                         </div>
                     </div>
                 </section>
-                <footer className={classNames(css.footer)}>
-
-                </footer>
             </div>
         )
     }
