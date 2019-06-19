@@ -58,26 +58,31 @@ const getApiTimeout = (method, payload) => {
 };
 
 /**
- * Returns a new IOTA instance if provider is passed, otherwise returns the global instance
+ * Returns a new HELIX instance if provider is passed, otherwise returns the global instance
  *
- * @method getIotaInstance
+ * @method getHelixInstance
  * @param {object} [settings]
  *
- * @returns {object} IOTA instance
+ * @returns {object} HELIX instance
  */
-const getIotaInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOUT) => {
+const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOUT) => {
     if (settings) {
+        // TODO
         const { url, token, password } = settings;
 
-        const instance = new IOTA({ provider: url, password, token });
-        instance.api.setApiTimeout(requestTimeout);
+        const instance = composeAPI({
+            provider: URL
+        })
+
+        // TODO
+        // instance.api.setApiTimeout(requestTimeout);
 
         return instance;
     }
 
-    iota.api.setApiTimeout(requestTimeout);
+    // iota.api.setApiTimeout(requestTimeout);
 
-    return iota;
+    return helix;
 };
 
 /**
@@ -93,7 +98,7 @@ const getBalancesAsync = (settings, withQuorum = true) => (addresses, threshold 
     withQuorum
         ? quorum.getBalances(addresses, threshold)
         : new Promise((resolve, reject) => {
-              getIotaInstance(settings, getApiTimeout('getBalances')).api.getBalances(
+              getHelixInstance(settings, getApiTimeout('getBalances')).api.getBalances(
                   addresses,
                   threshold,
                   (err, balances) => {
@@ -116,7 +121,7 @@ const getBalancesAsync = (settings, withQuorum = true) => (addresses, threshold 
  */
 const getNodeInfoAsync = (settings) => () =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings, getApiTimeout('getNodeInfo')).api.getNodeInfo((err, info) => {
+        getHelixInstance(settings, getApiTimeout('getNodeInfo')).api.getNodeInfo((err, info) => {
             if (err) {
                 reject(err);
             } else {
@@ -135,7 +140,7 @@ const getNodeInfoAsync = (settings) => () =>
  */
 const getTransactionsObjectsAsync = (settings) => (hashes) =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings).api.getTransactionsObjects(hashes, (err, txs) => {
+        getHelixInstance(settings).api.getTransactionsObjects(hashes, (err, txs) => {
             if (err) {
                 reject(err);
             } else {
@@ -165,7 +170,7 @@ const findTransactionObjectsAsync = (settings) => (args) =>
  */
 const findTransactionsAsync = (settings) => (args) =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings).api.findTransactions(args, (err, txs) => {
+        getHelixInstance(settings).api.findTransactions(args, (err, txs) => {
             if (err) {
                 reject(err);
             } else {
@@ -187,7 +192,7 @@ const getLatestInclusionAsync = (settings, withQuorum = false) => (hashes) =>
     withQuorum
         ? quorum.getLatestInclusion(hashes)
         : new Promise((resolve, reject) => {
-              getIotaInstance(settings, getApiTimeout('getInclusionStates')).api.getLatestInclusion(
+              getHelixInstance(settings, getApiTimeout('getInclusionStates')).api.getLatestInclusion(
                   hashes,
                   (err, states) => {
                       if (err) {
@@ -304,7 +309,7 @@ const replayBundleAsync = (settings, seedStore) => (
  */
 const getBundleAsync = (settings) => (tailTransactionHash) =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings).api.getBundle(tailTransactionHash, (err, bundle) => {
+        getHelixInstance(settings).api.getBundle(tailTransactionHash, (err, bundle) => {
             if (err) {
                 reject(err);
             } else {
@@ -326,7 +331,7 @@ const wereAddressesSpentFromAsync = (settings, withQuorum = true) => (addresses)
     withQuorum
         ? quorum.wereAddressesSpentFrom(addresses)
         : new Promise((resolve, reject) => {
-              getIotaInstance(settings, getApiTimeout('wereAddressesSpentFrom')).api.wereAddressesSpentFrom(
+              getHelixInstance(settings, getApiTimeout('wereAddressesSpentFrom')).api.wereAddressesSpentFrom(
                   addresses,
                   (err, wereSpent) => {
                       if (err) {
@@ -392,7 +397,7 @@ const sendTransferAsync = (settings) => (
  */
 const getTransactionsToApproveAsync = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings, getApiTimeout('getTransactionsToApprove')).api.getTransactionsToApprove(
+        getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).api.getTransactionsToApprove(
             depth,
             reference,
             (err, transactionsToApprove) => {
@@ -436,7 +441,7 @@ export const prepareTransfersAsync = (settings) => (seed, transfers, options = n
  */
 const storeAndBroadcastAsync = (settings) => (trytes) =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings).api.storeAndBroadcast(trytes, (err) => {
+        getHelixInstance(settings).api.storeAndBroadcast(trytes, (err) => {
             if (err) {
                 reject(err);
             } else {
@@ -511,7 +516,7 @@ const attachToTangleAsync = (settings, seedStore) => (
     if (shouldOffloadPow) {
         const request = (requestTimeout) =>
             new Promise((resolve, reject) => {
-                getIotaInstance(settings, requestTimeout).api.attachToTangle(
+                getHelixInstance(settings, requestTimeout).api.attachToTangle(
                     trunkTransaction,
                     branchTransaction,
                     minWeightMagnitude,
@@ -586,7 +591,7 @@ const attachToTangleAsync = (settings, seedStore) => (
  */
 const getTrytesAsync = (settings) => (hashes) =>
     new Promise((resolve, reject) => {
-        getIotaInstance(settings).api.getTrytes(hashes, (err, trytes) => {
+        getHelixInstance(settings).api.getTrytes(hashes, (err, trytes) => {
             if (err) {
                 reject(err);
             } else {
@@ -648,10 +653,10 @@ const isNodeHealthy = (settings) => {
  * @returns {function(string): (Promise<boolean>)}
  */
 const isPromotable = (settings) => (tailTransactionHash, options = {}) =>
-    getIotaInstance(settings).api.isPromotable(tailTransactionHash, options);
+    getHelixInstance(settings).api.isPromotable(tailTransactionHash, options);
 
 export {
-    getIotaInstance,
+    getHelixInstance,
     getApiTimeout,
     getBalancesAsync,
     getNodeInfoAsync,
