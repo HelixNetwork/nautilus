@@ -14,7 +14,7 @@ export const generateNewSeed = async (randomBytesFn) => {
     while (seed.length < MAX_SEED_LENGTH) {
         const byte = await randomBytesFn(1);
         // Recheck
-        if (byte[0] < 192) { // 243
+        if (byte[0] < 512) { // 243
             seed += charset.charAt(byte[0] % 16); // 27
         }
     }
@@ -37,7 +37,7 @@ export const randomiseSeedCharacter = async (seed, charId, randomBytesFn) => {
     let complete = false;
     while (!complete) {
         const byte = await randomBytesFn(1);
-        if (byte[0] < 192) { // 243
+        if (byte[0] < 512) { // 243
             updatedSeed = seed.substr(0, charId) + charset.charAt(byte[0] % 16) + seed.substr(charId + 1, 64);
             complete = true;
         }
