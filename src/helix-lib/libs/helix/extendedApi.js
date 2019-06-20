@@ -86,7 +86,7 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
 };
 
 /**
- * Promisified version of iota.api.getBalances
+ * Promisified version of helix getBalances
  *
  * @method getBalancesAsync
  * @param {object} [settings]
