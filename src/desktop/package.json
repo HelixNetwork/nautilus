@@ -13,6 +13,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "bootstrap": "^4.3.1",
@@ -41,7 +42,6 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-transition-group": "^4.0.1",
-    "realm": "^3.0.0-beta.1",
     "redux": "^4.0.1",
     "redux-freeze": "^0.1.7",
     "redux-logger": "^3.0.6",
@@ -99,13 +99,7 @@
     "files": [
       "dist/",
       "assets/",
-      "package.json",
-      "!node_modules/realm/android${/*}",
-      "!node_modules/realm/build${/*}",
-      "!node_modules/realm/react-native${/*}",
-      "!node_modules/realm/scripts${/*}",
-      "!node_modules/realm/src${/*}",
-      "!node_modules/realm/vendor${/*}"
+      "package.json"
     ],
     "dmg": {
       "iconSize": 120,

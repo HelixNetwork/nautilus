@@ -6,6 +6,7 @@ import { withI18n, Trans } from 'react-i18next';
 import PropTypes from 'prop-types';
 import images from 'ui/images/ic1.png';
 import Button from 'ui/components/button';
+import Top from '../../components/topbar';
 
 class Done extends React.PureComponent {
     static propTypes = {
@@ -33,11 +34,18 @@ class Done extends React.PureComponent {
         const { t } = this.props;
         return (
             <div>
+                <Top
+                    main={'none'}
+                    user={'none'}
+                    bal={'none'}
+                    common={'none'}
+                    history={history}
+                />
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                                <h1>{t('onboardingComplete:allDone')}</h1>
+                                <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1>
                                 <p>{t('onboardingComplete:walletReady')}</p>
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
@@ -46,15 +54,12 @@ class Done extends React.PureComponent {
                                 </div>
                             </div>
                             <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-verify')} ><span>>></span>Back</Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/login')} >{t('login:login')} <span>>></span> </Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-verify')} >{t('global:goBack')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/login')} >{t('login:login')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
                 </section>
-                <footer className={classNames(css.footer)}>
-
-                </footer>
             </div>
         )
     }
