@@ -52,6 +52,7 @@
   },
   "scripts": {
     "start": "yarn run build && concurrently --kill-others  \"yarn run devserver \"  \"cross-env NODE_ENV=development wait-on http://localhost:1074 && electron -r @babel/register main.js\"",
+    "postinstall": "electron-builder install-app-deps",
     "devserver": "node server.js",
     "style:shots": "node scripts/puppeteer.js",
     "build": "rimraf dist && concurrently \"yarn run build-main\" \"yarn run build-app\"",
@@ -146,7 +147,7 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
     "electron": "^5.0.2",
-    "electron-builder": "^20.41.0",
+    "electron-builder": "^20.44.4",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
     "sass-loader": "^7.1.0",
