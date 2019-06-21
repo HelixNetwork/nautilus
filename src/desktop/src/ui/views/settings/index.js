@@ -11,7 +11,11 @@ import SettingsLanguage from 'ui/views/settings/language';
 import SettingsNode from 'ui/views/settings/node';
 import Currency from 'ui/views/settings/currency';
 import SettingsTheme from 'ui/views/settings/themesetting';
-
+import AccountName from 'ui/views/settings/editName';
+import Viewseed from 'ui/views/settings/viewseed';
+import Viewaddress from 'ui/views/settings/viewaddress';
+import Changepassword from 'ui/views/settings/changepassword';
+import SettingsMode from 'ui/views/settings/mode';
 
 /**
  * Setting component
@@ -51,10 +55,15 @@ class Settings extends React.PureComponent {
                     </div>
                 </section>
                 <Switch>
+                    {/* <Route path="/settings" component={AccountName} /> */}
                     <Route path="/settings/language" component={SettingsLanguage} />
                     <Route path="/settings/node" component={SettingsNode} />
                     <Route path="/settings/currency" component={Currency} />
                     <Route path="/settings/theme" component={SettingsTheme} />
+                    <Route path="/settings/viewseed" component={Viewseed} />
+                    <Route path="/settings/address" component={Viewaddress} />
+                    <Route path="/settings/password" component={Changepassword} />
+                    <Route path="/settings/mode" component={SettingsMode} />
                 </Switch>
             </div>
         );

@@ -24,7 +24,7 @@ class Sidebar extends React.PureComponent{
         
         return(
         <ul className={classNames(css.acco_pg)}>
-            <li><a onClick={()=>this.props.history.push('/settings/accountname')}>Account Name </a></li>
+            <li><a onClick={()=>this.props.history.push('/settings/editname')}>Account Name </a></li>
             <li><a onClick={()=>this.props.history.push('/settings/viewseed')}>View Seed</a></li>
             <li><a onClick={()=>this.props.history.push('/settings/address')}>View Address</a></li>
             <li><a onClick={()=>this.props.history.push('/settings/language')}>Language</a></li>

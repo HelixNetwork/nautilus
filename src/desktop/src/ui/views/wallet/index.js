@@ -50,15 +50,15 @@ class Wallet extends React.PureComponent {
                                     
                                 </div> */}
                                 <h4 className={classNames(css.welcome)}>{t('welcome:welcome')} Marcel <span style={styles}>.</span> </h4>
-                                <div className={classNames(css.welcome_box)}>
-                                    <h2 style={{ color: '#e8b349' }}>1337,00 mHLX</h2>
-                                    <h3>26,67 EUR</h3>
-                                </div>
-                                <div className={classNames(css.icon_secs1)}>
-                                    <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faPaperPlane} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
-                                    <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faDownload} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faChartLine} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
-                                    <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
+                                    <div className={classNames(css.welcome_box)}>
+                                        <h2 style={{ color: '#e8b349' }}>1337,00 mHLX</h2>
+                                        <h3>26,67 EUR</h3>
+                                    </div>
+                                    <div className={classNames(css.icon_secs1)}>
+                                        <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faPaperPlane} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
+                                        <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faDownload} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
+                                        <div onClick={() => history.push('/wallet/chart')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faChartLine} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
+                                        <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
 
                                 </div>
                             </div>

@@ -42,11 +42,9 @@ const config = {
           {
             loader: "css-loader",
             options: {
-              camelCase: true,
-              modules: true,
-              importLoaders: 1,
-              localIdentName: "[name]__[local]",
-              sourceMap: true
+              modules:{
+                localIdentName: "[name]__[local]",
+                }
             }
           },
           {

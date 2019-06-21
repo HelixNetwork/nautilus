@@ -41,11 +41,7 @@ import Select from 'ui/components/input/select';
                         <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_box)}>
-                            
-                          <Sidebar
-                                  disp={'none'}
-                                  history={this.props.history}
-                          />
+
                                 {/* <hr className={classNames(css.ser_bts)}/> */}
                                 <a ></a>
                             </div>
@@ -56,15 +52,7 @@ import Select from 'ui/components/input/select';
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
                                             <h5>{t('node:Node')}</h5>
-                                            <Select
-                                                 label={t('nodeSettings:primaryNode')}
-                                                 disabled={autoNodeSelection}
-                                                 value={primaryNode.url}
-                                                 onChange={(url) => setPrimaryNode(availableNodes.find((node) => node.url === url))}
-                                                 options={availableNodes.map(({ url }) => {
-                                                     return { value: url };
-                                                 })}
-                                             />
+                                           
                                             <h5>{t('addCustomNode:Custom node')}</h5>
                                              <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
                                             

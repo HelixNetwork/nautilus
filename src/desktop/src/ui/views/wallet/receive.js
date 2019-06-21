@@ -50,15 +50,10 @@ class Receive extends React.PureComponent {
                     </div>
 
 
-                    <ul>
-                        <li className={classNames(css.footer)}><a href="#">0</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li className="db_none"><a href="#">5</a></li>
-                    </ul>
+                   
                 </section>
+                <footer className={classNames(css.footer_bx)}>
+                </footer>
             </div>
         )
     }
