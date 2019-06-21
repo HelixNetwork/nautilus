@@ -51,7 +51,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others  \"yarn run devserver \"  \"cross-env NODE_ENV=development wait-on http://localhost:1074 && electron -r @babel/register main.js\"",
+    "start": "yarn run build && concurrently --kill-others  \"yarn run devserver \"  \"cross-env NODE_ENV=development wait-on http://localhost:1074 && electron -r @babel/register main.js\"",
     "devserver": "node server.js",
     "style:shots": "node scripts/puppeteer.js",
     "build": "rimraf dist && concurrently \"yarn run build-main\" \"yarn run build-app\"",
