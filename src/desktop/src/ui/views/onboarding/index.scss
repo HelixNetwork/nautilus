@@ -66,7 +66,7 @@ $footer: 350px;
     background-color: #dee1e3;
     position: absolute;
     bottom: 0px;
-    height: 285px;
+    height: 425px;
     width: 100%;
     display: flex;
     align-items: stretch;
@@ -563,16 +563,16 @@ margin-left: 275px;
 @media  screen and (max-width: 1920px) {
   /* insert styles here */
   footer ul{
-    bottom: 100px;
+    bottom: 101px;
     margin-top:0px;
-    top:200px;
+    top: 365px;
   }
   footer{
     height:390px;
   }
   .sseed_box{
-    bottom: 165px;
-    top:85px;
+    bottom: 290px;
+    top:207px;
   }
   .sseed_box2{
     top:85px;
@@ -597,7 +597,7 @@ margin-left: 275px;
 }
 
 .sseed_textline{
-  width:40vw;
+  width:25vw;
   height:3vw;
   border-radius: -1%;
   border: 0;

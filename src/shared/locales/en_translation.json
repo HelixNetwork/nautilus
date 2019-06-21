@@ -378,7 +378,7 @@
     },
     "setSeedName": {
         "letsAddName": "Let's add a name",
-        "setAccountName": "Set your Account Name",
+        "setAccountName": "Set Your Account Name",
         "canUseMultipleSeeds": "You can use multiple seeds with this wallet. Each seed requires an account name.",
         "youCanAdd": "You can add more seeds in the Settings menu."
     },

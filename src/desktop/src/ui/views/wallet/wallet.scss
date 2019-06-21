@@ -327,9 +327,9 @@
       float: right;
     }
     .icon_secs1{
-      margin-top: -153px;
+      margin-top: -201px;
       position: absolute;
-      left: 290px;
+      left: 603px;
     }
     .main_mn{
       width: 50px;
@@ -349,10 +349,25 @@
       padding: 0;
     }
     .welcome{
-      margin-left: 440px !important;
+      margin-left: 766px !important;
+
     }
     
-  }
+
+   .wallet__box {
+    position: absolute;
+    border: 1px solid;
+    height: 65px;
+    padding-top: 40px;
+    width: 865px;
+    left: 520px !important;
+    bottom: 60px;
+    background: #fff;
+    box-shadow: -5px 5px 8px 0px grey;
+    }
+}
+    
+  
 
   .box{
     position: absolute;

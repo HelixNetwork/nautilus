@@ -47,9 +47,9 @@ class Login extends React.PureComponent {
                                 <Button type="submit" >{t('login:login')}</Button>
                             </form>
                         </div>
-                        <div className={css.onboard_nav}>
-                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('done')} >{t('global:goBack')} <span>></span></Button>                            </div>
-                    </div>
+                        {/* <div className={css.onboard_nav}> */}
+                            <Button style={{top:'642px',left:'590px'}} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('done')} >{t('global:goBack')} <span>></span></Button>                            </div>
+                    {/* </div> */}
                 </div>
             </section>
         )
