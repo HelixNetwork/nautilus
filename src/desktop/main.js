@@ -57,7 +57,6 @@ try {
     windowState = windowStateData;
   }
 } catch (error) { }
-console.log("moded", devMode);
 function createWindow() {
   const windowOptions = {
     width: windowState.width,
@@ -71,8 +70,8 @@ function createWindow() {
     fullscreen: false,
     webPreferences: {
       nodeIntegration: false,
-      webviewTag: false,
       preload: path.resolve(paths.preload, devMode ? 'preloadDev.js' : 'preloadProd.js'),
+      webviewTag: false,
     },
   };
 
