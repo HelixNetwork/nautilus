@@ -1,6 +1,23 @@
 import {asciiToHBytes} from "@helixnetwork/converter";
 import { composeAPI } from "@helixnetwork/core";
-
+// getHelixInstance,
+// getApiTimeout,
+// getBalancesAsync,
+// getTransactionsObjectsAsync,
+// findTransactionObjectsAsync,
+// getLatestInclusionAsync,
+// promoteTransactionAsync,
+// replayBundleAsync,
+// getBundleAsync,
+// wereAddressesSpentFromAsync,
+// sendTransferAsync,
+// getTransactionsToApproveAsync,
+// storeAndBroadcastAsync,
+// attachToTangleAsync,
+// checkAttachToTangleAsync,
+// allowsRemotePow,
+// isNodeHealthy,
+// isPromotable,
 /**
  * This class consist of helix Api wrappers to interact with helix network
  */
@@ -13,7 +30,26 @@ export default class HelixApi {
     constructor(provider) {
         this.helix = composeAPI({
             provider,
-          });
+          }); getHelixInstance,
+          getApiTimeout,
+          getBalancesAsync,
+          getNodeInfoAsync,
+          getTransactionsObjectsAsync,
+          findTransactionObjectsAsync,
+          findTransactionsAsync,
+          getLatestInclusionAsync,
+          promoteTransactionAsync,
+          replayBundleAsync,
+          getBundleAsync,
+          wereAddressesSpentFromAsync,
+          sendTransferAsync,
+          getTransactionsToApproveAsync,
+          storeAndBroadcastAsync,
+          attachToTangleAsync,
+          checkAttachToTangleAsync,
+          allowsRemotePow,
+          isNodeHealthy,
+          isPromotable,
     }
 
    
@@ -37,7 +73,13 @@ export default class HelixApi {
   }
     /**
      * @method CreateTransaction
-     * @param 
+     * @param  {hex} address
+     * @param  {number} value
+     * @param  {string} message
+     * @param  {string} tag
+     * @param  {string} seed 
+     * @param  {number} depth
+     * @param  {number} mwm Minimum Weight magnitude
      */
     createTransaction= (
         address,
@@ -59,7 +101,7 @@ export default class HelixApi {
             },
           ];
 
-          const result = await this.helix.prepareTransfers(seed, transfer).then((bytes: any) => {
+          const result = await this.helix.prepareTransfers(seed, transfer).then((bytes) => {
             return this.helix.sendHBytes(bytes, depth, mwm);
           });
 
