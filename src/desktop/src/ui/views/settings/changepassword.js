@@ -9,10 +9,10 @@ import Top from '../../components/topbar';
 import Sidebar from '../../components/sidebar';
 import Button from 'ui/components/button';
 /**
- * Setting component
+ * change password component
  */
 
- class AccountName extends React.PureComponent{
+ class Changepassword extends React.PureComponent{
      static propTypes= {
 
         location: PropTypes.object,
@@ -35,23 +35,13 @@ import Button from 'ui/components/button';
         const currentKey = location.pathname.split('/')[2] || '/';
          return(
             <div>
-                    <Top
-                        bal={'none'}
-                        main={'block'}
-                        user={'none'}
-                        history={this.props.history}
-                    />
+                    
                     <section className="spage_1">
                         <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_bx)}>
                                 
-                                <Sidebar
-                                        disp={'none'}
-                                        history={this.props.history}
-                                        />
-                                {/* <hr className={classNames(css.ser_bts)}/> */}
-                                <a ></a>
+                              
                             </div>
 
                             </div>
@@ -60,9 +50,10 @@ import Button from 'ui/components/button';
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
                                             
-                                            <h5>{t('accountManagement:editAccountName')}</h5>
+                                            <h5>Current Password</h5>
                                              <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
-                            
+                                             <h5>New Password</h5>
+                                             <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
                                             <Button onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
                                                <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
@@ -82,4 +73,4 @@ import Button from 'ui/components/button';
  const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(withI18n()(AccountName));
+export default connect(null, mapDispatchToProps)(withI18n()(Changepassword));

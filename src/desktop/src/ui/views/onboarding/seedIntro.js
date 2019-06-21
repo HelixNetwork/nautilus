@@ -9,6 +9,7 @@ import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Button from 'ui/components/button'
 
 import css from './index.scss';
+import Top from '../../components/topbar';
 class SeedIntro extends React.PureComponent {
 
     static propTypes = {
@@ -29,15 +30,22 @@ class SeedIntro extends React.PureComponent {
     }
 
     render() {
-        const { t } = this.props;
+        const { history, t } = this.props;
 
         return (
             <div>
+                <Top
+                    main={'none'}
+                    user={'none'}
+                    bal={'none'}
+                    common={'none'}
+                    history={history}
+                />
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1>{t('walletSetup:doYouNeedASeed')}<span> {t('walletSetup:seed')}</span>?</h1>
+                                <h1>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <img src={image} alt="" />
@@ -45,8 +53,8 @@ class SeedIntro extends React.PureComponent {
                                 <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
                             </div>
                             <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}> >>{t('walletSetup:noIHaveOne')}</Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('walletSetup:yesINeedASeed')}>></Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
                             </div>
                         </div>
                     </div>

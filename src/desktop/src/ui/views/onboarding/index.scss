@@ -329,6 +329,12 @@ margin-left: 275px;
 .logout img {
   padding: 10px;
 }
+
+.navleft:hover{
+  cursor: pointer;
+  color:black;
+}
+
 .navleft {
   cursor: pointer;
   float: left;
@@ -339,14 +345,13 @@ margin-left: 275px;
   text-decoration: none;
   
 }
-.navleft:hover{
-  cursor: pointer;
-  color:black;
-}
+
 .navright:hover{
   cursor: pointer;
   color:black;
 }
+
+
 .navright {
   cursor: pointer;
   float: right;
@@ -356,6 +361,7 @@ margin-left: 275px;
   transition: all 0.5s;
   text-decoration: none;
 }
+
 .text_ff {
   font-weight: bold;
   margin-top: 20px;
@@ -368,6 +374,11 @@ margin-left: 275px;
 .text_ff span {
   color: #dcab49;
 }
+
+.text_color {
+  color: #dcab49;
+}
+
 .ssh3{
   font-size:10px;
 }
@@ -386,7 +397,7 @@ margin-left: 275px;
 .sseed_box2 {
   width: 850px;
   padding: 30px 10px;
-  min-height: 300px;
+  min-height: 308px;
   position: absolute;
   left: 204px;
   bottom: 145px;
@@ -394,12 +405,24 @@ margin-left: 275px;
   border-radius: 5px;
   box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
 }
+
+.img_align{
+  margin-top: 20px;
+  float: left;
+  margin-left: 386px;
+}
+
+.text_align{
+  float: left;
+  margin-left: 348px;
+}
+
 .text_ff {
   font-weight: bold;
   margin-top: 20px;
   font-size: 22px;
   letter-spacing: 7px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   float: left;
   margin-left: 125px;
 }
@@ -414,6 +437,7 @@ margin-left: 275px;
 }
 .sseed_box h6 {
   font-size: 18px;
+  color: white;
 }
 .sseed_text{
   width:40vw;

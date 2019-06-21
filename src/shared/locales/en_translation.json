@@ -246,7 +246,7 @@
     "login": {
         "emptyPassword": "Empty password",
         "emptyPasswordExplanation": "You must enter a password to log in. Please try again.",
-        "enterPassword": "Enter your account password.",
+        "enterPassword": "Enter your account password",
         "login": "Log In",
         "setNode": "Set Node",
         "whyBiometricDisabled": "Why is biometric authentication disabled?",
@@ -261,13 +261,13 @@
     },
     "newSeedSetup": {
         "generateSeed": "Generate Seed",
-        "loginWithYourSeed": "Login With Your seed",
+        "loginWithYourSeed": "Log in With Your seed",
         "randomiseSeedMore": "Press 10 more letters to randomise your seed even more",
         "createSeed": "Create Seed",
         "generatedSeed": "Generated seed",
         "seedNotGenerated": "Seed has not been generated",
         "seedNotGeneratedExplanation": "Please generate a new seed.",
-        "pressForNewSeed": "Press for New Seed",
+        "clickForNewSeed": "Click for New Seed",
         "generateSuccess": "Seed generated successfully",
         "individualLetters": "Press individual letters to randomise them.",
         "individualLetterCount": "Press <1><0>{{count}}</0></1> more letter to randomise it.",
@@ -277,7 +277,7 @@
         "whatIsASeed": "What is a seed?"
     },
     "onboardingComplete": {
-        "allDone": "All Done!",
+        "allDone": "All Done",
         "openYourWallet": "Open your wallet",
         "walletReady": "The wallet is now set up and ready to use. If you need to make any changes in the future, look in the Settings menu."
     },
