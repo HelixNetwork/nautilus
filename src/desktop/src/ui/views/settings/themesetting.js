@@ -42,10 +42,7 @@ import Select from 'ui/components/input/select';
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_box)}>
                             
-                          <Sidebar
-                                  disp={'none'}
-                                  history={this.props.history}
-                          />
+                        
                                 {/* <hr className={classNames(css.ser_bts)}/> */}
                                 <a ></a>
                             </div>
@@ -54,20 +51,14 @@ import Select from 'ui/components/input/select';
                             <div className="col-lg-8">
                                 {/* <div className={classNames(css.set_bx)}> */}
                                     <div className={classNames(css.foo_bxx12)}>
-                                        <div cllassname={classNames(css.set_bxac)}>
-                                            <h5>{t('node:Node')}</h5>
-                                            <Select
-                                                 label={t('nodeSettings:primaryNode')}
-                                                 disabled={autoNodeSelection}
-                                                 value={primaryNode.url}
-                                                 onChange={(url) => setPrimaryNode(availableNodes.find((node) => node.url === url))}
-                                                 options={availableNodes.map(({ url }) => {
-                                                     return { value: url };
-                                                 })}
-                                             />
-                                            <h5>{t('addCustomNode:Custom node')}</h5>
-                                             <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
-                                            
+                                        <div className={classNames(css.set_bxac)}>
+                                            <h5>Select Theme</h5>
+                                            <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
+                                            <div ClassName={classNames(css.theme_bx)}>
+                                                    <h5>Mockup</h5>
+                                                    <input type="text" placeholder="Mockup" className={classNames(css.ssetting_textline)}></input><br /><br />
+                                                  
+                                            </div>
                                             <Button onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
                                                <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>

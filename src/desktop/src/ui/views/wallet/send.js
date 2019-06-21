@@ -58,6 +58,8 @@ class Send extends React.PureComponent {
 
 
                 </section>
+                <footer className={classNames(css.footer_bx)}>
+                </footer>
             </div>
         )
     }
