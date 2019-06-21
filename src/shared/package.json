@@ -22,6 +22,7 @@
     "react-dom": "^16.8.6",
     "react-i18next": "^9.0.10",
     "react-redux": "^7.0.3",
+    "realm": "^3.0.0-beta.1",
     "redux": "^4.0.1",
     "redux-freeze": "^0.1.7",
     "redux-persist": "^5.10.0",

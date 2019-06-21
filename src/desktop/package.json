@@ -20,7 +20,7 @@
     "classnames": "^2.2.6",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
-    "css-loader": "^2.1.1",
+    "css-loader": "^3.0.0",
     "dart-sass": "^1.20.1",
     "electron-packager": "^13.1.1",
     "electron-settings": "^3.2.0",
