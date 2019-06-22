@@ -56,7 +56,7 @@ class Welcome extends React.PureComponent {
         let styles = {
             color: '#E9B339',
             fontSize: '20px'
-            
+
         };
 
         return (
@@ -64,7 +64,7 @@ class Welcome extends React.PureComponent {
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
-                            <h1 style={{fontSize:'60px'}}>{t('welcome:thankYou')}</h1>
+                            <h1 style={{ fontSize: '63px' }}>{t('welcome:thankYou')}</h1>
                             <h6>{t('welcome:thankYouDescription')}<span style={styles}><b>.</b></span></h6>
                             <br></br>
                             <Language></Language>
@@ -73,14 +73,14 @@ class Welcome extends React.PureComponent {
                     ) : (
                             <React.Fragment>
                                 <div className={css.privacy}>
-                                <h1>
-                                    {step === 'terms' ? 'Terms and Conditions' : 'Privacy Policy'}
-                                </h1>
-                                <article>
-                                    <Scrollbar contentId={step} onScrollEnd={() => this.setState({ scrollEnd: true })}>
-                                        <ReactMarkdown source={markdown} />
-                                    </Scrollbar>
-                                </article>
+                                    <h1>
+                                        {step === 'terms' ? 'Terms and Conditions' : 'Privacy Policy'}
+                                    </h1>
+                                    <article>
+                                        <Scrollbar contentId={step} onScrollEnd={() => this.setState({ scrollEnd: true })}>
+                                            <ReactMarkdown source={markdown} />
+                                        </Scrollbar>
+                                    </article>
                                 </div>
                             </React.Fragment>
                         )}

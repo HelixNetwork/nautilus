@@ -46,7 +46,7 @@ class Done extends React.PureComponent {
                         <div className="row">
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1>
-                                <p>{t('onboardingComplete:walletReady')}</p>
+                                <h6>{t('onboardingComplete:walletReady')}</h6>
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
                                         <img src="" alt="" />
