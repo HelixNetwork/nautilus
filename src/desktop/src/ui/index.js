@@ -14,8 +14,8 @@ import Theme from 'ui/global/theme';
 import Settings from 'ui/views/settings/index';
 import SettingsLanguage from 'ui/views/settings/language';
 import css from './index.scss';
-const version = Electron.getVersion();
-console.log(version);
+// const version = Electron.getVersion();
+// console.log(version);
 /**
  * Wallet wrapper component
  **/
