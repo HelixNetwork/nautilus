@@ -7,7 +7,7 @@ import image from 'ui/images/ex_mark.png';
 
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Button from 'ui/components/button'
-
+import Logos from 'ui/components/logos';
 import css from './index.scss';
 import Top from '../../components/topbar';
 class SeedIntro extends React.PureComponent {
@@ -34,13 +34,8 @@ class SeedIntro extends React.PureComponent {
 
         return (
             <div>
-                <Top
-                    main={'none'}
-                    user={'none'}
-                    bal={'none'}
-                    common={'none'}
-                    history={history}
-                />
+                <Logos size={20} />
+               
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">

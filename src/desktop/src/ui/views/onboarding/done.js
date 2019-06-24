@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import images from 'ui/images/ic1.png';
 import Button from 'ui/components/button';
 import Top from '../../components/topbar';
+import Logos from 'ui/components/logos';
 
 class Done extends React.PureComponent {
     static propTypes = {
@@ -34,12 +35,7 @@ class Done extends React.PureComponent {
         const { t } = this.props;
         return (
             <div>
-                <Top
-                    main={'none'}
-                    user={'none'}
-                    bal={'none'}
-                    common={'none'}
-                    history={history}
+                <Logos
                 />
                 <section className="spage_1">
                     <div className="container">

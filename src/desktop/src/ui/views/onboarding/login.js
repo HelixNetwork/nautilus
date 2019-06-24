@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { withI18n, Trans } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
-
+import Logos from 'ui/components/logos';
 import css from './index.scss';
 
 class Login extends React.PureComponent {
@@ -38,6 +38,7 @@ class Login extends React.PureComponent {
         const { t } = this.props;
         return (
             <section className="spage_1">
+                <Logos />
                 <div className="container">
                     <div className="row">
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>

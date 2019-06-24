@@ -608,3 +608,13 @@ input:focus + .tooltip {
     margin: 3px 482px;
   }
 }
+@media screen and (min-width:840px){
+  .input {
+    display: block;
+    width: 100%;
+    max-width: 326px;
+    margin: 3px 509px !important;
+    padding: 25px 0 30px;
+    
+  }
+}
