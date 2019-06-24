@@ -41,6 +41,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-transition-group": "^4.0.1",
+    "realm": "2.*.*",
     "redux": "^4.0.1",
     "redux-freeze": "^0.1.7",
     "redux-logger": "^3.0.6",
@@ -51,7 +52,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "scripts": {
-    "start": "yarn run build && concurrently --kill-others  \"yarn run devserver \"  \"cross-env NODE_ENV=development wait-on http://localhost:1074 && electron -r @babel/register main.js\"",
+    "start": "yarn run build && concurrently --kill-others  \" yarn run devserver \"  \"wait-on http://localhost:1074 && cross-env NODE_ENV=development  electron -r @babel/register main.js\"",
     "postinstall": "electron-builder install-app-deps",
     "devserver": "node server.js",
     "style:shots": "node scripts/puppeteer.js",
@@ -97,7 +98,13 @@
     "files": [
       "dist/",
       "assets/",
-      "package.json"
+      "package.json",
+      "!node_modules/realm/android${/*}",
+      "!node_modules/realm/build${/*}",
+      "!node_modules/realm/react-native${/*}",
+      "!node_modules/realm/scripts${/*}",
+      "!node_modules/realm/src${/*}",
+      "!node_modules/realm/vendor${/*}"
     ],
     "dmg": {
       "iconSize": 120,
