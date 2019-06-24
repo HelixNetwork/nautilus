@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import reload from 'ui/images/arrows.png';
 import Button from 'ui/components/button';
 import Top from '../../components/topbar';
+import Logos from 'ui/components/logos';
 
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
@@ -27,12 +28,7 @@ class SeedGenerate extends React.PureComponent {
 
         return (
             <div>
-                <Top
-                    main={'none'}
-                    user={'none'}
-                    bal={'none'}
-                    common={'none'}
-                    history={history}
+                <Logos
                 />
 
                 <section className="spage_1">

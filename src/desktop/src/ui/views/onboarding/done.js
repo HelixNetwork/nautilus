@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import images from 'ui/images/ic1.png';
 import Button from 'ui/components/button';
 import Top from '../../components/topbar';
+import Logos from 'ui/components/logos';
 
 class Done extends React.PureComponent {
     static propTypes = {
@@ -34,19 +35,14 @@ class Done extends React.PureComponent {
         const { t } = this.props;
         return (
             <div>
-                <Top
-                    main={'none'}
-                    user={'none'}
-                    bal={'none'}
-                    common={'none'}
-                    history={history}
+                <Logos
                 />
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1>
-                                <p>{t('onboardingComplete:walletReady')}</p>
+                                <h6>{t('onboardingComplete:walletReady')}</h6>
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>
                                         <img src="" alt="" />

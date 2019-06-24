@@ -1,0 +1,27 @@
+.top_sec1 {
+    width: 100%;
+    min-height: 50px;
+    position: absolute;
+    top: -152px;
+    left: 0;
+    z-index: 1000;
+    padding-right: 40px;
+    padding-top: 112px;
+  }
+.lg_logos {
+    float: left;
+    padding-top: 0px;
+    padding-left: 30px;
+}
+@media  screen and (max-width: 1920px){
+    .top_sec1 {
+        width: 100%;
+        min-height: 50px;
+        position: absolute;
+        top: -152px;
+        left: 0;
+        z-index: 1000;
+        padding-right: 40px;
+        padding-top: 112px;
+      }
+}

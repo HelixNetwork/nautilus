@@ -365,7 +365,7 @@ overflow: hidden;
   flex: 1;
 }
 }
-  @media  screen and (max-width: 1920px) {
+  @media  screen and (min-width: 1920px) {
     .bal_bxs{
       position: absolute;
       left: 225px;
@@ -428,9 +428,9 @@ overflow: hidden;
       float: right;
     }
     .icon_secs1{
-      margin-top: -153px;
+      margin-top: -201px;
       position: absolute;
-      left: 290px;
+      left: 603px;
     }
     .main_mn{
       width: 50px;
@@ -450,9 +450,57 @@ overflow: hidden;
       padding: 0;
     }
     .welcome{
-      margin-left: 440px !important;
-    }
-    
-  }
+      margin-left: 766px !important;
 
+    }
   
+    
+
+   .wallet__box {
+    position: absolute;
+    border: 1px solid;
+    height: 65px;
+    padding-top: 40px;
+    width: 865px;
+    left: 520px !important;
+    bottom: 60px;
+    background: #fff;
+    box-shadow: -5px 5px 8px 0px grey;
+    }
+}
+    
+  
+
+  @media  screen and (min-width: 840px) {
+    .img_sr1 {
+      float: left;
+      margin: 27px 60px     !important;
+          margin-top: 72px !important;
+      text-align: center;
+    }
+    .wallet__foo_bxx1 h3 {
+      margin-bottom: 0px;
+      margin-left: 204px;
+      margin-top: -13px;
+    }
+    .wallet__foo_bxx1 h6 {
+      margin-left: 109px;
+    }
+    .wallet__eq {
+      margin-left: 319px;
+    }
+    .wallet__foo_bxx1 h5 {
+      margin-left: 247px;
+    }
+    .wallet__reci_text {
+      margin-left: 140px !important;
+    }
+    .wallet__send_bts img {
+      margin-left: -103px;
+    }
+    .wallet__img_sr_h2 {
+      margin-left: 303px;
+      margin-top: -47px;
+      color: black;
+    }
+  }

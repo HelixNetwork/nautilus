@@ -378,7 +378,7 @@
     },
     "setSeedName": {
         "letsAddName": "Let's add a name",
-        "setAccountName": "Set your Account Name",
+        "setAccountName": "Set Your Account Name",
         "canUseMultipleSeeds": "You can use multiple seeds with this wallet. Each seed requires an account name.",
         "youCanAdd": "You can add more seeds in the Settings menu."
     },
@@ -455,7 +455,7 @@
         "seedExplanation": "Your IOTA seed is the master key to your funds. It is 81 characters long, using only letters A-Z or the number 9.",
         "noIHaveOne": "No, I have one",
         "yesINeedASeed": "Yes, I need a seed",
-        "explanation": "You can use it to access your funds from any wallet, on any device.",
+        "explanation": "You can use it to access your funds from any wallet, or any device.",
         "loseSeed": "But if you lose your seed, you also lose your IOTA.",
         "keepSafe": "Please keep your seed safe.",
         "Seed Verify": "Verify",

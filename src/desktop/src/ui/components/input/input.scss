@@ -1,8 +1,8 @@
 .input {
   display: block;
   width: 100%;
-  max-width: 326px;
-  margin: 3px 446px;
+  max-width: 296px;
+  margin: 5px 799px;
   padding: 25px 0 30px;
   transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
@@ -593,4 +593,28 @@ input:focus + .tooltip {
   font-size: 14px;
   padding-left: 10px;
   padding-right: 40px;
+}
+@media screen and (min-width: 1920px){
+  .input{
+    width: 100%;
+    max-width: 296px;
+    margin: 5px 799px;
+  }
+}
+
+@media screen and (max-width: 1366px) {
+  .input{
+    max-width: 285px;
+    margin: 3px 482px;
+  }
+}
+@media screen and (min-width:840px){
+  .input {
+    display: block;
+    width: 100%;
+    max-width: 326px;
+    margin: 3px 509px !important;
+    padding: 25px 0 30px;
+    
+  }
 }

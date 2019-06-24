@@ -5,6 +5,7 @@ import { withI18n, Trans } from 'react-i18next';
 import classNames from 'classnames';
 import images from 'ui/images/ic1.png';
 import css from './index.scss';
+import Logos from 'ui/components/logos';
 
 class AccountName extends React.PureComponent {
     static propTypes = {
@@ -25,7 +26,9 @@ class AccountName extends React.PureComponent {
     render() {
         const { t } = this.props;
         return (
+          
             <section className="spage_1">
+              <Logos size={20} />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">

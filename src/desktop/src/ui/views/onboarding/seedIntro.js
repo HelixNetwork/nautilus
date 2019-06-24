@@ -7,7 +7,7 @@ import image from 'ui/images/ex_mark.png';
 
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Button from 'ui/components/button'
-
+import Logos from 'ui/components/logos';
 import css from './index.scss';
 import Top from '../../components/topbar';
 class SeedIntro extends React.PureComponent {
@@ -34,18 +34,13 @@ class SeedIntro extends React.PureComponent {
 
         return (
             <div>
-                <Top
-                    main={'none'}
-                    user={'none'}
-                    bal={'none'}
-                    common={'none'}
-                    history={history}
-                />
+                <Logos size={20} />
+               
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
+                                <h1 style={{marginLeft:'68px',marginTop:'125px',fontSize:'45px'}}>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <img src={image} alt="" />
@@ -53,8 +48,8 @@ class SeedIntro extends React.PureComponent {
                                 <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
                             </div>
                             <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
