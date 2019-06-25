@@ -9,10 +9,6 @@ import Button from 'ui/components/button';
 import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
 
-import { createRandomSeed, randomBytes } from 'libs/crypto';
-import { byteToChar } from 'libs/iota/converter';
-import { MAX_SEED_LENGTH } from 'libs/iota/utils';
-
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
         history: PropTypes.shape({

@@ -479,7 +479,11 @@ overflow: hidden;
     box-shadow: -5px 5px 8px 0px grey;
     }
 }
-    
+  @media screen and (min-width:1366px) {
+    footer {
+      height: 200px !important;
+    }
+  }
   
 
   @media  screen and (min-width: 840px) {
