@@ -1,6 +1,38 @@
 import { availableCurrencies } from '../../libs/currency';
 import { defaultNode } from '../../config';
 
+export const WalletSchema = {
+    name: 'Wallet',
+    primaryKey: 'version',
+    properties: {
+        /**
+         * Wallet's schema version
+         */
+        version: {
+            type: 'int',
+        },
+        /**
+         * Determines if wallet has completed onboarding.
+         */
+        onboardingComplete: {
+            type: 'bool',
+            default: false,
+        },
+        /**
+         * Error notifications log.
+         */
+        errorLog: 'ErrorLog[]',
+        /**
+         * Wallet settings.
+         */
+        settings: 'WalletSettings',
+        /**
+         * Temporarily stored account information while the account is being setup
+         */
+        accountInfoDuringSetup: 'AccountInfoDuringSetup',
+    },
+};
+
 /**
  * Schema for wallet settings.
  */
@@ -10,7 +42,10 @@ export const WalletSettingsSchema = {
         /**
          * Wallet versions (version & build number)
          */
-        versions: 'WalletVersions',
+        versions: {
+            type: 'string',
+            default: 'WalletVersions'
+        },
         /**
          * Selected locale for wallet.
          */
@@ -163,6 +198,105 @@ export const WalletSettingsSchema = {
         },
     },
 };
+/**
+ * Notifications settings schema
+ */
+export const NotificationsSettingsSchema = {
+    name: 'NotificationsSettings',
+    properties: {
+        general: {
+            type: 'bool',
+            default: true,
+        },
+        confirmations: {
+            type: 'bool',
+            default: true,
+        },
+        messages: {
+            type: 'bool',
+            default: true,
+        },
+    },
+};
+
+/**
+ * Schema for Wallet versions.
+ */
+export const WalletVersionsSchema = {
+    name: 'WalletVersions',
+    primaryKey: 'version',
+    properties: {
+        /**
+         * Current wallet's version.
+         */
+        version: {
+            type: 'string',
+            default: '',
+        },
+        /**
+         * Current wallet's build number (mobile).
+         */
+        buildNumber: {
+            type: 'int',
+            optional: true,
+        },
+    },
+};
+
+export const ErrorLogSchema = {
+    name: 'ErrorLog',
+    properties: {
+        error: 'string',
+        time: 'int',
+    },
+};
+
+export const AccountInfoDuringSetupSchema = {
+    name: 'AccountInfoDuringSetup',
+    properties: {
+        name: {
+            type: 'string',
+            default: '',
+        },
+        usedExistingSeed: {
+            type: 'bool',
+            default: false,
+        },
+        meta: 'AccountMeta',
+    },
+};
+
+/**
+ * Schema for account meta
+ */
+export const AccountMetaSchema = {
+    name: 'AccountMeta',
+    properties: {
+        type: {
+            type: 'string',
+            default: 'keychain',
+        },
+        index: {
+            type: 'int',
+            optional: true,
+        },
+        page: {
+            type: 'int',
+            optional: true,
+        },
+        indexAddress: {
+            type: 'string',
+            optional: true,
+        },
+    },
+};
+
 export default [
-    WalletSettingsSchema
+    WalletSchema,
+    WalletSettingsSchema,
+    NotificationsSettingsSchema,
+    WalletVersionsSchema,
+    ErrorLogSchema,
+    AccountInfoDuringSetupSchema,
+    AccountMetaSchema
 ];
