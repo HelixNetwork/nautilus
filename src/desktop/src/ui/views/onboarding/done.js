@@ -8,11 +8,17 @@ import images from 'ui/images/ic1.png';
 import Button from 'ui/components/button';
 import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
+import Lottie from 'react-lottie';
+import * as animationData from 'animations/done.json';
 
 class Done extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
+          /** On animation end event callback */
+          onEnd: PropTypes.func,
+          /** Should animation loop */
+          loop: PropTypes.bool,
     };
 
     /**
@@ -32,7 +38,19 @@ class Done extends React.PureComponent {
     // };
 
     render() {
+        const {  loop, animate, onEnd } = this.props;
+        const size = 190;
+        const h_size= 120;
+
         const { t } = this.props;
+        const defaultOptions = {
+            loop: loop,
+            autoplay: true,
+            animationData: animationData.default,
+            rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+            }
+        };
         return (
             <div>
                 <Logos
@@ -40,8 +58,26 @@ class Done extends React.PureComponent {
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
+                        <div className="col-lg-12">
+                                <h1 className={classNames(css.head_h1)}>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span></h1>
+                            </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                                <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1>
+                                {/* <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1> */}
+                                <Lottie className={classNames(css.lott)}
+                    width={size}
+                    height={h_size}
+                    options={defaultOptions}
+                    eventListeners={[
+                        {
+                            eventName: 'complete',
+                            callback: () => {
+                                if (typeof onEnd === 'function') {
+                                    onEnd();
+                                }
+                            },
+                        },
+                    ]}
+                />
                                 <h6>{t('onboardingComplete:walletReady')}</h6>
                                 <div className={classNames(css.icon_secs)}>
                                     <div className={(classNames(css.img_sr, css.img_sr_imgss1))}>

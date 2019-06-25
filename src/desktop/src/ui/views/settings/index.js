@@ -16,6 +16,7 @@ import Viewseed from 'ui/views/settings/viewseed';
 import Viewaddress from 'ui/views/settings/viewaddress';
 import Changepassword from 'ui/views/settings/changepassword';
 import SettingsMode from 'ui/views/settings/mode';
+import Button from 'ui/components/button';
 
 /**
  * Setting component
@@ -32,7 +33,7 @@ class Settings extends React.PureComponent {
     }
     render() {
 
-        const { history } = this.props;
+        const { history ,t} = this.props;
         return (
             <div>
                 <Top
@@ -49,6 +50,24 @@ class Settings extends React.PureComponent {
                                     disp={'none'}
                                     history={history}
                                 />
+                                    <div className="col-lg-8">
+                                {/* <div className={classNames(css.set_bx)}> */}
+                                    <div className={classNames(css.foo_bxx12)}>
+                                        <div cllassname={classNames(css.set_bxac)}>
+                                            
+                                            <h5>{t('accountManagement:editAccountName')}</h5>
+                                             <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
+                            
+                                            <Button onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
+                                            <div  className={classNames(css.spe_bx)}>
+                                               {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
+                                               <hr className={classNames(css.ser_bts)}/>
+                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {/* </div> */}
+                            </div>
                                 <a ></a>
                             </div>
                         </div>

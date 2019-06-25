@@ -7,9 +7,9 @@ import ReactMarkdown from 'react-markdown';
 import { enTermsAndConditionsIOS, enPrivacyPolicyIOS } from 'terms-conditions';
 import Language from 'ui/components/input/language';
 import Button from 'ui/components/button'
-
+import Logos from 'ui/components/logos';
 import css from './welcome.scss';
-
+import classNames from 'classnames';
 /**
  * Helix Welcome Screen component
  */
@@ -61,6 +61,7 @@ class Welcome extends React.PureComponent {
 
         return (
             <div>
+                <Logos size={20} />
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
@@ -92,6 +93,7 @@ class Welcome extends React.PureComponent {
                             : !scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
                         <span style={styles}> ></span></Button>
                 </section>
+                {/* <footer className={classNames(css.none)}></footer> */}
             </div>
         )
     }

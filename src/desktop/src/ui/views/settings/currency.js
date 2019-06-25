@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import { Switch, Route ,withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import Top from '../../components/topbar';
 import Button from 'ui/components/button';
 import Select from 'ui/components/input/select';
 // import withCurrencyData from 'containers/settings/Currency';
@@ -55,9 +55,9 @@ import Select from 'ui/components/input/select';
                                             
                                             <Button onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
-                                               <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
+                                               {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                <hr className={classNames(css.ser_bts)}/>
-                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a>
+                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
                                             </div>
                                         </div>
                                     </div>

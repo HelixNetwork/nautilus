@@ -86,7 +86,7 @@ class Onboarding extends React.PureComponent {
                         </div>
                     </CSSTransition>
                 </TransitionGroup>
-                <footer className={classNames(currentKey == '/' ? css.footer_none : null)}>
+                <footer className={classNames(currentKey === '/' ? css.footer_none : null)}>
                     {this.steps(currentKey)}
                 </footer>
             </main>

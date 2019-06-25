@@ -21,8 +21,8 @@ class Receive extends React.PureComponent {
                 <section className={css.home}>
 
                     <Top
-                         bal={'block'}
-                         main={'block'}
+                         bal={'none'}
+                         main={'none'}
                          user={'block'}
                         history={this.props.history}
                     />

@@ -56,9 +56,9 @@ import Button from 'ui/components/button';
                                              <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
                                             <Button onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
-                                               <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
+                                               {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                <hr className={classNames(css.ser_bts)}/>
-                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a>
+                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
                                             </div>
                                         </div>
                                     </div>
