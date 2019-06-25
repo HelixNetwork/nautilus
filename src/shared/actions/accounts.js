@@ -17,3 +17,18 @@ export const setAccountInfoDuringSetup = (payload) => {
         payload,
     };
 };
+
+
+/**
+ * Assign account index to each account if not already assigned
+ *
+ * @method assignAccountIndexIfNecessary
+ * @param {object} accountInfo
+ *
+ * @returns {function(*)}
+ */
+export const assignAccountIndexIfNecessary = (accountInfo) => (dispatch) => {
+    if (!isEmpty(accountInfo) && some(accountInfo, ({ index }) => !isNumber(index))) {
+        dispatch(assignAccountIndex());
+    }
+};
