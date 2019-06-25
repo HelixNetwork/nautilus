@@ -28,8 +28,250 @@ export const getRealm = () => {
 };
 
 class Account {
-    
+    static getObjectForId(id) {
+        return realm.objectForPrimaryKey('Account', id);
+    }
+
+    static get data() {
+        return realm.objects('Account');
+    }
+
+    /**
+     * Gets account data for all stored accounts.
+     * @method getDataAsArray
+     *
+     * @returns {array}
+     */
+    static getDataAsArray() {
+        const accounts = Account.data;
+
+        return map(accounts, (account) =>
+            assign({}, account, {
+                addressData: map(account.addressData, (data) => assign({}, data)),
+                transactions: map(account.transactions, (transaction) => assign({}, transaction)),
+                meta: assign({}, account.meta),
+            }),
+        );
+    }
+
+    /**
+     * Orders accounts by indexes
+     *
+     * @method orderAccountsByIndex
+     *
+     * @returns {void}
+     */
+    static orderAccountsByIndex() {
+        const orderedAccounts = orderBy(Account.getDataAsArray(), ['index']);
+
+        if (some(orderedAccounts, (account, index) => index !== account.index)) {
+            realm.write(() => {
+                each(orderedAccounts, (account, index) => {
+                    realm.create('Account', assign({}, account, { index }), true);
+                });
+            });
+        }
+    }
+
+    /**
+     * Creates account.
+     * @method create
+     *
+     * @param {object} data
+     */
+    static create(data) {
+        realm.write(() => realm.create('Account', data));
+    }
+
+    /**
+     * Creates multiple accounts.
+     * @method createMultiple
+     *
+     * @param {object} data
+     */
+    static createMultiple(accountsData) {
+        realm.write(() => {
+            each(accountsData, (data) => realm.create('Account', data));
+        });
+    }
+
+    /**
+     * Creates an account if it does not already exist.
+     *
+     * @method createIfNotExists
+     * @param {string} name
+     * @param {object} data
+     */
+    static createIfNotExists(name, data) {
+        const shouldCreate = isEmpty(Account.getObjectForId(name));
+
+        if (shouldCreate) {
+            Account.create(assign({}, data, { name }));
+        }
+    }
+
+    /**
+     * Updates account.
+     * @method updateTransactionsAndAddressData
+     *
+     * @param {string} name
+     * @param {object} data
+     */
+    static update(name, data) {
+        realm.write(() => {
+            const existingData = Account.getObjectForId(name);
+            const updatedData = assign({}, existingData, {
+                ...data,
+                name,
+                addressData: isEmpty(data.addressData)
+                    ? existingData.addressData
+                    : preserveAddressLocalSpendStatus(
+                        map(existingData.addressData, (data) => assign({}, data)),
+                        data.addressData,
+                    ),
+            });
+
+            realm.create('Account', updatedData, true);
+        });
+    }
+
+    /**
+     * Deletes account.
+     * @method delete
+     *
+     * @param {string} name
+     */
+    static delete(name) {
+        realm.write(() => {
+            const accountsBeforeDeletion = Account.getDataAsArray();
+            const accountForDeletion = find(accountsBeforeDeletion, { name });
+
+            if (accountForDeletion) {
+                realm.delete(Account.getObjectForId(name));
+
+                const accountsAfterDeletion = Account.getDataAsArray();
+                const deletedAccountIndex = accountForDeletion.index;
+
+                each(accountsAfterDeletion, (account) => {
+                    realm.create(
+                        'Account',
+                        assign({}, account, {
+                            index: account.index > deletedAccountIndex ? account.index - 1 : account.index,
+                        }),
+                        true,
+                    );
+                });
+            }
+        });
+    }
+
+    /**
+     * Migrate account data under a new name.
+     *
+     * @method migrate
+     *
+     * @param {string} from - Account name
+     * @param {string} to - New account name
+     */
+    static migrate(from, to) {
+        const accountData = Account.getObjectForId(from);
+
+        realm.write(() => {
+            // Create account with new name.
+            realm.create('Account', assign({}, accountData, { name: to }));
+            // Delete account with old name.
+            realm.delete(accountData);
+        });
+    }
 }
+
+
+/**
+ * Model for node.
+ */
+class Node {
+    /**
+     * Gets object for provided id (url)
+     *
+     * @method getObjectForId
+     * @param {string} id
+     *
+     * @returns {object}
+     */
+    static getObjectForId(id) {
+        return realm.objectForPrimaryKey('Node', id);
+    }
+
+    /**
+     * Returns a list of nodes
+     *
+     * @return {Realm.Results}
+     */
+    static get data() {
+        return realm.objects('Node');
+    }
+
+    /**
+     * Returns nodes as array
+     *
+     * @method getDataAsArray
+     *
+     * @return {array}
+     */
+    static getDataAsArray() {
+        return map(Node.data, (node) => assign({}, node));
+    }
+
+    /**
+     * Adds a custom node
+     *
+     * @method addCustomNode
+     * @param {string} url Node URL
+     */
+    static addCustomNode(url, pow) {
+        realm.write(() => {
+            realm.create('Node', {
+                url,
+                custom: true,
+                pow,
+            });
+        });
+    }
+
+    /**
+     * Removes a node.
+     *
+     * @method delete
+     * @param {string} url
+     */
+    static delete(url) {
+        const node = Node.getObjectForId(url);
+        realm.write(() => realm.delete(node));
+    }
+
+    /**
+     *
+     * @method addNodes
+     * @param {array} nodes
+     */
+    static addNodes(nodes) {
+        if (size(nodes)) {
+            const existingUrls = map(Node.getDataAsArray(), (node) => node.url);
+
+            realm.write(() => {
+                each(nodes, (node) => {
+                    // If it's an existing node, just update properties.
+                    if (includes(existingUrls, node.url)) {
+                        realm.create('Node', node, true);
+                    } else {
+                        realm.create('Node', node);
+                    }
+                });
+            });
+        }
+    }
+}
+
 /**
  * Model for wallet data and settings.
  */
@@ -91,6 +333,7 @@ class Wallet {
         realm.write(() => {
             Wallet.latestSettings.locale = payload;
         });
+        console.log(Wallet.latestSettings);
     }
 
     /**
@@ -227,4 +470,4 @@ const initialiseSync = () => {
  */
 const reinitialise = (getEncryptionKeyPromise) => purge().then(() => initialise(getEncryptionKeyPromise));
 
-export { realm, Wallet, initialise, initialiseSync, reinitialise };
+export { realm, Wallet, initialise, initialiseSync, reinitialise, Account };

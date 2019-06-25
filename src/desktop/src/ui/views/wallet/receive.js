@@ -22,7 +22,7 @@ class Receive extends React.PureComponent {
 
                     <Top
                          bal={'none'}
-                         main={'none'}
+                         main={'block'}
                          user={'block'}
                         history={this.props.history}
                     />
