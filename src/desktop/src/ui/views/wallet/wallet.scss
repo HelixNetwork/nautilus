@@ -120,13 +120,13 @@
   }
   .foo_bxx1 {
     // position: absolute;
-    // width: 100%;
-    // min-height: 570px;
+    // width: 8%;
+    // min-height: 496px;
     // background-color: #ffffff;
     // position: absolute;
     // top: -180px;
     // bottom:100px;
-    // left: 0;
+    // left: 153px;
     // box-shadow: -5px 4px 5px 0px rgba(0, 0, 0, 0.15);
     width: 700px;
     padding: 35px 20px;
@@ -378,7 +378,7 @@ overflow: hidden;
       bottom: 90px;
       left:200px;
       width: 70%;
-      min-height: 515px;
+      min-height: 496px;
     }
     .foo_bxx1 h3{
       margin-bottom: 0px;
@@ -450,13 +450,11 @@ overflow: hidden;
       padding: 0;
     }
     .welcome{
-      margin-left: 766px !important;
+    
+      margin-left: 438px;
 
     }
-  
-    
-
-   .wallet__box {
+  .wallet__box {
     position: absolute;
     border: 1px solid;
     height: 65px;
@@ -474,8 +472,9 @@ overflow: hidden;
   @media  screen and (min-width: 840px) {
     .img_sr1 {
       float: left;
-      margin: 27px 60px     !important;
-          margin-top: 72px !important;
+      margin: 27px 119px     !important;
+          margin-top: -24px !important;
+          
       text-align: center;
     }
     .wallet__foo_bxx1 h3 {
@@ -502,5 +501,10 @@ overflow: hidden;
       margin-left: 303px;
       margin-top: -47px;
       color: black;
+    }
+    .welcome{
+    
+      margin-left: 438px;
+
     }
   }

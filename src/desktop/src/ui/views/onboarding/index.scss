@@ -190,7 +190,7 @@ footer li::after {
   min-height: 50px;
   position: absolute;
   left: 50%;
-  bottom: 160px;
+  bottom: 209px;
   margin-left: -350px;
   background-color: #000b20;
   border-radius: 5px;
@@ -416,7 +416,11 @@ margin-left: 275px;
   float: left;
   margin-left: 348px;
 }
-
+.head_h1{
+  margin-left:15px;
+  margin-top:83px;
+  font-Size:35px
+}
 .text_ff {
   font-weight: bold;
   margin-top: 20px;

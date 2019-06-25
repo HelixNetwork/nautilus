@@ -40,7 +40,7 @@ class SeedIntro extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 style={{marginLeft:'68px',marginTop:'125px',fontSize:'45px'}}>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
+                                <h1 className={classNames(css.head_h1)}>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <img src={image} alt="" />

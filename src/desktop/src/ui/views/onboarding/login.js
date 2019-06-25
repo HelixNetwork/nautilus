@@ -49,7 +49,7 @@ class Login extends React.PureComponent {
                             </form>
                         </div>
                         {/* <div className={css.onboard_nav}> */}
-                            <Button style={{top:'642px',left:'590px'}} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('done')} >{t('global:goBack')} <span>></span></Button>                            </div>
+                            <Button style={{top:'440px',left:'550px'}} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('done')} >{t('global:goBack')} <span>></span></Button>                            </div>
                     {/* </div> */}
                 </div>
             </section>
