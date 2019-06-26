@@ -10,8 +10,8 @@ import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
 
 import { createRandomSeed, randomBytes } from '../../../utils/crypto';
-import { indexToChar } from '../../../../../shared/libs/hlx/converter';
-import { MAX_SEED_LENGTH } from '../../../../../shared/libs/hlx/utils';
+import { indexToChar } from 'libs/hlx/converter';
+import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
@@ -42,21 +42,21 @@ class SeedGenerate extends React.PureComponent {
         }));
     };
 
-    onRequestNext = () => {
-        const { history } = this.props;
-        const { seed } = this.state;
+    // onRequestNext = () => {
+    //     const { history } = this.props;
+    //     const { seed } = this.state;
 
-        Electron.setOnboardingSeed(seed, true);
-        history.push('/onboarding/account-name');
-    };
+    //     Electron.setOnboardingSeed(seed, true);
+    //     history.push('/onboarding/account-name');
+    // };
 
-    onRequestPrevious = () => {
-        const { history } = this.props;
+    // onRequestPrevious = () => {
+    //     const { history } = this.props;
 
-        this.generateNewSeed();
+    //     this.generateNewSeed();
 
-        history.push('/onboarding/seed-intro');
-    };
+    //     history.push('/onboarding/seed-intro');
+    // };
 
     /**
      * Update individual seed byte to random
@@ -86,8 +86,8 @@ class SeedGenerate extends React.PureComponent {
     };
 
     /**
-     * Generate random seed and initiate seed generation animation sequence
-     * @returns {undefined}
+     * Generate random seed[0] ℹ ｢wdm｣: Compiling...uence
+     * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
      */
     generateNewSeed = () => {
         const newSeed = createRandomSeed();
@@ -163,25 +163,25 @@ class SeedGenerate extends React.PureComponent {
                             <div className="col-lg-12">
                                 <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            <div className={classNames(css.sseed_box2, css.cre_pgs)}>
-                                <div className={css.seed}>
-                                    <div>
-                                        {seed.map((byte, index) => {
-                                            const offset = scramble[index];
-                                            const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
-                                            return (
-                                                <button
-                                                    onClick={this.updateLetter}
-                                                    key={`${index}${letter}`}
-                                                    value={index}
-                                                    style={{ opacity: 1 - offset / 255 }}
-                                                >
-                                                    {letter}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
+                            {/* <div className={classNames(css.sseed_box2, css.cre_pgs)}> */}
+                            <div className={css.seed}>
+                                <div>
+                                    {seed.map((byte, index) => {
+                                        const offset = scramble[index];
+                                        const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                        return (
+                                            <button
+                                                onClick={this.updateLetter}
+                                                key={`${index}${letter}`}
+                                                value={index}
+                                                style={{ opacity: 1 - offset / 255 }}
+                                            >
+                                                {letter}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
+                                {/* </div> */}
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
