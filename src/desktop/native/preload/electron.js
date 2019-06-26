@@ -1,7 +1,7 @@
 import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
-import Realm from '../Realm';
+import Realm from '../realm';
 
 let onboardingSeed = null;
 let onboardingGenerated = false;
