@@ -6,7 +6,9 @@ import Top from '../../components/topbar';
 import PropTypes from 'prop-types';
 import reload from 'ui/images/refresh.svg';
 import { withI18n } from 'react-i18next';
-class Chart extends React.PureComponent {
+
+
+class Charts extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
         history: PropTypes.shape({
@@ -21,7 +23,9 @@ class Chart extends React.PureComponent {
                 <section className={css.home}>
 
                     <Top
-                        disp={'block'}
+                        bal={'none'}
+                        main={'block'}
+                        user={'block'}
                         history={this.props.history}
                     />
                     <div className={classNames(css.pg1_foo3)}>
@@ -32,7 +36,7 @@ class Chart extends React.PureComponent {
                                     <div className={classNames(css.foo_bxx1)}>
                                        <h5>Overview HLX chart</h5>
                                         <div className={classNames(css.sseed_box2, css.sec_bxc)}>
-                                          
+                                      
 
                                         </div>
                                     
@@ -60,4 +64,4 @@ class Chart extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(withI18n()(Chart));
+export default connect(null, mapDispatchToProps)(withI18n()(Charts));
