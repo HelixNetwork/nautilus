@@ -52,6 +52,25 @@ const Electron = {
     },
 
     /**
+    * Set onboarding seed variable to bypass Redux
+    * @param {array} Seed - Target seed byte array
+    * @param {boolean} isGenerated - Is the seed generated using Trinity
+    * @returns {undefined}
+    */
+    setOnboardingSeed: (seed, isGenerated) => {
+        onboardingSeed = seed;
+        onboardingGenerated = isGenerated ? true : false;
+    },
+
+    /**
+     * Get onboarding seed value
+     * @returns {array} Onboarding seed value
+     */
+    getOnboardingSeed: () => {
+        return onboardingSeed;
+    },
+
+    /**
      * Get all local storage items
      * @returns {object} Storage items
      */
