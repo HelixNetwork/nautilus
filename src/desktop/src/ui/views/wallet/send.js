@@ -24,7 +24,7 @@ class Send extends React.PureComponent {
 
                     <Top
                         bal={'none'}
-                        main={'none'}
+                        main={'block'}
                         user={'block'}
                         history={history}
                     />
@@ -40,7 +40,7 @@ class Send extends React.PureComponent {
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
                                         </div>
-                                        <h1 className={css.eq}>=</h1>
+                                        <h1 className={classNames(css.eq)}>=</h1>
                                         <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>

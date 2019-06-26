@@ -1,19 +1,21 @@
 export const __DEV__ = process.env.NODE_ENV === 'development';
 export const __TEST__ = process.env.NODE_ENV === 'test';
+export const __MOBILE__ = typeof navigator !== 'undefined' && navigator.product === 'ReactNative';
+
 /** Default IRI node object */
 export const DEFAULT_NODE = __TEST__
     ? {
-        url: 'http://localhost:14265',
-        pow: false,
-        token: '',
-        password: '',
-    }
+          url: 'http://localhost:14265',
+          pow: false,
+          token: '',
+          password: '',
+      }
     : {
-        url: 'http://3.122.180.122:14700', // 'https://nodes.iota.org'
-        pow: false,
-        token: '',
-        password: '',
-    };
+          url: 'http://3.122.180.122:14700', // 'https://nodes.iota.org'
+          pow: false,
+          token: '',
+          password: '',
+      };
 
 export const NODES_WITH_POW_DISABLED = [
     'http://3.122.180.122:14700', // 'https://nodes.iota.org'
