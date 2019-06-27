@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
+    "@helixnetwork/core": "^1.0.0-alpha.2",
     "@ljharb/eslint-config": "^13.1.1",
     "electron-packager": "^13.1.1",
     "eslint-config-react-app": "^4.0.1",

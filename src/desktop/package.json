@@ -98,16 +98,16 @@
     },
     "extends": null,
     "files": [
-        "./build/**/*",
-        "./node_modules/**/*",
-        "./package.json",
-        "./static/**/*",
-        "!node_modules/realm/android${/*}",
-        "!node_modules/realm/build${/*}",
-        "!node_modules/realm/react-native${/*}",
-        "!node_modules/realm/scripts${/*}",
-        "!node_modules/realm/src${/*}",
-        "!node_modules/realm/vendor${/*}"    
+      "./build/**/*",
+      "./node_modules/**/*",
+      "./package.json",
+      "./static/**/*",
+      "!node_modules/realm/android${/*}",
+      "!node_modules/realm/build${/*}",
+      "!node_modules/realm/react-native${/*}",
+      "!node_modules/realm/scripts${/*}",
+      "!node_modules/realm/src${/*}",
+      "!node_modules/realm/vendor${/*}"
     ],
     "dmg": {
       "iconSize": 120,

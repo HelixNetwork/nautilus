@@ -35,7 +35,7 @@ class SeedIntro extends React.PureComponent {
         return (
             <div>
                 <Logos size={20} />
-               
+
                 <section className="spage_1">
                     <div className="container">
                         <div className="row">
