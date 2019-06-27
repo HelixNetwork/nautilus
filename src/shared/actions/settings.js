@@ -1,5 +1,5 @@
 import i18next from '../libs/i18next';
-import { Wallet } from '../database';
+// import { Wallet } from '../database';
 export const ActionTypes = {
     SET_LOCALE: 'HELIX/SETTINGS/LOCALE',
     UPDATE_THEME: 'HELIX/SETTINGS/UPDATE_THEME',
@@ -16,7 +16,7 @@ export const ActionTypes = {
 export function setLocale(locale) {
     return (dispatch) => {
         i18next.changeLanguage(locale);
-        Wallet.updateLocale(locale);
+        // Wallet.updateLocale(locale);
         return dispatch({
             type: ActionTypes.SET_LOCALE,
             payload: locale,

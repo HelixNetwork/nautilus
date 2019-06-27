@@ -9,6 +9,10 @@ import Button from 'ui/components/button';
 import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
 
+import { createRandomSeed, randomBytes } from '../../../utils/crypto';
+import { indexToChar } from 'libs/hlx/converter';
+import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
+
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
         history: PropTypes.shape({
@@ -18,13 +22,135 @@ class SeedGenerate extends React.PureComponent {
     };
 
     state = {
+        seed: Electron.getOnboardingSeed() || createRandomSeed(),
+        scramble: Electron.getOnboardingSeed() ? new Array(MAX_SEED_LENGTH).fill(0) : randomBytes(MAX_SEED_LENGTH, 27),
+        existingSeed: Electron.getOnboardingSeed(),
+        clicks: [],
     }
-    stepBack() {
-        this.props.history.goBack();
+    componentDidMount() {
+        this.frame = 0;
+        this.unscramble();
     }
+
+    componentWillUnmount() {
+        this.frame = -1;
+    }
+
+    onUpdatedSeed = (seed) => {
+        this.setState(() => ({
+            seed,
+        }));
+    };
+
+    // onRequestNext = () => {
+    //     const { history } = this.props;
+    //     const { seed } = this.state;
+
+    //     Electron.setOnboardingSeed(seed, true);
+    //     history.push('/onboarding/account-name');
+    // };
+
+    // onRequestPrevious = () => {
+    //     const { history } = this.props;
+
+    //     this.generateNewSeed();
+
+    //     history.push('/onboarding/seed-intro');
+    // };
+
+    /**
+     * Update individual seed byte to random
+     * @param {event} event - Click event
+     * @param {number} position - Letter seed position index
+     * @returns {undefined}
+     */
+    updateLetter = (e) => {
+        const { seed, clicks, scramble } = this.state;
+
+        const position = e.target.value;
+
+        const newClicks = clicks.indexOf(position) < 0 ? clicks.concat([position]) : clicks;
+
+        const newSeed = seed.slice(0);
+        newSeed[position] = createRandomSeed(1)[0];
+
+        scramble[position] = 64;
+
+        this.setState(() => ({
+            seed: newSeed,
+            clicks: newClicks,
+            scramble: scramble,
+        }));
+
+        this.unscramble();
+    };
+
+    /**
+     * Generate random seed[0] ℹ ｢wdm｣: Compiling...uence
+     * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
+     */
+    generateNewSeed = () => {
+        const newSeed = createRandomSeed();
+        Electron.setOnboardingSeed(null);
+
+        this.setState(() => ({
+            seed: newSeed,
+            existingSeed: false,
+            clicks: [],
+        }));
+
+        this.frame = 0;
+
+        this.setState({
+            scramble: randomBytes(MAX_SEED_LENGTH, 27),
+        });
+
+        this.unscramble();
+    };
+
+    /**
+     * Seed generation animation sequence step
+     * @returns {undefined}
+     */
+    unscramble() {
+        const { scramble } = this.state;
+
+        if (this.frame < 0) {
+            return;
+        }
+
+        const scrambleNew = [];
+        let sum = -1;
+
+        if (this.frame > 2) {
+            sum = 0;
+
+            for (let i = 0; i < scramble.length; i++) {
+                sum += scramble[i];
+                scrambleNew.push(Math.max(0, scramble[i] - 15));
+            }
+
+            this.setState({
+                scramble: scrambleNew,
+            });
+
+            this.frame = 0;
+        }
+
+        this.frame++;
+
+        if (sum !== 0) {
+            requestAnimationFrame(this.unscramble.bind(this));
+        }
+    }
+    // stepBack() {
+    //     this.props.history.goBack();
+    // }
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
+        const { seed, scramble, existingSeed, clicks } = this.state;
+        const clicksLeft = 10 - clicks.length;
 
         return (
             <div>
@@ -37,14 +163,25 @@ class SeedGenerate extends React.PureComponent {
                             <div className="col-lg-12">
                                 <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            <div className={classNames(css.sseed_box2, css.cre_pgs)}>
-                                <h3>{t('newSeedSetup:randomiseSeedMore')}</h3>
-                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                <div className={classNames(css.text_ff)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F 5</div>
-                                <div className={classNames(css.img_align)}><a><img src={reload} alt="" /></a></div>
-                                <div className={classNames(css.text_align)}>{t('newSeedSetup:clickForNewSeed')}</div>
+                            {/* <div className={classNames(css.sseed_box2, css.cre_pgs)}> */}
+                            <div className={css.seed}>
+                                <div>
+                                    {seed.map((byte, index) => {
+                                        const offset = scramble[index];
+                                        const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                        return (
+                                            <button
+                                                onClick={this.updateLetter}
+                                                key={`${index}${letter}`}
+                                                value={index}
+                                                style={{ opacity: 1 - offset / 255 }}
+                                            >
+                                                {letter}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {/* </div> */}
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>

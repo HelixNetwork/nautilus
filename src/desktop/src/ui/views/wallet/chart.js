@@ -6,7 +6,9 @@ import Top from '../../components/topbar';
 import PropTypes from 'prop-types';
 import reload from 'ui/images/refresh.svg';
 import { withI18n } from 'react-i18next';
-class Chart extends React.PureComponent {
+import Chartss from '../../components/chart';
+
+class Charts extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
         history: PropTypes.shape({
@@ -21,7 +23,9 @@ class Chart extends React.PureComponent {
                 <section className={css.home}>
 
                     <Top
-                        disp={'block'}
+                        bal={'none'}
+                        main={'block'}
+                        user={'block'}
                         history={this.props.history}
                     />
                     <div className={classNames(css.pg1_foo3)}>
@@ -30,10 +34,9 @@ class Chart extends React.PureComponent {
 
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx1)}>
-                                       <h5>Overview HLX chart</h5>
+                                       <h3>Overview HLX chart<span>.</span></h3>
                                         <div className={classNames(css.sseed_box2, css.sec_bxc)}>
-                                          
-
+                                              <Chartss />
                                         </div>
                                     
                                     </div>
@@ -43,16 +46,9 @@ class Chart extends React.PureComponent {
                         </div>
                     </div>
 
-
-                    <ul>
-                        <li className={classNames(css.footer)}><a href="#">0</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li className="db_none"><a href="#">5</a></li>
-                    </ul>
                 </section>
+                <footer className={classNames(css.footer_bx)}>
+                </footer>
             </div>
         )
     }
@@ -60,4 +56,4 @@ class Chart extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
-export default connect(null, mapDispatchToProps)(withI18n()(Chart));
+export default connect(null, mapDispatchToProps)(withI18n()(Charts));

@@ -1,4 +1,5 @@
 import { ALIAS_REALM } from 'utils/realm';
+import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 
 export const ACC_MAIN = 'Helix';
 // Maximum allowed account title

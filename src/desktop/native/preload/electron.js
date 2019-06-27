@@ -1,7 +1,7 @@
 import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
-import Realm from '../realm';
+// import Realm from '../realm';
 
 let onboardingSeed = null;
 let onboardingGenerated = false;
@@ -15,9 +15,9 @@ const Electron = {
         return 'hi';
     },
 
-    getRealm: () => {
-        return Realm;
-    },
+    // getRealm: () => {
+    //     return Realm;
+    // },
 
     getUserDataPath: () => {
         return remote.app.getPath('userData');
@@ -49,6 +49,25 @@ const Electron = {
      */
     removeKeychain: (accountName) => {
         return keytar.deletePassword(KEYTAR_SERVICE, accountName);
+    },
+
+    /**
+    * Set onboarding seed variable to bypass Redux
+    * @param {array} Seed - Target seed byte array
+    * @param {boolean} isGenerated - Is the seed generated using Trinity
+    * @returns {undefined}
+    */
+    setOnboardingSeed: (seed, isGenerated) => {
+        onboardingSeed = seed;
+        onboardingGenerated = isGenerated ? true : false;
+    },
+
+    /**
+     * Get onboarding seed value
+     * @returns {array} Onboarding seed value
+     */
+    getOnboardingSeed: () => {
+        return onboardingSeed;
     },
 
     /**
