@@ -49,7 +49,7 @@ class SeedIntro extends React.PureComponent {
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-save')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
