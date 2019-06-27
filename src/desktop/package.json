@@ -155,7 +155,7 @@
     "@babel/register": "^7.4.4",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
-    "electron": "3.0.15",
+    "electron": "4.0.5",
     "electron-builder": "20.38.5",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
