@@ -44,6 +44,7 @@ class Onboarding extends React.PureComponent {
             'done',
             'helixcoin',
             'receive',
+            
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
@@ -79,6 +80,7 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-name" component={SeedName} />
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
+                              
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
                                 <Route path="/wallet" component={Wallet} />

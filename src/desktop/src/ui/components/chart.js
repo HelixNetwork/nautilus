@@ -7,8 +7,9 @@ class Chartss extends React.PureComponent{
            
                 <div
                   style={{
-                    width: "400px",
-                    height: "300px"
+                    marginLeft:'30px',
+                    width: "800px",
+                    height: "350px"
                   }}
                 >
                   <Chart
@@ -32,3 +33,5 @@ class Chartss extends React.PureComponent{
         )
     }
 }
+
+export default Chartss;
