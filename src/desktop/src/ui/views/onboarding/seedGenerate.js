@@ -168,8 +168,8 @@ class SeedGenerate extends React.PureComponent {
                             <div className="col-lg-12">
                                 <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            {/* <div className={classNames(css.foo_bxx1)}> */}
-                            <div className={classNames(css.sseed_box2, css.cre_pgs)}>
+
+                            <div className={classNames(css.sseed_box_wrap, css.cre_pgs)}>
                                 <h3>
                                     {!existingSeed && clicksLeft > 0 ? (
                                         <Trans i18nKey="newSeedSetup:individualLetterCount" count={clicksLeft}>
@@ -180,8 +180,29 @@ class SeedGenerate extends React.PureComponent {
                                             <span>&nbsp;</span>
                                         )}
                                 </h3>
-                                <div className={css.seed}>
-                                    {/* <div> */}
+                                <div>
+
+
+                                    <div className={css.seed_wrapper}>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                        </div>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                        </div>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                        </div>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                {/* <div className={css.seed}>                                                                                                                                                      
+
                                     <Button type="button" onClick={this.generateNewSeed} style={{ display: this.state.viewReload }} className="icon">
                                         <img src={reload} alt="" />
                                         {t('newSeedSetup:clickForNewSeed')}
@@ -203,10 +224,10 @@ class SeedGenerate extends React.PureComponent {
                                             );
                                         })}
                                     </div>
-                                    {/* </div> */}
-                                </div>
+
+                                </div> */}
                             </div>
-                            {/* </div */}
+
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
                                 <Button className="navright" variant="backgroundNone" >{t('global:continue')} <span>></span> </Button>
