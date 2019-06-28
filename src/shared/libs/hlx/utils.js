@@ -17,7 +17,7 @@ import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
 import { roundDown } from '../utils';
 
-export const MAX_SEED_LENGTH = 64;
+export const MAX_SEED_LENGTH = 16;
 
 export const MAX_SEED_BITS = MAX_SEED_LENGTH * 4;
 
