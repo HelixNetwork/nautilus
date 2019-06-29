@@ -44,22 +44,6 @@ class SeedGenerate extends React.PureComponent {
         }));
     };
 
-    // onRequestNext = () => {
-    //     const { history } = this.props;
-    //     const { seed } = this.state;
-
-    //     Electron.setOnboardingSeed(seed, true);
-    //     history.push('/onboarding/account-name');
-    // };
-
-    // onRequestPrevious = () => {
-    //     const { history } = this.props;
-
-    //     this.generateNewSeed();
-
-    //     history.push('/onboarding/seed-intro');
-    // };
-
     /**
      * Update individual seed byte to random
      * @param {event} event - Click event
@@ -154,7 +138,7 @@ class SeedGenerate extends React.PureComponent {
         const { t } = this.props;
         const { ledger } = this.state;
         const { seed, scramble, existingSeed, clicks } = this.state;
-        const clicksLeft = 10 - clicks.length;
+        const clicksLeft = 4 - clicks.length;
         console.log("Seed::::" + seed);
 
         return (
@@ -182,19 +166,35 @@ class SeedGenerate extends React.PureComponent {
                                 </h3>
                                 <div>
 
-
                                     <div className={css.seed_wrapper}>
-                                        <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                        <div className={css.seed_wrapbox}>
+                                            <div className={css.seed}>
+
+                                                {seed.map((byte, index) => {
+                                                    const offset = scramble[index];
+                                                    const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                    return (
+                                                        <button
+                                                            onClick={this.updateLetter}
+                                                            key={`${index}${letter}`}
+                                                            value={index}
+                                                            style={{ opacity: 1 - offset / 255 }}
+                                                        >
+                                                            {letter}
+                                                        </button>
+                                                    );
+                                                })}
+
+                                            </div>
                                         </div>
                                         <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                            <div class={css.seed_space}></div>
                                         </div>
                                         <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                            <div class={css.seed_space}></div>
                                         </div>
                                         <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}>a b c d a b c d a b c d a b c d</div>
+                                            <div class={css.seed_space}></div>
                                         </div>
 
                                     </div>
