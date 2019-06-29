@@ -44,22 +44,6 @@ class SeedGenerate extends React.PureComponent {
         }));
     };
 
-    // onRequestNext = () => {
-    //     const { history } = this.props;
-    //     const { seed } = this.state;
-
-    //     Electron.setOnboardingSeed(seed, true);
-    //     history.push('/onboarding/account-name');
-    // };
-
-    // onRequestPrevious = () => {
-    //     const { history } = this.props;
-
-    //     this.generateNewSeed();
-
-    //     history.push('/onboarding/seed-intro');
-    // };
-
     /**
      * Update individual seed byte to random
      * @param {event} event - Click event
@@ -154,7 +138,7 @@ class SeedGenerate extends React.PureComponent {
         const { t } = this.props;
         const { ledger } = this.state;
         const { seed, scramble, existingSeed, clicks } = this.state;
-        const clicksLeft = 10 - clicks.length;
+        const clicksLeft = 4 - clicks.length;
         console.log("Seed::::" + seed);
 
         return (
@@ -168,8 +152,8 @@ class SeedGenerate extends React.PureComponent {
                             <div className="col-lg-12">
                                 <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            {/* <div className={classNames(css.foo_bxx1)}> */}
-                            <div className={classNames(css.sseed_box2, css.cre_pgs)}>
+
+                            <div className={classNames(css.sseed_box_wrap, css.cre_pgs)}>
                                 <h3>
                                     {!existingSeed && clicksLeft > 0 ? (
                                         <Trans i18nKey="newSeedSetup:individualLetterCount" count={clicksLeft}>
@@ -180,8 +164,45 @@ class SeedGenerate extends React.PureComponent {
                                             <span>&nbsp;</span>
                                         )}
                                 </h3>
-                                <div className={css.seed}>
-                                    {/* <div> */}
+                                <div>
+
+                                    <div className={css.seed_wrapper}>
+                                        <div className={css.seed_wrapbox}>
+                                            <div className={css.seed}>
+
+                                                {seed.map((byte, index) => {
+                                                    const offset = scramble[index];
+                                                    const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                    return (
+                                                        <button
+                                                            onClick={this.updateLetter}
+                                                            key={`${index}${letter}`}
+                                                            value={index}
+                                                            style={{ opacity: 1 - offset / 255 }}
+                                                        >
+                                                            {letter}
+                                                        </button>
+                                                    );
+                                                })}
+
+                                            </div>
+                                        </div>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}></div>
+                                        </div>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}></div>
+                                        </div>
+                                        <div class={css.seed_wrapbox}>
+                                            <div class={css.seed_space}></div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                {/* <div className={css.seed}>                                                                                                                                                      
+
                                     <Button type="button" onClick={this.generateNewSeed} style={{ display: this.state.viewReload }} className="icon">
                                         <img src={reload} alt="" />
                                         {t('newSeedSetup:clickForNewSeed')}
@@ -203,10 +224,10 @@ class SeedGenerate extends React.PureComponent {
                                             );
                                         })}
                                     </div>
-                                    {/* </div> */}
-                                </div>
+
+                                </div> */}
                             </div>
-                            {/* </div */}
+
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
                                 <Button className="navright" variant="backgroundNone" >{t('global:continue')} <span>></span> </Button>

@@ -390,7 +390,7 @@ margin-left: 275px;
 }
 .sec_bxc h3 {
   font-size: 20px;
-  border-bottom: 1px solid #8e9ba9;
+  // border-bottom: 1px solid #8e9ba9;
   padding-bottom: 30px;
   color: #fff;
 }
@@ -487,7 +487,7 @@ margin-left: 275px;
 }
 .sseed_box2 h3 {
   font-size: 20px;
-  border-bottom: 1px solid #8e9ba9;
+  // border-bottom: 1px solid #8e9ba9;
   padding-bottom: 10px;
 }
 .arrow_bx {
@@ -672,9 +672,13 @@ margin-left: 275px;
 }
 
 .seed {
+  font-size: 25px;
+  letter-spacing: 0.5em;
   display: block;
-  margin: 32px auto;
-  width: calc(100vw - 40px);
+  width: 100%;
+  height: 100%;
+  // margin: 32px auto;
+  // width: calc(100vw - 40px);
   max-width: 920px;
   text-align: left;
 
@@ -688,15 +692,16 @@ margin-left: 275px;
 
   button,
   > div > span {
-      display: inline-block;
-      background: transparent;
-      border: none;
-      color: var(--secondary);
-      font-size: 24px;
-      line-height: 46px;
-      height: 48px;
-      margin: 0;
-      font-family: 'SourceCodePro';
+    display: inline-block;
+    background: transparent;
+    border: none;
+    color: var(--secondary);
+    font-size: 24px;
+    line-height: 29px;
+    height: 23px;
+    margin: 0;
+    padding: 0px 14px;
+    font-family: "SourceCodePro";
       transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
 
       &.disabled {
@@ -707,7 +712,7 @@ margin-left: 275px;
       &:hover {
           position: relative;
           cursor: pointer;
-          color: var(--primary);
+          color: var(--input-bg);
           transform: scale(1.5);
       }
 
@@ -723,7 +728,7 @@ margin-left: 275px;
   > div {
       width: 92%;
       padding: 10px 0;
-      display: flex;
+      display: flex !important;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
@@ -772,4 +777,36 @@ margin-left: 275px;
           padding-top: 4px;
       }
   }
+}
+
+.seed_wrapper{
+  display: grid;
+  grid-template-columns: 210px 210px;
+  padding-left: 20.5%;
+}
+
+.seed_wrapbox{
+  border: 2px solid #e8b349;
+  border-radius: 5px;
+  padding: 0.9em;
+  color: #7d7c7d;
+  margin: 0.5em;
+  height: 108px;
+}
+
+.seed_space{
+  font-size: 25px;
+  letter-spacing: 0.5em;
+}
+
+.sseed_box_wrap{
+  width: 714px;
+    padding: 16px 8px;
+    min-height: 308px;
+    position: absolute;
+    left: 268px;
+    bottom: 124px;
+    background-color: #000b20;
+    border-radius: 5px;
+    box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
 }
