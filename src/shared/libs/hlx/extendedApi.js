@@ -22,8 +22,8 @@ import {
     MAX_MILESTONE_FALLBEHIND,
 } from '../../config';
 import {
-    sortTransactionTrytesArray,
-    constructBundleFromAttachedTrytes,
+    sortTransactionBytesArray,
+    constructBundleFromAttachedBytes,
     isBundle,
     isBundleTraversable,
 } from './transfers';
@@ -39,7 +39,7 @@ import { EMPTY_HASH_BYTES, withRequestTimeoutsHandler } from './utils';
  * @returns {number}
  */
 /* eslint-disable no-unused-vars */
-const getApiTimeout = (method, payload) => {
+const getApiTimeout = (method) => {
     /* eslint-enable no-unused-vars */
     switch (method) {
         case 'wereAddressesSpentFrom':
@@ -86,7 +86,7 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
 };
 
 /**
- * Promisified version of helix getBalances
+ * Helix getBalances
  *
  * @method getBalancesAsync
  * @param {object} [settings]
@@ -97,22 +97,10 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
 const getBalancesAsync = (settings, withQuorum = true) => (addresses, threshold = DEFAULT_BALANCES_THRESHOLD) =>
     withQuorum
         ? quorum.getBalances(addresses, threshold)
-        : new Promise((resolve, reject) => {
-              getHelixInstance(settings, getApiTimeout('getBalances')).api.getBalances(
-                  addresses,
-                  threshold,
-                  (err, balances) => {
-                      if (err) {
-                          reject(err);
-                      } else {
-                          resolve(balances);
-                      }
-                  },
-              );
-          });
+        : getHelixInstance(settings, getApiTimeout('getBalances')).getBalances(addresses, threshold);
 
 /**
- * Promisified version of iota.api.getNodeInfo
+ * helix getNodeInfoApi
  *
  * @method getNodeInfoAsync
  * @param {object} [settings]
@@ -120,18 +108,11 @@ const getBalancesAsync = (settings, withQuorum = true) => (addresses, threshold 
  * @returns {function(): Promise<object>}
  */
 const getNodeInfoAsync = (settings) => () =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings, getApiTimeout('getNodeInfo')).api.getNodeInfo((err, info) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(info);
-            }
-        });
-    });
+        getHelixInstance(settings, getApiTimeout('getNodeInfo')).getNodeInfo();
+
 
 /**
- * Promisified version of iota.api.getTransactionsObjects
+ * Helix getTransactionsObjects
  *
  * @method getTransactionsObjectsAsync
  * @param {object} [settings]
@@ -139,18 +120,11 @@ const getNodeInfoAsync = (settings) => () =>
  * @returns {function(array): Promise<any>}
  */
 const getTransactionsObjectsAsync = (settings) => (hashes) =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings).api.getTransactionsObjects(hashes, (err, txs) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(txs);
-            }
-        });
-    });
-
+        getHelixInstance(settings).getTransactionsObjects(hashes);
+   
+// TODO : Check if fintransaction objects to be used the new dedicated helix method
 /**
- * Promisified version of iota.api.findTransactionObjects
+ * Helix findTransactionObjects
  *
  * @method findTransactionObjectsAsync
  * @param {object} [settings]
@@ -161,7 +135,7 @@ const findTransactionObjectsAsync = (settings) => (args) =>
     findTransactionsAsync(settings)(args).then((hashes) => getTransactionsObjectsAsync(settings)(hashes));
 
 /**
- * Promisified version of iota.api.findTransactions
+ * Helix findTransactions
  *
  * @method findTransactionsAsync
  * @param {object} [settings]
@@ -169,18 +143,11 @@ const findTransactionObjectsAsync = (settings) => (args) =>
  * @returns {function(object): Promise<array>}
  */
 const findTransactionsAsync = (settings) => (args) =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings).api.findTransactions(args, (err, txs) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(txs);
-            }
-        });
-    });
+        getHelixInstance(settings).findTransactions(args);
+
 
 /**
- * Promisified version of iota.api.getLatestInclusion
+ * Helix getLatestInclusion
  *
  * @method getLatestInclusionAsync
  * @param {object} [settings]
@@ -191,21 +158,11 @@ const findTransactionsAsync = (settings) => (args) =>
 const getLatestInclusionAsync = (settings, withQuorum = false) => (hashes) =>
     withQuorum
         ? quorum.getLatestInclusion(hashes)
-        : new Promise((resolve, reject) => {
-              getHelixInstance(settings, getApiTimeout('getInclusionStates')).api.getLatestInclusion(
-                  hashes,
-                  (err, states) => {
-                      if (err) {
-                          reject(err);
-                      } else {
-                          resolve(states);
-                      }
-                  },
-              );
-          });
+        : getHelixInstance(settings, getApiTimeout('getInclusionStates')).getLatestInclusion(hashes);
+
 
 /**
- * Extended version of iota.api.promoteTransaction with an option to perform PoW locally
+ * Helix promoteTransaction with an option to perform PoW locally
  *
  * @method promoteTransactionAsync
  * @param {object} [settings]
@@ -217,18 +174,17 @@ const promoteTransactionAsync = (settings, seedStore) => (
     hash,
     depth = DEFAULT_DEPTH,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
-    transfer = { address: 'U'.repeat(81), value: 0, message: '', tag: '' },
+    transfer = { address: '0'.repeat(64), value: 0, message: '', tag: '' },
 ) => {
     const cached = {
-        trytes: [],
+        bytes: [],
     };
 
     return (
-        isPromotable(settings)(hash, { rejectWithReason: true })
-            // rejectWithReason only resolves if provided hashes are consistent
+        isPromotable(settings)(hash)
             .then(() => prepareTransfersAsync(settings)(transfer.address, [transfer]))
-            .then((trytes) => {
-                cached.trytes = trytes;
+            .then((bytes) => {
+                cached.bytes = bytes;
 
                 return getTransactionsToApproveAsync(settings)(
                     {
@@ -242,21 +198,21 @@ const promoteTransactionAsync = (settings, seedStore) => (
                 attachToTangleAsync(settings, seedStore)(
                     trunkTransaction,
                     branchTransaction,
-                    cached.trytes,
+                    cached.bytes,
                     minWeightMagnitude,
                 ),
             )
-            .then(({ trytes }) => {
-                cached.trytes = trytes;
+            .then(({ bytes }) => {
+                cached.bytes = bytes;
 
-                return storeAndBroadcastAsync(settings)(cached.trytes);
+                return storeAndBroadcastAsync(settings)(cached.bytes);
             })
             .then(() => hash)
     );
 };
 
 /**
- * Promisified version of iota.api.replayBundle
+ * Helix ReplayBundle
  *
  * @method replayBundleAsync
  * @param {object} [settings]
@@ -270,14 +226,14 @@ const replayBundleAsync = (settings, seedStore) => (
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const cached = {
-        trytes: [],
+        bytes: [],
         transactionObjects: [],
     };
 
     return getBundleAsync(settings)(hash)
         .then((bundle) => {
-            const convertToTrytes = (tx) => iota.utils.transactionTrytes(tx);
-            cached.trytes = map(bundle, convertToTrytes);
+            const convertToBytes = (tx) => iota.utils.transactionBytes(tx);
+            cached.bytes = map(bundle, convertToBytes);
             cached.transactionObjects = bundle;
 
             return getTransactionsToApproveAsync(settings)({}, depth);
@@ -286,15 +242,15 @@ const replayBundleAsync = (settings, seedStore) => (
             attachToTangleAsync(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
-                cached.trytes,
+                cached.bytes,
                 minWeightMagnitude,
             ),
         )
-        .then(({ trytes, transactionObjects }) => {
-            cached.trytes = trytes;
+        .then(({ bytes, transactionObjects }) => {
+            cached.bytes = bytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.trytes);
+            return storeAndBroadcastAsync(settings)(cached.bytes);
         })
         .then(() => cached.transactionObjects);
 };
@@ -359,14 +315,14 @@ const sendTransferAsync = (settings) => (
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const cached = {
-        trytes: [],
+        bytes: [],
         transactionObjects: [],
     };
 
     return seedStore
         .prepareTransfers(settings)(transfers, options)
-        .then((trytes) => {
-            cached.trytes = trytes;
+        .then((bytes) => {
+            cached.bytes = bytes;
 
             return getTransactionsToApproveAsync(settings)({}, depth);
         })
@@ -374,21 +330,21 @@ const sendTransferAsync = (settings) => (
             attachToTangleAsync(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
-                cached.trytes,
+                cached.bytes,
                 minWeightMagnitude,
             ),
         )
-        .then(({ trytes, transactionObjects }) => {
-            cached.trytes = trytes;
+        .then(({ bytes, transactionObjects }) => {
+            cached.bytes = bytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.trytes);
+            return storeAndBroadcastAsync(settings)(cached.bytes);
         })
         .then(() => cached.transactionObjects);
 };
 
 /**
- * Promisified version of iota.api.getTransactionsToApprove
+ * Helix getTransactionsToApprove
  *
  * @method getTransactionsToApproveAsync
  * @param {object} [settings]
@@ -396,22 +352,12 @@ const sendTransferAsync = (settings) => (
  * @returns {function(*, number): Promise<object>}
  */
 const getTransactionsToApproveAsync = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).api.getTransactionsToApprove(
+        getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
             depth,
-            reference,
-            (err, transactionsToApprove) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(transactionsToApprove);
-                }
-            },
-        );
-    });
+            reference);
 
 /**
- * Promisified version of iota.api.prepareTransfers
+ * Helix prepareTransfers
  *
  * @method prepareTransfersAsync
  * @param {object} [settings]
@@ -426,29 +372,20 @@ export const prepareTransfersAsync = (settings) => (seed, transfers, options = n
         args = [...args, { ...options, nativeGenerateSignatureFunction: signatureFn }];
     }
 
-    const api = composeAPI(settings || { ...iota });
-
-    return api.prepareTransfers(...args);
+   return getHelixInstance(settings).prepareTransfers(...args);
 };
 
 /**
- * Promisified version of iota.api.storeAndBroadcast
+ * Helix storeAndBroadcast
  *
  * @method storeAndBroadcastAsync
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<any>}
  */
-const storeAndBroadcastAsync = (settings) => (trytes) =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings).api.storeAndBroadcast(trytes, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
-    });
+const storeAndBroadcastAsync = (settings) => (bytes) =>
+        getHelixInstance(settings).storeAndBroadcast(bytes);
+
 
 /**
  * Checks if attachToTangle is available on the provided node
@@ -464,7 +401,7 @@ const checkAttachToTangleAsync = (node) => {
         body: JSON.stringify({ command: 'attachToTangle' }),
         headers: new Headers({
             'Content-Type': 'application/json',
-            'X-IOTA-API-Version': IRI_API_VERSION,
+            'X-HELIX-API-Version': IRI_API_VERSION,
         }),
     })
         .then((res) => res.json())
@@ -497,7 +434,7 @@ const allowsRemotePow = (settings) => {
 };
 
 /**
- * Promisified version of iota.api.attachToTangle
+ * Helix attachToTangle
  *
  * @method attachToTangleAsync
  * @param {object} [settings]
@@ -508,25 +445,24 @@ const allowsRemotePow = (settings) => {
 const attachToTangleAsync = (settings, seedStore) => (
     trunkTransaction,
     branchTransaction,
-    trytes,
+    bytes,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const shouldOffloadPow = get(seedStore, 'offloadPow') === true;
 
     if (shouldOffloadPow) {
         const request = (requestTimeout) =>
-            new Promise((resolve, reject) => {
-                getHelixInstance(settings, requestTimeout).api.attachToTangle(
+                getHelixInstance(settings, requestTimeout).attachToTangle(
                     trunkTransaction,
                     branchTransaction,
                     minWeightMagnitude,
-                    // Make sure trytes are sorted properly
-                    sortTransactionTrytesArray(trytes),
-                    (err, attachedTrytes) => {
+                    // Make sure bytes are sorted properly
+                    sortTransactionBytesArray(bytes)).then(
+                    (err, attachedBytes) => {
                         if (err) {
                             reject(err);
                         } else {
-                            constructBundleFromAttachedTrytes(attachedTrytes, seedStore)
+                            constructBundleFromAttachedBytes(attachedBytes, seedStore)
                                 .then((transactionObjects) => {
                                     if (
                                         isBundle(transactionObjects) &&
@@ -534,7 +470,7 @@ const attachToTangleAsync = (settings, seedStore) => (
                                     ) {
                                         resolve({
                                             transactionObjects,
-                                            trytes: attachedTrytes,
+                                            bytes: attachedBytes,
                                         });
                                     } else {
                                         reject(new Error(Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_REMOTE_POW));
@@ -542,9 +478,8 @@ const attachToTangleAsync = (settings, seedStore) => (
                                 })
                                 .catch(reject);
                         }
-                    },
-                );
-            });
+                    });
+                
 
         const defaultRequestTimeout = getApiTimeout('attachToTangle');
 
@@ -552,28 +487,28 @@ const attachToTangleAsync = (settings, seedStore) => (
     }
 
     return seedStore
-        .performPow(trytes, trunkTransaction, branchTransaction, minWeightMagnitude)
+        .performPow(bytes, trunkTransaction, branchTransaction, minWeightMagnitude)
         .then((result) => {
-            if (get(result, 'trytes') && get(result, 'transactionObjects')) {
+            if (get(result, 'bytes') && get(result, 'transactionObjects')) {
                 return Promise.resolve(result);
             }
 
-            // Batched proof-of-work only returns the attached trytes
-            return constructBundleFromAttachedTrytes(sortTransactionTrytesArray(result), seedStore).then(
+            // Batched proof-of-work only returns the attached bytes
+            return constructBundleFromAttachedBytes(sortTransactionBytesArray(result), seedStore).then(
                 (transactionObjects) => ({
                     transactionObjects: orderBy(transactionObjects, 'currentIndex', ['desc']),
-                    trytes: result,
+                    bytes: result,
                 }),
             );
         })
-        .then(({ transactionObjects, trytes }) => {
+        .then(({ transactionObjects, bytes }) => {
             if (
                 isBundle(transactionObjects) &&
                 isBundleTraversable(transactionObjects, trunkTransaction, branchTransaction)
             ) {
                 return {
                     transactionObjects,
-                    trytes,
+                    bytes,
                 };
             }
 
@@ -582,23 +517,15 @@ const attachToTangleAsync = (settings, seedStore) => (
 };
 
 /**
- * Promisified version of iota.api.getTrytes
+ * Helix getBytes
  *
- * @method getTrytesAsync
+ * @method getBytesAsync
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<array>}
  */
-const getTrytesAsync = (settings) => (hashes) =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings).api.getTrytes(hashes, (err, trytes) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(trytes);
-            }
-        });
-    });
+const getBytesAsync = (settings) => (hashes) =>
+        getHelixInstance(settings).getBytes(hashes);
 
 /**
  * Checks if a node is synced and runs a stable IRI release
@@ -631,29 +558,29 @@ const isNodeHealthy = (settings) => {
                         latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <= latestSolidSubtangleMilestoneIndex) &&
                     cached.latestMilestone !== EMPTY_HASH_BYTES
                 ) {
-                    return getTrytesAsync(settings)([cached.latestMilestone]);
+                    return getBytesAsync(settings)([cached.latestMilestone]);
                 }
 
                 throw new Error(Errors.NODE_NOT_SYNCED);
             },
         )
-        .then((trytes) => {
-            const { timestamp } = iota.utils.transactionObject(head(trytes), cached.latestMilestone);
+        .then((bytes) => {
+            const { timestamp } = iota.utils.transactionObject(head(bytes), cached.latestMilestone);
 
             return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
         });
 };
 
 /**
- * Extended version of iota.api.isPromotable.
+ * Helix isPromotable.
  *
  * @method isPromotable
  * @param {object} [settings]
  *
  * @returns {function(string): (Promise<boolean>)}
  */
-const isPromotable = (settings) => (tailTransactionHash, options = {}) =>
-    getHelixInstance(settings).api.isPromotable(tailTransactionHash, options);
+const isPromotable = (settings) => (tailTransactionHash) =>
+    getHelixInstance(settings).isPromotable(tailTransactionHash);
 
 export {
     getHelixInstance,
