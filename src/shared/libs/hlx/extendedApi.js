@@ -88,13 +88,13 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
 /**
  * Helix getBalances
  *
- * @method getBalancesAsync
+ * @method getBalances
  * @param {object} [settings]
  * @param {boolean} [withQuorum]
  *
  * @returns {function(array, number): Promise<object>}
  */
-const getBalancesAsync = (settings, withQuorum = true) => (addresses, threshold = DEFAULT_BALANCES_THRESHOLD) =>
+const getBalances = (settings, withQuorum = true) => (addresses, threshold = DEFAULT_BALANCES_THRESHOLD) =>
     withQuorum
         ? quorum.getBalances(addresses, threshold)
         : getHelixInstance(settings, getApiTimeout('getBalances')).getBalances(addresses, threshold);
@@ -102,60 +102,60 @@ const getBalancesAsync = (settings, withQuorum = true) => (addresses, threshold 
 /**
  * helix getNodeInfoApi
  *
- * @method getNodeInfoAsync
+ * @method getNodeInfo
  * @param {object} [settings]
  *
  * @returns {function(): Promise<object>}
  */
-const getNodeInfoAsync = (settings) => () =>
+const getNodeInfo = (settings) => () =>
         getHelixInstance(settings, getApiTimeout('getNodeInfo')).getNodeInfo();
 
 
 /**
  * Helix getTransactionsObjects
  *
- * @method getTransactionsObjectsAsync
+ * @method getTransactionsObjects
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<any>}
  */
-const getTransactionsObjectsAsync = (settings) => (hashes) =>
+const getTransactionsObjects = (settings) => (hashes) =>
         getHelixInstance(settings).getTransactionsObjects(hashes);
    
 // TODO : Check if fintransaction objects to be used the new dedicated helix method
 /**
  * Helix findTransactionObjects
  *
- * @method findTransactionObjectsAsync
+ * @method findTransactionObjects
  * @param {object} [settings]
  *
  * @returns {function(object): Promise<any>}
  */
-const findTransactionObjectsAsync = (settings) => (args) =>
-    findTransactionsAsync(settings)(args).then((hashes) => getTransactionsObjectsAsync(settings)(hashes));
+const findTransactionObjects = (settings) => (args) =>
+    findTransactions(settings)(args).then((hashes) => getTransactionsObjects(settings)(hashes));
 
 /**
  * Helix findTransactions
  *
- * @method findTransactionsAsync
+ * @method findTransactions
  * @param {object} [settings]
  *
  * @returns {function(object): Promise<array>}
  */
-const findTransactionsAsync = (settings) => (args) =>
+const findTransactions = (settings) => (args) =>
         getHelixInstance(settings).findTransactions(args);
 
 
 /**
  * Helix getLatestInclusion
  *
- * @method getLatestInclusionAsync
+ * @method getLatestInclusion
  * @param {object} [settings]
  * @param {boolean} [withQuorum]
  *
  * @returns {function(array): Promise<array>}
  */
-const getLatestInclusionAsync = (settings, withQuorum = false) => (hashes) =>
+const getLatestInclusion = (settings, withQuorum = false) => (hashes) =>
     withQuorum
         ? quorum.getLatestInclusion(hashes)
         : getHelixInstance(settings, getApiTimeout('getInclusionStates')).getLatestInclusion(hashes);
@@ -164,13 +164,13 @@ const getLatestInclusionAsync = (settings, withQuorum = false) => (hashes) =>
 /**
  * Helix promoteTransaction with an option to perform PoW locally
  *
- * @method promoteTransactionAsync
+ * @method promoteTransaction
  * @param {object} [settings]
  * @param {object} seedStore
  *
  * @returns {function(string, number, number, object): Promise<string>}
  */
-const promoteTransactionAsync = (settings, seedStore) => (
+const promoteTransaction = (settings, seedStore) => (
     hash,
     depth = DEFAULT_DEPTH,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -182,11 +182,11 @@ const promoteTransactionAsync = (settings, seedStore) => (
 
     return (
         isPromotable(settings)(hash)
-            .then(() => prepareTransfersAsync(settings)(transfer.address, [transfer]))
+            .then(() => prepareTransfers(settings)(transfer.address, [transfer]))
             .then((bytes) => {
                 cached.bytes = bytes;
 
-                return getTransactionsToApproveAsync(settings)(
+                return getTransactionsToApprove(settings)(
                     {
                         reference: hash,
                         adjustDepth: true,
@@ -195,7 +195,7 @@ const promoteTransactionAsync = (settings, seedStore) => (
                 );
             })
             .then(({ trunkTransaction, branchTransaction }) =>
-                attachToTangleAsync(settings, seedStore)(
+                attachToTangle(settings, seedStore)(
                     trunkTransaction,
                     branchTransaction,
                     cached.bytes,
@@ -205,7 +205,7 @@ const promoteTransactionAsync = (settings, seedStore) => (
             .then(({ bytes }) => {
                 cached.bytes = bytes;
 
-                return storeAndBroadcastAsync(settings)(cached.bytes);
+                return storeAndBroadcast(settings)(cached.bytes);
             })
             .then(() => hash)
     );
@@ -214,13 +214,13 @@ const promoteTransactionAsync = (settings, seedStore) => (
 /**
  * Helix ReplayBundle
  *
- * @method replayBundleAsync
+ * @method replayBundle
  * @param {object} [settings]
  * @param {object} seedStore
  *
  * @returns {function(string, function, number, number): Promise<array>}
  */
-const replayBundleAsync = (settings, seedStore) => (
+const replayBundle = (settings, seedStore) => (
     hash,
     depth = DEFAULT_DEPTH,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -230,16 +230,16 @@ const replayBundleAsync = (settings, seedStore) => (
         transactionObjects: [],
     };
 
-    return getBundleAsync(settings)(hash)
+    return getBundle(settings)(hash)
         .then((bundle) => {
             const convertToBytes = (tx) => iota.utils.transactionBytes(tx);
             cached.bytes = map(bundle, convertToBytes);
             cached.transactionObjects = bundle;
 
-            return getTransactionsToApproveAsync(settings)({}, depth);
+            return getTransactionsToApprove(settings)({}, depth);
         })
         .then(({ trunkTransaction, branchTransaction }) =>
-            attachToTangleAsync(settings, seedStore)(
+            attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
                 cached.bytes,
@@ -250,7 +250,7 @@ const replayBundleAsync = (settings, seedStore) => (
             cached.bytes = bytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.bytes);
+            return storeAndBroadcast(settings)(cached.bytes);
         })
         .then(() => cached.transactionObjects);
 };
@@ -258,12 +258,12 @@ const replayBundleAsync = (settings, seedStore) => (
 /**
  * Promisified version of iota.api.getBundle
  *
- * @method getBundleAsync
+ * @method getBundle
  * @param {object} [settings]
  *
  * @returns {function(string): Promise<array>}
  */
-const getBundleAsync = (settings) => (tailTransactionHash) =>
+const getBundle = (settings) => (tailTransactionHash) =>
     new Promise((resolve, reject) => {
         getHelixInstance(settings).api.getBundle(tailTransactionHash, (err, bundle) => {
             if (err) {
@@ -277,13 +277,13 @@ const getBundleAsync = (settings) => (tailTransactionHash) =>
 /**
  * Promisified version of iota.api.wereAddressesSpentFrom
  *
- * @method wereAddressesSpentFromAsync
+ * @method wereAddressesSpentFrom
  * @param {object} [settings]
  * @param {boolean} [withQuorum]
  *
  * @returns {function(array): Promise<array>}
  */
-const wereAddressesSpentFromAsync = (settings, withQuorum = true) => (addresses) =>
+const wereAddressesSpentFrom = (settings, withQuorum = true) => (addresses) =>
     withQuorum
         ? quorum.wereAddressesSpentFrom(addresses)
         : new Promise((resolve, reject) => {
@@ -302,12 +302,12 @@ const wereAddressesSpentFromAsync = (settings, withQuorum = true) => (addresses)
 /**
  * Promisified version of iota.api.sendTransfer
  *
- * @method sendTransferAsync
+ * @method sendTransfer
  * @param {object} [settings]
  *
  * @returns {function(object, array, function, *, number, number): Promise<array>}
  */
-const sendTransferAsync = (settings) => (
+const sendTransfer = (settings) => (
     seedStore,
     transfers,
     options = null,
@@ -324,10 +324,10 @@ const sendTransferAsync = (settings) => (
         .then((bytes) => {
             cached.bytes = bytes;
 
-            return getTransactionsToApproveAsync(settings)({}, depth);
+            return getTransactionsToApprove(settings)({}, depth);
         })
         .then(({ trunkTransaction, branchTransaction }) =>
-            attachToTangleAsync(settings, seedStore)(
+            attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
                 cached.bytes,
@@ -338,7 +338,7 @@ const sendTransferAsync = (settings) => (
             cached.bytes = bytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.bytes);
+            return storeAndBroadcast(settings)(cached.bytes);
         })
         .then(() => cached.transactionObjects);
 };
@@ -346,12 +346,12 @@ const sendTransferAsync = (settings) => (
 /**
  * Helix getTransactionsToApprove
  *
- * @method getTransactionsToApproveAsync
+ * @method getTransactionsToApprove
  * @param {object} [settings]
  *
  * @returns {function(*, number): Promise<object>}
  */
-const getTransactionsToApproveAsync = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>
+const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>
         getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
             depth,
             reference);
@@ -359,12 +359,12 @@ const getTransactionsToApproveAsync = (settings) => (reference = {}, depth = DEF
 /**
  * Helix prepareTransfers
  *
- * @method prepareTransfersAsync
+ * @method prepareTransfers
  * @param {object} [settings]
  *
  * @returns {function(string, array, *): Promise<any>}
  */
-export const prepareTransfersAsync = (settings) => (seed, transfers, options = null, signatureFn = null) => {
+export const prepareTransfers = (settings) => (seed, transfers, options = null, signatureFn = null) => {
     // https://github.com/iotaledger/iota.lib.js/blob/e60c728c836cb37f3d6fb8b0eff522d08b745caa/lib/api/api.js#L1058
     let args = [seed, transfers];
 
@@ -378,24 +378,24 @@ export const prepareTransfersAsync = (settings) => (seed, transfers, options = n
 /**
  * Helix storeAndBroadcast
  *
- * @method storeAndBroadcastAsync
+ * @method storeAndBroadcast
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<any>}
  */
-const storeAndBroadcastAsync = (settings) => (bytes) =>
+const storeAndBroadcast = (settings) => (bytes) =>
         getHelixInstance(settings).storeAndBroadcast(bytes);
 
 
 /**
  * Checks if attachToTangle is available on the provided node
  *
- * @method checkAttachToTangleAsync
+ * @method checkAttachToTangle
  * @param {string} node
  *
  * @returns {Promise}
  */
-const checkAttachToTangleAsync = (node) => {
+const checkAttachToTangle = (node) => {
     return fetch(node, {
         method: 'POST',
         body: JSON.stringify({ command: 'attachToTangle' }),
@@ -420,14 +420,14 @@ const checkAttachToTangleAsync = (node) => {
  * @returns {Promise<Boolean>}
  */
 const allowsRemotePow = (settings) => {
-    return getNodeInfoAsync(settings)().then((info) => {
+    return getNodeInfo(settings)().then((info) => {
         // Check if provided node has upgraded to IRI to a version, where it adds "features" prop in node info
         if (has(info, 'features')) {
             return includes(info.features, 'RemotePOW');
         }
 
         // Fallback to old way of checking remote pow
-        return checkAttachToTangleAsync(settings.url).then((response) =>
+        return checkAttachToTangle(settings.url).then((response) =>
             includes(response.error, Errors.INVALID_PARAMETERS),
         );
     });
@@ -436,13 +436,13 @@ const allowsRemotePow = (settings) => {
 /**
  * Helix attachToTangle
  *
- * @method attachToTangleAsync
+ * @method attachToTangle
  * @param {object} [settings]
  * @param {object} seedStore
  *
  * @returns {function(string, string, array, number): Promise<object>}
  */
-const attachToTangleAsync = (settings, seedStore) => (
+const attachToTangle = (settings, seedStore) => (
     trunkTransaction,
     branchTransaction,
     bytes,
@@ -519,12 +519,12 @@ const attachToTangleAsync = (settings, seedStore) => (
 /**
  * Helix getBytes
  *
- * @method getBytesAsync
+ * @method getBytes
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<array>}
  */
-const getBytesAsync = (settings) => (hashes) =>
+const getBytes = (settings) => (hashes) =>
         getHelixInstance(settings).getBytes(hashes);
 
 /**
@@ -540,7 +540,7 @@ const isNodeHealthy = (settings) => {
         latestMilestone: EMPTY_HASH_BYTES,
     };
 
-    return getNodeInfoAsync(settings)()
+    return getNodeInfo(settings)()
         .then(
             ({
                 appVersion,
@@ -558,7 +558,7 @@ const isNodeHealthy = (settings) => {
                         latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <= latestSolidSubtangleMilestoneIndex) &&
                     cached.latestMilestone !== EMPTY_HASH_BYTES
                 ) {
-                    return getBytesAsync(settings)([cached.latestMilestone]);
+                    return getBytes(settings)([cached.latestMilestone]);
                 }
 
                 throw new Error(Errors.NODE_NOT_SYNCED);
@@ -585,21 +585,21 @@ const isPromotable = (settings) => (tailTransactionHash) =>
 export {
     getHelixInstance,
     getApiTimeout,
-    getBalancesAsync,
-    getNodeInfoAsync,
-    getTransactionsObjectsAsync,
-    findTransactionObjectsAsync,
-    findTransactionsAsync,
-    getLatestInclusionAsync,
-    promoteTransactionAsync,
-    replayBundleAsync,
-    getBundleAsync,
-    wereAddressesSpentFromAsync,
-    sendTransferAsync,
-    getTransactionsToApproveAsync,
-    storeAndBroadcastAsync,
-    attachToTangleAsync,
-    checkAttachToTangleAsync,
+    getBalances,
+    getNodeInfo,
+    getTransactionsObjects,
+    findTransactionObjects,
+    findTransactions,
+    getLatestInclusion,
+    promoteTransaction,
+    replayBundle,
+    getBundle,
+    wereAddressesSpentFrom,
+    sendTransfer,
+    getTransactionsToApprove,
+    storeAndBroadcast,
+    attachToTangle,
+    checkAttachToTangle,
     allowsRemotePow,
     isNodeHealthy,
     isPromotable,
