@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import reload from 'ui/images/refresh.svg';
 import { withI18n } from 'react-i18next';
 import Button from 'ui/components/button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 /**
  * Wallet History component
  */
@@ -34,57 +36,71 @@ class WalletHistory extends React.PureComponent {
 
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx1)}>
-                                        <h3>Transaction History.</h3>
-                                        <h6>Access and manage your transactions.</h6>
-                                        <div className={classNames(css.sseed_box2, css.sec_bxc)}>
-                                        <div style={{marginRight:'30px',marginTop:'-36px'}}>
+                                        <h3 >Transaction History<span>.</span></h3>
+                                        <h6 >Access and manage your Transaction</h6>
+                                        <div className={classNames(css.main_div)}>
+                                            <div className={classNames(css.Left_div)}>
+                                                <ul>
+                                                    <li className={classNames(css.list, css.active)}>ALL</li>
+                                                    <li className={classNames(css.list)}>SEND</li>
+                                                    <li className={classNames(css.list)}>RECEIVED</li>
+                                                    <li className={classNames(css.list)}>TRANSFERED</li>
+                                                </ul>
+                                            </div>
+                                            <div className={classNames(css.right_div)}>
+                                                <div className={classNames(css.input_group)}>
+                                                    <input type="text" name="name" className={classNames(css.search_text)} placeholder="Search Transaction" />
+                                                    <button className={classNames(css.bts)} variant="backgroundNone" type="button"> <FontAwesomeIcon icon={faSearch} /></button>
+                                                </div>/
+                                             </div>
+                                            <table className={classNames(css.table)}>
+                                                <tbody>
+                                                    <tr style={{ borderTop: '5px solid #D1721E' }}>
+                                                        <td><span className={classNames(css.icon)}><i className={classNames(css.fa)} aria-hidden="true"></i></span>
+                                                            <div className={classNames(css.pending)}>Pending</div>
+                                                            <div>December 27 @ 23:58</div></td>
+                                                        <td><div>To:Lorem Ipsum is simply dummy text of the printing </div>
+                                                            <div>From:Lorem Ipsum is simply dummy text of the printing </div></td>
+                                                        {/* <td>Add Description</td> */}
+                                                        <td><button type="button" className={classNames(css.btn_pending)}>14.0r mHLX </button></td>
+                                                    </tr>
+                                                    <tr >
+                                                        <td><span ></span>
+                                                            <div className={classNames(css.sends)}>Send</div>
+                                                            <div>December 27 @ 23:58</div></td>
+                                                        <td><div>To:Lorem Ipsum is simply dummy text of the printing </div>
+                                                            <div>From:Lorem Ipsum is simply dummy text of the printing </div></td>
+                                                        {/* <td>Add Description</td> */}
+                                                        <td><button type="button" className={classNames(css.btn_send)}>14.0r mHLX</button></td>
+                                                    </tr>
+                                                    <tr >
+                                                        <td><span></span>
+                                                            <div className={classNames(css.recvd)}>Received</div>
+                                                            <div>December 27 @ 23:58</div></td>
+                                                        <td><div>To:Lorem Ipsum is simply dummy text of the printing </div>
+                                                            <div>From:Lorem Ipsum is simply dummy text of the printing </div></td>
+                                                        {/* <td>Add Description</td> */}
+                                                        <td><button type="button" className={classNames(css.btn_recvd)}>14.0r mHLX</button></td>
+                                                    </tr>
+                                                </tbody>
 
+                                            </table>
                                         </div>
-                                        <div className={classNames(css.top_sec1)}>
-                                        <a>All</a>
-                                        <a>Sent</a>
-                                        <a>Recieved</a>
-                                        <a>Transfered</a>
-                                        </div>
-                                          <table className={classNames(css.table)}>
-                                                <tr >
-                                                    <td >> Pending<br/>December 20th 2019</td>
-                                                    <td>To:2gaffadfghv54<br/>From:2gaffadfghv54</td>
-                                                    
-                                                    <td>  <div className={classNames(css.table_box1)}>14.3HLx</div></td>
-                                                </tr>
-                                                <tr >
-                                                <td >> Pending<br/>December 20th 2019</td>
-                                                    <td>To:2gaffadfghv54<br/>From:2gaffadfghv54</td>
-                                                    
-                                                    <td> <div className={classNames(css.table_box1)}>14.3HLx</div></td>
-                                                </tr>
-                                                <tr >
-                                                <td >> Pending<br/>December 20th 2019</td>
-                                                    <td>To:2gaffadfghv54<br/>From:2gaffadfghv54</td>
-                                                    <td> <div className={classNames(css.table_box1)}>14.3HLx</div></td>
-                                                </tr>
-                                                <tr >
-                                                <td >> Pending<br/>December 20th 2019</td>
-                                                    <td>To:2gaffadfghv54<br/>From:2gaffadfghv54</td>
-                                                    
-                                                    <td> <div className={classNames(css.table_box1)}>14.3HLx</div></td>
-                                                </tr>
-                                             
-                                               
-                                          </table>
-
-                                        </div>
-                                       
                                     </div>
-                                </div>
-                            </div>
 
+
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
 
 
-                   
+
+
+
+
                 </section>
                 <footer className={classNames(css.footer_bx)}>
                 </footer>
