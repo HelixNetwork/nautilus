@@ -674,7 +674,7 @@ margin-left: 275px;
 .seed {
   font-size: 25px;
   letter-spacing: 0.5em;
-  display: block;
+  display: none;
   width: 100%;
   height: 100%;
   // margin: 32px auto;
@@ -702,7 +702,7 @@ margin-left: 275px;
     margin: 0;
     padding: 0px 14px;
     font-family: "SourceCodePro";
-      transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+      // transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
 
       &.disabled {
           opacity: 0.1;
@@ -794,6 +794,11 @@ margin-left: 275px;
   height: 108px;
 }
 
+.seed_lotbox{
+    width: 100%;
+    height: 100%;
+}
+
 .seed_space{
   font-size: 25px;
   letter-spacing: 0.5em;
@@ -809,4 +814,9 @@ margin-left: 275px;
     background-color: #000b20;
     border-radius: 5px;
     box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
+}
+
+.seed_lottie{
+    width: 161px;
+    height: 108px;
 }
