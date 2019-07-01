@@ -38,9 +38,9 @@ import { EMPTY_HASH_BYTES, withRequestTimeoutsHandler } from './utils';
 
  * @returns {number}
  */
-/* eslint-disable no-unused-vars */
+
 const getApiTimeout = (method) => {
-    /* eslint-enable no-unused-vars */
+
     switch (method) {
         case 'wereAddressesSpentFrom':
             return WERE_ADDRESSES_SPENT_FROM_REQUEST_TIMEOUT;
@@ -232,6 +232,7 @@ const replayBundle = (settings, seedStore) => (
 
     return getBundle(settings)(hash)
         .then((bundle) => {
+            // TODO
             const convertToBytes = (tx) => iota.utils.transactionBytes(tx);
             cached.bytes = map(bundle, convertToBytes);
             cached.transactionObjects = bundle;
@@ -256,7 +257,7 @@ const replayBundle = (settings, seedStore) => (
 };
 
 /**
- * Promisified version of iota.api.getBundle
+ * Helix getBundle
  *
  * @method getBundle
  * @param {object} [settings]
@@ -264,18 +265,10 @@ const replayBundle = (settings, seedStore) => (
  * @returns {function(string): Promise<array>}
  */
 const getBundle = (settings) => (tailTransactionHash) =>
-    new Promise((resolve, reject) => {
-        getHelixInstance(settings).api.getBundle(tailTransactionHash, (err, bundle) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(bundle);
-            }
-        });
-    });
+        getHelixInstance(settings).getBundle(tailTransactionHash);
 
 /**
- * Promisified version of iota.api.wereAddressesSpentFrom
+ * Helix wereAddressesSpentFrom
  *
  * @method wereAddressesSpentFrom
  * @param {object} [settings]
@@ -286,21 +279,10 @@ const getBundle = (settings) => (tailTransactionHash) =>
 const wereAddressesSpentFrom = (settings, withQuorum = true) => (addresses) =>
     withQuorum
         ? quorum.wereAddressesSpentFrom(addresses)
-        : new Promise((resolve, reject) => {
-              getHelixInstance(settings, getApiTimeout('wereAddressesSpentFrom')).api.wereAddressesSpentFrom(
-                  addresses,
-                  (err, wereSpent) => {
-                      if (err) {
-                          reject(err);
-                      } else {
-                          resolve(wereSpent);
-                      }
-                  },
-              );
-          });
+        :    getHelixInstance(settings, getApiTimeout('wereAddressesSpentFrom')).wereAddressesSpentFrom(addresses);
 
 /**
- * Promisified version of iota.api.sendTransfer
+ * Helix sendTransfer
  *
  * @method sendTransfer
  * @param {object} [settings]
@@ -565,6 +547,7 @@ const isNodeHealthy = (settings) => {
             },
         )
         .then((bytes) => {
+            // TODO
             const { timestamp } = iota.utils.transactionObject(head(bytes), cached.latestMilestone);
 
             return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
