@@ -1,23 +1,21 @@
 import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
-// import Realm from '../realm';
+import Realm from '../realm';
 
 let onboardingSeed = null;
 let onboardingGenerated = false;
 
 const KEYTAR_SERVICE = remote.app.isPackaged ? 'Helix wallet' : 'Helix wallet (dev)';
+
 /**
  * Global Electron helper for native support
  */
 const Electron = {
-    getVersion: () => {
-        return 'hi';
-    },
 
-    // getRealm: () => {
-    //     return Realm;
-    // },
+    getRealm: () => {
+        return Realm;
+    },
 
     getUserDataPath: () => {
         return remote.app.getPath('userData');
@@ -83,6 +81,13 @@ const Electron = {
                 key.indexOf('reduxPersist') === 0 && Object.assign(data, { [key.split(':')[1]]: JSON.parse(value) }),
         );
         return data;
+    },
+
+    /**
+     * Focus main wallet window
+     */
+    focus: (view) => {
+        ipc.send('window.focus', view);
     },
 };
 

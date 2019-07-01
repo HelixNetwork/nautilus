@@ -291,6 +291,77 @@ export const AccountMetaSchema = {
     },
 };
 
+export const AddressSchema = {
+    name: 'Address',
+    properties: {
+        address: 'string',
+        index: 'int',
+        balance: 'int',
+        checksum: 'string',
+        spent: 'AddressSpendStatus',
+    },
+};
+
+export const AddressSpendStatusSchema = {
+    name: 'AddressSpendStatus',
+    properties: {
+        local: 'bool',
+        remote: 'bool',
+    },
+};
+
+export const AccountSchema = {
+    name: 'Account',
+    primaryKey: 'name',
+    properties: {
+        meta: 'AccountMeta',
+        index: 'int',
+        name: 'string',
+        addressData: 'Address[]',
+        transactions: 'Transaction[]',
+        usedExistingSeed: { type: 'bool', default: false },
+        displayedSnapshotTransitionGuide: { type: 'bool', default: false },
+    },
+};
+
+export const TransactionSchema = {
+    name: 'Transaction',
+    properties: {
+        hash: 'string',
+        signatureMessageFragment: 'string',
+        address: 'string',
+        value: 'int',
+        obsoleteTag: 'string',
+        timestamp: 'int',
+        currentIndex: 'int',
+        lastIndex: 'int',
+        tag: 'string',
+        trunkTransaction: 'string',
+        branchTransaction: 'string',
+        bundle: 'string',
+        attachmentTimestamp: 'int',
+        attachmentTimestampLowerBound: 'int',
+        attachmentTimestampUpperBound: 'int',
+        nonce: 'string',
+        persistence: 'bool',
+        broadcasted: { type: 'bool', default: true },
+    },
+};
+
+export const NodeSchema = {
+    name: 'Node',
+    primaryKey: 'url',
+    properties: {
+        url: 'string', // Node URL
+        // Whether the node was added by the user
+        custom: {
+            type: 'bool',
+            default: false,
+        },
+        pow: { type: 'bool', default: false }, // Whether the node supports remote PoW
+    },
+};
+
 export default [
     WalletSchema,
     WalletSettingsSchema,
@@ -298,5 +369,10 @@ export default [
     WalletVersionsSchema,
     ErrorLogSchema,
     AccountInfoDuringSetupSchema,
-    AccountMetaSchema
+    AccountMetaSchema,
+    AccountSchema,
+    AddressSchema,
+    TransactionSchema,
+    AddressSpendStatusSchema,
+    NodeSchema
 ];

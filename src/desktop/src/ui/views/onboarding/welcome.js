@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
 import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
+
+import { acceptTerms, acceptPrivacy } from 'actions/settings';
+
 import { enTermsAndConditionsIOS, enPrivacyPolicyIOS } from 'terms-conditions';
 import Language from 'ui/components/input/language';
 import Button from 'ui/components/button'
@@ -19,6 +22,8 @@ class Welcome extends React.PureComponent {
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+        acceptedPrivacy: PropTypes.bool.isRequired,
+        acceptedTerms: PropTypes.bool.isRequired,
     }
     state = {
         step: 'language',
@@ -99,7 +104,14 @@ class Welcome extends React.PureComponent {
     }
 }
 
+const mapStateToProps = (state) => ({
+    acceptedPrivacy: state.settings.acceptedPrivacy,
+    acceptedTerms: state.settings.acceptedTerms
+});
+
 const mapDispatchToProps = {
+    acceptTerms,
+    acceptPrivacy,
 };
 
-export default connect(null, mapDispatchToProps)(withI18n()(Welcome));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(Welcome));

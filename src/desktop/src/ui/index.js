@@ -25,6 +25,7 @@ class App extends React.Component {
         t: PropTypes.func.isRequired,
         themeName: PropTypes.string.isRequired,
         updateTheme: PropTypes.func.isRequired,
+        locale: PropTypes.string.isRequired,
     }
     constructor(props) {
         super(props);

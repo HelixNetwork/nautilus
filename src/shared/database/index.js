@@ -10,6 +10,7 @@ import merge from 'lodash/merge';
 import orderBy from 'lodash/orderBy';
 import size from 'lodash/size';
 import some from 'lodash/some';
+import { serialise, parse } from '../libs/utils';
 import schemas, { getDeprecatedStoragePath, STORAGE_PATH as latestStoragePath, v_0Schema } from './schemas';
 // Initialise realm instance
 let realm = {}; // eslint-disable-line import/no-mutable-exports
@@ -470,4 +471,4 @@ const initialiseSync = () => {
  */
 const reinitialise = (getEncryptionKeyPromise) => purge().then(() => initialise(getEncryptionKeyPromise));
 
-export { realm, Wallet, initialise, initialiseSync, reinitialise, Account };
+export { realm, Wallet, initialise, initialiseSync, reinitialise, Account, Node };
