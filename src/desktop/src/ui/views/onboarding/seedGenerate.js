@@ -8,6 +8,8 @@ import reload from 'ui/images/arrows.png';
 import Button from 'ui/components/button';
 import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
+import Lottie from 'react-lottie';
+import * as animationData from 'animations/done.json';
 
 import { createRandomSeed, randomBytes } from '../../../utils/crypto';
 import { indexToChar } from 'libs/hlx/converter';
@@ -19,6 +21,7 @@ class SeedGenerate extends React.PureComponent {
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+        loop: PropTypes.bool,
     };
 
     state = {
@@ -26,8 +29,14 @@ class SeedGenerate extends React.PureComponent {
         scramble: Electron.getOnboardingSeed() ? new Array(MAX_SEED_LENGTH).fill(0) : randomBytes(MAX_SEED_LENGTH, 27),
         existingSeed: Electron.getOnboardingSeed(),
         clicks: [],
-        viewSeed: 'none',
-        viewReload: 'block'
+        viewSeed1: 'none',
+        viewReload1: 'block',
+        viewSeed2: 'none',
+        viewReload2: 'block',
+        viewSeed3: 'none',
+        viewReload3: 'block',
+        viewSeed4: 'none',
+        viewReload4: 'block'
     }
     componentDidMount() {
         this.frame = 0;
@@ -75,16 +84,18 @@ class SeedGenerate extends React.PureComponent {
      * Generate random seed[0] ℹ ｢wdm｣: Compiling...uence
      * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
      */
-    generateNewSeed = () => {
+    generateNewSeed1 = () => {
         const newSeed = createRandomSeed();
+        console.log("newSeed", newSeed);
+
         Electron.setOnboardingSeed(null);
 
         this.setState(() => ({
             seed: newSeed,
             existingSeed: false,
             clicks: [],
-            viewSeed: 'block',
-            viewReload: 'none'
+            viewSeed1: 'block',
+            viewReload1: 'none'
         }));
 
         this.frame = 0;
@@ -96,6 +107,66 @@ class SeedGenerate extends React.PureComponent {
         this.unscramble();
     };
 
+    generateNewSeed2 = () => {
+        const newSeed = createRandomSeed();
+        Electron.setOnboardingSeed(null);
+
+        this.setState(() => ({
+            seed: newSeed,
+            existingSeed: false,
+            clicks: [],
+            viewSeed2: 'block',
+            viewReload2: 'none'
+        }));
+
+        this.frame = 0;
+
+        this.setState({
+            scramble: randomBytes(MAX_SEED_LENGTH, 27),
+        });
+
+        this.unscramble();
+    };
+    generateNewSeed3 = () => {
+        const newSeed = createRandomSeed();
+        Electron.setOnboardingSeed(null);
+
+        this.setState(() => ({
+            seed: newSeed,
+            existingSeed: false,
+            clicks: [],
+            viewSeed3: 'block',
+            viewReload3: 'none'
+        }));
+
+        this.frame = 0;
+
+        this.setState({
+            scramble: randomBytes(MAX_SEED_LENGTH, 27),
+        });
+
+        this.unscramble();
+    };
+    generateNewSeed4 = () => {
+        const newSeed = createRandomSeed();
+        Electron.setOnboardingSeed(null);
+
+        this.setState(() => ({
+            seed: newSeed,
+            existingSeed: false,
+            clicks: [],
+            viewSeed4: 'block',
+            viewReload4: 'none'
+        }));
+
+        this.frame = 0;
+
+        this.setState({
+            scramble: randomBytes(MAX_SEED_LENGTH, 27),
+        });
+
+        this.unscramble();
+    };
     /**
      * Seed generation animation sequence step
      * @returns {undefined}
@@ -141,6 +212,17 @@ class SeedGenerate extends React.PureComponent {
         const clicksLeft = 4 - clicks.length;
         console.log("Seed::::" + seed);
 
+        const { loop, animate, onEnd } = this.props;
+
+        const defaultOptions = {
+            loop: loop,
+            autoplay: true,
+            animationData: animationData.default,
+            rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+            }
+        };
+
         return (
             <div>
                 <Logos
@@ -168,7 +250,59 @@ class SeedGenerate extends React.PureComponent {
 
                                     <div className={css.seed_wrapper}>
                                         <div className={css.seed_wrapbox}>
-                                            <div className={css.seed}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed1} style={{ display: this.state.viewReload1 }}>
+                                                <Lottie className={classNames(css.seed_lottie)}
+                                                    options={defaultOptions}
+                                                    eventListeners={[
+                                                        {
+                                                            eventName: 'complete',
+                                                            callback: () => {
+                                                                if (typeof onEnd === 'function') {
+                                                                    onEnd();
+                                                                }
+                                                            },
+                                                        },
+                                                    ]}
+                                                />
+                                            </div>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed1 }}>
+
+                                                {seed.map((byte, index) => {
+                                                    const offset = scramble[index];
+                                                    console.log("Offset", offset);
+
+                                                    const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                    return (
+                                                        <button
+                                                            onClick={this.updateLetter}
+                                                            key={`${index}${letter}`}
+                                                            value={index}
+                                                            style={{ opacity: 1 - offset / 255 }}
+                                                        >
+                                                            {letter}
+                                                        </button>
+                                                    );
+                                                })}
+
+                                            </div>
+                                        </div>
+                                        <div className={css.seed_wrapbox}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed2} style={{ display: this.state.viewReload2 }}>
+                                                <Lottie className={classNames(css.seed_lottie)}
+                                                    options={defaultOptions}
+                                                    eventListeners={[
+                                                        {
+                                                            eventName: 'complete',
+                                                            callback: () => {
+                                                                if (typeof onEnd === 'function') {
+                                                                    onEnd();
+                                                                }
+                                                            },
+                                                        },
+                                                    ]}
+                                                />
+                                            </div>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed2 }}>
 
                                                 {seed.map((byte, index) => {
                                                     const offset = scramble[index];
@@ -187,14 +321,75 @@ class SeedGenerate extends React.PureComponent {
 
                                             </div>
                                         </div>
-                                        <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}></div>
+                                        <div className={css.seed_wrapbox}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed3} style={{ display: this.state.viewReload3 }}>
+                                                <Lottie className={classNames(css.seed_lottie)}
+                                                    options={defaultOptions}
+                                                    eventListeners={[
+                                                        {
+                                                            eventName: 'complete',
+                                                            callback: () => {
+                                                                if (typeof onEnd === 'function') {
+                                                                    onEnd();
+                                                                }
+                                                            },
+                                                        },
+                                                    ]}
+                                                />
+                                            </div>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed3 }}>
+
+                                                {seed.map((byte, index) => {
+                                                    const offset = scramble[index];
+                                                    const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                    return (
+                                                        <button
+                                                            onClick={this.updateLetter}
+                                                            key={`${index}${letter}`}
+                                                            value={index}
+                                                            style={{ opacity: 1 - offset / 255 }}
+                                                        >
+                                                            {letter}
+                                                        </button>
+                                                    );
+                                                })}
+
+                                            </div>
                                         </div>
-                                        <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}></div>
-                                        </div>
-                                        <div class={css.seed_wrapbox}>
-                                            <div class={css.seed_space}></div>
+                                        <div className={css.seed_wrapbox}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed4} style={{ display: this.state.viewReload4 }}>
+                                                <Lottie className={classNames(css.seed_lottie)}
+                                                    options={defaultOptions}
+                                                    eventListeners={[
+                                                        {
+                                                            eventName: 'complete',
+                                                            callback: () => {
+                                                                if (typeof onEnd === 'function') {
+                                                                    onEnd();
+                                                                }
+                                                            },
+                                                        },
+                                                    ]}
+                                                />
+                                            </div>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed4 }}>
+
+                                                {seed.map((byte, index) => {
+                                                    const offset = scramble[index];
+                                                    const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                    return (
+                                                        <button
+                                                            onClick={this.updateLetter}
+                                                            key={`${index}${letter}`}
+                                                            value={index}
+                                                            style={{ opacity: 1 - offset / 255 }}
+                                                        >
+                                                            {letter}
+                                                        </button>
+                                                    );
+                                                })}
+
+                                            </div>
                                         </div>
 
                                     </div>
