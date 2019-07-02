@@ -27,43 +27,43 @@ describe('libs: helix/extendedApi', () => {
         });
     });
 
-    // describe('#isNodeHealthy', () => {
-    //     describe('when node runs an unsupported release', () => {
-    //         beforeEach(() => {
-    //             nock('http://localhost:14265', {
-    //                 reqheaders: {
-    //                     'Content-Type': 'application/json',
-    //                     'X-HELIX-API-Version': IRI_API_VERSION,
-    //                 },
-    //             })
-    //                 .filteringRequestBody(() => '*')
-    //                 .persist()
-    //                 .post('/', '*')
-    //                 .reply(200, (_, body) => {
-    //                     const { command } = body;
+    describe('#isNodeHealthy', () => {
+        describe('when node runs an unsupported release', () => {
+            beforeEach(() => {
+                nock('http://localhost:14265', {
+                    reqheaders: {
+                        'Content-Type': 'application/json',
+                        'X-HELIX-API-Version': IRI_API_VERSION,
+                    },
+                })
+                    .filteringRequestBody(() => '*')
+                    .persist()
+                    .post('/', '*')
+                    .reply(200, (_, body) => {
+                        const { command } = body;
 
-    //                     const resultMap = {
-    //                         getNodeInfo: {
-    //                             appVersion: '0.0.0-RC2',
-    //                         },
-    //                     };
+                        const resultMap = {
+                            getNodeInfo: {
+                                appVersion: '0.0.0-RC2',
+                            },
+                        };
 
-    //                     return resultMap[command] || {};
-    //                 });
-    //         });
+                        return resultMap[command] || {};
+                    });
+            });
 
-    //         afterEach(() => {
-    //             nock.cleanAll();
-    //         });
+            afterEach(() => {
+                nock.cleanAll();
+            });
 
-    //         it('should throw with an error "Node version not supported"', () => {
-    //             return isNodeHealthy()
-    //                 .then(() => {
-    //                     throw new Error();
-    //                 })
-    //                 .catch((error) => expect(error.message).to.equal('Node version not supported'));
-    //         });
-    //     });
+            it('should throw with an error "Node version not supported"', () => {
+                return isNodeHealthy()
+                    .then(() => {
+                        throw new Error();
+                    })
+                    .catch((error) => expect(error.message).to.equal('Node version not supported'));
+            });
+        });
 
 //         describe('when latestMilestone is not equal to latestSolidSubtangleMilestone', () => {
 //             beforeEach(() => {
@@ -485,5 +485,5 @@ describe('libs: helix/extendedApi', () => {
 //                 });
 //             });
 //         });
-    // });
+    });
 });
