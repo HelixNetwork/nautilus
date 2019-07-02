@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import css from './index.scss';
 import classNames from 'classnames';
-import reload from 'ui/images/arrows.png';
 import Button from 'ui/components/button';
-import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/done.json';
@@ -25,18 +23,16 @@ class SeedGenerate extends React.PureComponent {
     };
 
     state = {
-        seed: Electron.getOnboardingSeed() || createRandomSeed(),
+        seed1: Electron.getOnboardingSeed() || createRandomSeed(),
+        seed2: Electron.getOnboardingSeed() || createRandomSeed(),
+        seed3: Electron.getOnboardingSeed() || createRandomSeed(),
+        seed4: Electron.getOnboardingSeed() || createRandomSeed(),
         scramble: Electron.getOnboardingSeed() ? new Array(MAX_SEED_LENGTH).fill(0) : randomBytes(MAX_SEED_LENGTH, 27),
         existingSeed: Electron.getOnboardingSeed(),
         clicks: [],
-        viewSeed1: 'none',
-        viewReload1: 'block',
-        viewSeed2: 'none',
-        viewReload2: 'block',
-        viewSeed3: 'none',
-        viewReload3: 'block',
-        viewSeed4: 'none',
-        viewReload4: 'block'
+        viewSeed: 'none',
+        viewReload: 'block',
+        counter: 1
     }
     componentDidMount() {
         this.frame = 0;
@@ -60,6 +56,7 @@ class SeedGenerate extends React.PureComponent {
      * @returns {undefined}
      */
     updateLetter = (e) => {
+
         const { seed, clicks, scramble } = this.state;
 
         const position = e.target.value;
@@ -78,24 +75,29 @@ class SeedGenerate extends React.PureComponent {
         }));
 
         this.unscramble();
+
+        this.setState({
+            counter: counter++,
+        });
     };
 
     /**
      * Generate random seed[0] ℹ ｢wdm｣: Compiling...uence
      * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
      */
-    generateNewSeed1 = () => {
+    generateNewSeed = () => {
         const newSeed = createRandomSeed();
         console.log("newSeed", newSeed);
 
         Electron.setOnboardingSeed(null);
 
         this.setState(() => ({
-            seed: newSeed,
+            ['seed' + this.state.counter]: newSeed,
             existingSeed: false,
             clicks: [],
-            viewSeed1: 'block',
-            viewReload1: 'none'
+            viewSeed: 'block',
+            viewReload: 'none',
+
         }));
 
         this.frame = 0;
@@ -107,66 +109,6 @@ class SeedGenerate extends React.PureComponent {
         this.unscramble();
     };
 
-    generateNewSeed2 = () => {
-        const newSeed = createRandomSeed();
-        Electron.setOnboardingSeed(null);
-
-        this.setState(() => ({
-            seed: newSeed,
-            existingSeed: false,
-            clicks: [],
-            viewSeed2: 'block',
-            viewReload2: 'none'
-        }));
-
-        this.frame = 0;
-
-        this.setState({
-            scramble: randomBytes(MAX_SEED_LENGTH, 27),
-        });
-
-        this.unscramble();
-    };
-    generateNewSeed3 = () => {
-        const newSeed = createRandomSeed();
-        Electron.setOnboardingSeed(null);
-
-        this.setState(() => ({
-            seed: newSeed,
-            existingSeed: false,
-            clicks: [],
-            viewSeed3: 'block',
-            viewReload3: 'none'
-        }));
-
-        this.frame = 0;
-
-        this.setState({
-            scramble: randomBytes(MAX_SEED_LENGTH, 27),
-        });
-
-        this.unscramble();
-    };
-    generateNewSeed4 = () => {
-        const newSeed = createRandomSeed();
-        Electron.setOnboardingSeed(null);
-
-        this.setState(() => ({
-            seed: newSeed,
-            existingSeed: false,
-            clicks: [],
-            viewSeed4: 'block',
-            viewReload4: 'none'
-        }));
-
-        this.frame = 0;
-
-        this.setState({
-            scramble: randomBytes(MAX_SEED_LENGTH, 27),
-        });
-
-        this.unscramble();
-    };
     /**
      * Seed generation animation sequence step
      * @returns {undefined}
@@ -208,9 +150,8 @@ class SeedGenerate extends React.PureComponent {
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
-        const { seed, scramble, existingSeed, clicks } = this.state;
+        const { seed1, seed2, seed3, seed4, scramble, existingSeed, clicks } = this.state;
         const clicksLeft = 4 - clicks.length;
-        console.log("Seed::::" + seed);
 
         const { loop, animate, onEnd } = this.props;
 
@@ -250,7 +191,7 @@ class SeedGenerate extends React.PureComponent {
 
                                     <div className={css.seed_wrapper}>
                                         <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed1} style={{ display: this.state.viewReload1 }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -265,9 +206,9 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed1 }}>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
 
-                                                {seed.map((byte, index) => {
+                                                {seed1.map((byte, index) => {
                                                     const offset = scramble[index];
                                                     console.log("Offset", offset);
 
@@ -286,8 +227,8 @@ class SeedGenerate extends React.PureComponent {
 
                                             </div>
                                         </div>
-                                        <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed2} style={{ display: this.state.viewReload2 }}>
+                                        <div className={css.seed_wrapbox} >
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -302,9 +243,9 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed2 }}>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
 
-                                                {seed.map((byte, index) => {
+                                                {seed2.map((byte, index) => {
                                                     const offset = scramble[index];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
@@ -322,7 +263,7 @@ class SeedGenerate extends React.PureComponent {
                                             </div>
                                         </div>
                                         <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed3} style={{ display: this.state.viewReload3 }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -337,9 +278,9 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed3 }}>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
 
-                                                {seed.map((byte, index) => {
+                                                {seed3.map((byte, index) => {
                                                     const offset = scramble[index];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
@@ -357,7 +298,7 @@ class SeedGenerate extends React.PureComponent {
                                             </div>
                                         </div>
                                         <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed4} style={{ display: this.state.viewReload4 }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -372,9 +313,9 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed4 }}>
+                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
 
-                                                {seed.map((byte, index) => {
+                                                {seed4.map((byte, index) => {
                                                     const offset = scramble[index];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
