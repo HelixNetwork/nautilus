@@ -5,6 +5,7 @@ import includes from 'lodash/includes';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
 import { composeAPI } from '@helixnetwork/core';
+import { asTransactionHBytes , asTransactionObject } from "@helixnetwork/transaction-converter";
 import { helix, quorum } from './index';
 import Errors from '../errors';
 import { isWithinMinutes } from '../date';
@@ -233,7 +234,7 @@ const replayBundle = (settings, seedStore) => (
     return getBundle(settings)(hash)
         .then((bundle) => {
             // TODO
-            const convertToBytes = (tx) => iota.utils.transactionBytes(tx);
+            const convertToBytes = (tx) => asTransactionHBytes(tx);
             cached.bytes = map(bundle, convertToBytes);
             cached.transactionObjects = bundle;
 
@@ -548,7 +549,7 @@ const isNodeHealthy = (settings) => {
         )
         .then((bytes) => {
             // TODO
-            const { timestamp } = iota.utils.transactionObject(head(bytes), cached.latestMilestone);
+            const { timestamp } = asTransactionObject(head(bytes), cached.latestMilestone);
 
             return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
         });
