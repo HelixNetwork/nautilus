@@ -2,7 +2,7 @@
 // import sinon from 'sinon';
 // import { findSyncedNodes, fallbackToSafeResult, determineQuorumResult } from '../../../libs/helix/quorum';
 // import * as extendedApis from '../../../libs/helix/extendedApi';
-// import { EMPTY_HASH_TRYTES } from '../../../libs/helix/utils';
+// import { EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
 
 // describe('libs: iota/quorum', () => {
 //     describe('#determineQuorumResult', () => {

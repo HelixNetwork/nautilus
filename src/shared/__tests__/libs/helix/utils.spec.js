@@ -9,7 +9,7 @@
 //     throwIfNodeNotHealthy,
 //     isLastTritZero,
 //     getChecksum,
-// } from '../../../libs/helix/utils';
+// } from '../../../libs/hlx/utils';
 // import { latestAddressWithoutChecksum, latestAddressChecksum } from '../../__samples__/addresses';
 // import { trytesToTrits, tritsToChars } from '../../../libs/helix/converter';
 

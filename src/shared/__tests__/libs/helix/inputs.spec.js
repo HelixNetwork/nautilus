@@ -18,7 +18,7 @@
 // } from '../../__samples__/transactions';
 // import { milestoneTrytes } from '../../__samples__/trytes';
 // import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_TRANSACTION_TRYTES } from '../../../libs/helix/utils';
+// import { EMPTY_TRANSACTION_TRYTES } from '../../../libs/hlx/utils';
 
 // describe('libs: iota/inputs', () => {
 //     describe('#prepareInputs', () => {
