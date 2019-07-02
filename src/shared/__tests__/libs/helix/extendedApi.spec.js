@@ -1,4 +1,4 @@
-import head from 'lodash/head';
+import head  from 'lodash/head';
 import isEqual from 'lodash/isEqual';
 import map from 'lodash/map';
 import { expect } from 'chai';
