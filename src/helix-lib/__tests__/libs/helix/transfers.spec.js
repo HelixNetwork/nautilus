@@ -48,7 +48,7 @@
 //     LATEST_MILESTONE_INDEX,
 //     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 // } from '../../__samples__/transactions';
-// import { EMPTY_HASH_TRYTES, EMPTY_TRANSACTION_TRYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/helix/utils';
+// import { EMPTY_HASH_TRYTES, EMPTY_TRANSACTION_TRYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/hlx/utils';
 // import { IRI_API_VERSION } from '../../../config';
 
 // describe('libs: iota/transfers', () => {

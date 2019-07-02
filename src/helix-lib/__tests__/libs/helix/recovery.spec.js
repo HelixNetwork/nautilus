@@ -15,7 +15,7 @@
 // import { milestoneTrytes } from '../../__samples__/trytes';
 // import * as transferUtils from '../../../libs/helix/transfers';
 // import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_HASH_TRYTES } from '../../../libs/helix/utils';
+// import { EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
 // import { iota } from '../../../libs/helix';
 
 // const validSignedTrytes = [

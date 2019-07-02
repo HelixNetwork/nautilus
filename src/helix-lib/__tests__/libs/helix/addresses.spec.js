@@ -38,7 +38,7 @@
 // import mockAccounts from '../../__samples__/accounts';
 // import { iota, quorum } from '../../../libs/helix/index';
 // import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_TRYTES } from '../../../libs/helix/utils';
+// import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
 
 // describe('libs: iota/addresses', () => {
 //     describe('#preserveAddressLocalSpendStatus', () => {
