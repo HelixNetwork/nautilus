@@ -4,6 +4,8 @@ import freeze from "redux-freeze";
 import thunk from "redux-thunk";
 import home from "./reducers/home";
 import settings from './reducers/settings';
+import assign from 'lodash/assign';
+import { ActionTypes as WalletActionTypes } from './actions/wallet';
 
 /**
  *  This defines base configuration for setting up redux with react.
@@ -19,6 +21,11 @@ const reducers = combineReducers({
 
 const rootReducer = (state, action) => {
   /* eslint-disable no-param-reassign */
+
+  if (action.type === WalletActionTypes.MAP_STORAGE_TO_STATE) {
+    return reducers(assign({}, state, action.payload), action);
+}
+
   return reducers(state, action);
 };
 

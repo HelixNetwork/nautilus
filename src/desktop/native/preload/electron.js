@@ -8,6 +8,18 @@ let onboardingGenerated = false;
 
 const KEYTAR_SERVICE = remote.app.isPackaged ? 'Helix wallet' : 'Helix wallet (dev)';
 
+const capitalize = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+};
+
+let locales = {
+    multipleTx: 'You received multiple transactions to {{account}}',
+    valueTx: 'You received {{value}} to {{account}}',
+    messageTx: 'You received a message to {{account}}',
+    confirmedIn: 'Incoming {{value}} transaction was confirmed at {{account}}',
+    confirmedOut: 'Outgoing {{value}} transaction was confirmed at {{account}}',
+};
+
 /**
  * Global Electron helper for native support
  */
@@ -88,6 +100,71 @@ const Electron = {
      */
     focus: (view) => {
         ipc.send('window.focus', view);
+    },
+
+    /**
+     * Set native menu and notification locales
+     * @param {function} t - i18n locale helper
+     * @returns {undefiend}
+     */
+    changeLanguage: (t) => {
+        ipc.send('menu.language', {
+            about: t('settings:aboutTrinity'),
+            errorLog: t('notificationLog:errorLog'),
+            checkUpdate: t('checkForUpdates'),
+            sendFeedback: 'Send feedback',
+            settings: capitalize(t('home:settings')),
+            accountSettings: t('settings:accountManagement'),
+            accountName: t('addAdditionalSeed:accountName'),
+            viewSeed: t('accountManagement:viewSeed'),
+            viewAddresses: t('accountManagement:viewAddresses'),
+            tools: t('accountManagement:tools'),
+            newAccount: t('accountManagement:addNewAccount'),
+            language: t('languageSetup:language'),
+            node: t('node'),
+            currency: t('settings:currency'),
+            theme: t('settings:theme'),
+            changePassword: t('settings:changePassword'),
+            advanced: t('settings:advanced'),
+            hide: t('settings:hide'),
+            hideOthers: t('settings:hideOthers'),
+            showAll: t('settings:showAll'),
+            quit: t('settings:quit'),
+            edit: t('settings:edit'),
+            undo: t('settings:undo'),
+            redo: t('settings:redo'),
+            cut: t('settings:cut'),
+            copy: t('settings:copy'),
+            paste: t('settings:paste'),
+            selectAll: t('settings:selectAll'),
+            account: t('account'),
+            balance: capitalize(t('home:balance')),
+            send: capitalize(t('home:send')),
+            receive: capitalize(t('home:receive')),
+            history: capitalize(t('home:history')),
+            logout: t('settings:logout'),
+            help: t('help'),
+            logoutConfirm: t('logoutConfirmationModal:logoutConfirmation'),
+            yes: t('yes'),
+            no: t('no'),
+            updates: {
+                errorRetrievingUpdateData: t('updates:errorRetrievingUpdateData'),
+                noUpdatesAvailable: t('updates:noUpdatesAvailable'),
+                noUpdatesAvailableExplanation: t('updates:noUpdatesAvailableExplanation'),
+                newVersionAvailable: t('updates:newVersionAvailable'),
+                newVersionAvailableExplanation: t('updates:newVersionAvailableExplanation'),
+                installUpdate: t('updates:installUpdate'),
+                installUpdateExplanation: t('updates:installUpdateExplanation'),
+            },
+        });
+
+        locales = {
+            multipleTx: t('notifications:multipleTx', { account: '{{account}}' }),
+            valueTx: t('notifications:valueTx', { account: '{{account}}', value: '{{value}}' }),
+            messageTx: t('notifications:messageTx', { account: '{{account}}', value: '{{value}}' }),
+            confirmedIn: t('notifications:confirmedIn', { account: '{{account}}', value: '{{value}}' }),
+            confirmedOut: t('notifications:confirmedOut', { account: '{{account}}', value: '{{value}}' }),
+        };
     },
 };
 
