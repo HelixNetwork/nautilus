@@ -6,7 +6,7 @@ import nock from 'nock';
 import { asTransactionHBytes , asTransactionObject } from "@helixnetwork/transaction-converter";
 import { getHelixInstance, isNodeHealthy, allowsRemotePow } from '../../../libs/hlx/extendedApi';
 import { helix } from '../../../libs/hlx/index';
-import { newZeroValueTransactionTrytes } from '../../__samples__/trytes';
+import { newZeroValueTransactionBytes } from '../../__samples__/bytes';
 import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 import { IRI_API_VERSION, MAX_MILESTONE_FALLBEHIND } from '../../../config';
 
@@ -143,46 +143,46 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-//         describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND} less than latestMilestoneIndex`, () => {
-//             describe('when "timestamp" on trytes is from five minutes ago', () => {
-//                 beforeEach(() => {
-//                     nock('http://localhost:14265', {
-//                         reqheaders: {
-//                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
-//                         },
-//                     })
-//                         .filteringRequestBody(() => '*')
-//                         .persist()
-//                         .post('/', '*')
-//                         .reply(200, (_, body) => {
-//                             const { command } = body;
+        describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND} less than latestMilestoneIndex`, () => {
+            describe('when "timestamp" on bytes is from five minutes ago', () => {
+                beforeEach(() => {
+                    nock('http://localhost:14265', {
+                        reqheaders: {
+                            'Content-Type': 'application/json',
+                            'X-IOTA-API-Version': IRI_API_VERSION,
+                        },
+                    })
+                        .filteringRequestBody(() => '*')
+                        .persist()
+                        .post('/', '*')
+                        .reply(200, (_, body) => {
+                            const { command } = body;
 
-//                             const resultMap = {
-//                                 getNodeInfo: {
-//                                     appVersion: '0.0.0',
-//                                     latestMilestoneIndex: 426550,
-//                                     latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-//                                     latestMilestone: 'U'.repeat(81),
-//                                     latestSolidSubtangleMilestone: 'A'.repeat(81),
-//                                 },
-//                                 getTrytes: { trytes: [head(newZeroValueTransactionTrytes)] },
-//                             };
+                            const resultMap = {
+                                getNodeInfo: {
+                                    appVersion: '0.0.0',
+                                    latestMilestoneIndex: 426550,
+                                    latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                    latestMilestone: '0'.repeat(64),
+                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                },
+                                getBytes: { bytes: [head(newZeroValueTransactionBytes)] },
+                            };
 
-//                             return resultMap[command] || {};
-//                         });
-//                 });
+                            return resultMap[command] || {};
+                        });
+                });
 
-//                 afterEach(() => {
-//                     nock.cleanAll();
-//                 });
+                afterEach(() => {
+                    nock.cleanAll();
+                });
 
-//                 it('should return false', () => {
-//                     return isNodeHealthy().then((result) => expect(result).to.equal(false));
-//                 });
-//             });
+                it('should return false', () => {
+                    return isNodeHealthy().then((result) => expect(result).to.equal(false));
+                });
+            });
 
-//             describe('when "timestamp" on trytes is within five minutes', () => {
+//             describe('when "timestamp" on bytes is within five minutes', () => {
 //                 beforeEach(() => {
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
@@ -207,7 +207,7 @@ describe('libs: helix/extendedApi', () => {
 //                                 getTrytes: {
 //                                     trytes: [
 //                                         head(
-//                                             map(newZeroValueTransactionTrytes, (tryteString) => {
+//                                             map(newZeroValueTransactionBytes, (tryteString) => {
 //                                                 const transactionObject = asTransactionObject(tryteString);
 //                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
@@ -259,7 +259,7 @@ describe('libs: helix/extendedApi', () => {
 //                                     latestMilestone: 'U'.repeat(81),
 //                                     latestSolidSubtangleMilestone: 'A'.repeat(81),
 //                                 },
-//                                 getTrytes: { trytes: [head(newZeroValueTransactionTrytes)] },
+//                                 getTrytes: { trytes: [head(newZeroValueTransactionBytes)] },
 //                             };
 
 //                             return resultMap[command] || {};
@@ -300,7 +300,7 @@ describe('libs: helix/extendedApi', () => {
 //                                 getTrytes: {
 //                                     trytes: [
 //                                         head(
-//                                             map(newZeroValueTransactionTrytes, (tryteString) => {
+//                                             map(newZeroValueTransactionBytes, (tryteString) => {
 //                                                 const transactionObject = asTransactionObject(tryteString);
 //                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
@@ -349,7 +349,7 @@ describe('libs: helix/extendedApi', () => {
 //                                     latestMilestone: 'U'.repeat(81),
 //                                     latestSolidSubtangleMilestone: 'U'.repeat(81),
 //                                 },
-//                                 getTrytes: { trytes: [head(newZeroValueTransactionTrytes)] },
+//                                 getTrytes: { trytes: [head(newZeroValueTransactionBytes)] },
 //                             };
 
 //                             return resultMap[command] || {};
@@ -388,7 +388,7 @@ describe('libs: helix/extendedApi', () => {
 //                                 getTrytes: {
 //                                     trytes: [
 //                                         head(
-//                                             map(newZeroValueTransactionTrytes, (tryteString) => {
+//                                             map(newZeroValueTransactionBytes, (tryteString) => {
 //                                                 const transactionObject = asTransactionObject(tryteString);
 //                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
@@ -484,6 +484,6 @@ describe('libs: helix/extendedApi', () => {
 //                     return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(false));
 //                 });
 //             });
-//         });
+        });
     });
 });

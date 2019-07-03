@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import nock from 'nock';
 import { getIotaInstance, isNodeHealthy, allowsRemotePow } from '../../../libs/helix/extendedApi';
 import { iota } from '../../../libs/helix/index';
-import { newZeroValueTransactionTrytes } from '../../__samples__/trytes';
+import { newZeroValueTransactionTrytes } from '../../__samples__/bytes';
 import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 import { IRI_API_VERSION, MAX_MILESTONE_FALLBEHIND } from '../../../config';
 

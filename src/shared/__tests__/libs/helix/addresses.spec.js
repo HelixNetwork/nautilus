@@ -34,7 +34,7 @@
 //     newZeroValueTransactionTrytes,
 //     milestoneTrytes,
 //     newZeroValueAttachedTransactionTrytes,
-// } from '../../__samples__/trytes';
+// } from '../../__samples__/bytes';
 // import mockAccounts from '../../__samples__/accounts';
 // import { iota, quorum } from '../../../libs/helix/index';
 // import { IRI_API_VERSION } from '../../../config';

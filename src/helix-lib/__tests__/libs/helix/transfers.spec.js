@@ -34,7 +34,7 @@
 //     newValueAttachedTransactionTrytes,
 //     failedTrytesWithCorrectTransactionHashes,
 //     milestoneTrytes,
-// } from '../../__samples__/trytes';
+// } from '../../__samples__/bytes';
 // import {
 //     newValueAttachedTransactionBaseTrunk,
 //     newValueAttachedTransactionBaseBranch,

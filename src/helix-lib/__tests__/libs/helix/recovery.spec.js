@@ -12,7 +12,7 @@
 //     LATEST_SOLID_SUBTANGLE_MILESTONE,
 //     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 // } from '../../__samples__/transactions';
-// import { milestoneTrytes } from '../../__samples__/trytes';
+// import { milestoneTrytes } from '../../__samples__/bytes';
 // import * as transferUtils from '../../../libs/helix/transfers';
 // import { IRI_API_VERSION } from '../../../config';
 // import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
