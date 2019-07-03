@@ -19,7 +19,7 @@ import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import size from 'lodash/size';
 import { helix } from './index';
-import { getBalancesAsync, wereAddressesSpentFromAsync, findTransactionsAsync, sendTransferAsync } from './extendedApi';
+import { getBalances, wereAddressesSpentFromAsync, findTransactions, sendTransferAsync } from './extendedApi';
 import { prepareTransferArray } from './transfers';
 import Errors from '../errors';
 import { DEFAULT_SECURITY } from '../../config';
@@ -163,12 +163,12 @@ export const isAddressUsedAsync = (settings, withQuorum) => (addressObject) => {
 
         return (
             isSpent ||
-            findTransactionsAsync(settings)({ addresses: [address] }).then((hashes) => {
+            findTransactions(settings)({ addresses: [address] }).then((hashes) => {
                 const hasAssociatedHashes = size(hashes) > 0;
 
                 return (
                     hasAssociatedHashes ||
-                    getBalancesAsync(settings, withQuorum)([address]).then((balances) => {
+                    getBalances(settings, withQuorum)([address]).then((balances) => {
                         return accumulateBalance(map(balances.balances, Number)) > 0;
                     })
                 );
@@ -246,7 +246,7 @@ export const mapLatestAddressData = (settings, withQuorum) => (addressData, tran
         return Promise.resolve([]);
     }
 
-    return getBalancesAsync(settings, withQuorum)(addresses)
+    return getBalances(settings, withQuorum)(addresses)
         .then((balances) => {
             cached.balances = map(balances.balances, Number);
 
@@ -356,8 +356,8 @@ export const getFullAddressHistory = (settings, withQuorum) => (seedStore, exist
  */
 const findAddressesData = (settings, withQuorum) => (addresses, transactions = []) => {
     return Promise.all([
-        findTransactionsAsync(settings)({ addresses }),
-        getBalancesAsync(settings, withQuorum)(addresses),
+        findTransactions(settings)({ addresses }),
+        getBalances(settings, withQuorum)(addresses),
         wereAddressesSpentFromAsync(settings, withQuorum)(addresses),
     ]).then((data) => {
         const [hashes, balances, wereSpent] = data;
@@ -753,7 +753,7 @@ export const filterAddressDataWithPendingIncomingTransactions = (addressData, tr
 export const attachAndFormatAddress = (provider, withQuorum) => (address, index, balance, seedStore, accountState) => {
     let attachedTransactions = [];
 
-    return findTransactionsAsync(provider)({ addresses: [address] })
+    return findTransactions(provider)({ addresses: [address] })
         .then((hashes) => {
             if (size(hashes)) {
                 throw new Error(Errors.ADDRESS_ALREADY_ATTACHED);

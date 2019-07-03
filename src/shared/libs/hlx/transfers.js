@@ -28,11 +28,11 @@ import { DEFAULT_TAG, DEFAULT_MIN_WEIGHT_MAGNITUDE, BUNDLE_OUTPUTS_THRESHOLD } f
 import { iota } from './index';
 import { accumulateBalance } from './addresses';
 import {
-    getBalancesAsync,
-    getTransactionsObjectsAsync,
-    getLatestInclusionAsync,
-    findTransactionObjectsAsync,
-    getTransactionsToApproveAsync,
+    getBalances,
+    getTransactionsObjects,
+    getLatestInclusion,
+    findTransactionObjects,
+    getTransactionsToApprove,
     attachToTangle,
     storeAndBroadcastAsync,
     isPromotable,
@@ -430,7 +430,7 @@ export const syncTransactions = (settings) => (diff, existingTransactions) => {
     const pullNewTransactions = (diff) => {
         const bundleHashes = new Set();
 
-        return getTransactionsObjectsAsync(settings)(diff)
+        return getTransactionsObjects(settings)(diff)
             .then((transactionObjects) => {
                 each(transactionObjects, (transactionObject) => {
                     if (transactionObject.bundle !== EMPTY_HASH_BYTES) {
@@ -439,7 +439,7 @@ export const syncTransactions = (settings) => (diff, existingTransactions) => {
                 });
 
                 // Find all transaction objects for bundle hashes
-                return findTransactionObjectsAsync(settings)({ bundles: Array.from(bundleHashes) });
+                return findTransactionObjects(settings)({ bundles: Array.from(bundleHashes) });
             })
             .then((transactionObjects) => {
                 const existingTransactionHashes = map(existingTransactions, (transaction) => transaction.hash);
@@ -651,7 +651,7 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
     // Proof of work was not performed correctly if any transaction has invalid hash
     if (some(transactionObjects, isInvalidTransactionHash)) {
         // If proof of work failed, select new tips and retry
-        return getTransactionsToApproveAsync(settings)()
+        return getTransactionsToApprove(settings)()
             .then(({ trunkTransaction, branchTransaction }) => {
                 return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
             })
@@ -790,7 +790,7 @@ export const isFundedBundle = (settings, withQuorum) => (bundle) => {
         return Promise.reject(new Error(Errors.EMPTY_BUNDLE_PROVIDED));
     }
 
-    return getBalancesAsync(settings, withQuorum)(
+    return getBalances(settings, withQuorum)(
         reduce(bundle, (acc, tx) => (tx.value < 0 ? [...acc, tx.address] : acc), []),
     ).then((balances) => {
         return (
@@ -897,7 +897,7 @@ export const promoteTransactionTilConfirmed = (settings, seedStore) => (
         }
 
         // Before every promotion, check confirmation state
-        return getLatestInclusionAsync(settings)(map(tailTransactionsClone, (tx) => tx.hash)).then((states) => {
+        return getLatestInclusion(settings)(map(tailTransactionsClone, (tx) => tx.hash)).then((states) => {
             if (some(states, (state) => state === true)) {
                 // If any of the tail is confirmed, return the "confirmed" tail transaction object.
                 return find(tailTransactionsClone, (_, idx) => idx === findIndex(states, (state) => state === true));
@@ -968,7 +968,7 @@ export const assignInclusionStatesToBundles = (settings) => (bundles) => {
     const tailTransactions = map(bundles, (bundle) => find(bundle, { currentIndex: 0 }));
     const tailTransactionsHashes = map(tailTransactions, (transaction) => transaction.hash);
 
-    return getLatestInclusionAsync(settings)(tailTransactionsHashes).then((states) => {
+    return getLatestInclusion(settings)(tailTransactionsHashes).then((states) => {
         return map(tailTransactions, (tailTransaction, idx) => {
             const bundleForThisTailTransaction = find(bundles, (bundle) =>
                 some(bundle, (transaction) => transaction.hash === tailTransaction.hash),
@@ -1016,14 +1016,14 @@ export const mapNormalisedTransactions = (transactions, addressData) => {
 /**
  * Computes and assign transaction hash to transactions from attached trytes (Forms a bundle).
  *
- * @method constructBundleFromAttachedTrytes
+ * @method constructBundleFromAttachedBytes
  *
  * @param {array} attachedTrytes
  * @param {object} seedStore
  *
  * @returns {Promise<array>}
  */
-export const constructBundleFromAttachedTrytes = (attachedTrytes, seedStore) => {
+export const constructBundleFromAttachedBytes = (attachedTrytes, seedStore) => {
     return reduce(
         attachedTrytes,
         (promise, tryteString) => {

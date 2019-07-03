@@ -50,25 +50,25 @@ export const EMPTY_TRANSACTION_MESSAGE = 'Empty';
 export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 
 // Since the helix already based on bytes, this may not be needed
-// /**
-//  * Converts trytes to bytes
-//  *
-//  * @method convertFromTrytes
-//  * @param {string} trytes
-//  *
-//  * @returns {string}
-//  */
-// export const convertFromTrytes = (trytes) => {
-//     const trytesWithoutNines = trytes.replace(/9+$/, '');
-//     const message = helix.utils.fromTrytes(trytesWithoutNines);
+/**
+ * Converts trytes to bytes
+ *
+ * @method convertFromBytes
+ * @param {string} trytes
+ *
+ * @returns {string}
+ */
+export const convertFromBytes = (trytes) => {
+    const trytesWithoutNines = trytes.replace(/9+$/, '');
+    const message = helix.utils.fromTrytes(trytesWithoutNines);
 
-//     /* eslint-disable no-control-regex */
-//     if (trytesWithoutNines && message && /^[\x00-\xFF]*$/.test(message)) {
-//         return message;
-//     }
-//     /* eslint-enable no-control-regex */
-//     return EMPTY_TRANSACTION_MESSAGE;
-// };
+    /* eslint-disable no-control-regex */
+    if (trytesWithoutNines && message && /^[\x00-\xFF]*$/.test(message)) {
+        return message;
+    }
+    /* eslint-enable no-control-regex */
+    return EMPTY_TRANSACTION_MESSAGE;
+};
 
 /**
  * Gets checksum.

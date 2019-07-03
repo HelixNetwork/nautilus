@@ -7,7 +7,7 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
-import { findTransactionsAsync } from './extendedApi';
+import { findTransactions } from './extendedApi';
 import { syncTransactions, getTransactionsDiff, mapNormalisedTransactions } from './transfers';
 import { throwIfNodeNotHealthy } from './utils';
 import {
@@ -112,7 +112,7 @@ export const syncAccount = (settings, withQuorum) => (
         .then((addressData) => {
             thisStateCopy.addressData = addressData;
 
-            return findTransactionsAsync(settings)({
+            return findTransactions(settings)({
                 addresses: map(thisStateCopy.addressData, (addressObject) => addressObject.address),
             });
         })
