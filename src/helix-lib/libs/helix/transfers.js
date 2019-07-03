@@ -34,10 +34,10 @@ import {
     findTransactionObjects,
     getTransactionsToApprove,
     attachToTangle,
-    storeAndBroadcastAsync,
+    storeAndBroadcast,
     isPromotable,
-    promoteTransactionAsync,
-    replayBundleAsync,
+    promoteTransaction,
+    replayBundle,
 } from './extendedApi';
 import i18next from '../../libs/i18next.js';
 import {
@@ -659,11 +659,11 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
                 cached.trytes = trytes;
                 cached.transactionObjects = transactionObjects;
 
-                return storeAndBroadcastAsync(settings)(cached.trytes).then(() => cached);
+                return storeAndBroadcast(settings)(cached.trytes).then(() => cached);
             });
     }
 
-    return storeAndBroadcastAsync(settings)(cached.trytes).then(() => cached);
+    return storeAndBroadcast(settings)(cached.trytes).then(() => cached);
 };
 
 /**
@@ -906,7 +906,7 @@ export const promoteTransactionTilConfirmed = (settings, seedStore) => (
             const { hash, attachmentTimestamp } = tailTransaction;
 
             // Promote transaction
-            return promoteTransactionAsync(settings, seedStore)(hash)
+            return promoteTransaction(settings, seedStore)(hash)
                 .then(() => {
                     return _promote(tailTransaction);
                 })
@@ -930,7 +930,7 @@ export const promoteTransactionTilConfirmed = (settings, seedStore) => (
         const tailTransaction = head(tailTransactionsClone);
         const hash = tailTransaction.hash;
 
-        return replayBundleAsync(settings, seedStore)(hash).then((reattachment) => {
+        return replayBundle(settings, seedStore)(hash).then((reattachment) => {
             const tailTransaction = find(reattachment, { currentIndex: 0 });
             // Add newly reattached transaction
             tailTransactionsClone.push(tailTransaction);

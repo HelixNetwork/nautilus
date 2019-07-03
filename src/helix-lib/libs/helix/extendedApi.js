@@ -207,13 +207,13 @@ const getLatestInclusion = (settings, withQuorum = false) => (hashes) =>
 /**
  * Extended version of iota.api.promoteTransaction with an option to perform PoW locally
  *
- * @method promoteTransactionAsync
+ * @method promoteTransaction
  * @param {object} [settings]
  * @param {object} seedStore
  *
  * @returns {function(string, number, number, object): Promise<string>}
  */
-const promoteTransactionAsync = (settings, seedStore) => (
+const promoteTransaction = (settings, seedStore) => (
     hash,
     depth = DEFAULT_DEPTH,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -249,7 +249,7 @@ const promoteTransactionAsync = (settings, seedStore) => (
             .then(({ trytes }) => {
                 cached.trytes = trytes;
 
-                return storeAndBroadcastAsync(settings)(cached.trytes);
+                return storeAndBroadcast(settings)(cached.trytes);
             })
             .then(() => hash)
     );
@@ -258,13 +258,13 @@ const promoteTransactionAsync = (settings, seedStore) => (
 /**
  * Promisified version of iota.api.replayBundle
  *
- * @method replayBundleAsync
+ * @method replayBundle
  * @param {object} [settings]
  * @param {object} seedStore
  *
  * @returns {function(string, function, number, number): Promise<array>}
  */
-const replayBundleAsync = (settings, seedStore) => (
+const replayBundle = (settings, seedStore) => (
     hash,
     depth = DEFAULT_DEPTH,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -294,7 +294,7 @@ const replayBundleAsync = (settings, seedStore) => (
             cached.trytes = trytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.trytes);
+            return storeAndBroadcast(settings)(cached.trytes);
         })
         .then(() => cached.transactionObjects);
 };
@@ -321,13 +321,13 @@ const getBundleAsync = (settings) => (tailTransactionHash) =>
 /**
  * Promisified version of iota.api.wereAddressesSpentFrom
  *
- * @method wereAddressesSpentFromAsync
+ * @method wereAddressesSpentFrom
  * @param {object} [settings]
  * @param {boolean} [withQuorum]
  *
  * @returns {function(array): Promise<array>}
  */
-const wereAddressesSpentFromAsync = (settings, withQuorum = true) => (addresses) =>
+const wereAddressesSpentFrom = (settings, withQuorum = true) => (addresses) =>
     withQuorum
         ? quorum.wereAddressesSpentFrom(addresses)
         : new Promise((resolve, reject) => {
@@ -346,12 +346,12 @@ const wereAddressesSpentFromAsync = (settings, withQuorum = true) => (addresses)
 /**
  * Promisified version of iota.api.sendTransfer
  *
- * @method sendTransferAsync
+ * @method sendTransfer
  * @param {object} [settings]
  *
  * @returns {function(object, array, function, *, number, number): Promise<array>}
  */
-const sendTransferAsync = (settings) => (
+const sendTransfer = (settings) => (
     seedStore,
     transfers,
     options = null,
@@ -382,7 +382,7 @@ const sendTransferAsync = (settings) => (
             cached.trytes = trytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.trytes);
+            return storeAndBroadcast(settings)(cached.trytes);
         })
         .then(() => cached.transactionObjects);
 };
@@ -434,12 +434,12 @@ export const prepareTransfersAsync = (settings) => (seed, transfers, options = n
 /**
  * Promisified version of iota.api.storeAndBroadcast
  *
- * @method storeAndBroadcastAsync
+ * @method storeAndBroadcast
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<any>}
  */
-const storeAndBroadcastAsync = (settings) => (trytes) =>
+const storeAndBroadcast = (settings) => (trytes) =>
     new Promise((resolve, reject) => {
         getHelixInstance(settings).api.storeAndBroadcast(trytes, (err) => {
             if (err) {
@@ -664,13 +664,13 @@ export {
     findTransactionObjects,
     findTransactions,
     getLatestInclusion,
-    promoteTransactionAsync,
-    replayBundleAsync,
+    promoteTransaction,
+    replayBundle,
     getBundleAsync,
-    wereAddressesSpentFromAsync,
-    sendTransferAsync,
+    wereAddressesSpentFrom,
+    sendTransfer,
     getTransactionsToApprove,
-    storeAndBroadcastAsync,
+    storeAndBroadcast,
     attachToTangle,
     checkAttachToTangleAsync,
     allowsRemotePow,

@@ -12,11 +12,11 @@ import {
     attachToTangle,
     getTransactionsToApproveAsync,
     prepareTransfersAsync,
-    storeAndBroadcastAsync,
+    storeAndBroadcast,
     getBalancesAsync,
     findTransactionObjectsAsync,
     getLatestInclusionAsync,
-    wereAddressesSpentFromAsync,
+    wereAddressesSpentFrom,
 } from './extendedApi';
 import { iota } from './index';
 import Errors from '../errors';
@@ -85,7 +85,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             // if there are no value transactions, validate spend statuses
             if (isEmpty(valueTransactions)) {
                 // Check both recipient & input addresses
-                return wereAddressesSpentFromAsync(settings, withQuorum)([validInput.address, validTransfer.address]);
+                return wereAddressesSpentFrom(settings, withQuorum)([validInput.address, validTransfer.address]);
             }
 
             // If there are value transactions:
@@ -105,7 +105,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
 
                 if (isEmpty(validBundles)) {
                     // Check both recipient & input addresses
-                    return wereAddressesSpentFromAsync(settings, withQuorum)([
+                    return wereAddressesSpentFrom(settings, withQuorum)([
                         validInput.address,
                         validTransfer.address,
                     ]);
@@ -129,7 +129,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
                     const transactions = flatMap(fundedBundles, (bundle) => bundle);
                     // Check both recipient & input addresses
                     const checkSpendStatuses = () =>
-                        wereAddressesSpentFromAsync(settings, withQuorum)([validInput.address, validTransfer.address]);
+                        wereAddressesSpentFrom(settings, withQuorum)([validInput.address, validTransfer.address]);
 
                     if (isEmpty(transactions)) {
                         return checkSpendStatuses();
@@ -204,7 +204,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             cached.trytes = trytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcastAsync(settings)(cached.trytes);
+            return storeAndBroadcast(settings)(cached.trytes);
         })
         .then(() => cached);
 };

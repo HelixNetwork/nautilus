@@ -19,7 +19,7 @@ import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import size from 'lodash/size';
 import { helix } from './index';
-import { getBalances, wereAddressesSpentFromAsync, findTransactions, sendTransferAsync } from './extendedApi';
+import { getBalances, wereAddressesSpentFrom, findTransactions, sendTransfer } from './extendedApi';
 import { prepareTransferArray } from './transfers';
 import Errors from '../errors';
 import { DEFAULT_SECURITY } from '../../config';
@@ -158,7 +158,7 @@ export const isAddressUsedAsync = (settings, withQuorum) => (addressObject) => {
 
     const { address } = addressObject;
 
-    return wereAddressesSpentFromAsync(settings, withQuorum)([address]).then((spent) => {
+    return wereAddressesSpentFrom(settings, withQuorum)([address]).then((spent) => {
         const isSpent = head(spent) === true;
 
         return (
@@ -250,7 +250,7 @@ export const mapLatestAddressData = (settings, withQuorum) => (addressData, tran
         .then((balances) => {
             cached.balances = map(balances.balances, Number);
 
-            return wereAddressesSpentFromAsync(settings, withQuorum)(addresses);
+            return wereAddressesSpentFrom(settings, withQuorum)(addresses);
         })
         .then((wereSpent) => {
             // Get spend statuses of addresses from transactions
@@ -358,7 +358,7 @@ const findAddressesData = (settings, withQuorum) => (addresses, transactions = [
     return Promise.all([
         findTransactions(settings)({ addresses }),
         getBalances(settings, withQuorum)(addresses),
-        wereAddressesSpentFromAsync(settings, withQuorum)(addresses),
+        wereAddressesSpentFrom(settings, withQuorum)(addresses),
     ]).then((data) => {
         const [hashes, balances, wereSpent] = data;
         const spendStatusesFromTransactions = findSpendStatusesFromTransactions(addresses, transactions);
@@ -523,7 +523,7 @@ export const filterSpentAddressData = (provider, withQuorum) => (addressData, tr
     // Get latest spend statuses against unspent addresses from locally stored transactions
     const spendStatuses = findSpendStatusesFromTransactions(unspentAddresses, transactions);
 
-    return wereAddressesSpentFromAsync(provider, withQuorum)(unspentAddresses).then((wereSpent) => {
+    return wereAddressesSpentFrom(provider, withQuorum)(unspentAddresses).then((wereSpent) => {
         const filteredAddresses = filter(
             unspentAddresses,
             (_, idx) => wereSpent[idx] === false && spendStatuses[idx] === false,
@@ -544,7 +544,7 @@ export const filterSpentAddressData = (provider, withQuorum) => (addressData, tr
  * @returns {function(array): Promise<boolean>}
  **/
 export const isAnyAddressSpent = (provider, withQuorum) => (addresses) => {
-    return wereAddressesSpentFromAsync(provider, withQuorum)(addresses).then((spendStatuses) =>
+    return wereAddressesSpentFrom(provider, withQuorum)(addresses).then((spendStatuses) =>
         some(spendStatuses, (spendStatus) => spendStatus === true),
     );
 };
@@ -759,7 +759,7 @@ export const attachAndFormatAddress = (provider, withQuorum) => (address, index,
                 throw new Error(Errors.ADDRESS_ALREADY_ATTACHED);
             }
 
-            return sendTransferAsync(provider)(
+            return sendTransfer(provider)(
                 seedStore,
                 prepareTransferArray(address, 0, '', accountState.addressData),
             );
@@ -767,7 +767,7 @@ export const attachAndFormatAddress = (provider, withQuorum) => (address, index,
         .then((transactionObjects) => {
             attachedTransactions = transactionObjects;
 
-            return wereAddressesSpentFromAsync(provider, withQuorum)([address]);
+            return wereAddressesSpentFrom(provider, withQuorum)([address]);
         })
         .then((wereSpent) => {
             const spendStatuses = findSpendStatusesFromTransactions([address], accountState.transactions);
@@ -802,7 +802,7 @@ export const attachAndFormatAddress = (provider, withQuorum) => (address, index,
  * @returns {function(array): object}
  */
 export const categoriseAddressesBySpentStatus = (provider, withQuorum) => (addresses) => {
-    return wereAddressesSpentFromAsync(provider, withQuorum)(addresses).then((spentStatuses) => {
+    return wereAddressesSpentFrom(provider, withQuorum)(addresses).then((spentStatuses) => {
         const categorise = (acc, address, idx) => {
             if (spentStatuses[idx]) {
                 acc.spent.push(address);
