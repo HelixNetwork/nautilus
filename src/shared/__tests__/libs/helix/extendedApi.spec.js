@@ -104,44 +104,44 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-//         describe(`when latestMilestone is ${EMPTY_HASH_BYTES}`, () => {
-//             beforeEach(() => {
-//                 nock('http://localhost:14265', {
-//                     reqheaders: {
-//                         'Content-Type': 'application/json',
-//                         'X-HELIX-API-Version': IRI_API_VERSION,
-//                     },
-//                 })
-//                     .filteringRequestBody(() => '*')
-//                     .persist()
-//                     .post('/', '*')
-//                     .reply(200, (_, body) => {
-//                         const { command } = body;
+        describe(`when latestMilestone is ${EMPTY_HASH_BYTES}`, () => {
+            beforeEach(() => {
+                nock('http://localhost:14265', {
+                    reqheaders: {
+                        'Content-Type': 'application/json',
+                        'X-HELIX-API-Version': IRI_API_VERSION,
+                    },
+                })
+                    .filteringRequestBody(() => '*')
+                    .persist()
+                    .post('/', '*')
+                    .reply(200, (_, body) => {
+                        const { command } = body;
 
-//                         const resultMap = {
-//                             getNodeInfo: {
-//                                 appVersion: '0.0.0',
-//                                 latestMilestone: EMPTY_HASH_BYTES,
-//                                 latestSolidSubtangleMilestone: EMPTY_HASH_BYTES,
-//                             },
-//                         };
+                        const resultMap = {
+                            getNodeInfo: {
+                                appVersion: '0.0.0',
+                                latestMilestone: EMPTY_HASH_BYTES,
+                                latestSolidSubtangleMilestone: EMPTY_HASH_BYTES,
+                            },
+                        };
 
-//                         return resultMap[command] || {};
-//                     });
-//             });
+                        return resultMap[command] || {};
+                    });
+            });
 
-//             afterEach(() => {
-//                 nock.cleanAll();
-//             });
+            afterEach(() => {
+                nock.cleanAll();
+            });
 
-//             it('should throw with an error "Node not synced"', () => {
-//                 return isNodeHealthy()
-//                     .then(() => {
-//                         throw new Error();
-//                     })
-//                     .catch((error) => expect(error.message).to.equal('Node not synced'));
-//             });
-//         });
+            it('should throw with an error "Node not synced"', () => {
+                return isNodeHealthy()
+                    .then(() => {
+                        throw new Error();
+                    })
+                    .catch((error) => expect(error.message).to.equal('Node not synced'));
+            });
+        });
 
 //         describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND} less than latestMilestoneIndex`, () => {
 //             describe('when "timestamp" on trytes is from five minutes ago', () => {
