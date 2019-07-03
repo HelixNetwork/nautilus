@@ -41,7 +41,7 @@ import {
 } from './extendedApi';
 import i18next from '../../libs/i18next.js';
 import {
-    convertFromTrytes,
+    convertFromBytes,
     EMPTY_HASH_BYTES,
     EMPTY_TRANSACTION_MESSAGE,
     VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX,
@@ -88,7 +88,7 @@ export const computeTransactionMessage = (bundle) => {
     let message = EMPTY_TRANSACTION_MESSAGE;
 
     each(bundle, (tx) => {
-        message = convertFromTrytes(tx.signatureMessageFragment);
+        message = convertFromBytes(tx.signatureMessageFragment);
 
         if (message !== EMPTY_TRANSACTION_MESSAGE) {
             return false;
