@@ -15,7 +15,7 @@
 // import { milestoneTrytes } from '../../__samples__/trytes';
 // import * as transferUtils from '../../../libs/helix/transfers';
 // import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
+// import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 // import { iota } from '../../../libs/helix';
 
 // const validSignedTrytes = [
@@ -34,8 +34,8 @@
 //     checkConsistency: { state: false },
 //     getBalances: { balances: ['10'] },
 //     getTransactionsToApprove: {
-//         trunkTransaction: EMPTY_HASH_TRYTES,
-//         branchTransaction: EMPTY_HASH_TRYTES,
+//         trunkTransaction: EMPTY_HASH_BYTES,
+//         branchTransaction: EMPTY_HASH_BYTES,
 //     },
 //     findTransactions: { hashes: ['A'.repeat(81)] },
 //     getTrytes: { trytes: milestoneTrytes },

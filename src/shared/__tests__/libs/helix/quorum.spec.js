@@ -2,7 +2,7 @@
 // import sinon from 'sinon';
 // import { findSyncedNodes, fallbackToSafeResult, determineQuorumResult } from '../../../libs/helix/quorum';
 // import * as extendedApis from '../../../libs/helix/extendedApi';
-// import { EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
+// import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 
 // describe('libs: iota/quorum', () => {
 //     describe('#determineQuorumResult', () => {
@@ -91,7 +91,7 @@
 //             });
 
 //             describe('when frequency is less than 67 percent', () => {
-//                 it(`should return ${EMPTY_HASH_TRYTES} as a fallback latestSolidSubtangleMilestone`, () => {
+//                 it(`should return ${EMPTY_HASH_BYTES} as a fallback latestSolidSubtangleMilestone`, () => {
 //                     const correctHash = 'U'.repeat(81);
 //                     const incorrectHash = 'X'.repeat(81);
 
@@ -109,7 +109,7 @@
 //                         'getNodeInfo:latestSolidSubtangleMilestone',
 //                         67,
 //                     );
-//                     expect(result).to.equal(EMPTY_HASH_TRYTES);
+//                     expect(result).to.equal(EMPTY_HASH_BYTES);
 //                 });
 //             });
 //         });
@@ -135,8 +135,8 @@
 //         });
 
 //         describe('when method is getNodeInfo:latestSolidSubtangleMilestone', () => {
-//             it(`should return ${EMPTY_HASH_TRYTES}`, () => {
-//                 expect(fallbackToSafeResult('getNodeInfo:latestSolidSubtangleMilestone')).to.equal(EMPTY_HASH_TRYTES);
+//             it(`should return ${EMPTY_HASH_BYTES}`, () => {
+//                 expect(fallbackToSafeResult('getNodeInfo:latestSolidSubtangleMilestone')).to.equal(EMPTY_HASH_BYTES);
 //             });
 //         });
 

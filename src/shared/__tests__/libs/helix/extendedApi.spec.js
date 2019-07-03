@@ -7,7 +7,7 @@ import { asTransactionHBytes , asTransactionObject } from "@helixnetwork/transac
 import { getHelixInstance, isNodeHealthy, allowsRemotePow } from '../../../libs/hlx/extendedApi';
 import { helix } from '../../../libs/hlx/index';
 import { newZeroValueTransactionTrytes } from '../../__samples__/trytes';
-import { EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
+import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 import { IRI_API_VERSION, MAX_MILESTONE_FALLBEHIND } from '../../../config';
 
 describe('libs: helix/extendedApi', () => {
@@ -82,7 +82,7 @@ describe('libs: helix/extendedApi', () => {
                         const resultMap = {
                             getNodeInfo: {
                                 appVersion: '0.0.0',
-                                latestMilestone: EMPTY_HASH_TRYTES,
+                                latestMilestone: EMPTY_HASH_BYTES,
                                 latestSolidSubtangleMilestone: 'U'.repeat(81),
                             },
                         };
@@ -104,7 +104,7 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-//         describe(`when latestMilestone is ${EMPTY_HASH_TRYTES}`, () => {
+//         describe(`when latestMilestone is ${EMPTY_HASH_BYTES}`, () => {
 //             beforeEach(() => {
 //                 nock('http://localhost:14265', {
 //                     reqheaders: {
@@ -121,8 +121,8 @@ describe('libs: helix/extendedApi', () => {
 //                         const resultMap = {
 //                             getNodeInfo: {
 //                                 appVersion: '0.0.0',
-//                                 latestMilestone: EMPTY_HASH_TRYTES,
-//                                 latestSolidSubtangleMilestone: EMPTY_HASH_TRYTES,
+//                                 latestMilestone: EMPTY_HASH_BYTES,
+//                                 latestSolidSubtangleMilestone: EMPTY_HASH_BYTES,
 //                             },
 //                         };
 
@@ -328,7 +328,7 @@ describe('libs: helix/extendedApi', () => {
 //             });
 //         });
 
-//         describe(`when latestMilestone is not ${EMPTY_HASH_TRYTES} and is equal to latestSolidSubtangleMilestone`, () => {
+//         describe(`when latestMilestone is not ${EMPTY_HASH_BYTES} and is equal to latestSolidSubtangleMilestone`, () => {
 //             describe('when "timestamp" on trytes is from five minutes ago', () => {
 //                 beforeEach(() => {
 //                     nock('http://localhost:14265', {

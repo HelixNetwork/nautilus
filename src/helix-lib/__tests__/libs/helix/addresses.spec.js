@@ -38,7 +38,7 @@
 // import mockAccounts from '../../__samples__/accounts';
 // import { iota, quorum } from '../../../libs/helix/index';
 // import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_TRYTES } from '../../../libs/hlx/utils';
+// import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 
 // describe('libs: iota/addresses', () => {
 //     describe('#preserveAddressLocalSpendStatus', () => {
@@ -2349,7 +2349,7 @@
 //                         } else if (body.command === 'findTransactions') {
 //                             const addresses = body.addresses;
 
-//                             return { hashes: map(addresses, () => EMPTY_HASH_TRYTES) };
+//                             return { hashes: map(addresses, () => EMPTY_HASH_BYTES) };
 //                         } else if (body.command === 'getTransactionsToApprove') {
 //                             return {
 //                                 trunkTransaction: newZeroValueAttachedTransactionBaseTrunk,

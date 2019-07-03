@@ -239,7 +239,7 @@ const promoteTransactionAsync = (settings, seedStore) => (
                 );
             })
             .then(({ trunkTransaction, branchTransaction }) =>
-                attachToTangleAsync(settings, seedStore)(
+                attachToTangle(settings, seedStore)(
                     trunkTransaction,
                     branchTransaction,
                     cached.trytes,
@@ -283,7 +283,7 @@ const replayBundleAsync = (settings, seedStore) => (
             return getTransactionsToApproveAsync(settings)({}, depth);
         })
         .then(({ trunkTransaction, branchTransaction }) =>
-            attachToTangleAsync(settings, seedStore)(
+            attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
                 cached.trytes,
@@ -371,7 +371,7 @@ const sendTransferAsync = (settings) => (
             return getTransactionsToApproveAsync(settings)({}, depth);
         })
         .then(({ trunkTransaction, branchTransaction }) =>
-            attachToTangleAsync(settings, seedStore)(
+            attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
                 cached.trytes,
@@ -499,13 +499,13 @@ const allowsRemotePow = (settings) => {
 /**
  * Promisified version of iota.api.attachToTangle
  *
- * @method attachToTangleAsync
+ * @method attachToTangle
  * @param {object} [settings]
  * @param {object} seedStore
  *
  * @returns {function(string, string, array, number): Promise<object>}
  */
-const attachToTangleAsync = (settings, seedStore) => (
+const attachToTangle = (settings, seedStore) => (
     trunkTransaction,
     branchTransaction,
     trytes,
@@ -671,7 +671,7 @@ export {
     sendTransferAsync,
     getTransactionsToApproveAsync,
     storeAndBroadcastAsync,
-    attachToTangleAsync,
+    attachToTangle,
     checkAttachToTangleAsync,
     allowsRemotePow,
     isNodeHealthy,

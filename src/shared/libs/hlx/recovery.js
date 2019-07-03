@@ -9,7 +9,7 @@ import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
 import {
-    attachToTangleAsync,
+    attachToTangle,
     getTransactionsToApproveAsync,
     prepareTransfersAsync,
     storeAndBroadcastAsync,
@@ -198,7 +198,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             throw new Error(Errors.INVALID_BUNDLE);
         })
         .then(({ trunkTransaction, branchTransaction }) => {
-            return attachToTangleAsync(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
+            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
         })
         .then(({ trytes, transactionObjects }) => {
             cached.trytes = trytes;

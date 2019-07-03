@@ -33,7 +33,7 @@ import {
     getLatestInclusionAsync,
     findTransactionObjectsAsync,
     getTransactionsToApproveAsync,
-    attachToTangleAsync,
+    attachToTangle,
     storeAndBroadcastAsync,
     isPromotable,
     promoteTransactionAsync,
@@ -42,7 +42,7 @@ import {
 import i18next from '../../libs/i18next.js';
 import {
     convertFromTrytes,
-    EMPTY_HASH_TRYTES,
+    EMPTY_HASH_BYTES,
     EMPTY_TRANSACTION_MESSAGE,
     VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX,
 } from './utils';
@@ -433,7 +433,7 @@ export const syncTransactions = (settings) => (diff, existingTransactions) => {
         return getTransactionsObjectsAsync(settings)(diff)
             .then((transactionObjects) => {
                 each(transactionObjects, (transactionObject) => {
-                    if (transactionObject.bundle !== EMPTY_HASH_TRYTES) {
+                    if (transactionObject.bundle !== EMPTY_HASH_BYTES) {
                         bundleHashes.add(transactionObject.bundle);
                     }
                 });
@@ -645,7 +645,7 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
     };
 
     const isInvalidTransactionHash = ({ hash }) =>
-        hash === EMPTY_HASH_TRYTES || !iota.utils.isTransactionHash(hash, DEFAULT_MIN_WEIGHT_MAGNITUDE);
+        hash === EMPTY_HASH_BYTES || !iota.utils.isTransactionHash(hash, DEFAULT_MIN_WEIGHT_MAGNITUDE);
 
     // Verify if all transaction objects have valid hash
     // Proof of work was not performed correctly if any transaction has invalid hash
@@ -653,7 +653,7 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
         // If proof of work failed, select new tips and retry
         return getTransactionsToApproveAsync(settings)()
             .then(({ trunkTransaction, branchTransaction }) => {
-                return attachToTangleAsync(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
+                return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
             })
             .then(({ trytes, transactionObjects }) => {
                 cached.trytes = trytes;
@@ -751,7 +751,7 @@ export const sortTransactionTrytesArray = (trytes, sortBy = 'currentIndex', orde
         iota.utils.transactionObject(
             tryteString,
             // Pass in null hash trytes to avoid computing transaction hash.
-            EMPTY_HASH_TRYTES,
+            EMPTY_HASH_BYTES,
         ),
     );
 
