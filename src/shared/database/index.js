@@ -354,6 +354,18 @@ class Wallet {
             );
         }
     }
+
+    static acceptTerms() {
+        realm.write(() => {
+            Wallet.latestSettings.acceptedTerms = true;
+        });
+    }
+
+    static acceptPrivacyPolicy() {
+        realm.write(() => {
+            Wallet.latestSettings.acceptedPrivacy = true;
+        });
+    }
 }
 
 /**

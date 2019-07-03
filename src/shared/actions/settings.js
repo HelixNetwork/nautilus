@@ -53,7 +53,6 @@ export function updateTheme(payload) {
  */
 export const acceptTerms = () => {
     Wallet.acceptTerms();
-
     return {
         type: ActionTypes.ACCEPT_TERMS,
     };
@@ -68,7 +67,6 @@ export const acceptTerms = () => {
  */
 export const acceptPrivacy = () => {
     Wallet.acceptPrivacyPolicy();
-
     return {
         type: ActionTypes.ACCEPT_PRIVACY,
     };

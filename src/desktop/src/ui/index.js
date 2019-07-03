@@ -35,7 +35,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        
+        Electron.changeLanguage(this.props.t);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -74,6 +74,7 @@ class App extends React.Component {
 const mapStateToProps = state => ({
     locale: state.settings.locale,
     themeName: state.settings.themeName,
+    wallet: state.wallet,
 });
 
 const mapDispatchToProps = {

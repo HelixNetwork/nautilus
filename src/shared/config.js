@@ -9,14 +9,14 @@ export const DEFAULT_NODE = __TEST__
         password: '',
     }
     : {
-        url: 'http://3.122.180.122:14700', // 'https://nodes.iota.org'
+        url: 'https://hlxtest.net:8086', // 'https://nodes.iota.org'
         pow: false,
         token: '',
         password: '',
     };
 
 export const NODES_WITH_POW_DISABLED = [
-    'http://3.122.180.122:14700', // 'https://nodes.iota.org'
+    'https://hlxtest.net:8086', // 'https://nodes.iota.org'
 ].map((url) => ({
     url,
     pow: false,
@@ -26,7 +26,7 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-    'http://3.122.180.122:14700',
+    'https://hlxtest.net:8086',
     // 'https://nodes.thetangle.org:443',
     // 'https://iotanode.us:443',
     // 'https://pool.trytes.eu',

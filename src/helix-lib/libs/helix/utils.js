@@ -53,12 +53,12 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 // /**
 //  * Converts trytes to bytes
 //  *
-//  * @method convertFromTrytes
+//  * @method convertFromBytes
 //  * @param {string} trytes
 //  *
 //  * @returns {string}
 //  */
-// export const convertFromTrytes = (trytes) => {
+// export const convertFromBytes = (trytes) => {
 //     const trytesWithoutNines = trytes.replace(/9+$/, '');
 //     const message = helix.utils.fromTrytes(trytesWithoutNines);
 

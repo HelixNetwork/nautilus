@@ -48,7 +48,7 @@
 //     LATEST_MILESTONE_INDEX,
 //     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 // } from '../../__samples__/transactions';
-// import { EMPTY_HASH_TRYTES, EMPTY_TRANSACTION_TRYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/hlx/utils';
+// import { EMPTY_HASH_BYTES, EMPTY_TRANSACTION_TRYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/hlx/utils';
 // import { IRI_API_VERSION } from '../../../config';
 
 // describe('libs: iota/transfers', () => {
@@ -916,7 +916,7 @@
 
 //                 return retryFailedTransaction()(
 //                     map(failedTransactionsWithCorrectTransactionHashes, (tx, idx) =>
-//                         idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_TRYTES }),
+//                         idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_BYTES }),
 //                     ),
 //                     seedStore,
 //                 ).then(() => {

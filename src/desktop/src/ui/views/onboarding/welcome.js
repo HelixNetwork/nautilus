@@ -24,6 +24,9 @@ class Welcome extends React.PureComponent {
         t: PropTypes.func.isRequired,
         acceptedPrivacy: PropTypes.bool.isRequired,
         acceptedTerms: PropTypes.bool.isRequired,
+        acceptTerms: PropTypes.func.isRequired,
+        acceptPrivacy: PropTypes.func.isRequired,
+
     }
     state = {
         step: 'language',
@@ -31,8 +34,13 @@ class Welcome extends React.PureComponent {
     };
 
     onNextClick = () => {
-        const { history } = this.props;
+        console.log("onclick", this.props);
+        const { history, acceptedTerms, acceptedPrivacy, acceptTerms, acceptPrivacy } = this.props;
         const { step } = this.state;
+
+        if (acceptedTerms && acceptedPrivacy) {
+            return history.push('/onboarding/seed-intro');
+        }
 
         switch (step) {
             case 'language':
@@ -42,12 +50,14 @@ class Welcome extends React.PureComponent {
                 });
                 break;
             case 'terms':
+                acceptTerms();
                 this.setState({
                     step: 'privacy',
                     scrollEnd: false,
                 });
                 break;
             default:
+                acceptPrivacy();
                 history.push('/onboarding/seed-intro');
         }
     }
