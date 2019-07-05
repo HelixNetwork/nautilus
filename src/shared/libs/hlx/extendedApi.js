@@ -72,7 +72,7 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
         const { url, token, password } = settings;
 
         const instance = composeAPI({
-            provider: URL
+            provider: url
         })
 
         // TODO
@@ -402,13 +402,13 @@ const checkAttachToTangle = (node) => {
  *
  * @returns {Promise<Boolean>}
  */
-const allowsRemotePow = (settings) => {
+const allowsRemotePow = (settings) => {  
+
     return getNodeInfo(settings)().then((info) => {
         // Check if provided node has upgraded to IRI to a version, where it adds "features" prop in node info
         if (has(info, 'features')) {
             return includes(info.features, 'RemotePOW');
         }
-
         // Fallback to old way of checking remote pow
         return checkAttachToTangle(settings.url).then((response) =>
             includes(response.error, Errors.INVALID_PARAMETERS),

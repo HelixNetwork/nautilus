@@ -416,40 +416,39 @@ describe('libs: helix/extendedApi', () => {
         });
     });
 
-    // describe('#allowsRemotePow', () => {
-    //     describe('when has updated IRI version (version that has "features" prop in nodeInfo)', () => {
-    //         describe('when has listed "RemotePOW" as a feature', () => {
-    //             beforeEach(() => {
-    //                 nock('http://localhost:14265', {
-    //                     reqheaders: {
-    //                         'Content-Type': 'application/json',
-    //                         'X-HELIX-API-Version': IRI_API_VERSION,
-    //                     },
-    //                 })
-    //                     .filteringRequestBody(() => '*')
-    //                     .persist()
-    //                     .post('/', '*')
-    //                     .reply(200, (_, body) => {
-    //                         const { command } = body;
+    describe('#allowsRemotePow', () => {
+        describe('when has updated IRI version (version that has "features" prop in nodeInfo)', () => {
+            describe('when has listed "RemotePOW" as a feature', () => {
+                beforeEach(() => {
+                    nock('http://localhost:14265', {
+                        reqheaders: {
+                            'Content-Type': 'application/json',
+                            'X-HELIX-API-Version': IRI_API_VERSION,
+                        },
+                    })
+                        .filteringRequestBody(() => '*')
+                        .persist()
+                        .post('/', '*')
+                        .reply(200, (_, body) => {
+                            const { command } = body;
+                            if (command === 'getNodeInfo') {
+                                return {
+                                    features: ['RemotePOW', 'zeroMessageQueue'],
+                                };
+                            }
 
-    //                         if (command === 'getNodeInfo') {
-    //                             return {
-    //                                 features: ['RemotePOW', 'zeroMessageQueue'],
-    //                             };
-    //                         }
+                            return {};
+                        });
+                });
 
-    //                         return {};
-    //                     });
-    //             });
+                afterEach(() => {
+                    nock.cleanAll();
+                });
 
-    //             afterEach(() => {
-    //                 nock.cleanAll();
-    //             });
-
-    //             it('should return true', () => {
-    //                 return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(true));
-    //             });
-    //         });
+                it('should return true', () => {
+                    return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(true));
+                });
+            });
 
 //             describe('when has not listed "RemotePOW" as a feature', () => {
 //                 beforeEach(() => {
@@ -482,6 +481,6 @@ describe('libs: helix/extendedApi', () => {
 //                 it('should return false', () => {
 //                     return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(false));
 //                 });
-        //     });
-        // });
+            });
+        });
     });
