@@ -364,92 +364,92 @@ describe('libs: helix/extendedApi', () => {
                 });
             });
 
-//             describe('when "timestamp" on trytes is within five minutes', () => {
-//                 beforeEach(() => {
-//                     nock('http://localhost:14265', {
-//                         reqheaders: {
-//                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
-//                         },
-//                     })
-//                         .filteringRequestBody(() => '*')
-//                         .persist()
-//                         .post('/', '*')
-//                         .reply(200, (_, body) => {
-//                             const { command } = body;
+            describe('when "timestamp" on bytes is within five minutes', () => {
+                beforeEach(() => {
+                    nock('http://localhost:14265', {
+                        reqheaders: {
+                            'Content-Type': 'application/json',
+                            'X-HELIX-API-Version': IRI_API_VERSION,
+                        },
+                    })
+                        .filteringRequestBody(() => '*')
+                        .persist()
+                        .post('/', '*')
+                        .reply(200, (_, body) => {
+                            const { command } = body;
 
-//                             const resultMap = {
-//                                 getNodeInfo: {
-//                                     appVersion: '0.0.0',
-//                                     latestMilestone: 'U'.repeat(81),
-//                                     latestSolidSubtangleMilestone: 'U'.repeat(81),
-//                                 },
-//                                 getTrytes: {
-//                                     trytes: [
-//                                         head(
-//                                             map(newZeroValueTransactionBytes, (tryteString) => {
-//                                                 const transactionObject = asTransactionObject(tryteString);
-//                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
+                            const resultMap = {
+                                getNodeInfo: {
+                                    appVersion: '0.0.0',
+                                    latestMilestone: 'c'.repeat(64),
+                                    latestSolidSubtangleMilestone: 'c'.repeat(64),
+                                },
+                                getHBytes: {
+                                    hbytes: [
+                                        head(
+                                            map(newZeroValueTransactionBytes, (bytesString) => {
+                                                const transactionObject = asTransactionObject(bytesString);
+                                                const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-//                                                 return asTransactionHBytes({
-//                                                     ...transactionObject,
-//                                                     timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
-//                                                 });
-//                                             }),
-//                                         ),
-//                                     ],
-//                                 },
-//                             };
+                                                return asTransactionHBytes({
+                                                    ...transactionObject,
+                                                    timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
+                                                });
+                                            }),
+                                        ),
+                                    ],
+                                },
+                            };
 
-//                             return resultMap[command] || {};
-//                         });
-//                 });
+                            return resultMap[command] || {};
+                        });
+                });
 
-//                 afterEach(() => {
-//                     nock.cleanAll();
-//                 });
+                afterEach(() => {
+                    nock.cleanAll();
+                });
 
-//                 it('should return true', () => {
-//                     return isNodeHealthy().then((result) => expect(result).to.equal(true));
-//                 });
-//             });
-//         });
-//     });
+                it('should return true', () => {
+                    return isNodeHealthy().then((result) => expect(result).to.equal(true));
+                });
+            });
+        });
+    });
 
-//     describe('#allowsRemotePow', () => {
-//         describe('when has updated IRI version (version that has "features" prop in nodeInfo)', () => {
-//             describe('when has listed "RemotePOW" as a feature', () => {
-//                 beforeEach(() => {
-//                     nock('http://localhost:14265', {
-//                         reqheaders: {
-//                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
-//                         },
-//                     })
-//                         .filteringRequestBody(() => '*')
-//                         .persist()
-//                         .post('/', '*')
-//                         .reply(200, (_, body) => {
-//                             const { command } = body;
+    // describe('#allowsRemotePow', () => {
+    //     describe('when has updated IRI version (version that has "features" prop in nodeInfo)', () => {
+    //         describe('when has listed "RemotePOW" as a feature', () => {
+    //             beforeEach(() => {
+    //                 nock('http://localhost:14265', {
+    //                     reqheaders: {
+    //                         'Content-Type': 'application/json',
+    //                         'X-HELIX-API-Version': IRI_API_VERSION,
+    //                     },
+    //                 })
+    //                     .filteringRequestBody(() => '*')
+    //                     .persist()
+    //                     .post('/', '*')
+    //                     .reply(200, (_, body) => {
+    //                         const { command } = body;
 
-//                             if (command === 'getNodeInfo') {
-//                                 return {
-//                                     features: ['RemotePOW', 'zeroMessageQueue'],
-//                                 };
-//                             }
+    //                         if (command === 'getNodeInfo') {
+    //                             return {
+    //                                 features: ['RemotePOW', 'zeroMessageQueue'],
+    //                             };
+    //                         }
 
-//                             return {};
-//                         });
-//                 });
+    //                         return {};
+    //                     });
+    //             });
 
-//                 afterEach(() => {
-//                     nock.cleanAll();
-//                 });
+    //             afterEach(() => {
+    //                 nock.cleanAll();
+    //             });
 
-//                 it('should return true', () => {
-//                     return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(true));
-//                 });
-//             });
+    //             it('should return true', () => {
+    //                 return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(true));
+    //             });
+    //         });
 
 //             describe('when has not listed "RemotePOW" as a feature', () => {
 //                 beforeEach(() => {
@@ -482,6 +482,6 @@ describe('libs: helix/extendedApi', () => {
 //                 it('should return false', () => {
 //                     return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(false));
 //                 });
-            });
-        });
+        //     });
+        // });
     });
