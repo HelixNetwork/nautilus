@@ -404,15 +404,18 @@ describe('libs: helix/addresses', () => {
             });
         });
     });
+
+
+    describe('#isAddressUsedSync', () => {
+        describe('when provided argument is not a valid address object', () => {
+            it('should throw an error with message "Invalid address data."', () => {
+                expect(addressesUtils.isAddressUsedSync.bind(null, {}, [])).to.throw('Invalid address data.');
+                expect(addressesUtils.isAddressUsedSync.bind(null, undefined, [])).to.throw('Invalid address data.');
+            });
+        });
+    });
 });
 
-    //describe('#isAddressUsedSync', () => {
-//         describe('when provided argument is not a valid address object', () => {
-//             it('should throw an error with message "Invalid address data."', () => {
-//                 expect(addressesUtils.isAddressUsedSync.bind(null, {}, [])).to.throw('Invalid address data.');
-//                 expect(addressesUtils.isAddressUsedSync.bind(null, undefined, [])).to.throw('Invalid address data.');
-//             });
-//         });
 
 //         describe('when provided argument is a valid address object', () => {
 //             describe('when address has no associated transactions', () => {
