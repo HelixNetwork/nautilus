@@ -450,37 +450,38 @@ describe('libs: helix/extendedApi', () => {
                 });
             });
 
-//             describe('when has not listed "RemotePOW" as a feature', () => {
-//                 beforeEach(() => {
-//                     nock('http://localhost:14265', {
-//                         reqheaders: {
-//                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
-//                         },
-//                     })
-//                         .filteringRequestBody(() => '*')
-//                         .persist()
-//                         .post('/', '*')
-//                         .reply(200, (_, body) => {
-//                             const { command } = body;
+            describe('when has not listed "RemotePOW" as a feature', () => {
+                beforeEach(() => {
+                    nock('http://localhost:14265', {
+                        reqheaders: {
+                            'Content-Type': 'application/json',
+                            'X-HELIX-API-Version': IRI_API_VERSION,
+                        },
+                    })
+                        .filteringRequestBody(() => '*')
+                        .persist()
+                        .post('/', '*')
+                        .reply(200, (_, body) => {
+                            const { command } = body;
 
-//                             if (command === 'getNodeInfo') {
-//                                 return {
-//                                     features: ['zeroMessageQueue'],
-//                                 };
-//                             }
+                            if (command === 'getNodeInfo') {
+                                return {
+                                    features: ['zeroMessageQueue'],
+                                };
+                            }
 
-//                             return {};
-//                         });
-//                 });
+                            return {};
+                        });
+                });
 
-//                 afterEach(() => {
-//                     nock.cleanAll();
-//                 });
+                afterEach(() => {
+                    nock.cleanAll();
+                });
 
-//                 it('should return false', () => {
-//                     return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(false));
-//                 });
+                it('should return false', () => {
+                    return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(false));
+                });
             });
         });
     });
+});
