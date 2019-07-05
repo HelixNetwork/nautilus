@@ -53,7 +53,7 @@ class SeedVerify extends React.PureComponent {
 
                             </div>
                             <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-intro')}>{t('global:goBack')} <span>></span></Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-save')}>{t('global:goBack')} <span>></span></Button>
                                 <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('done')}>{t('global:confirm')} <span>></span></Button>
                             </div>
 

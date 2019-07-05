@@ -13,6 +13,8 @@ import GenerateSeed from 'ui/views/onboarding/seedGenerate';
 import SaveYourSeedOptions from 'ui/views/onboarding/seedSave';
 import SeedEnter from 'ui/views/onboarding/seedVerify';
 import SeedName from 'ui/views/onboarding/accountName';
+import SeedBackup from 'ui/views/onboarding/seedbackup';
+import SeedWallet from 'ui/views/onboarding/seedwallet';
 import SecurityEnter from 'ui/views/onboarding/accountPassword';
 import Done from 'ui/views/onboarding/done';
 import css from './index.scss';
@@ -42,12 +44,15 @@ class Onboarding extends React.PureComponent {
             'seed-verify',
             'account-password',
             'done',
-            'helixcoin',
-            'receive',
+            'seed-backup',
+            'login',
+            'seed-wallet'
+            
             
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
+            currentKey === 'seed-save' ? 2 : steps.indexOf(currentKey) + 1;
 
         if (currentIndex < 1) {
             return null;
@@ -80,7 +85,8 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-name" component={SeedName} />
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
-                              
+                                <Route path="/onboarding/seed-wallet" component={SeedWallet}/>
+                                <Route path="/onboarding/seed-backup" component={SeedBackup}/>
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
                                 <Route path="/wallet" component={Wallet} />
