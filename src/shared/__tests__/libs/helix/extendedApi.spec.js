@@ -181,58 +181,58 @@ describe('libs: helix/extendedApi', () => {
                 });
             });
 
-//             describe('when "timestamp" on bytes is within five minutes', () => {
-//                 beforeEach(() => {
-//                     nock('http://localhost:14265', {
-//                         reqheaders: {
-//                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
-//                         },
-//                     })
-//                         .filteringRequestBody(() => '*')
-//                         .persist()
-//                         .post('/', '*')
-//                         .reply(200, (_, body) => {
-//                             const { command } = body;
+            describe('when "timestamp" on bytes is within five minutes', () => {
+                beforeEach(() => {
+                    nock('http://localhost:14265', {
+                        reqheaders: {
+                            'Content-Type': 'application/json',
+                            'X-HELIX-API-Version': IRI_API_VERSION,
+                        },
+                    })
+                        .filteringRequestBody(() => '*')
+                        .persist()
+                        .post('/', '*')
+                        .reply(200, (_, body) => {
+                            const { command } = body;
 
-//                             const resultMap = {
-//                                 getNodeInfo: {
-//                                     appVersion: '0.0.0',
-//                                     latestMilestoneIndex: 426550,
-//                                     latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-//                                     latestMilestone: 'U'.repeat(81),
-//                                     latestSolidSubtangleMilestone: 'A'.repeat(81),
-//                                 },
-//                                 getTrytes: {
-//                                     trytes: [
-//                                         head(
-//                                             map(newZeroValueTransactionBytes, (tryteString) => {
-//                                                 const transactionObject = asTransactionObject(tryteString);
-//                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
+                            const resultMap = {
+                                getNodeInfo: {
+                                    appVersion: '0.0.0',
+                                    latestMilestoneIndex: 426550,
+                                    latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                    latestMilestone: 'c'.repeat(64),
+                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                },
+                                getHBytes: {
+                                    hbytes: [
+                                        head(
+                                            map(newZeroValueTransactionBytes, (byteString) => {
+                                                const transactionObject = asTransactionObject(byteString);
+                                                const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-//                                                 return asTransactionHBytes({
-//                                                     ...transactionObject,
-//                                                     timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
-//                                                 });
-//                                             }),
-//                                         ),
-//                                     ],
-//                                 },
-//                             };
+                                                return asTransactionHBytes({
+                                                    ...transactionObject,
+                                                    timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
+                                                });
+                                            }),
+                                        ),
+                                    ],
+                                },
+                            };
 
-//                             return resultMap[command] || {};
-//                         });
-//                 });
+                            return resultMap[command] || {};
+                        });
+                });
 
-//                 afterEach(() => {
-//                     nock.cleanAll();
-//                 });
+                afterEach(() => {
+                    nock.cleanAll();
+                });
 
-//                 it('should return true if "timestamp" on trytes is within five minutes', () => {
-//                     return isNodeHealthy().then((result) => expect(result).to.equal(true));
-//                 });
-//             });
-//         });
+                it('should return true if "timestamp" on trytes is within five minutes', () => {
+                    return isNodeHealthy().then((result) => expect(result).to.equal(true));
+                });
+            });
+        });
 
 //         describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND -
 //             1} less than latestMilestoneIndex`, () => {
@@ -485,4 +485,3 @@ describe('libs: helix/extendedApi', () => {
 //             });
         });
     });
-});
