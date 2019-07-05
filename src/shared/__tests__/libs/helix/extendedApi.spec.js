@@ -234,45 +234,45 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-//         describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND -
-//             1} less than latestMilestoneIndex`, () => {
-//             describe('when "timestamp" on trytes is from five minutes ago', () => {
-//                 beforeEach(() => {
-//                     nock('http://localhost:14265', {
-//                         reqheaders: {
-//                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
-//                         },
-//                     })
-//                         .filteringRequestBody(() => '*')
-//                         .persist()
-//                         .post('/', '*')
-//                         .reply(200, (_, body) => {
-//                             const { command } = body;
+        describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND -
+            1} less than latestMilestoneIndex`, () => {
+            describe('when "timestamp" on bytes is from five minutes ago', () => {
+                beforeEach(() => {
+                    nock('http://localhost:14265', {
+                        reqheaders: {
+                            'Content-Type': 'application/json',
+                            'X-HELIX-API-Version': IRI_API_VERSION,
+                        },
+                    })
+                        .filteringRequestBody(() => '*')
+                        .persist()
+                        .post('/', '*')
+                        .reply(200, (_, body) => {
+                            const { command } = body;
 
-//                             const resultMap = {
-//                                 getNodeInfo: {
-//                                     appVersion: '0.0.0',
-//                                     latestMilestoneIndex: 426550,
-//                                     latestSolidSubtangleMilestoneIndex: 426550 - (MAX_MILESTONE_FALLBEHIND - 1),
-//                                     latestMilestone: 'U'.repeat(81),
-//                                     latestSolidSubtangleMilestone: 'A'.repeat(81),
-//                                 },
-//                                 getTrytes: { trytes: [head(newZeroValueTransactionBytes)] },
-//                             };
+                            const resultMap = {
+                                getNodeInfo: {
+                                    appVersion: '0.0.0',
+                                    latestMilestoneIndex: 426550,
+                                    latestSolidSubtangleMilestoneIndex: 426550 - (MAX_MILESTONE_FALLBEHIND - 1),
+                                    latestMilestone: 'c'.repeat(64),
+                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                },
+                                getHBytes: { hbytes: [head(newZeroValueTransactionBytes)] },
+                            };
 
-//                             return resultMap[command] || {};
-//                         });
-//                 });
+                            return resultMap[command] || {};
+                        });
+                });
 
-//                 afterEach(() => {
-//                     nock.cleanAll();
-//                 });
+                afterEach(() => {
+                    nock.cleanAll();
+                });
 
-//                 it('should return false', () => {
-//                     return isNodeHealthy().then((result) => expect(result).to.equal(false));
-//                 });
-//             });
+                it('should return false', () => {
+                    return isNodeHealthy().then((result) => expect(result).to.equal(false));
+                });
+            });
 
 //             describe('when "timestamp" on trytes is within five minutes', () => {
 //                 beforeEach(() => {
@@ -482,6 +482,6 @@ describe('libs: helix/extendedApi', () => {
 //                 it('should return false', () => {
 //                     return allowsRemotePow('http://localhost:14265').then((res) => expect(res).to.equal(false));
 //                 });
-//             });
+            });
         });
     });
