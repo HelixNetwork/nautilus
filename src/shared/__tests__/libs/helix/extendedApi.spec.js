@@ -83,7 +83,7 @@ describe('libs: helix/extendedApi', () => {
                             getNodeInfo: {
                                 appVersion: '0.0.0',
                                 latestMilestone: EMPTY_HASH_BYTES,
-                                latestSolidSubtangleMilestone: 'U'.repeat(81),
+                                latestSolidSubtangleMilestone: '0'.repeat(64),
                             },
                         };
 
@@ -157,16 +157,15 @@ describe('libs: helix/extendedApi', () => {
                         .post('/', '*')
                         .reply(200, (_, body) => {
                             const { command } = body;
-
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
                                     latestMilestoneIndex: 426550,
                                     latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-                                    latestMilestone: '0'.repeat(64),
+                                    latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'a'.repeat(64),
                                 },
-                                getBytes: { bytes: [head(newZeroValueTransactionBytes)] },
+                                getHBytes: { hbytes: [head(newZeroValueTransactionBytes)] },
                             };
 
                             return resultMap[command] || {};
