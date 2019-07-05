@@ -171,6 +171,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
    attachmentTimestampUpperBound: 127,
    nonce: '0000000000000000' } ];
 
+   // TODO recheck this
 const normalisedTransactions = {
     AGLVISDEBEYCZVIQFVHSSZISEZDCPKQJNQIHLQASIGHJWEJPWLHQUTPDQZUEZQIBHEDY9SRIBGJJEQQLZ: {
         bundle: 'AGLVISDEBEYCZVIQFVHSSZISEZDCPKQJNQIHLQASIGHJWEJPWLHQUTPDQZUEZQIBHEDY9SRIBGJJEQQLZ',

@@ -18,7 +18,7 @@ import maxBy from 'lodash/maxBy';
 import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import size from 'lodash/size';
-import { helix } from './index';
+import { addChecksum } from '@helixnetwork/checksum'
 import { getBalances, wereAddressesSpentFrom, findTransactions, sendTransfer } from './extendedApi';
 import { prepareTransferArray } from './transfers';
 import Errors from '../errors';
@@ -455,7 +455,7 @@ export const createAddressData = (addresses, balances, addressesSpendStatuses, k
                 index: sizeOfKeyIndexes ? keyIndexes[index] : index,
                 spent: { local, remote },
                 balance: balances[index],
-                checksum: iota.utils.addChecksum(address).slice(address.length),
+                checksum: addChecksum(address).slice(address.length),
             });
 
             return acc;
