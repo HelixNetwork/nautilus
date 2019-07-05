@@ -1,112 +1,113 @@
-// import each from 'lodash/each';
-// import filter from 'lodash/filter';
-// import find from 'lodash/find';
-// import includes from 'lodash/includes';
-// import map from 'lodash/map';
-// import reduce from 'lodash/reduce';
-// import random from 'lodash/random';
-// import sample from 'lodash/sample';
-// import size from 'lodash/size';
-// import { expect } from 'chai';
-// import sinon from 'sinon';
-// import nock from 'nock';
-// import * as addressesUtils from '../../../libs/helix/addresses';
-// import {
-//     addressData as mockAddressData,
-//     latestAddressWithoutChecksum,
-//     latestAddressWithChecksum,
-//     latestAddressObject,
-//     latestAddressIndex,
-//     latestAddressBalance,
-// } from '../../__samples__/addresses';
-// import transactions, {
-//     newZeroValueAttachedTransaction,
-//     newZeroValueAttachedTransactionBaseBranch,
-//     newZeroValueAttachedTransactionBaseTrunk,
-//     confirmedZeroValueTransactions,
-//     unconfirmedValueTransactions,
-//     LATEST_MILESTONE,
-//     LATEST_MILESTONE_INDEX,
-//     LATEST_SOLID_SUBTANGLE_MILESTONE,
-//     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
-// } from '../../__samples__/transactions';
-// import {
-//     newZeroValueTransactionTrytes,
-//     milestoneTrytes,
-//     newZeroValueAttachedTransactionTrytes,
-// } from '../../__samples__/bytes';
-// import mockAccounts from '../../__samples__/accounts';
-// import { iota, quorum } from '../../../libs/helix/index';
-// import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import includes from 'lodash/includes';
+import map from 'lodash/map';
+import reduce from 'lodash/reduce';
+import random from 'lodash/random';
+import sample from 'lodash/sample';
+import size from 'lodash/size';
+import { expect } from 'chai';
+import sinon from 'sinon';
+import nock from 'nock';
+import * as addressesUtils from '../../../libs/hlx/addresses';
+import {
+    addressData as mockAddressData,
+    latestAddressWithoutChecksum,
+    latestAddressWithChecksum,
+    latestAddressObject,
+    latestAddressIndex,
+    latestAddressBalance,
+} from '../../__samples__/addresses';
+import transactions, {
+    newZeroValueAttachedTransaction,
+    newZeroValueAttachedTransactionBaseBranch,
+    newZeroValueAttachedTransactionBaseTrunk,
+    confirmedZeroValueTransactions,
+    unconfirmedValueTransactions,
+    LATEST_MILESTONE,
+    LATEST_MILESTONE_INDEX,
+    LATEST_SOLID_SUBTANGLE_MILESTONE,
+    LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+} from '../../__samples__/transactions';
+import {
+    newZeroValueTransactionBytes,
+    milestoneBytes,
+    newZeroValueAttachedTransactionBytes,
+} from '../../__samples__/bytes';
+import mockAccounts from '../../__samples__/accounts';
+import { helix, quorum } from '../../../libs/hlx/index';
+import { IRI_API_VERSION } from '../../../config';
+import { EMPTY_TRANSACTION_BYTES, EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 
-// describe('libs: iota/addresses', () => {
-//     describe('#preserveAddressLocalSpendStatus', () => {
-//         it('it should preserve local spend status of existing addresses', () => {
-//             const existingAddressData = [
-//                 {
-//                     index: 0,
-//                     address: 'A'.repeat(81),
-//                     balance: 10,
-//                     checksum: 'YLFHUOJUY',
-//                     spent: {
-//                         local: true,
-//                         remote: false,
-//                     },
-//                 },
-//             ];
+describe('libs: helix/addresses', () => {
+    describe('#preserveAddressLocalSpendStatus', () => {
+        it('it should preserve local spend status of existing addresses', () => {
+            const existingAddressData = [
+                {
+                    index: 0,
+                    address: 'A'.repeat(81),
+                    balance: 10,
+                    checksum: 'YLFHUOJUY',
+                    spent: {
+                        local: true,
+                        remote: false,
+                    },
+                },
+            ];
 
-//             const newAddressData = [
-//                 {
-//                     index: 0,
-//                     address: 'A'.repeat(81),
-//                     balance: 10,
-//                     checksum: 'YLFHUOJUY',
-//                     spent: {
-//                         local: false,
-//                         remote: false,
-//                     },
-//                 },
-//                 {
-//                     index: 1,
-//                     address: 'B'.repeat(81),
-//                     balance: 0,
-//                     checksum: 'IO9LGIBVB',
-//                     spent: {
-//                         local: false,
-//                         remote: false,
-//                     },
-//                 },
-//             ];
+            const newAddressData = [
+                {
+                    index: 0,
+                    address: 'A'.repeat(81),
+                    balance: 10,
+                    checksum: 'YLFHUOJUY',
+                    spent: {
+                        local: false,
+                        remote: false,
+                    },
+                },
+                {
+                    index: 1,
+                    address: 'B'.repeat(81),
+                    balance: 0,
+                    checksum: 'IO9LGIBVB',
+                    spent: {
+                        local: false,
+                        remote: false,
+                    },
+                },
+            ];
 
-//             const expectedAddressData = [
-//                 {
-//                     address: 'A'.repeat(81),
-//                     index: 0,
-//                     balance: 10,
-//                     checksum: 'YLFHUOJUY',
-//                     spent: {
-//                         local: true,
-//                         remote: false,
-//                     },
-//                 },
-//                 {
-//                     address: 'B'.repeat(81),
-//                     index: 1,
-//                     balance: 0,
-//                     checksum: 'IO9LGIBVB',
-//                     spent: {
-//                         local: false,
-//                         remote: false,
-//                     },
-//                 },
-//             ];
+            const expectedAddressData = [
+                {
+                    address: 'A'.repeat(81),
+                    index: 0,
+                    balance: 10,
+                    checksum: 'YLFHUOJUY',
+                    spent: {
+                        local: true,
+                        remote: false,
+                    },
+                },
+                {
+                    address: 'B'.repeat(81),
+                    index: 1,
+                    balance: 0,
+                    checksum: 'IO9LGIBVB',
+                    spent: {
+                        local: false,
+                        remote: false,
+                    },
+                },
+            ];
 
-//             expect(addressesUtils.preserveAddressLocalSpendStatus(existingAddressData, newAddressData)).to.eql(
-//                 expectedAddressData,
-//             );
-//         });
-//     });
+            expect(addressesUtils.preserveAddressLocalSpendStatus(existingAddressData, newAddressData)).to.eql(
+                expectedAddressData,
+            );
+        });
+    });
+});
 
 //     describe('#mergeAddressData', () => {
 //         describe('when existingAddressData is empty', () => {
