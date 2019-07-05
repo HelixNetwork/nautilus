@@ -46,9 +46,9 @@ describe('libs: helix/addresses', () => {
             const existingAddressData = [
                 {
                     index: 0,
-                    address: 'A'.repeat(81),
+                    address: 'a'.repeat(64),
                     balance: 10,
-                    checksum: 'YLFHUOJUY',
+                    checksum: 'f5541cc3',
                     spent: {
                         local: true,
                         remote: false,
@@ -59,9 +59,9 @@ describe('libs: helix/addresses', () => {
             const newAddressData = [
                 {
                     index: 0,
-                    address: 'A'.repeat(81),
+                    address: 'a'.repeat(64),
                     balance: 10,
-                    checksum: 'YLFHUOJUY',
+                    checksum: 'f5541cc3',
                     spent: {
                         local: false,
                         remote: false,
@@ -69,9 +69,9 @@ describe('libs: helix/addresses', () => {
                 },
                 {
                     index: 1,
-                    address: 'B'.repeat(81),
+                    address: 'b'.repeat(64),
                     balance: 0,
-                    checksum: 'IO9LGIBVB',
+                    checksum: 'b73c2236',
                     spent: {
                         local: false,
                         remote: false,
@@ -81,20 +81,20 @@ describe('libs: helix/addresses', () => {
 
             const expectedAddressData = [
                 {
-                    address: 'A'.repeat(81),
+                    address: 'a'.repeat(64),
                     index: 0,
                     balance: 10,
-                    checksum: 'YLFHUOJUY',
+                    checksum: 'f5541cc3',
                     spent: {
                         local: true,
                         remote: false,
                     },
                 },
                 {
-                    address: 'B'.repeat(81),
+                    address: 'b'.repeat(64),
                     index: 1,
                     balance: 0,
-                    checksum: 'IO9LGIBVB',
+                    checksum: 'b73c2236',
                     spent: {
                         local: false,
                         remote: false,
