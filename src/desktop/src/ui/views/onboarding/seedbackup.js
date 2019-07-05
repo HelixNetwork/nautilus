@@ -3,19 +3,17 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
-import image from 'ui/images/ex_mark.png';
-
+import Button from 'ui/components/button';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
-import Button from 'ui/components/button'
 import Logos from 'ui/components/logos';
 import css from './index.scss';
-import Top from '../../components/topbar';
-class SeedIntro extends React.PureComponent {
 
+class SeedBackup extends React.PureComponent{
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
     };
+
 
     state = {
         ledger: false,
@@ -26,12 +24,11 @@ class SeedIntro extends React.PureComponent {
             meta: { type: 'keychain' },
         });
 
+
         this.props.history.push(`/onboarding/${route}`);
     }
-
-    render() {
-        const { history, t } = this.props;
-
+    render(){
+        const{ history, t }=this.props;
         return (
             <div>
                 <Logos size={20} />
@@ -40,16 +37,16 @@ class SeedIntro extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className={classNames(css.head_h1)}>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
+                                <h1 className={classNames(css.head_h1)}>{t('saveYourSeed:saveYourSeed')}</h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                                <img src={image} alt="" />
-                                <h5>{t('walletSetup:helixSeedIsAccess')}</h5>
-                                <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
+                                 <div className={classNames(css.filebox)}>
+                                        <input type="file"  ref="fileUploader" style={{}}/>
+                                 </div>
                             </div>
                             <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-wallet')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-save')}>{t('global:confirm')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
@@ -58,9 +55,8 @@ class SeedIntro extends React.PureComponent {
         )
     }
 }
-
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
 };
 
-export default connect(null, mapDispatchToProps)(withI18n()(SeedIntro));
+export default connect(null, mapDispatchToProps)(withI18n()(SeedBackup));

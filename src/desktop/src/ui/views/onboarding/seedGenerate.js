@@ -366,7 +366,7 @@ class SeedGenerate extends React.PureComponent {
 
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" >{t('global:continue')} <span>></span> </Button>
+                                <Button className="navright" variant="backgroundNone" onClick={()=>this.props.history.push('account-name')}>{t('global:continue')} <span>></span> </Button>
 
                                 {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
                             <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span> */}

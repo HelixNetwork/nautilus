@@ -37,6 +37,7 @@ export default class Button extends React.PureComponent {
         }
         return (
             <button
+                
                 style={style}
                 type={type ? type : 'button'}
                 onClick={onClick}

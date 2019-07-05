@@ -8,7 +8,7 @@ import { setAccountInfoDuringSetup } from 'actions/accounts';
 import css from './index.scss';
 import Logos from 'ui/components/logos';
 
-class AccountName extends React.PureComponent {
+class SeedWallet extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
@@ -36,17 +36,17 @@ class AccountName extends React.PureComponent {
                             {/* <h1>{t('walletSetup:Seed Verify')}<span> {t('walletSetup:seed')}</span></h1> */}
                         </div>
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                            <h4>{t('setSeedName:letsAddName')}</h4>
-                            <h5>{t('setSeedName:setAccountName')}</h5>
-                            <input type="text" className={classNames(css.sseed_textline)}></input><br />
+                           
+                            <h5>{t('seedVault:enterKeyExplanation')}</h5>
+                            <input type="password" className={classNames(css.sseed_textline)}></input><br />
 
 
                             {/* <img src={images} alt="send" className={(classNames(css.img))} /> */}
 
                         </div>
                         <div className={css.onboard_nav}>
-                               <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('global:goBack')} <span>></span></Button>
-                               <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-backup')}>{t('global:confirm')} <span>></span></Button>
+                               <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-intro')}>{t('global:goBack')} <span>></span></Button>
+                               <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-save')}>{t('global:confirm')} <span>></span></Button>
                         </div>
 
                     </div>
@@ -64,4 +64,4 @@ const mapDispatchToProps = {
     setAccountInfoDuringSetup,
 };
 
-export default connect(null, mapDispatchToProps)(withI18n()(AccountName));
+export default connect(null, mapDispatchToProps)(withI18n()(SeedWallet));

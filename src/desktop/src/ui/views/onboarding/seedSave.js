@@ -44,12 +44,14 @@ class SeedSave extends React.PureComponent {
                         <h5>{t('seedReentry:enterYourSeed')}</h5>
                         <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
                         <div className={classNames(css.filebox)}>
-                             <input type="file"  ref="fileUploader" style={{}}/>
+                             <input id="file-upload" type="file"  ref="" style={{}}/>
+                             <label for="file-upload">Upload Seed or type text</label>
                         </div>
                     </div>
                     <div className={css.onboard_nav}>
-                        <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-intro')}>{t('global:goBack')} <span>></span></Button>
-                        <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('done')}>{t('global:confirm')} <span>></span></Button>
+                        
+                        <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-wallet')}>{t('global:goBack')} <span>></span></Button>
+                        <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('global:confirm')} <span>></span></Button>
                     </div>
 
                 </div>
