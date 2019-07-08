@@ -52,14 +52,14 @@ import Select from 'ui/components/input/select';
                                 {/* <div className={classNames(css.set_bx)}> */}
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div className={classNames(css.set_bxac)}>
-                                            <h5>Select Theme</h5>
+                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('themeCustomisation:theme')}</h5>
                                             <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
                                             <div ClassName={classNames(css.theme_bx)}>
-                                                    <h5>Mockup</h5>
+                                                    <h5 style={{marginLeft:'14vw',marginTop:'2vw'}}>{t('themeCustomisation:mockup')}</h5>
                                                     <input type="text" placeholder="Mockup" className={classNames(css.ssetting_textline)}></input><br /><br />
                                                   
                                             </div>
-                                            <Button onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
+                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
                                                {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                <hr className={classNames(css.ser_bts)}/>
