@@ -11,7 +11,7 @@ import size from 'lodash/size';
 import cloneDeep from 'lodash/cloneDeep';
 import URL from 'url-parse';
 import { BigNumber } from 'bignumber.js';
-import { hbytesToAscii } from '@helixnetwork/converter';
+import { hbytesToAscii, asciiToHBytes } from '@helixnetwork/converter';
 import { addChecksum , isValidChecksum} from '@helixnetwork/checksum';
 import { helix } from './index';
 import { isNodeHealthy } from './extendedApi';
@@ -267,7 +267,7 @@ export const isLastBitZero = (address) => !/[ace13579]/.test(address.slice(60, 6
  * @returns {boolean}
  */
 export const isValidMessage = (message) => {
-    return iota.utils.fromTrytes(iota.utils.toTrytes(message)) === message;
+    return hbytesToAscii(asciiToHBytes(message)) === message;
 };
 
 /**
@@ -287,7 +287,7 @@ export const isValidAmount = (amount, multiplier, isFiat = false) => {
         return true;
     }
 
-    // Ensure iota value is an integer
+    // Ensure helix value is an integer
     if (!isFiat) {
         if (value % 1 !== 0) {
             return false;
@@ -308,7 +308,7 @@ export const isValidAmount = (amount, multiplier, isFiat = false) => {
  * @property {number} amount The parsed amount
  */
 
-/** Parse an IOTA address input
+/** Parse an Helix address input
  * @param {string} input
  * @returns {ParsedURL} - The parsed address, message and/or amount values
  */
@@ -335,7 +335,7 @@ export const parseAddress = (input) => {
             amount: null,
         };
 
-        if (input.toLowerCase().indexOf('iota:') === 0) {
+        if (input.toLowerCase().indexOf('helix:') === 0) {
             const url = new URL(input, true);
             parsed.address = url.hostname.toUpperCase();
             parsed.message = url.query.message;
@@ -363,7 +363,7 @@ export const parseAddress = (input) => {
 };
 
 /**
- * Retry IOTA api calls on different nodes
+ * Retry Helix api calls on different nodes
  *
  * @method withRetriesOnDifferentNodes
  *
@@ -423,7 +423,7 @@ export const withRetriesOnDifferentNodes = (nodes, failureCallbacks) => {
 };
 
 /**
- * Fetches list of IRI nodes from a server
+ * Fetches list of Helix nodes from a server
  *
  * @method fetchRemoteNodes
  * @param {string} [url]
