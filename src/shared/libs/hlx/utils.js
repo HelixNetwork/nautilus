@@ -11,13 +11,15 @@ import size from 'lodash/size';
 import cloneDeep from 'lodash/cloneDeep';
 import URL from 'url-parse';
 import { BigNumber } from 'bignumber.js';
+import { hbytesToAscii } from '@helixnetwork/converter';
+import { addChecksum , isValidChecksum} from '@helixnetwork/checksum';
 import { helix } from './index';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
 import { roundDown } from '../utils';
 
-export const MAX_SEED_LENGTH = 16;
+export const MAX_SEED_LENGTH = 64; // should be 64 
 
 export const MAX_SEED_BITS = MAX_SEED_LENGTH * 4;
 
@@ -49,21 +51,20 @@ export const EMPTY_TRANSACTION_MESSAGE = 'Empty';
 
 export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 
-// Since the helix already based on bytes, this may not be needed
 /**
- * Converts trytes to bytes
+ * Converts hbytes to ascii
  *
  * @method convertFromBytes
- * @param {string} trytes
+ * @param {string} hbytes
  *
  * @returns {string}
  */
-export const convertFromBytes = (trytes) => {
-    const trytesWithoutNines = trytes.replace(/9+$/, '');
-    const message = helix.utils.fromTrytes(trytesWithoutNines);
+export const convertFromBytes = (bytes) => {
+    const bytesWithoutZeroes = bytes.replace(/0+$/, '');
+    const message = hbytesToAscii(bytesWithoutZeroes);
 
     /* eslint-disable no-control-regex */
-    if (trytesWithoutNines && message && /^[\x00-\xFF]*$/.test(message)) {
+    if (bytesWithoutZeroes && message && /^[\x00-\xFF]*$/.test(message)) {
         return message;
     }
     /* eslint-enable no-control-regex */
@@ -75,18 +76,17 @@ export const convertFromBytes = (trytes) => {
  *
  * @method getChecksum
  *
- * @param {string | array} input - seed trytes | seed trits
+ * @param {string | array} input - seed bytes | seed bits
  * @param {number} [length]
  *
  * @returns {string | array}
  */
 export const getChecksum = (
     input,
-    // Trinity  to trits conversion creates Int8Array
+    // hbytes  to bits conversion creates Int8Array
     length = isArray(input) || input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
 ) => {
-    return helix.utils
-        .addChecksum(
+    return addChecksum(
             // https://github.com/iotaledger/iota.js/blob/develop/lib/utils/utils.js#L64
             // iota.lib.js throws an exception for typed arrays
             input instanceof Int8Array ? Array.from(input) : input,
@@ -107,7 +107,7 @@ export const getChecksum = (
 export const isValidSeed = (seed) => seed.length === MAX_SEED_LENGTH && seed.match(VALID_SEED_REGEX);
 
 /**
- * Formats IOTA value
+ * Formats Helix value
  *
  * @method formatValue
  * @param {number} value
@@ -145,7 +145,7 @@ export const formatValue = (value) => {
 };
 
 /**
- * Gets relevant denomination for provided IOTA value
+ * Gets relevant denomination for provided Helix value
  *
  * @method formatUnit
  * @param {number} value
@@ -159,20 +159,20 @@ export const formatUnit = (value) => {
 
     switch (true) {
         case value < 1000:
-            return 'i';
+            return 'h';
         case value < 1000000:
-            return 'Ki';
+            return 'Kh';
         case value < 1000000000:
-            return 'Mi';
+            return 'Mh';
         case value < 1000000000000:
-            return 'Gi';
+            return 'Gh';
         default:
-            return 'Ti';
+            return 'Th';
     }
 };
 
 /**
- * Converts iota value-unit string to int value
+ * Converts helix value-unit string to int value
  *
  * @method unitStringToValue
  * @param {string}
@@ -184,15 +184,15 @@ export const unitStringToValue = (str) => {
     const unit = str.substr(value.toString().length).toLowerCase();
 
     switch (unit) {
-        case 'ki':
+        case 'kh':
             return value * 1000;
-        case 'mi':
+        case 'mh':
             return value * 1000000;
-        case 'gi':
+        case 'gh':
             return value * 1000000000;
-        case 'ti':
+        case 'th':
             return value * 1000000000000;
-        case 'pi':
+        case 'ph':
             return value * 1000000000000000;
         default:
             return value;
@@ -200,20 +200,20 @@ export const unitStringToValue = (str) => {
 };
 
 /**
- * Format iotas to human readable format
- * @param {number} iotas - Input value in iotas
+ * Format hlx to human readable format
+ * @param {number} hlx - Input value in hlx
  * @param {boolean} showShort - Should output short format
  * @param {boolean} showUnit - Should output unit
  *
  * @returns {string}
  */
-export const formatIotas = (iotas, showShort, showUnit) => {
-    const formattedValue = formatValue(iotas);
+export const formatHlx = (hlx, showShort, showUnit) => {
+    const formattedValue = formatValue(hlx);
     const outputValue = !showShort
         ? formattedValue
-        : roundDown(formattedValue, 1) + (iotas < 1000 || (iotas / formattedValue) % 10 === 0 ? '' : '+');
+        : roundDown(formattedValue, 1) + (hlx < 1000 || (hlx / formattedValue) % 10 === 0 ? '' : '+');
 
-    return `${outputValue}${showUnit ? ' ' + formatUnit(iotas) : ''}`;
+    return `${outputValue}${showUnit ? ' ' + formatUnit(hlx) : ''}`;
 };
 
 /**
@@ -233,7 +233,7 @@ export const isValidServerAddress = (server) => {
 };
 
 /**
- * Checks if provided IOTA address is valid
+ * Checks if provided Helix address is valid
  *
  * @method isValidAddress
  * @param {string} address
@@ -242,24 +242,24 @@ export const isValidServerAddress = (server) => {
  */
 export const isValidAddress = (address) => {
     if (!isNull(address.match(VALID_SEED_REGEX))) {
-        return size(address) === 90 && iota.utils.isValidChecksum(address);
+        return size(address) === 72 && isValidChecksum(address);
     }
 
     return false;
 };
 
 /**
- * Checks if the last trit is 0
+ * Checks if the last bit is 0
  *
- * @method isLastTritZero
+ * @method isLastBitZero
  * @param {string} address
  *
  * @returns {boolean}
  */
-export const isLastTritZero = (address) => !/[E-V]/.test(address.slice(80, 81));
+export const isLastBitZero = (address) => !/[ace13579]/.test(address.slice(60, 64));
 
 /**
- * Checks if provided IOTA message is valid
+ * Checks if provided Helix message is valid
  *
  * @method isValidMessage
  * @param {string} message
