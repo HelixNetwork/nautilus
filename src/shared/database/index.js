@@ -25,6 +25,7 @@ let Realm = null;
  * @returns {object}
  */
 export const getRealm = () => {
+    console.log(Electron.getRealm());
     return Electron.getRealm();
 };
 
@@ -287,6 +288,7 @@ class Wallet {
      * @returns {object}
      */
     static getObjectForId(id = Wallet.version) {
+       
         return realm.objectForPrimaryKey('Wallet', id);
     }
 
@@ -295,6 +297,7 @@ class Wallet {
      *
      * @return {Realm.Results}
      */
+
     static get data() {
         return realm.objects('Wallet');
     }
@@ -302,12 +305,13 @@ class Wallet {
     /**
      * Wallet settings for most recent version.
      */
+
     static get latestSettings() {
         const dataForCurrentVersion = Wallet.getObjectForId();
-
         return dataForCurrentVersion.settings;
     }
 
+    
     /**
      * Wallet data (as plain object) for most recent version.
      */
@@ -455,7 +459,7 @@ const initialise = (getEncryptionKeyPromise) => {
 
         const schemasSize = size(schemas);
         realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
-
+        console.log(realm);
         initialiseSync();
     });
 };
