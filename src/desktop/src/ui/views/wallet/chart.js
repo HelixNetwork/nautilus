@@ -36,7 +36,9 @@ class Charts extends React.PureComponent {
                                     <div className={classNames(css.foo_bxx1)}>
                                        <h3>Overview HLX chart<span>.</span></h3>
                                         <div className={classNames(css.sseed_box2, css.sec_bxc)}>
+                                            <div className={classNames(css.boder)}></div>
                                               <Chartss />
+                                            <div className={classNames(css.boder)}></div>
                                         </div>
                                     
                                     </div>
