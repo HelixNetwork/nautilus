@@ -60,11 +60,11 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
  * @returns {string}
  */
 export const convertFromBytes = (bytes) => {
-    const bytesWithoutZeroes = bytes.replace(/0+$/, '');
-    const message = hbytesToAscii(bytesWithoutZeroes);
-
+    const message =hbytesToAscii(bytes);
+    console.log('here '+message +' '+bytes)
     /* eslint-disable no-control-regex */
-    if (bytesWithoutZeroes && message && /^[\x00-\xFF]*$/.test(message)) {
+    if (bytes && message && /^[\x00-\xFF]*$/.test(message)) {
+        console.log('inside if '+message +' '+bytes)
         return message;
     }
     /* eslint-enable no-control-regex */
