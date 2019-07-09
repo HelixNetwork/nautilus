@@ -26,7 +26,7 @@
 //     filterZeroValueBundles,
 //     isBundleTraversable,
 //     isBundle,
-// } from '../../../libs/helix/transfers';
+// } from '../../../libs/hlx/transfers';
 // import { confirmedValueBundles, unconfirmedValueBundles, confirmedZeroValueBundles } from '../../__samples__/bundles';
 // import { iota } from '../../../libs/helix';
 // import {

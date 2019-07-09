@@ -8,7 +8,7 @@
 //     syncAccountOnValueTransactionFailure,
 //     syncAccountOnSuccessfulRetryAttempt,
 //     syncAccountDuringSnapshotTransition,
-// } from '../../../libs/helix/accounts';
+// } from '../../../libs/hlx/accounts';
 // import mockAccounts from '../../__samples__/accounts';
 // import { latestAddressObject, latestAddressIndex } from '../../__samples__/addresses';
 // import { newValueTransaction as mockValueTransactionObjects } from '../../__samples__/transactions';

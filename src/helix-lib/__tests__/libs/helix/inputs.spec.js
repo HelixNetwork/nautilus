@@ -8,7 +8,7 @@
 // import reduce from 'lodash/reduce';
 // import { expect } from 'chai';
 // import nock from 'nock';
-// import { prepareInputs, getInputs, isValidInput } from '../../../libs/helix/inputs';
+// import { prepareInputs, getInputs, isValidInput } from '../../../libs/hlx/inputs';
 // import { addressData as mockAddressData, balance as totalBalanceOfMockAddressData } from '../../__samples__/addresses';
 // import mockTransactions, {
 //     LATEST_MILESTONE,

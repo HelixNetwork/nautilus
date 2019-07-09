@@ -5,7 +5,7 @@
 // import nock from 'nock';
 // import { expect } from 'chai';
 // import sinon from 'sinon';
-// import { sweep } from '../../../libs/helix/recovery';
+// import { sweep } from '../../../libs/hlx/recovery';
 // import {
 //     LATEST_MILESTONE,
 //     LATEST_MILESTONE_INDEX,
@@ -13,7 +13,7 @@
 //     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 // } from '../../__samples__/transactions';
 // import { milestoneTrytes } from '../../__samples__/bytes';
-// import * as transferUtils from '../../../libs/helix/transfers';
+// import * as transferUtils from '../../../libs/hlx/transfers';
 // import { IRI_API_VERSION } from '../../../config';
 // import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 // import { iota } from '../../../libs/helix';

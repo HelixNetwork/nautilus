@@ -1,7 +1,7 @@
 // import map from 'lodash/map';
 // import sinon from 'sinon';
 // import { expect } from 'chai';
-// import * as extendedApis from '../../../libs/helix/extendedApi';
+// import * as extendedApis from '../../../libs/hlx/extendedApi';
 // import {
 //     convertFromBytes,
 //     getRandomNodes,
@@ -11,7 +11,7 @@
 //     getChecksum,
 // } from '../../../libs/hlx/utils';
 // import { latestAddressWithoutChecksum, latestAddressChecksum } from '../../__samples__/addresses';
-// import { trytesToTrits, tritsToChars } from '../../../libs/helix/converter';
+// import { trytesToTrits, tritsToChars } from '../../../libs/hlx/converter';
 
 // describe('libs: iota/utils', () => {
 //     describe('#isLastTritZero', () => {

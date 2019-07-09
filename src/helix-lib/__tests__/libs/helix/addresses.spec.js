@@ -10,7 +10,7 @@
 // import { expect } from 'chai';
 // import sinon from 'sinon';
 // import nock from 'nock';
-// import * as addressesUtils from '../../../libs/helix/addresses';
+// import * as addressesUtils from '../../../libs/hlx/addresses';
 // import {
 //     addressData as mockAddressData,
 //     latestAddressWithoutChecksum,
@@ -36,7 +36,7 @@
 //     newZeroValueAttachedTransactionTrytes,
 // } from '../../__samples__/bytes';
 // import mockAccounts from '../../__samples__/accounts';
-// import { iota, quorum } from '../../../libs/helix/index';
+// import { iota, quorum } from '../../../libs/hlx/index';
 // import { IRI_API_VERSION } from '../../../config';
 // import { EMPTY_TRANSACTION_TRYTES, EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 

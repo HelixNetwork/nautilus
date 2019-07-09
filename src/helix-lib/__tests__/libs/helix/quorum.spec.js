@@ -1,7 +1,7 @@
 // import { expect } from 'chai';
 // import sinon from 'sinon';
-// import { findSyncedNodes, fallbackToSafeResult, determineQuorumResult } from '../../../libs/helix/quorum';
-// import * as extendedApis from '../../../libs/helix/extendedApi';
+// import { findSyncedNodes, fallbackToSafeResult, determineQuorumResult } from '../../../libs/hlx/quorum';
+// import * as extendedApis from '../../../libs/hlx/extendedApi';
 // import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
 
 // describe('libs: iota/quorum', () => {
