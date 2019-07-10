@@ -45,7 +45,9 @@ class SeedSave extends React.PureComponent {
                         <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
                         <div className={classNames(css.filebox)}>
                              <input id="file-upload" type="file"  ref="" style={{}}/>
-                             <label for="file-upload">Upload Seed or type text</label>
+                             
+                             <label for="file-upload">Upload Seed or type text</label> 
+                        
                         </div>
                     </div>
                     <div className={css.onboard_nav}>

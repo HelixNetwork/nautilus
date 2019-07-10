@@ -336,7 +336,7 @@
     "seedReentry": {
         "pleaseConfirmYourSeed": "Please confirm your seed",
         "helixWillNeverAskToReenter": "Helix will never ask you to re-enter this seed unless you reset your wallet or delete the app.",
-        "enterYourSeed": "Enter your seed",
+        "enterYourSeed": "Enter your seed or Upload seed",
         "incorrectSeed": "Incorrect seed",
         "incorrectSeedExplanation": "The seed you entered is incorrect. Please try again.",
         "ifYouHaveNotSaved": "If you have not backed up your seed, please go back and do so.",
