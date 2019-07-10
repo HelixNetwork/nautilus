@@ -23,10 +23,11 @@ class SeedGenerate extends React.PureComponent {
     };
 
     state = {
-        seed1: Electron.getOnboardingSeed() || createRandomSeed(),
-        seed2: Electron.getOnboardingSeed() || createRandomSeed(),
-        seed3: Electron.getOnboardingSeed() || createRandomSeed(),
-        seed4: Electron.getOnboardingSeed() || createRandomSeed(),
+        seed:Electron.getOnboardingSeed() || createRandomSeed(),
+        seed1: [],
+        seed2: [],
+        seed3: [],
+        seed4: [],
         scramble: Electron.getOnboardingSeed() ? new Array(MAX_SEED_LENGTH).fill(0) : randomBytes(MAX_SEED_LENGTH, 27),
         existingSeed: Electron.getOnboardingSeed(),
         clicks: [],
@@ -62,23 +63,26 @@ class SeedGenerate extends React.PureComponent {
         const position = e.target.value;
 
         const newClicks = clicks.indexOf(position) < 0 ? clicks.concat([position]) : clicks;
-        console.log(seed[position]);
         const newSeed = seed.slice(0);
         newSeed[position] = createRandomSeed(1)[0];
 
         scramble[position] = 64;
-        console.log(e.target.value);
+        const seed1 = newSeed.slice(0,16);
+        const seed2 = newSeed.slice(16,32);
+        const seed3 = newSeed.slice(32,48);
+        const seed4 = newSeed.slice(48,64);
         this.setState(() => ({
             seed: newSeed,
+            seed1:seed1,
+            seed2:seed2,
+            seed3:seed3,
+            seed4:seed4,
             clicks: newClicks,
             scramble: scramble,
         }));
 
         this.unscramble();
 
-        this.setState({
-            counter: counter++,
-        });
     };
 
     /**
@@ -90,9 +94,16 @@ class SeedGenerate extends React.PureComponent {
         console.log("newSeed", newSeed);
 
         Electron.setOnboardingSeed(null);
-
+        const seed1 = newSeed.slice(0,16);
+        const seed2 = newSeed.slice(16,32);
+        const seed3 = newSeed.slice(32,48);
+        const seed4 = newSeed.slice(48,64);
         this.setState(() => ({
-            ['seed' + this.state.counter]: newSeed,
+            seed: newSeed,
+            seed1:seed1,
+            seed2:seed2,
+            seed3:seed3,
+            seed4:seed4,
             existingSeed: false,
             clicks: [],
             viewSeed: 'block',
@@ -147,6 +158,11 @@ class SeedGenerate extends React.PureComponent {
     // stepBack() {
     //     this.props.history.goBack();
     // }
+    stepForward(route) {
+        Electron.setOnboardingSeed(this.state.seed,true);
+
+        this.props.history.push(`/onboarding/${route}`);
+    }
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
@@ -210,7 +226,6 @@ class SeedGenerate extends React.PureComponent {
 
                                                 {seed1.map((byte, index) => {
                                                     const offset = scramble[index];
-                                                    console.log("Offset", offset);
 
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
@@ -228,7 +243,7 @@ class SeedGenerate extends React.PureComponent {
                                             </div>
                                         </div>
                                         <div className={css.seed_wrapbox} >
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }}  style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -263,7 +278,7 @@ class SeedGenerate extends React.PureComponent {
                                             </div>
                                         </div>
                                         <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -298,7 +313,7 @@ class SeedGenerate extends React.PureComponent {
                                             </div>
                                         </div>
                                         <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReload }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -366,7 +381,7 @@ class SeedGenerate extends React.PureComponent {
 
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={()=>this.props.history.push('account-name')}>{t('global:continue')} <span>></span> </Button>
+                                <Button className="navright" variant="backgroundNone" onClick={()=>this.stepForward('account-name')}>{t('global:continue')} <span>></span> </Button>
 
                                 {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
                             <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span> */}
