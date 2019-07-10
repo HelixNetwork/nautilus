@@ -8,6 +8,7 @@ import reload from 'ui/images/refresh.svg';
 import { withI18n } from 'react-i18next';
 import Chartss from '../../components/chart';
 
+
 class Charts extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
@@ -18,6 +19,7 @@ class Charts extends React.PureComponent {
     }
     render() {
         const { t } = this.props;
+       
         return (
             <div>
                 <section className={css.home}>
@@ -37,7 +39,7 @@ class Charts extends React.PureComponent {
                                        <h3>Overview HLX chart<span>.</span></h3>
                                         <div className={classNames(css.sseed_box2, css.sec_bxc)}>
                                             <div className={classNames(css.boder)}></div>
-                                              <Chartss />
+                                                <Chartss/>
                                             <div className={classNames(css.boder)}></div>
                                         </div>
                                     
@@ -58,4 +60,5 @@ class Charts extends React.PureComponent {
 const mapDispatchToProps = {
 
 };
+
 export default connect(null, mapDispatchToProps)(withI18n()(Charts));

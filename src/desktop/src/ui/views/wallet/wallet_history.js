@@ -50,9 +50,10 @@ class WalletHistory extends React.PureComponent {
                                             <div className={classNames(css.right_div)}>
                                                 <div className={classNames(css.input_group)}>
                                                     <input type="text" name="name" className={classNames(css.search_text)} placeholder="Search Transaction" />
-                                                    <button className={classNames(css.bts)} variant="backgroundNone" type="button"> <FontAwesomeIcon style={{ verticalAlign: "-1.125em" , marginLeft: "-140px" }} icon={faSearch} /></button>
+                                                    <button className={classNames(css.bts)} variant="backgroundNone" type=""> <FontAwesomeIcon style={{ verticalAlign: "-1.125em" , marginLeft: "-140px" }} icon={faSearch} /></button>
                                                 </div>/
                                              </div>
+                                             
                                             <table className={classNames(css.table)}>
                                                 <tbody>
                                                     <tr style={{ borderTop: '5px solid #D1721E' }}>
