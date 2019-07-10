@@ -8,17 +8,18 @@ import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
+import { removeChecksum } from '@helixnetwork/checksum';
+import { asTransactionObject } from '@helixnetwork/transaction-converter'
 import {
     attachToTangle,
-    getTransactionsToApproveAsync,
-    prepareTransfersAsync,
+    getTransactionsToApprove,
+    prepareTransfers,
     storeAndBroadcast,
-    getBalancesAsync,
-    findTransactionObjectsAsync,
-    getLatestInclusionAsync,
+    getBalances,
+    findTransactionObjects,
+    getLatestInclusion,
     wereAddressesSpentFrom,
 } from './extendedApi';
-import { iota } from './index';
 import Errors from '../errors';
 import { isValidInput } from './inputs';
 import {
@@ -50,8 +51,8 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
         return Promise.reject(new Error(Errors.INVALID_TRANSFER));
     }
 
-    const validInput = assign({}, input, { address: iota.utils.noChecksum(input.address) });
-    const validTransfer = assign({}, transfer, { address: iota.utils.noChecksum(transfer.address) });
+    const validInput = assign({}, input, { address: removeChecksum(input.address) });
+    const validTransfer = assign({}, transfer, { address: removeChecksum(transfer.address) });
 
     if (validInput.address === validTransfer.address) {
         return Promise.reject(new Error(Errors.CANNOT_SWEEP_TO_SAME_ADDRESS));
@@ -59,19 +60,19 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
 
     const cached = {
         transactionObjects: [],
-        trytes: [],
+        hbytes: [],
     };
 
     // Before proceeding make sure:
     //  - Latest balance hasn't changed
     //  - We don't require a remainder transaction
-    return getBalancesAsync(settings, withQuorum)([validInput.address])
+    return getBalances(settings, withQuorum)([validInput.address])
         .then((balances) => {
             const latestBalance = accumulateBalance(map(balances.balances, Number));
 
             if (latestBalance === validInput.balance && latestBalance === validTransfer.value) {
                 // Check if there are any transactions for both input & recipient address
-                return findTransactionObjectsAsync(settings)({
+                return findTransactionObjects(settings)({
                     addresses: [validInput.address, validTransfer.address],
                 });
             }
@@ -92,7 +93,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             //  - Construct bundles
             //  - Validate bundles
             //  - Check if any transaction (from valid bundles) is still pending
-            return findTransactionObjectsAsync(settings)({
+            return findTransactionObjects(settings)({
                 bundles: map(uniqBy(valueTransactions, 'bundle'), (tx) => tx.bundle),
             }).then((transactionsFromBundles) => {
                 // Also keep reattachments
@@ -150,7 +151,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
                     const tailTransactions = filter(transactions, (tx) => tx.currentIndex === 0);
 
                     // Check confirmation states
-                    return getLatestInclusionAsync(settings)(map(tailTransactions, (tx) => tx.hash)).then((states) => {
+                    return getLatestInclusion(settings)(map(tailTransactions, (tx) => tx.hash)).then((states) => {
                         const statesByBundleHash = categoriseInclusionStatesByBundleHash(tailTransactions, states);
 
                         // Check if there is no pending transaction on input or recipient address
@@ -179,32 +180,32 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             // Check if both input & receive address are unspent
             if (!isEmpty(spendStatuses) && every(spendStatuses, (status) => status === false)) {
                 // Prepare bundle, sign inputs
-                return prepareTransfersAsync(settings)(seed, [validTransfer], { inputs: [validInput] });
+                return prepareTransfers(settings)(seed, [validTransfer], { inputs: [validInput] });
             }
 
             throw new Error(Errors.ALREADY_SPENT_FROM_ADDRESSES);
         })
-        .then((trytes) => {
-            cached.trytes = trytes;
+        .then((hbytes) => {
+            cached.hbytes = hbytes;
 
-            const convertToTransactionObjects = (tryteString) => iota.utils.transactionObject(tryteString);
-            cached.transactionObjects = map(cached.trytes, convertToTransactionObjects);
+            const convertToTransactionObjects = (hbyteString) => asTransactionObject(hbyteString);
+            cached.transactionObjects = map(cached.hbytes, convertToTransactionObjects);
 
             // Check if prepared bundle is valid, especially if its signed correctly.
             if (isBundle(cached.transactionObjects)) {
-                return getTransactionsToApproveAsync(settings)();
+                return getTransactionsToApprove(settings)();
             }
 
             throw new Error(Errors.INVALID_BUNDLE);
         })
         .then(({ trunkTransaction, branchTransaction }) => {
-            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
+            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.hbytes);
         })
-        .then(({ trytes, transactionObjects }) => {
-            cached.trytes = trytes;
+        .then(({ hbytes, transactionObjects }) => {
+            cached.hbytes = hbytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcast(settings)(cached.trytes);
+            return storeAndBroadcast(settings)(cached.hbytes);
         })
         .then(() => cached);
 };

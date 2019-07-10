@@ -905,6 +905,14 @@
     "@helixnetwork/converter" "^1.0.0-alpha.2"
     "@helixnetwork/hash-module" "^1.0.0-alpha.2"
 
+"@helixnetwork/validators@^1.0.0-alpha.2":
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/validators/-/validators-1.0.0-alpha.2.tgz#5f597bfa57b2b4b6dc655ce46e9c07344dfb2ae9"
+  integrity sha512-fJZHK2YUqTtysjRMJwfNTiC5m9hk8e2w1ljC6CFFMGfBH2Xwq6dectAjIAbzj2cfiAIkiFkC8EDZJAzKIc8l2Q==
+  dependencies:
+    "@helixnetwork/checksum" "^1.0.0-alpha.2"
+    "@helixnetwork/transaction" "^1.0.0-alpha.2"
+
 "@helixnetwork/winternitz@^1.0.0-alpha.2":
   version "1.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/@helixnetwork/winternitz/-/winternitz-1.0.0-alpha.2.tgz#432bd567833e9113cd90cacac8b7be52f11cfacb"

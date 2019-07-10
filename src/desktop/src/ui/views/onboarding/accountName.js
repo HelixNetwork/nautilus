@@ -26,6 +26,7 @@ class AccountName extends React.PureComponent {
 
     render() {
         const { t } = this.props;
+        console.log(Electron.getOnboardingSeed());
         return (
           
             <section className="spage_1">

@@ -5,7 +5,7 @@
 // import nock from 'nock';
 // import { expect } from 'chai';
 // import sinon from 'sinon';
-// import { sweep } from '../../../libs/helix/recovery';
+// import { sweep } from '../../../libs/hlx/recovery';
 // import {
 //     LATEST_MILESTONE,
 //     LATEST_MILESTONE_INDEX,
@@ -13,10 +13,10 @@
 //     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 // } from '../../__samples__/transactions';
 // import { milestoneTrytes } from '../../__samples__/bytes';
-// import * as transferUtils from '../../../libs/helix/transfers';
+// import * as transferUtils from '../../../libs/hlx/transfers';
 // import { IRI_API_VERSION } from '../../../config';
 // import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
-// import { iota } from '../../../libs/helix';
+// import { iota } from '../../../libs/hlx';
 
 // const validSignedTrytes = [
 //     'JUO9QBYDDFVAMCMTSYPQVYONDGJ9VDMKNTVSWOAXOSG9UANCDOWEMCAFCELZCQIBUKQEPUVFJOGBXYRODBZWZYVYSUVVBCZFKSTWTNJRNLIXVPDLSWSYAKO99LGCNEIMPCSMTOLSTFYXD9LOMXRQKKOTDSCJJ9CVT9VXMKAU9AUXERTMIPGAD9JWDGJPWIU9ZMPLYGOUT9XHZJQQMOMZDAVHYZERKL9UNKCXSTCVQF9JDETGGAWVEVLGEVAO9DXUXHMRM9INDUMDKCUYLGHEZLRT9QSHJLZDOPUEN99DIXHPNKERXFCUWLQAAADPPYBXUJY9OFMFOBYPBKKARZ9NSAZHWNFXYKFDVWZRFHMGUBATBCKRPIQOXONFMDGRMOZCJUUY9GCWLWFSQQPKBIHMXUJJYNNPKCYBIYGTXIJJHSHNFGRTNLG9TGDNLTYAIKMCOSTSFYWBRQAWRYEVYLBPDESUX9YHFHPLYYYUKYQICRACVSMQSOEQQBCNKRYFDBDO9ZJZYGGKTRAXVKXQRIJHUBRTHUNSRYDFFELXDJNKDYJUWRARGKTPGX9KJFKJCBZAOSFCZZPHNJGGWONLQBTMPFEQOSDXALWTVPY9LBALPLNZCBYP9MWYGJ9NVCGZDXTYLCUTSYWDNONOBNIUVMMFYEXWFLMSMZENZTJQQZBMEQNLTSXGONLZEJSPEXMXQZGWOZLQE9RDXNPAPQKRNJ9NVROLADGW9ETEDBUCHZUZCGGCIPOPHRWPDMMOLLTLIVJOOLCGFERNMFJUUXBNL9EMCMDAOLXCCVFMCAQAMGOYK9UQ9AMTIAH9ZWYHFDDISFSCPIU9VSJJRAHAMCITLYEBHJQVQCPQZEPUXI9USEOQGGLFAU9G9GPRUSILOCDGLGRAUREJOPTVUVSMNNF9HMMIHYUZKTTGCAWQHOXDCEKAIBBJTN9GQUAOOFDFQEIVMZXFPFTSKUQOJB9XI9AURJSVDBYHYABIUZLNTCPCJSDKMFPULMCZQWQUCRGCZYWENNZQONAFYCBBBPEZVHRFFZHBXUNIMXG9WBRFM9TEAHXXTGUVISO9EKVYYFUSSTTCVNGFKPVAGTMVSVAOKDMEPWZZAN9KNPBZEMSRFIVPBNSBLJCMPZD9XVJEFF9DTZTDWEENTWDRXJDJYOSWAUIBCVJXWTCZ9BVDDAYQECMPYFCCUBQLNEGXNMOWSPWLWWTZXQASJWQXGUH9LXJXGYOCGFMUNKX9VZVHBQLG9TEFDX9QTLUXSCJEKCHFQUOHQMYBCJNCGWXXCEJYPCO9999BFMX9ZYYANVKADZCRJ9HEYBBQZM9OIIFZNWHDDSZONCRHV9VXXSQRDFXVZNVQBRCCZNSXLLONHTHKZLRODDFMT9NADOQDJJXSNQBJKDDZRKZKIBCSBMCCBKM9ADNNVDMMPIARAVAKVCKXREJHRHVQYWZQWNNCGRWLICODCEGVMVIXOAHZZBQMVPXZVJPGUOZYABUJMREHEPNNPCZNCAVIYEWPWNUWMYIGZMURPN9FUNSTBAEDVVBICJWQCGLKAKTXKNPIUPSDXDM9KVGSBIRQHXJAAKGKMPXN99TIBZSCLJWATMNWLKMSVSIRLEQR99ZYHVDAJDCRKLBRCZFDVYXPEGHOLMNBFDZBECLIMZZGVCEQQXOOZXXVNASRECAE9RUJVYFGITYSVVEJ9CNEIWEPBPJVYSSZSSNYGKUQDCOLLSGULHAEDKBERGADZLPMDIJIZFOQZILKYP9RYYZISNNCLIXSBTJERCGU9SGOBYGDOGNCRWYBJCZYDZIQXQRVKQIRTWZTKOSURSYTKHWXERVXVLFXTVPXI9DAWPNRIKTJSUXWDHYXQFQLHVZIAPNBBAISLHLNUMQTCIXEYSGDPAROWGYOAEZAAHEGKWUEHEZJPTBDWKGRCCVVEDXQKBNLBKFBYHKGGOH9VQA9WFDYHWQLTIFLBETXSBUSQAHNFRCZGX9JTKYVMEPYFDNDVPDBMKVDBLRVLIKHQEMAAFAZWAJKVPYGCQORHLMSPUCHLYADOPIWFSMF9EQGR9BRELDXHULZXZNWQZSAATKADPPDJVHOJKIZGXBL9GMDVFSPMGSULXGLCSMSQMGFJSDMCX9DXFOHWVSWNOYYIXOUNFCEATAZJTYLLRDWTRPDKBNFAYOO9MFBEKLKMNYQZTHRMG9YZSUSUCDILRSSMSBQDQDIDV9UNGGZJKFBPJMKXPHKSFKEKZPKMBMMFJXYDA9STE9WINZWFSYQFBSYIGJB999999999999999999999999999999999999999999999999999999QHUVEZD99B99999999B99999999TCOZJBUTFDSGGBYVHBCCNGCAEUZHKZCBNNXZUOIQKCUZWLTEKQKJOBOGCTOFEGJCKVGXILKAO9PLHHBSW999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999',
@@ -37,7 +37,7 @@
 //         trunkTransaction: EMPTY_HASH_BYTES,
 //         branchTransaction: EMPTY_HASH_BYTES,
 //     },
-//     findTransactions: { hashes: ['A'.repeat(81)] },
+//     findTransactions: { hashes: ['A'.repeat(64)] },
 //     getTrytes: { trytes: milestoneTrytes },
 //     wereAddressesSpentFrom: { states: [false, false] },
 //     getNodeInfo: {
@@ -55,7 +55,7 @@
 //     return nock('http://localhost:14265', {
 //         reqheaders: {
 //             'Content-Type': 'application/json',
-//             'X-IOTA-API-Version': IRI_API_VERSION,
+//             'X-HELIX-API-Version': IRI_API_VERSION,
 //         },
 //         filteringScope: () => true,
 //     })
@@ -77,7 +77,7 @@
 //         let seedStore;
 
 //         before(() => {
-//             seed = 'U'.repeat(81);
+//             seed = 'U'.repeat(64);
 //             validInput = {
 //                 address: 'YZSUSUCDILRSSMSBQDQDIDV9UNGGZJKFBPJMKXPHKSFKEKZPKMBMMFJXYDA9STE9WINZWFSYQFBSYIGJB',
 //                 balance: 10,
@@ -157,8 +157,8 @@
 //                 return sweep(null)(
 //                     seedStore,
 //                     seed,
-//                     assign({}, validInput, { address: 'U'.repeat(81) }),
-//                     assign({}, validTransfer, { address: 'U'.repeat(81) }),
+//                     assign({}, validInput, { address: 'U'.repeat(64) }),
+//                     assign({}, validTransfer, { address: 'U'.repeat(64) }),
 //                 )
 //                     .then(() => {
 //                         throw new Error();
@@ -214,7 +214,7 @@
 //                         nock('http://localhost:14265', {
 //                             reqheaders: {
 //                                 'Content-Type': 'application/json',
-//                                 'X-IOTA-API-Version': IRI_API_VERSION,
+//                                 'X-HELIX-API-Version': IRI_API_VERSION,
 //                             },
 //                             filteringScope: () => true,
 //                         })
@@ -284,7 +284,7 @@
 //                         nock('http://localhost:14265', {
 //                             reqheaders: {
 //                                 'Content-Type': 'application/json',
-//                                 'X-IOTA-API-Version': IRI_API_VERSION,
+//                                 'X-HELIX-API-Version': IRI_API_VERSION,
 //                             },
 //                             filteringScope: () => true,
 //                         })
@@ -390,7 +390,7 @@
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
 //                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
+//                             'X-HELIX-API-Version': IRI_API_VERSION,
 //                         },
 //                         filteringScope: () => true,
 //                     })
@@ -442,7 +442,7 @@
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
 //                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
+//                             'X-HELIX-API-Version': IRI_API_VERSION,
 //                         },
 //                         filteringScope: () => true,
 //                     })
@@ -496,7 +496,7 @@
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
 //                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
+//                             'X-HELIX-API-Version': IRI_API_VERSION,
 //                         },
 //                         filteringScope: () => true,
 //                     })

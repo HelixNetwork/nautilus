@@ -24,8 +24,13 @@ import reduce from 'lodash/reduce';
 import transform from 'lodash/transform';
 import orderBy from 'lodash/orderBy';
 import xor from 'lodash/xor';
+import { isBundle as bundleValidator} from '@helixnetwork/bundle-validator';
+import { asciiToHBytes } from '@helixnetwork/converter';
+import {addChecksum, removeChecksum } from '@helixnetwork/checksum';
+import { asTransactionObject ,asTransactionHBytes} from '@helixnetwork/transaction-converter';
+import { isHash } from '@helixnetwork/validators';
 import { DEFAULT_TAG, DEFAULT_MIN_WEIGHT_MAGNITUDE, BUNDLE_OUTPUTS_THRESHOLD } from '../../config';
-import { iota } from './index';
+// import { iota } from './index';
 import { accumulateBalance } from './addresses';
 import {
     getBalances,
@@ -44,6 +49,7 @@ import {
     convertFromBytes,
     EMPTY_HASH_BYTES,
     EMPTY_TRANSACTION_MESSAGE,
+    TRANSACTION_BYTES_SIZE,
     VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX,
 } from './utils';
 import Errors from './../errors';
@@ -147,7 +153,7 @@ export const isAboveMaxDepth = (attachmentTimestamp) => {
 
 /**
  *   Returns a transfer array
- *   Converts message to trytes. Basically preparing an array of transfer objects before making a transfer.
+ *   Converts message to hbytes. Basically preparing an array of transfer objects before making a transfer.
  *   Since zero value transfers have no inputs, after a sync with ledger, these transfers would not be detected.
  *   To make sure zero value transfers are detected after a sync, add a second transfer to the array that has
  *   seed's own address at index 0.
@@ -157,7 +163,7 @@ export const isAboveMaxDepth = (attachmentTimestamp) => {
  *   @param {number} [value]
  *   @param {string} [message]
  *   @param {object} addressData
- *   @param {string} [tag='TRINITY']
+ *   @param {string} [tag='HELIX']
  *
  *   @returns {array} Transfer object
  **/
@@ -168,18 +174,18 @@ export const prepareTransferArray = (address, value, message, addressData, tag =
         throw new Error(Errors.EMPTY_ADDRESS_DATA);
     }
 
-    const trytesConvertedMessage = iota.utils.toTrytes(message);
+    const hbytesConvertedMessage = asciiToHBytes(message);
     const transfer = {
         address,
         value,
-        message: trytesConvertedMessage,
+        message: hbytesConvertedMessage,
         tag,
     };
 
     const isZeroValueTransaction = value === 0;
 
     if (isZeroValueTransaction) {
-        return includes(map(addressData, (addressObject) => addressObject.address), iota.utils.noChecksum(address))
+        return includes(map(addressData, (addressObject) => addressObject.address), removeChecksum(address))
             ? [transfer]
             : [transfer, assign({}, transfer, { address: firstAddress })];
     }
@@ -205,7 +211,7 @@ export const categoriseBundleByInputsOutputs = (bundle, addresses, outputsThresh
         (acc, tx) => {
             const meta = {
                 ...pick(tx, ['address', 'value', 'hash', 'currentIndex', 'lastIndex']),
-                checksum: iota.utils.addChecksum(tx.address).slice(tx.address.length),
+                checksum: addChecksum(tx.address).slice(tx.address.length),
             };
 
             if (tx.value < 0) {
@@ -516,13 +522,13 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 };
 
 /**
- *   Performs proof of work and updates trytes and transaction objects with nonce.
+ *   Performs proof of work and updates hbytes and transaction objects with nonce.
  *
  *   @method performPow
  *
  *   @param {function} powFn
  *   @param {function} digestFn
- *   @param {array} trytes
+ *   @param {array} hbytes
  *   @param {string} trunkTransaction
  *   @param {string} branchTransaction
  *   @param {number} [minWeightMagnitude = 14]
@@ -533,7 +539,7 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 export const performPow = (
     powFn,
     digestFn,
-    trytes,
+    hbytes,
     trunkTransaction,
     branchTransaction,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -548,8 +554,8 @@ export const performPow = (
     }
 
     return batchedPow
-        ? powFn(trytes, trunkTransaction, branchTransaction, minWeightMagnitude)
-        : performSequentialPow(powFn, digestFn, trytes, branchTransaction, trunkTransaction, minWeightMagnitude);
+        ? powFn(hbytes, trunkTransaction, branchTransaction, minWeightMagnitude)
+        : performSequentialPow(powFn, digestFn, hbytes, branchTransaction, trunkTransaction, minWeightMagnitude);
 };
 
 /**
@@ -561,7 +567,7 @@ export const performPow = (
  *
  * @param {function} powFn
  * @param {function} digestFn
- * @param {array} trytes
+ * @param {array} hbytes
  * @param {string} trunkTransaction
  * @param {string} branchTransaction
  * @param {number} minWeightMagnitude
@@ -571,13 +577,13 @@ export const performPow = (
 export const performSequentialPow = (
     powFn,
     digestFn,
-    trytes,
+    hbytes,
     trunkTransaction,
     branchTransaction,
     minWeightMagnitude,
 ) => {
-    const transactionObjects = map(trytes, (transactionTrytes) =>
-        assign({}, iota.utils.transactionObject(transactionTrytes), {
+    const transactionObjects = map(hbytes, (transactionHBytes) =>
+        assign({}, asTransactionObject(transactionHBytes), {
             attachmentTimestamp: Date.now(),
             attachmentTimestampLowerBound: 0,
             attachmentTimestampUpperBound: (Math.pow(3, 27) - 1) / 2,
@@ -604,16 +610,17 @@ export const performSequentialPow = (
                     branchTransaction: index ? trunkTransaction : branchTransaction,
                 });
 
-                const transactionTryteString = iota.utils.transactionTrytes(withParentTransactions);
+                const transactionHByteString = asTransactionHBytes(withParentTransactions);
 
-                return powFn(transactionTryteString, minWeightMagnitude)
+                return powFn(transactionHByteString, minWeightMagnitude)
                     .then((nonce) => {
-                        const trytesWithNonce = transactionTryteString.substr(0, 2673 - nonce.length).concat(nonce);
+                        // TODO recheck
+                        const hbytesWithNonce = transactionHByteString.substr(0, TRANSACTION_BYTES_SIZE - nonce.length).concat(nonce);
 
-                        result.trytes.unshift(trytesWithNonce);
+                        result.hbytes.unshift(hbytesWithNonce);
 
-                        return digestFn(trytesWithNonce).then((digest) =>
-                            iota.utils.transactionObject(trytesWithNonce, digest),
+                        return digestFn(hbytesWithNonce).then((digest) =>
+                            asTransactionObject(hbytesWithNonce, digest),
                         );
                     })
                     .then((transactionObject) => {
@@ -623,7 +630,7 @@ export const performSequentialPow = (
                     });
             });
         },
-        Promise.resolve({ trytes: [], transactionObjects: [] }),
+        Promise.resolve({ hbytes: [], transactionObjects: [] }),
     );
 };
 
@@ -637,15 +644,17 @@ export const performSequentialPow = (
  * @returns {function(array, object): Promise<object>}
  **/
 export const retryFailedTransaction = (settings) => (transactionObjects, seedStore) => {
-    const convertToTrytes = (tx) => iota.utils.transactionTrytes(tx);
+    const convertToHBytes = (tx) => asTransactionHBytes(tx);
 
     const cached = {
         transactionObjects: cloneDeep(transactionObjects),
-        trytes: map(transactionObjects, convertToTrytes),
+        hbytes: map(transactionObjects, convertToHBytes),
     };
 
     const isInvalidTransactionHash = ({ hash }) =>
-        hash === EMPTY_HASH_BYTES || !iota.utils.isTransactionHash(hash, DEFAULT_MIN_WEIGHT_MAGNITUDE);
+        hash === EMPTY_HASH_BYTES || !isHash(hash);
+        // TODO recheck
+        // iota.utils.isTransactionHash(hash, DEFAULT_MIN_WEIGHT_MAGNITUDE);
 
     // Verify if all transaction objects have valid hash
     // Proof of work was not performed correctly if any transaction has invalid hash
@@ -653,17 +662,17 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
         // If proof of work failed, select new tips and retry
         return getTransactionsToApprove(settings)()
             .then(({ trunkTransaction, branchTransaction }) => {
-                return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
+                return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.hbytes);
             })
-            .then(({ trytes, transactionObjects }) => {
-                cached.trytes = trytes;
+            .then(({ hbytes, transactionObjects }) => {
+                cached.hbytes = hbytes;
                 cached.transactionObjects = transactionObjects;
 
-                return storeAndBroadcast(settings)(cached.trytes).then(() => cached);
+                return storeAndBroadcast(settings)(cached.hbytes).then(() => cached);
             });
     }
 
-    return storeAndBroadcast(settings)(cached.trytes).then(() => cached);
+    return storeAndBroadcast(settings)(cached.hbytes).then(() => cached);
 };
 
 /**
@@ -732,30 +741,30 @@ export const formatRelevantRecentTransactions = (transactions, addresses) => {
 };
 
 /**
- * Sort transaction trytes array
+ * Sort transaction hbytes array
  *
- * @method sortTransactionTrytesArray
- * @param {array} trytes
+ * @method sortTransactionHBytesArray
+ * @param {array} hbytes
  * @param {string} [sortBy]
  * @param {string} [order]
  *
  */
-export const sortTransactionTrytesArray = (trytes, sortBy = 'currentIndex', order = 'desc') => {
+export const sortTransactionHBytesArray = (hbytes, sortBy = 'currentIndex', order = 'desc') => {
     const sortableTransactionKeys = ['currentIndex', 'lastIndex', 'timestamp', 'attachmentTimestamp'];
 
     if (!includes(sortableTransactionKeys, sortBy) || !includes(['desc', 'asc'], order)) {
-        return trytes;
+        return hbytes;
     }
 
-    const transactionObjects = map(trytes, (tryteString) =>
-        iota.utils.transactionObject(
-            tryteString,
-            // Pass in null hash trytes to avoid computing transaction hash.
+    const transactionObjects = map(hbytes, (hbyteString) =>
+        asTransactionObject(
+            hbyteString,
+            // Pass in null hash hbytes to avoid computing transaction hash.
             EMPTY_HASH_BYTES,
         ),
     );
 
-    return map(orderBy(transactionObjects, [sortBy], [order]), iota.utils.transactionTrytes);
+    return map(orderBy(transactionObjects, [sortBy], [order]), asTransactionHBytes);
 };
 
 /**
@@ -1014,22 +1023,22 @@ export const mapNormalisedTransactions = (transactions, addressData) => {
 };
 
 /**
- * Computes and assign transaction hash to transactions from attached trytes (Forms a bundle).
+ * Computes and assign transaction hash to transactions from attached hbytes (Forms a bundle).
  *
  * @method constructBundleFromAttachedBytes
  *
- * @param {array} attachedTrytes
+ * @param {array} attachedHBytes
  * @param {object} seedStore
  *
  * @returns {Promise<array>}
  */
-export const constructBundleFromAttachedBytes = (attachedTrytes, seedStore) => {
+export const constructBundleFromAttachedBytes = (attachedHBytes, seedStore) => {
     return reduce(
-        attachedTrytes,
-        (promise, tryteString) => {
+        attachedHBytes,
+        (promise, hbyteString) => {
             return promise.then((result) => {
-                return seedStore.getDigest(tryteString).then((digest) => {
-                    const transactionObject = iota.utils.transactionObject(tryteString, digest);
+                return seedStore.getDigest(hbyteString).then((digest) => {
+                    const transactionObject = asTransactionObject(hbyteString, digest);
 
                     result.unshift(transactionObject);
 
@@ -1071,7 +1080,7 @@ export const isBundleTraversable = (bundle, trunkTransaction, branchTransaction)
  *
  * @returns {boolean}
  */
-export const isBundle = (bundle) => iota.utils.isBundle(orderBy(bundle, ['currentIndex'], ['asc']));
+export const isBundle = (bundle) => bundleValidator(orderBy(bundle, ['currentIndex'], ['asc']));
 
 /**
  * Determines if a transaction error should be considere fatal

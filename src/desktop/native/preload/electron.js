@@ -103,6 +103,51 @@ const Electron = {
     },
 
     /**
+     * Export SeedVault file
+     * @param {array} - Seed object array
+     * @param {string} - Plain text password to use for SeedVault
+     * @returns {undefined}
+     */
+    exportSeeds: async (seeds, password) => {
+        try {
+            const content = await kdbx.exportVault(seeds, password);
+            const now = new Date();
+
+            const path = await dialog.showSaveDialog(currentWindow, {
+                title: 'Export keyfile',
+                defaultPath: `seedvault-${now
+                    .toISOString()
+                    .slice(0, 16)
+                    .replace(/[-:]/g, '')
+                    .replace('T', '-')}.kdbx`,
+                buttonLabel: 'Export',
+                filters: [{ name: 'SeedVault File', extensions: ['kdbx'] }],
+            });
+
+            if (!path) {
+                throw Error('Export cancelled');
+            }
+
+            fs.writeFileSync(path, new Buffer(content));
+
+            return false;
+        } catch (error) {
+            return error.message;
+        }
+    },
+
+    /**
+     * Decrypt SeedVault file
+     * @param {buffer} buffer - SeedVault file content
+     * @param {string} - Plain text password for SeedVailt decryption
+     * @returns {array} Seed object array
+     */
+    importSeed: async (buffer, password) => {
+        const seeds = await kdbx.importVault(buffer, password);
+        return seeds;
+    },
+
+    /**
      * Set native menu and notification locales
      * @param {function} t - i18n locale helper
      * @returns {undefiend}
