@@ -13,7 +13,6 @@ import URL from 'url-parse';
 import { BigNumber } from 'bignumber.js';
 import { hbytesToAscii, asciiToHBytes } from '@helixnetwork/converter';
 import { addChecksum , isValidChecksum} from '@helixnetwork/checksum';
-import { helix } from './index';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
