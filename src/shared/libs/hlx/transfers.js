@@ -24,7 +24,7 @@ import reduce from 'lodash/reduce';
 import transform from 'lodash/transform';
 import orderBy from 'lodash/orderBy';
 import xor from 'lodash/xor';
-import { isBundle } from '@helixnetwork/bundle-validator';
+import { isBundle as bundleValidator} from '@helixnetwork/bundle-validator';
 import { asciiToHBytes } from '@helixnetwork/converter';
 import {addChecksum, removeChecksum } from '@helixnetwork/checksum';
 import { asTransactionObject ,asTransactionHBytes} from '@helixnetwork/transaction-converter';
@@ -1080,7 +1080,7 @@ export const isBundleTraversable = (bundle, trunkTransaction, branchTransaction)
  *
  * @returns {boolean}
  */
-export const isBundle = (bundle) => isBundle(orderBy(bundle, ['currentIndex'], ['asc']));
+export const isBundle = (bundle) => bundleValidator(orderBy(bundle, ['currentIndex'], ['asc']));
 
 /**
  * Determines if a transaction error should be considere fatal
