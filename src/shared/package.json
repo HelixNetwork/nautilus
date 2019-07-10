@@ -12,10 +12,12 @@
   ],
   "license": "Apache-2.0 OR EPL-2.0",
   "dependencies": {
+    "@helixnetwork/bundle-validator": "^1.0.0-alpha.2",
     "@helixnetwork/checksum": "^1.0.0-alpha.2",
     "@helixnetwork/converter": "^1.0.0-alpha.2",
     "@helixnetwork/core": "^1.0.0-alpha.2",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.2",
+    "@helixnetwork/validators": "^1.0.0-alpha.2",
     "bignumber.js": "^8.1.1",
     "i18next": "^15.1.1",
     "lodash": "^4.17.11",
