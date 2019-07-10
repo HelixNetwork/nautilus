@@ -1016,7 +1016,7 @@
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
 //                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
+//                             'X-HELIX-API-Version': IRI_API_VERSION,
 //                         },
 //                         filteringScope: () => true,
 //                     })
@@ -1060,7 +1060,7 @@
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
 //                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
+//                             'X-HELIX-API-Version': IRI_API_VERSION,
 //                         },
 //                         filteringScope: () => true,
 //                     })
@@ -1104,7 +1104,7 @@
 //                     nock('http://localhost:14265', {
 //                         reqheaders: {
 //                             'Content-Type': 'application/json',
-//                             'X-IOTA-API-Version': IRI_API_VERSION,
+//                             'X-HELIX-API-Version': IRI_API_VERSION,
 //                         },
 //                         filteringScope: () => true,
 //                     })
@@ -1208,7 +1208,7 @@
 //                 nock('http://localhost:14265', {
 //                     reqheaders: {
 //                         'Content-Type': 'application/json',
-//                         'X-IOTA-API-Version': IRI_API_VERSION,
+//                         'X-HELIX-API-Version': IRI_API_VERSION,
 //                     },
 //                 })
 //                     .filteringRequestBody(() => '*')

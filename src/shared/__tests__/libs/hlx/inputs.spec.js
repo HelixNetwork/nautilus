@@ -156,7 +156,7 @@ describe('libs: helix/inputs', () => {
                 nock('http://localhost:14265', {
                     reqheaders: {
                         'Content-Type': 'application/json',
-                        'X-IOTA-API-Version': IRI_API_VERSION,
+                        'X-HELIX-API-Version': IRI_API_VERSION,
                     },
                     filteringScope: () => true,
                 })
@@ -173,7 +173,7 @@ describe('libs: helix/inputs', () => {
                                     ...[
                                         {
                                             address:
-                                                'QSHVEHOFGUYBDPMPUUPLNRDQGAHPMGQKRIEOIMLVMIKQSTHERN9DRLCN9J9RYFGPSPOIONQNYELEQUDUC',
+                                                'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
                                             balance: 60,
                                         },
                                     ],
@@ -203,11 +203,11 @@ describe('libs: helix/inputs', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getTrytes') {
+                        } else if (body.command === 'getHBytes') {
                             return {
-                                trytes: includes(body.hashes, LATEST_MILESTONE)
-                                    ? milestoneTrytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_TRYTES),
+                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                    ? milestoneHbytes
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
                             };
                         }
 
@@ -270,7 +270,7 @@ describe('libs: helix/inputs', () => {
                 nock('http://localhost:14265', {
                     reqheaders: {
                         'Content-Type': 'application/json',
-                        'X-IOTA-API-Version': IRI_API_VERSION,
+                        'X-HELIX-API-Version': IRI_API_VERSION,
                     },
                     filteringScope: () => true,
                 })
@@ -287,7 +287,7 @@ describe('libs: helix/inputs', () => {
                                     ...[
                                         {
                                             address:
-                                                'QSHVEHOFGUYBDPMPUUPLNRDQGAHPMGQKRIEOIMLVMIKQSTHERN9DRLCN9J9RYFGPSPOIONQNYELEQUDUC',
+                                                'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
                                             balance: 60,
                                         },
                                     ],
@@ -317,11 +317,11 @@ describe('libs: helix/inputs', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getTrytes') {
+                        } else if (body.command === 'getHBytes') {
                             return {
-                                trytes: includes(body.hashes, LATEST_MILESTONE)
-                                    ? milestoneTrytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_TRYTES),
+                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                    ? milestoneHbytes
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
                             };
                         }
 
@@ -393,7 +393,7 @@ describe('libs: helix/inputs', () => {
                 nock('http://localhost:14265', {
                     reqheaders: {
                         'Content-Type': 'application/json',
-                        'X-IOTA-API-Version': IRI_API_VERSION,
+                        'X-HELIX-API-Version': IRI_API_VERSION,
                     },
                     filteringScope: () => true,
                 })
@@ -410,7 +410,7 @@ describe('libs: helix/inputs', () => {
                                     ...[
                                         {
                                             address:
-                                                'QSHVEHOFGUYBDPMPUUPLNRDQGAHPMGQKRIEOIMLVMIKQSTHERN9DRLCN9J9RYFGPSPOIONQNYELEQUDUC',
+                                                'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
                                             balance: 60,
                                         },
                                     ],
@@ -448,11 +448,11 @@ describe('libs: helix/inputs', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getTrytes') {
+                        } else if (body.command === 'getHBytes') {
                             return {
                                 trytes: includes(body.hashes, LATEST_MILESTONE)
-                                    ? milestoneTrytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_TRYTES),
+                                    ? milestoneHbytes
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
                             };
                         }
 
