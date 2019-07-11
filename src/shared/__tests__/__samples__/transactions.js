@@ -436,7 +436,7 @@ const normalisedTransactions = {
             {
                 address: 'RRHMYUP9RNBBNAORNMNHYTLJZWXCWKOYV9TVQPGPKDNTTSTVLCXCDKDKPILANYIOPOHBTNAXZ9IUBPQCC',
                 value: 0,
-                hash: 'SATTUQCNMVTAIADHRQGC9SINCOYHDFQ9CZLTDESRKTWDJICSVLGRQVDFTHBDEACYFJURHBCLJPIBZ9999',
+                hash: '0000ce52d35762c89dd3d946b19056d28ddca22474792b9e43bb6d1787de202e',
                 currentIndex: 0,
                 lastIndex: 0,
                 checksum: 'YBBRFADGD',
@@ -448,7 +448,7 @@ const normalisedTransactions = {
         message: 'Trinity test zero value one',
         tailTransactions: [
             {
-                hash: 'SATTUQCNMVTAIADHRQGC9SINCOYHDFQ9CZLTDESRKTWDJICSVLGRQVDFTHBDEACYFJURHBCLJPIBZ9999',
+                hash: '0000ce52d35762c89dd3d946b19056d28ddca22474792b9e43bb6d1787de202e',
                 attachmentTimestamp: 1539992389860,
             },
         ],
