@@ -211,6 +211,10 @@ const Electron = {
             confirmedOut: t('notifications:confirmedOut', { account: '{{account}}', value: '{{value}}' }),
         };
     },
+
+    getOnboardingGenerated: () => {
+        return onboardingGenerated;
+    },
 };
 
 export default Electron;

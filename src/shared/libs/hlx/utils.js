@@ -12,7 +12,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import URL from 'url-parse';
 import { BigNumber } from 'bignumber.js';
 import { hbytesToAscii, asciiToHBytes } from '@helixnetwork/converter';
-import { addChecksum , isValidChecksum} from '@helixnetwork/checksum';
+import { addChecksum, isValidChecksum } from '@helixnetwork/checksum';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
@@ -59,11 +59,11 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
  * @returns {string}
  */
 export const convertFromBytes = (bytes) => {
-    const message =hbytesToAscii(bytes);
-    console.log('here '+message +' '+bytes)
+    const message = hbytesToAscii(bytes);
+    console.log('here ' + message + ' ' + bytes)
     /* eslint-disable no-control-regex */
     if (bytes && message && /^[\x00-\xFF]*$/.test(message)) {
-        console.log('inside if '+message +' '+bytes)
+        console.log('inside if ' + message + ' ' + bytes)
         return message;
     }
     /* eslint-enable no-control-regex */
@@ -86,12 +86,12 @@ export const getChecksum = (
     length = isArray(input) || input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
 ) => {
     return addChecksum(
-            // https://github.com/iotaledger/iota.js/blob/develop/lib/utils/utils.js#L64
-            // iota.lib.js throws an exception for typed arrays
-            input instanceof Int8Array ? Array.from(input) : input,
-            length,
-            false,
-        )
+        // https://github.com/iotaledger/iota.js/blob/develop/lib/utils/utils.js#L64
+        // iota.lib.js throws an exception for typed arrays
+        input instanceof Int8Array ? Array.from(input) : input,
+        length,
+        false,
+    )
         .slice(-length);
 };
 

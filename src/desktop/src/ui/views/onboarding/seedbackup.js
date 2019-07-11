@@ -7,8 +7,11 @@ import Button from 'ui/components/button';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Logos from 'ui/components/logos';
 import css from './index.scss';
+import Icon from 'ui/components/icon';
+import Modal from 'ui/components/modal';
+import SeedExport from 'ui/global/SeedExport'
 
-class SeedBackup extends React.PureComponent{
+class SeedBackup extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
@@ -16,7 +19,9 @@ class SeedBackup extends React.PureComponent{
 
 
     state = {
-        ledger: false,
+        seed: Electron.getOnboardingSeed(),
+        writeVisible: false,
+        exportVisible: false,
     };
 
     stepForward(route) {
@@ -27,8 +32,9 @@ class SeedBackup extends React.PureComponent{
 
         this.props.history.push(`/onboarding/${route}`);
     }
-    render(){
-        const{ history, t }=this.props;
+    render() {
+        const { onboardingName, t } = this.props;
+        const { writeVisible, exportVisible, seed } = this.state;
         return (
             <div>
                 <Logos size={20} />
@@ -40,9 +46,15 @@ class SeedBackup extends React.PureComponent{
                                 <h1 className={classNames(css.head_h1)}>{t('saveYourSeed:saveYourSeed')}</h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                                 <div className={classNames(css.filebox)}>
-                                        <input type="file"  ref="fileUploader" style={{}}/>
-                                 </div>
+                                <nav className={css.choice}>
+                                    <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
+                                        <h3>{t('saveYourSeed:recommended')}</h3>
+                                        <div>
+                                            <Icon icon="seedVault" size={72} />
+                                        </div>
+                                        <h4>{t('seedVault:exportSeedVault')}</h4>
+                                    </a>
+                                </nav>
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
@@ -50,6 +62,25 @@ class SeedBackup extends React.PureComponent{
                             </div>
                         </div>
                     </div>
+                    <Modal
+                        variant="fullscreen"
+                        isOpen={writeVisible || exportVisible}
+                        onClose={() => this.setState({ writeVisible: false, exportVisible: false })}
+                    >
+                        {writeVisible ? (
+                            <SeedSaveWrite
+                                seed={seed}
+                                checksum={checksum}
+                                onClose={() => this.setState({ writeVisible: false })}
+                            />
+                        ) : (
+                                <SeedExport
+                                    seed={seed}
+                                    title={onboardingName}
+                                    onClose={() => this.setState({ exportVisible: false })}
+                                />
+                            )}
+                    </Modal>
                 </section>
             </div>
         )

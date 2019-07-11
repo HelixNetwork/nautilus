@@ -158,15 +158,19 @@ class SeedGenerate extends React.PureComponent {
     // stepBack() {
     //     this.props.history.goBack();
     // }
-    stepForward(route) {
-        Electron.setOnboardingSeed(this.state.seed,true);
 
-        this.props.history.push(`/onboarding/${route}`);
+    saveAccountName = () => {
+        const { history } = this.props;
+        const { seed } = this.state;
+
+        Electron.setOnboardingSeed(seed, true);
+        history.push('/onboarding/account-name');
     }
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
         const { seed1, seed2, seed3, seed4, scramble, existingSeed, clicks } = this.state;
+        console.log(this.state);
         const clicksLeft = 4 - clicks.length;
 
         const { loop, animate, onEnd } = this.props;
@@ -381,7 +385,7 @@ class SeedGenerate extends React.PureComponent {
 
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={()=>this.stepForward('account-name')}>{t('global:continue')} <span>></span> </Button>
+                                <Button className="navright" variant="backgroundNone" onClick={this.saveAccountName}>{t('global:continue')} <span>></span> </Button>
 
                                 {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
                             <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span> */}
@@ -389,7 +393,7 @@ class SeedGenerate extends React.PureComponent {
                         </div>
                     </div>
                 </section>
-            </div>
+            </div >
         )
     }
 }
