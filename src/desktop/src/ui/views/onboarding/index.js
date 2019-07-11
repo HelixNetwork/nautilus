@@ -13,7 +13,7 @@ import GenerateSeed from 'ui/views/onboarding/seedGenerate';
 import SaveYourSeedOptions from 'ui/views/onboarding/seedSave';
 import SeedEnter from 'ui/views/onboarding/seedVerify';
 import SeedName from 'ui/views/onboarding/accountName';
-import SeedBackup from 'ui/views/onboarding/seedbackup';
+import SeedBackup from 'ui/views/onboarding/seedBackup';
 import SeedWallet from 'ui/views/onboarding/seedwallet';
 import SecurityEnter from 'ui/views/onboarding/accountPassword';
 import Done from 'ui/views/onboarding/done';
