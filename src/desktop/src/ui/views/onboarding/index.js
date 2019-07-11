@@ -40,7 +40,7 @@ class Onboarding extends React.PureComponent {
             'seed-intro',
             'seed-generate',
             'account-name',
-            'seed-save',
+            'seed-import',
             'seed-verify',
             'account-password',
             'done',
@@ -52,7 +52,7 @@ class Onboarding extends React.PureComponent {
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
-            currentKey === 'seed-save' ? 2 : steps.indexOf(currentKey) + 1;
+            currentKey === 'seed-import' ? 2 : steps.indexOf(currentKey) + 1;
 
         if (currentIndex < 1) {
             return null;

@@ -76,6 +76,24 @@
   .img_sr_h2:hover{
     color: #dcab49;
   }
+  .img_send_h2{
+    font-size: 19px;
+    height:28px;
+   
+   
+  }
+  .img_send_h2:hover{
+    color: #dcab49;
+  }
+  .img_recieve_h2{
+    font-size: 19px;
+    height:28px;
+   
+   
+  }
+  .img_recieve_h2:hover{
+    color: #dcab49;
+  }
   .footer_none {
     display: none !important;
   }
@@ -735,6 +753,13 @@ margin-right: 16px;
 
   @media  screen and (min-width: 840px) {
     .img_sr1 {
+      float: left;
+      margin: 27px 119px     !important;
+          margin-top: -24px !important;
+          
+      text-align: center;
+    }
+    .img_send {
       float: left;
       margin: 27px 119px     !important;
           margin-top: -24px !important;

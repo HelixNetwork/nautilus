@@ -13,7 +13,7 @@ import css from './wallet.scss';
 import Top from '../../components/topbar';
 import Button from '../../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faChartLine, faHistory, faAddressBook } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faChartLine, faHistory, faExchange} from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 /**
  * Wallet functionallity router wrapper component
@@ -62,11 +62,12 @@ class Wallet extends React.PureComponent {
                                         <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><img src={img1} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
                                         <div onClick={() => history.push('/wallet/chart')}className={(classNames(css.img_sr1))}><img src={img2} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
                                         <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><img src={img3} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div> */}
-                                         <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faPaperPlane} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div> 
+                                         <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_send))}><FontAwesomeIcon icon={faPaperPlane} size='3x' /><h2 className={classNames(css.img_send_h2)}>Send <span>></span></h2></div> 
                                         <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faDownload} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
                                         <div onClick={() => history.push('/wallet/chart')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faChartLine} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
                                         <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
-
+                                        <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
+                                        {/* <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faExchange} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Swap <span>></span></h2></div> */}
                                 </div>
                             </div>
                         </div>

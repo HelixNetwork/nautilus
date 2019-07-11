@@ -83,7 +83,7 @@ class SeedBackup extends React.PureComponent {
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-save')}>{t('global:confirm')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('global:confirm')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
