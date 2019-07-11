@@ -9,7 +9,9 @@ import Logos from 'ui/components/logos';
 import css from './index.scss';
 import Icon from 'ui/components/icon';
 import Modal from 'ui/components/modal';
-import SeedExport from 'ui/global/seedExport'
+import SeedExport from 'ui/global/seedExport';
+import Lottie from 'react-lottie';
+import * as animationData from 'animations/export.json';
 
 class SeedBackup extends React.PureComponent {
     static propTypes = {
@@ -33,8 +35,18 @@ class SeedBackup extends React.PureComponent {
         this.props.history.push(`/onboarding/${route}`);
     }
     render() {
-        const { onboardingName, t } = this.props;
+        const { loop, onboardingName, t } = this.props;
         const { writeVisible, exportVisible, seed } = this.state;
+
+        const defaultOptions = {
+            loop: loop,
+            autoplay: true,
+            animationData: animationData.default,
+            rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+            }
+        };
+
         return (
             <div>
                 <Logos size={20} />
@@ -43,14 +55,27 @@ class SeedBackup extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className={classNames(css.head_h1)}>{t('saveYourSeed:saveYourSeed')}</h1>
+                                <h1 className={classNames(css.head_h1)}>{t('saveYourSeed:saveYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs)}>
                                 <nav className={css.choice}>
                                     <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
                                         <h3>{t('saveYourSeed:recommended')}</h3>
-                                        <div>
-                                            <Icon icon="seedVault" size={72} />
+                                        <div className = {css.backup}>
+                                            <Lottie
+                                                options={defaultOptions}
+                                                eventListeners={[
+                                                    {
+                                                        eventName: 'complete',
+                                                        callback: () => {
+                                                            if (typeof onEnd === 'function') {
+                                                                onEnd();
+                                                            }
+                                                        },
+                                                    },
+                                                ]}
+                                            />
+                                            {/* <Icon icon="seedVault" size={72} /> */}
                                         </div>
                                         <h4>{t('seedVault:exportSeedVault')}</h4>
                                     </a>
@@ -63,7 +88,7 @@ class SeedBackup extends React.PureComponent {
                         </div>
                     </div>
                     <Modal
-                        variant="fullscreen"
+                        variant="confirm"
                         isOpen={writeVisible || exportVisible}
                         onClose={() => this.setState({ writeVisible: false, exportVisible: false })}
                     >
