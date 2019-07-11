@@ -14,50 +14,55 @@ import { assignAccountIndexIfNecessary } from 'actions/accounts';
 import { mapStorageToState as mapStorageToStateAction } from 'actions/wallet';
 import { mapStorageToState } from 'libs/mapStorageToState';
 
-if (Electron.mode === 'tray') {
+const init = () => {
+  const modalElement = document.createElement('div');
+  modalElement.id = 'modal';
+  document.body.appendChild(modalElement);
+  if (Electron.mode === 'tray') {
 
-} else {
-  initialiseStorage(getEncryptionKey)
-    .then(() => {
+  } else {
+    initialiseStorage(getEncryptionKey)
+      .then(() => {
 
-      const oldPersistedData = Electron.getAllStorage();
-      const hasDataToMigrate = !isEmpty(oldPersistedData);
-      
-      if (hasDataToMigrate) {
-        Object.assign(oldPersistedData.settings, {
-          completedMigration: false,
-        });
-      }
+        const oldPersistedData = Electron.getAllStorage();
+        const hasDataToMigrate = !isEmpty(oldPersistedData);
 
-      // Get persisted data from Realm storage
-      const persistedDataFromRealm = mapStorageToState();
-      const data = hasDataToMigrate ? oldPersistedData : persistedDataFromRealm;
-      console.log("data", data);
-      // Change provider on global iota instance
-      const node = get(data, 'settings.node');
+        if (hasDataToMigrate) {
+          Object.assign(oldPersistedData.settings, {
+            completedMigration: false,
+          });
+        }
 
-      console.log("node", node);
-      // Update store with persisted state
-      store.dispatch(mapStorageToStateAction(data));
+        // Get persisted data from Realm storage
+        const persistedDataFromRealm = mapStorageToState();
+        const data = hasDataToMigrate ? oldPersistedData : persistedDataFromRealm;
+        console.log("data", data);
+        const node = get(data, 'settings.node');
 
-      // Assign accountIndex to every account in accountInfo if it is not assigned already
-      store.dispatch(assignAccountIndexIfNecessary(get(data, 'accounts.accountInfo')));
+        console.log("node", node);
+        // Update store with persisted state
+        store.dispatch(mapStorageToStateAction(data));
 
-      // Show Wallet window after inital store update
-      Electron.focus();
-    })
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(err));
+        // Assign accountIndex to every account in accountInfo if it is not assigned already
+        store.dispatch(assignAccountIndexIfNecessary(get(data, 'accounts.accountInfo')));
+
+        // Show Wallet window after inital store update
+        Electron.focus();
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err));
+  }
+  render(
+    <Provider store={store}>
+      <I18nextProvider i18n={i18next}>
+        <Router>
+          <React.Fragment>
+            <Index />
+          </React.Fragment>
+        </Router>
+      </I18nextProvider>
+    </Provider>,
+    document.getElementById("root")
+  );
 }
-render(
-  <Provider store={store}>
-    <I18nextProvider i18n={i18next}>
-      <Router>
-        <React.Fragment>
-          <Index />
-        </React.Fragment>
-      </Router>
-    </I18nextProvider>
-  </Provider>,
-  document.getElementById("root")
-);
+init();

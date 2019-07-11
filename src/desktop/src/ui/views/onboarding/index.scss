@@ -508,16 +508,14 @@ margin-left: 275px;
   color: #e8b349;
 }
 .filebox{
-  width: 220px;
+  width: 290px;
   padding: 35px 20px;
-  min-height: 3px;
+  min-height: 25px;
   position: absolute;
   left: 20%;
   bottom: 209px;
-  margin-left: 31px;
-  top:158px;
-  background-color: #0d214b;
-
+  margin-left: 0px;
+  top: 158px;
 }
 
 .steps {
@@ -820,4 +818,8 @@ margin-left: 275px;
 .seed_lottie{
     width: 161px;
     height: 108px;
+}
+
+.backup {
+  height: 130px;
 }

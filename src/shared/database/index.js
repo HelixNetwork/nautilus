@@ -288,7 +288,7 @@ class Wallet {
      * @returns {object}
      */
     static getObjectForId(id = Wallet.version) {
-       
+
         return realm.objectForPrimaryKey('Wallet', id);
     }
 
@@ -312,7 +312,7 @@ class Wallet {
         return dataForCurrentVersion.settings;
     }
 
-    
+
     /**
      * Wallet data (as plain object) for most recent version.
      */latestSettings
@@ -369,6 +369,13 @@ class Wallet {
     static acceptPrivacyPolicy() {
         realm.write(() => {
             Wallet.latestSettings.acceptedPrivacy = true;
+        });
+    }
+
+    static updateAccountInfoDuringSetup(payload) {
+        realm.write(() => {
+            const data = Wallet.latestData;
+            data.accountInfoDuringSetup = assign({}, data.accountInfoDuringSetup, payload);
         });
     }
 }

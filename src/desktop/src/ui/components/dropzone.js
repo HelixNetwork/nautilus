@@ -4,7 +4,8 @@ import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-// import Icon from 'ui/components/Icon';
+
+import Icon from 'ui/components/icon';
 
 import css from './dropzone.scss';
 
@@ -131,16 +132,17 @@ class Dropzone extends React.Component {
 
         return (
             <React.Fragment>
-                <h5 onClick={this.open}>
-                    {/* <Icon icon="seedVault" size={48} />{' '} */}
-                    <span>
-                        {t('seedVault:')} Drop SeedVault file here<br /> or click to browse
+                <h5 style={{position:'absolute',top:'-70px'}} onClick={this.open}>
+                    <Icon icon="seedVault" size={48} color='red'/>{' '}
+                    <br/>
+                    <span style={{fontSize:'14px'}}>
+                        {t('seedVault:dropInstructions')}
                     </span>
                 </h5>
                 <input {...inputAttributes} />
                 <div className={classNames(css.dropzone, this.state.isDragActive && css.active)}>
-                    {/* <Icon icon="seedVault" size={160} /> */}
-                    <h1>{t('seedVault:dropSeedVaultHere')}</h1>
+                    <Icon icon="seedVault" size={160} />
+                    <h1>{t('seedVault:dropInstructions')}</h1>
                 </div>
             </React.Fragment>
         );

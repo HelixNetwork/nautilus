@@ -2,6 +2,7 @@ import assign from 'lodash/assign';
 import some from 'lodash/some';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
+import { Wallet } from '../database';
 export const ActionTypes = {
     SET_ACCOUNT_INFO_DURING_SETUP: 'HELIX/ACCOUNTS/SET_ACCOUNT_INFO_DURING_SETUP',
 }
@@ -15,7 +16,7 @@ export const ActionTypes = {
  * @returns {{type: {string}, payload: {object} }}
  */
 export const setAccountInfoDuringSetup = (payload) => {
-
+    Wallet.updateAccountInfoDuringSetup(payload);
     return {
         type: ActionTypes.SET_ACCOUNT_INFO_DURING_SETUP,
         payload,
