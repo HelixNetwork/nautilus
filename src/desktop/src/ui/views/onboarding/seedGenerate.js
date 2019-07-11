@@ -23,7 +23,7 @@ class SeedGenerate extends React.PureComponent {
     };
 
     state = {
-        seed:Electron.getOnboardingSeed() || createRandomSeed(),
+        seed: Electron.getOnboardingSeed() || createRandomSeed(),
         seed1: [],
         seed2: [],
         seed3: [],
@@ -33,7 +33,20 @@ class SeedGenerate extends React.PureComponent {
         clicks: [],
         viewSeed: 'none',
         viewReload: 'block',
-        counter: 1
+        viewReloadBlockTwo: 'block',
+        viewReloadBlockThree: 'block',
+        viewReloadBlockFour: 'block',
+        viewSeedTwo: 'none',
+        viewSeedThree: 'none',
+        viewSeedFour: 'none',
+        counter: 1,
+        displaySeedTwo: 'none',
+        displaySeedThree: 'none',
+        displaySeedFour: 'none',
+        disableOne: false,
+        disableTwo: false,
+        disableThree: false,
+        disableFour: false,
     }
     componentDidMount() {
         this.frame = 0;
@@ -58,31 +71,86 @@ class SeedGenerate extends React.PureComponent {
      */
     updateLetter = (e) => {
 
-        const { seed, clicks, scramble } = this.state;
+        const { seed, clicks, scramble, viewReloadBlockTwo, viewReloadBlockThree, viewReloadBlockFour, viewSeedTwo, viewSeedThree, viewSeedFour, displaySeedTwo, displaySeedThree, displaySeedFour, disableOne, disableTwo, disableThree, disableFour } = this.state;
 
         const position = e.target.value;
-
         const newClicks = clicks.indexOf(position) < 0 ? clicks.concat([position]) : clicks;
         const newSeed = seed.slice(0);
         newSeed[position] = createRandomSeed(1)[0];
 
         scramble[position] = 64;
-        const seed1 = newSeed.slice(0,16);
-        const seed2 = newSeed.slice(16,32);
-        const seed3 = newSeed.slice(32,48);
-        const seed4 = newSeed.slice(48,64);
+        const seed1 = newSeed.slice(0, 16);
+        const seed2 = newSeed.slice(16, 32);
+        const seed3 = newSeed.slice(32, 48);
+        const seed4 = newSeed.slice(48, 64);
+
+        let reloadBlockTwo = viewReloadBlockTwo;
+        let seedTwo = viewSeedTwo;
+
+        let reloadBlockThree = viewReloadBlockThree;
+        let seedThree = viewSeedThree;
+
+        let reloadBlockFour = viewReloadBlockFour;
+        let seedFour = viewSeedFour;
+
+        let seedTwoBox = displaySeedTwo;
+        let seedThreeBox = displaySeedThree;
+        let seedFourBox = displaySeedFour;
+
+        let boxOneDisable = disableOne;
+        let boxTwoDisable = disableTwo;
+        let boxThreeDisable = disableThree;
+        let boxFourDisable = disableFour;
+
+        const clicksLeft = 16 - clicks.length;
+        switch (String(clicksLeft)) {
+            case '13':
+                reloadBlockTwo = 'none';
+                seedTwo = 'block';
+                seedTwoBox = 'block';
+                boxOneDisable = true;
+                break;
+            case '9':
+                reloadBlockThree = 'none';
+                seedThree = 'block';
+                seedThreeBox = 'block';
+                boxTwoDisable = true;
+                break;
+            case '5':
+                reloadBlockFour = 'none';
+                seedFour = 'block';
+                seedFourBox = 'block';
+                boxThreeDisable = true;
+                break;
+            case '1':
+                boxFourDisable = true;
+                break;
+            default:
+                break;
+        }
         this.setState(() => ({
             seed: newSeed,
-            seed1:seed1,
-            seed2:seed2,
-            seed3:seed3,
-            seed4:seed4,
+            seed1: seed1,
+            seed2: seed2,
+            seed3: seed3,
+            seed4: seed4,
             clicks: newClicks,
             scramble: scramble,
+            viewReloadBlockTwo: reloadBlockTwo,
+            viewReloadBlockThree: reloadBlockThree,
+            viewReloadBlockFour: reloadBlockFour,
+            viewSeedTwo: seedTwo,
+            viewSeedThree: seedThree,
+            viewSeedFour: seedFour,
+            displaySeedTwo: seedTwoBox,
+            displaySeedThree: seedThreeBox,
+            displaySeedFour: seedFourBox,
+            disableOne: boxOneDisable,
+            disableTwo: boxTwoDisable,
+            disableThree: boxThreeDisable,
+            disableFour: boxFourDisable
         }));
-
         this.unscramble();
-
     };
 
     /**
@@ -94,16 +162,16 @@ class SeedGenerate extends React.PureComponent {
         console.log("newSeed", newSeed);
 
         Electron.setOnboardingSeed(null);
-        const seed1 = newSeed.slice(0,16);
-        const seed2 = newSeed.slice(16,32);
-        const seed3 = newSeed.slice(32,48);
-        const seed4 = newSeed.slice(48,64);
+        const seed1 = newSeed.slice(0, 16);
+        const seed2 = newSeed.slice(16, 32);
+        const seed3 = newSeed.slice(32, 48);
+        const seed4 = newSeed.slice(48, 64);
         this.setState(() => ({
             seed: newSeed,
-            seed1:seed1,
-            seed2:seed2,
-            seed3:seed3,
-            seed4:seed4,
+            seed1: seed1,
+            seed2: seed2,
+            seed3: seed3,
+            seed4: seed4,
             existingSeed: false,
             clicks: [],
             viewSeed: 'block',
@@ -169,9 +237,9 @@ class SeedGenerate extends React.PureComponent {
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
-        const { seed1, seed2, seed3, seed4, scramble, existingSeed, clicks } = this.state;
-        console.log(this.state);
-        const clicksLeft = 4 - clicks.length;
+        const { seed1, seed2, seed3, seed4, scramble, existingSeed, clicks, disableOne, disableTwo, disableThree, disableFour } = this.state;
+
+        const clicksLeft = 16 - clicks.length;
 
         const { loop, animate, onEnd } = this.props;
 
@@ -237,6 +305,7 @@ class SeedGenerate extends React.PureComponent {
                                                             onClick={this.updateLetter}
                                                             key={`${index}${letter}`}
                                                             value={index}
+                                                            disabled={disableOne}
                                                             style={{ opacity: 1 - offset / 255 }}
                                                         >
                                                             {letter}
@@ -246,8 +315,8 @@ class SeedGenerate extends React.PureComponent {
 
                                             </div>
                                         </div>
-                                        <div className={css.seed_wrapbox} >
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }}  style={{ display: this.state.viewReload }}>
+                                        <div className={css.seed_wrapbox} style={{ display: this.state.displaySeedTwo }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReloadBlockTwo }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -262,16 +331,17 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
+                                            <div className={css.seed} style={{ display: this.state.viewSeedTwo }}>
 
                                                 {seed2.map((byte, index) => {
-                                                    const offset = scramble[index];
+                                                    const offset = scramble[index + 16];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
                                                         <button
                                                             onClick={this.updateLetter}
-                                                            key={`${index}${letter}`}
-                                                            value={index}
+                                                            key={`${16 + index}${letter}`}
+                                                            value={16 + index}
+                                                            disabled={disableTwo}
                                                             style={{ opacity: 1 - offset / 255 }}
                                                         >
                                                             {letter}
@@ -281,8 +351,8 @@ class SeedGenerate extends React.PureComponent {
 
                                             </div>
                                         </div>
-                                        <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReload }}>
+                                        <div className={css.seed_wrapbox} style={{ display: this.state.displaySeedThree }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReloadBlockThree }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -297,16 +367,17 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
+                                            <div className={css.seed} style={{ display: this.state.viewSeedThree }}>
 
                                                 {seed3.map((byte, index) => {
-                                                    const offset = scramble[index];
+                                                    const offset = scramble[index + 32];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
                                                         <button
                                                             onClick={this.updateLetter}
-                                                            key={`${index}${letter}`}
-                                                            value={index}
+                                                            key={`${32 + index}${letter}`}
+                                                            value={32 + index}
+                                                            disabled={disableThree}
                                                             style={{ opacity: 1 - offset / 255 }}
                                                         >
                                                             {letter}
@@ -316,8 +387,8 @@ class SeedGenerate extends React.PureComponent {
 
                                             </div>
                                         </div>
-                                        <div className={css.seed_wrapbox}>
-                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReload }}>
+                                        <div className={css.seed_wrapbox} style={{ display: this.state.displaySeedFour }}>
+                                            <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} style={{ display: this.state.viewReloadBlockFour }}>
                                                 <Lottie className={classNames(css.seed_lottie)}
                                                     options={defaultOptions}
                                                     eventListeners={[
@@ -332,16 +403,16 @@ class SeedGenerate extends React.PureComponent {
                                                     ]}
                                                 />
                                             </div>
-                                            <div className={css.seed} style={{ display: this.state.viewSeed }}>
-
+                                            <div className={css.seed} style={{ display: this.state.viewSeedFour }}>
                                                 {seed4.map((byte, index) => {
-                                                    const offset = scramble[index];
+                                                    const offset = scramble[index + 42];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
                                                         <button
                                                             onClick={this.updateLetter}
-                                                            key={`${index}${letter}`}
-                                                            value={index}
+                                                            key={`${48 + index}${letter}`}
+                                                            value={48 + index}
+                                                            disabled={disableFour}
                                                             style={{ opacity: 1 - offset / 255 }}
                                                         >
                                                             {letter}
@@ -356,31 +427,6 @@ class SeedGenerate extends React.PureComponent {
 
 
                                 </div>
-                                {/* <div className={css.seed}>                                                                                                                                                      
-
-                                    <Button type="button" onClick={this.generateNewSeed} style={{ display: this.state.viewReload }} className="icon">
-                                        <img src={reload} alt="" />
-                                        {t('newSeedSetup:clickForNewSeed')}
-                                    </Button>
-
-                                    <div style={{ display: this.state.viewSeed }}>
-                                        {seed.map((byte, index) => {
-                                            const offset = scramble[index];
-                                            const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
-                                            return (
-                                                <button
-                                                    onClick={this.updateLetter}
-                                                    key={`${index}${letter}`}
-                                                    value={index}
-                                                    style={{ opacity: 1 - offset / 255 }}
-                                                >
-                                                    {letter}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-
-                                </div> */}
                             </div>
 
                             <div className={css.onboard_nav}>
