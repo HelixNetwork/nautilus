@@ -230,7 +230,7 @@ class SeedGenerate extends React.PureComponent {
     saveAccountName = () => {
         const { history } = this.props;
         const { seed } = this.state;
-
+        console.log('seed', seed);
         Electron.setOnboardingSeed(seed, true);
         history.push('/onboarding/account-name');
     }
@@ -431,10 +431,7 @@ class SeedGenerate extends React.PureComponent {
 
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={this.saveAccountName}>{t('global:continue')} <span>></span> </Button>
-
-                                {/* <span className={css.navleft}>{t('newSeedSetup:loginWithYourSeed')}</span>
-                            <span className={css.navright}>{t('newSeedSetup:createSeed')} ></span> */}
+                                <Button disabled={clicksLeft > 0} className="navright" variant="backgroundNone" onClick={this.saveAccountName}>{t('global:continue')} <span>></span> </Button>
                             </div>
                         </div>
                     </div>
