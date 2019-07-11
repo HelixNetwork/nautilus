@@ -116,12 +116,11 @@ const getNodeInfo = (settings) => () =>
  * Helix getTransactionsObjects
  *
  * @method getTransactionsObjects
- * @param {object} [settings]
  *
  * @returns {function(array): Promise<any>}
  */
-const getTransactionsObjects = (settings) => (hashes) =>
-        getHelixInstance(settings).getTransactionsObjects(hashes);
+const getTransactionsObjects = () => (hashes) =>
+                asTransactionObject(hashes);
    
 // TODO : Check if fintransaction objects to be used the new dedicated helix method
 /**
