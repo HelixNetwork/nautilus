@@ -49,15 +49,17 @@ class SeedImport extends React.PureComponent {
         });
     };
 
-    onChange(e){
+    onChange= async(e)=>{
         try{
             const seed= await Electron.importSeed(buffer,e.target.value);
+           
             let seedSequence="";
             seed[0].seed.map((byte,index)=>{
             const letter = indexToChar(byte);
             seedSequence+= letter                                       
-        });
-        console.log(seedSequence);
+            });
+            console.log(seedSequence);
+            
         }
         catch(err){
 
