@@ -16,6 +16,7 @@ import Viewseed from 'ui/views/settings/viewseed';
 import Viewaddress from 'ui/views/settings/viewaddress';
 import Changepassword from 'ui/views/settings/changepassword';
 import SettingsMode from 'ui/views/settings/mode';
+import AdvancedSettings from 'ui/views/settings/advancedSettings';
 import Button from 'ui/components/button';
 
 /**
@@ -83,6 +84,7 @@ class Settings extends React.PureComponent {
                     <Route path="/settings/address" component={Viewaddress} />
                     <Route path="/settings/password" component={Changepassword} />
                     <Route path="/settings/mode" component={SettingsMode} />
+                    <Route path="/settings/accountsetting" component={AdvancedSettings}/>
                 </Switch>
             </div>
         );

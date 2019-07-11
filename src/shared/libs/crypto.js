@@ -1,4 +1,4 @@
-import { MAX_SEED_LENGTH } from './helix/utils';
+import { MAX_SEED_LENGTH } from './hlx/utils';
 
 /**
  * Generates a new seed

@@ -33,6 +33,7 @@ class Sidebar extends React.PureComponent{
             <li><a onClick={()=>this.props.history.push('/settings/currency')}>Currency</a></li>
             <li><a onClick={()=>this.props.history.push('/settings/password')}>Change Password</a></li>
             <li><a onClick={()=>this.props.history.push('/settings/mode')}>Mode</a></li>
+            <li><a onClick={()=>this.props.history.push('/settings/accountsetting')}>Account Settings</a></li>
         </ul>
         )
     }

@@ -36,7 +36,7 @@ class SeedSave extends React.PureComponent {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-12">
-                    <h1>Enter Seed</h1>
+                    <h1>{t('seedReentry:enterYourSeed')}</h1>
                   
                     </div>
                     <div className={classNames(css.sseed_box, css.cre_pgs)}>

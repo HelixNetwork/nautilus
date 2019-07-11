@@ -48,8 +48,9 @@ import Select from 'ui/components/input/select';
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
                                             <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('settings:currency')}</h5>
-                                            <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
-                                            
+                                            <form>
+                                                <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
+                                            </form>
                                        
                                            
                                             
