@@ -27,10 +27,10 @@ export const NODES_WITH_POW_DISABLED = [
 
 export const NODES_WITH_POW_ENABLED = [
     'https://hlxtest.net:8086',
-    // 'https://nodes.thetangle.org:443',
-    // 'https://iotanode.us:443',
-    // 'https://pool.trytes.eu',
-    // 'https://pow.iota.community:443',
+    'https://nodes.thetangle.org:443',
+    'https://iotanode.us:443',
+    'https://pool.trytes.eu',
+    'https://pow.iota.community:443',
 ].map((url) => ({
     url,
     pow: true,
@@ -69,10 +69,11 @@ export const DEFAULT_RETRIES = 4;
 export const IRI_API_VERSION = '1';
 
 // TODO Recheck Quorum size
-export const QUORUM_THRESHOLD = 67;
-export const QUORUM_SIZE = 1; //4
+
+export const QUORUM_THRESHOLD = 66;
+export const QUORUM_SIZE = 3;
 export const QUORUM_SYNC_CHECK_INTERVAL = 120;
-export const MINIMUM_QUORUM_SIZE = 1; // 2
+export const MINIMUM_QUORUM_SIZE = 2;
 export const MAXIMUM_QUORUM_SIZE = 7;
 
 /** Maximum milestone fallbehind threshold for node sync checks */

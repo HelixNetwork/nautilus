@@ -23,7 +23,7 @@ describe('libs: helix/accounts', () => {
 
         // it('should mark input addresses as spent', () => {
         //     const accountState = mockAccounts.accountInfo[accountName];
-        //     const inputAddress = '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53';
+        //     const inputAddress = '31c92f5d62df01670c7fb72fd5577972a45267994acc3f35032a43f36da07830';
 
         //     // Assert that input address is unspent before syncAccountOnValueTransactionFailure is called
         //     const inputAddressDataBefore = find(accountState.addressData, { address: inputAddress });
@@ -151,28 +151,28 @@ describe('libs: helix/accounts', () => {
             });
         });
 
-        // it('should add new transaction objects to transactions in state (with persistence property false & broadcasted property true)', () => {
-        //     const accountState = {
-        //         ...mockAccounts.accountInfo[accountName],
-        //         addressData: [],
-        //     };
+        it('should add new transaction objects to transactions in state (with persistence property false & broadcasted property true)', () => {
+            const accountState = {
+                ...mockAccounts.accountInfo[accountName],
+                addressData: [],
+            };
 
-        //     const latestAddressData = mockAccounts.accountInfo[accountName].addressData;
+            const latestAddressData = mockAccounts.accountInfo[accountName].addressData;
 
-        //     const result = syncAccountDuringSnapshotTransition(
-        //         mockValueTransactionObjects,
-        //         latestAddressData,
-        //         accountState,
-        //     );
+            const result = syncAccountDuringSnapshotTransition(
+                mockValueTransactionObjects,
+                latestAddressData,
+                accountState,
+            );
 
-        //     expect(result.transactions).to.eql([
-        //         ...accountState.transactions,
-        //         ...map(mockValueTransactionObjects, (transaction) => ({
-        //             ...transaction,
-        //             persistence: false,
-        //             broadcasted: true,
-        //         })),
-        //     ]);
-        // });
+            expect(result.transactions).to.eql([
+                ...accountState.transactions,
+                ...map(mockValueTransactionObjects, (transaction) => ({
+                    ...transaction,
+                    persistence: false,
+                    broadcasted: true,
+                })),
+            ]);
+        });
     });
 });

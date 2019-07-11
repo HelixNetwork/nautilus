@@ -268,25 +268,22 @@ const getQuorum = (quorumSize) => (method, syncedNodes, payload, ...args) => {
                     syncedNodes,
                     ({ url, token, password }) =>
                         new Promise((resolve) => {
-                            getHelixInstance(
+                           let instance = getHelixInstance(
                                 {
                                     token,
                                     password,
                                     url,
                                 },
                                 getApiTimeout(helixApiMethod, payload),
-                            ).api[helixApiMethod](
-                                ...[
-                                    ...requestArgs,
-                                    (err, result) =>
-                                        err
-                                            ? // In case there is an error (e.g: request timed out),
-                                              // Instead of raising an error, return undefined as result.
-                                              // Later (when quorum is result is determined), filter out these invalid results.
-                                              resolve(undefined)
-                                            : resolve(result),
-                                ],
                             );
+                            instance[helixApiMethod]( //TODO recheck this
+                                    ...requestArgs
+                                    //          // In case there is an error (e.g: request timed out),
+                                    //           // Instead of raising an error, return undefined as result.
+                                    //           // Later (when quorum is result is determined), filter out these invalid results.
+                          
+                            ).then((result)=> resolve(result))
+                            .catch(()=> resolve(undefined))
                         }),
                 ),
             ),
