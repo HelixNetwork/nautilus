@@ -10,7 +10,7 @@ import Welcome from 'ui/views/onboarding/welcome';
 import Login from 'ui/views/onboarding/login';
 import SeedIntro from 'ui/views/onboarding/seedIntro';
 import GenerateSeed from 'ui/views/onboarding/seedGenerate';
-import SaveYourSeedOptions from 'ui/views/onboarding/seedSave';
+import seedImport from 'ui/views/onboarding/seedImport';
 import SeedEnter from 'ui/views/onboarding/seedVerify';
 import SeedName from 'ui/views/onboarding/accountName';
 import SeedBackup from 'ui/views/onboarding/seedBackup';
@@ -80,7 +80,7 @@ class Onboarding extends React.PureComponent {
                             <Switch >
                                 <Route path="/onboarding/seed-intro" component={SeedIntro} />
                                 <Route path="/onboarding/seed-generate" component={GenerateSeed} />
-                                <Route path="/onboarding/seed-save" component={SaveYourSeedOptions} />
+                                <Route path="/onboarding/seed-import" component={seedImport} />
                                 <Route path="/onboarding/seed-verify" component={SeedEnter} />
                                 <Route path="/onboarding/account-name" component={SeedName} />
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />

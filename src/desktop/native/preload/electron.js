@@ -2,7 +2,7 @@ import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
 import Realm from '../realm';
-
+const kdbx = require('../kdbx');
 let onboardingSeed = null;
 let onboardingGenerated = false;
 

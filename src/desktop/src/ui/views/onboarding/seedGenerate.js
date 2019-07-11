@@ -22,6 +22,8 @@ class SeedGenerate extends React.PureComponent {
         loop: PropTypes.bool,
     };
 
+    
+ 
     state = {
         seed: Electron.getOnboardingSeed() || createRandomSeed(),
         seed1: [],
@@ -32,6 +34,7 @@ class SeedGenerate extends React.PureComponent {
         existingSeed: Electron.getOnboardingSeed(),
         clicks: [],
         viewSeed: 'none',
+        
         viewReload: 'block',
         viewReloadBlockTwo: 'block',
         viewReloadBlockThree: 'block',
@@ -153,30 +156,28 @@ class SeedGenerate extends React.PureComponent {
         this.unscramble();
     };
 
+    
     /**
      * Generate random seed[0] ℹ ｢wdm｣: Compiling...uence
      * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
      */
     generateNewSeed = () => {
-        const newSeed = createRandomSeed();
-        console.log("newSeed", newSeed);
-
+        const newSeed = createRandomSeed();;
+        const newSeed1 = newSeed.slice(0,16);
+        const newSeed2 = newSeed.slice(16,32);
+        const newSeed3 = newSeed.slice(32,48);
+        const newSeed4 = newSeed.slice(48,64);
         Electron.setOnboardingSeed(null);
-        const seed1 = newSeed.slice(0, 16);
-        const seed2 = newSeed.slice(16, 32);
-        const seed3 = newSeed.slice(32, 48);
-        const seed4 = newSeed.slice(48, 64);
         this.setState(() => ({
-            seed: newSeed,
-            seed1: seed1,
-            seed2: seed2,
-            seed3: seed3,
-            seed4: seed4,
+            seed:newSeed,
+            seed1: newSeed1,
+            seed2: newSeed2,
+            seed3: newSeed3,
+            seed4: newSeed4,
             existingSeed: false,
             clicks: [],
-            viewSeed: 'block',
-            viewReload: 'none',
-
+            viewReload:'none',
+            viewSeed:'block'
         }));
 
         this.frame = 0;
@@ -227,6 +228,9 @@ class SeedGenerate extends React.PureComponent {
     //     this.props.history.goBack();
     // }
 
+    viewseed(index){
+        console.log(index)
+    }
     saveAccountName = () => {
         const { history } = this.props;
         const { seed } = this.state;
