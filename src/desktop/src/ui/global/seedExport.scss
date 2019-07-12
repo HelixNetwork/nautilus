@@ -12,13 +12,34 @@
     }
   }
   section {
-    padding-top: 275px;
+    // padding-top: 275px;
+    padding-top: 223px;
     position: relative;
-    height: 540px;
+    height: 420px;
+    // height: 540px;
   }
   .fieldSection {
     position: relative;
-    height: 540px;
+    height: 422px;
+    // height: 540px;
     padding-top: 250px;
   }
+  p {
+    margin-left: 0vw !important;
+  }
+
+  footer {
+    background: var(--body-bg);
+    position: absolute;
+    bottom: 42px;
+    height: 136px;
+    width: 46.7%;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+}
+
+.backup {
+  height: 130px;
 }

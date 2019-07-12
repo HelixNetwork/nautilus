@@ -8,7 +8,6 @@ import { setAccountInfoDuringSetup } from 'actions/accounts';
 import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
 import Dropzone from 'ui/components/dropzone';
-
 import { indexToChar } from 'libs/hlx/converter';
 class SeedImport extends React.PureComponent {
   
@@ -19,7 +18,9 @@ class SeedImport extends React.PureComponent {
 
     state = {
         ledger: false,
-        importBuffer:[]
+        importBuffer:null,
+        password:null,
+        hidePass:'none'
     };
 
     stepForward(route) {
@@ -46,12 +47,19 @@ class SeedImport extends React.PureComponent {
         
         this.setState({
             importBuffer: buffer,
+            hidePass:'block'
         });
     };
-
-    onChange= async(e)=>{
+    onChange(e){
+        console.log(e.target.value);
+        this.setState({
+            password:e.target.value
+        });
+    }
+    onSubmit= async()=>{
+        console.log(this.state.password);
         try{
-            const seed= await Electron.importSeed(buffer,e.target.value);
+            const seed= await Electron.importSeed(this.state.importBuffer,this.state.password);
            
             let seedSequence="";
             seed[0].seed.map((byte,index)=>{
@@ -62,12 +70,20 @@ class SeedImport extends React.PureComponent {
             
         }
         catch(err){
-
+            console.log(err);
         }
+        
+    }
+    goBack(){
+        this.setState({
+            importBuffer:null,
+            hidePass:'none'
+        });
     }
 
     render() {
         const { history, t } = this.props;
+        const {importBuffer} = this.state;
         return (
             <div>
             <Logos/>
@@ -86,7 +102,13 @@ class SeedImport extends React.PureComponent {
                         <Dropzone onDrop={this.onDrop} />
                         </div>
                         <br/>
-                        <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{position:'relative',top:'60px'}} onChange={this.onChange}></input><br /><br />
+                        {importBuffer && (
+                        <form className={classNames(css.sseed_box, css.cre_pgs)} onSubmit={()=>this.onSubmit()} style={{top:'-30px',left:'350px',display:this.state.hidePass}}>
+                            <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{marginTop:'55px'}}></input><br /><br />
+                            <Button onClick={()=>this.goBack.bind(this)}>Back</Button>&nbsp;&nbsp;&nbsp;<Button type="submit">Import Seed</Button>
+                        </form>
+                    )}
+                        
 
                     </div>
                     <div className={css.onboard_nav}>
