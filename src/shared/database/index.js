@@ -308,14 +308,13 @@ class Wallet {
 
     static get latestSettings() {
         const dataForCurrentVersion = Wallet.getObjectForId();
-        console.log(dataForCurrentVersion);
         return dataForCurrentVersion.settings;
     }
 
 
     /**
      * Wallet data (as plain object) for most recent version.
-     */latestSettings
+     */
     static get latestDataAsPlainObject() {
         const data = Wallet.latestData;
 
