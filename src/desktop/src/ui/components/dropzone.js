@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-
-
+import shield from '../../ui/images/svg/shield.svg';
 import Icon from 'ui/components/icon';
 
 import css from './dropzone.scss';
@@ -133,7 +132,8 @@ class Dropzone extends React.Component {
         return (
             <React.Fragment>
                 <h5 style={{position:'absolute',top:'-70px'}} onClick={this.open}>
-                    <Icon icon="seedVault" size={48} color='red'/>{' '}
+                    {/* <Icon icon="seedVault" size={48} color='red'/> */}
+                    <img style={{width: "86px"}}  src={shield} alt="" />{' '}
                     <br/>
                     <span style={{fontSize:'14px'}}>
                         {t('seedVault:dropInstructions')}
@@ -141,7 +141,7 @@ class Dropzone extends React.Component {
                 </h5>
                 <input {...inputAttributes} />
                 <div className={classNames(css.dropzone, this.state.isDragActive && css.active)}>
-                    <Icon icon="seedVault" size={160} />
+                <img style={{width: "150px"}}  src={shield} alt="" />
                     <h1>{t('seedVault:dropInstructions')}</h1>
                 </div>
             </React.Fragment>
