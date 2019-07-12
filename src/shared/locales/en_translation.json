@@ -407,6 +407,7 @@
         "advanced": "Advanced settings",
         "nodeSettings": "Node settings",
         "account": "Account settings",
+        "accountName": "Account name",
         "logout": "Log out",
         "reset": "Reset wallet",
         "syncingComplete": "Syncing complete",
