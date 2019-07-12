@@ -16,6 +16,8 @@ import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
 
 import css from './seedExport.scss';
+import Lottie from 'react-lottie';
+import * as animationData from 'animations/export.json';
 
 /**
  * SeedVault export component
@@ -135,15 +137,38 @@ export class SeedExportComponent extends PureComponent {
     };
 
     render() {
-        const { t } = this.props;
+        const { loop, t } = this.props;
         const { step } = this.state;
+        const defaultOptions = {
+            loop: loop,
+            autoplay: true,
+            animationData: animationData.default,
+            rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+            }
+        };
 
         if (step < 4) {
             return (
                 <form className={classNames(css.seedExport, css.step1)} onSubmit={this.onStep}>
                     <section>
                         <h1>
-                            <Icon icon="seedVault" size={120} />
+                            <div className={css.backup}>
+                                <Lottie
+                                    options={defaultOptions}
+                                    eventListeners={[
+                                        {
+                                            eventName: 'complete',
+                                            callback: () => {
+                                                if (typeof onEnd === 'function') {
+                                                    onEnd();
+                                                }
+                                            },
+                                        },
+                                    ]}
+                                />
+                                {/* <Icon icon="seedVault" size={120} /> */}
+                            </div>
                             {t('seedVault:exportSeedVault')}
                         </h1>
                         {step === 1 && <p>{t('seedVault:seedVaultExplanation')}</p>}
@@ -151,11 +176,11 @@ export class SeedExportComponent extends PureComponent {
                         {step === 3 && <p>{t('seedVault:seedVaultKeyExplanation')}</p>}
                     </section>
                     <footer>
-                        <Button onClick={this.onBackStep} className="square" variant="dark">
-                            {t('goBack')}
+                        <Button onClick={this.onBackStep} variant="backgroundNone" className="navleft">
+                            {t('goBack')} <span>></span>
                         </Button>
-                        <Button type="submit" variant="primary" className="square">
-                            {t('continue')}
+                        <Button type="submit" variant="backgroundNone" className="navright">
+                            {t('continue')} <span>></span>
                         </Button>
                     </footer>
                 </form>
