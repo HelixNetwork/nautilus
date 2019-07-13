@@ -31,10 +31,10 @@ describe('libs: helix/utils', () => {
     describe('#convertFromBytes', () => {
         describe('when bytes passed as an argument contains all zeroes', () => {
             // TODO
-            // it('should return a string "Empty"', () => {
-            //     const messageFragment = '0'.repeat(1024);
-            //     expect(convertFromBytes(messageFragment)).to.equal('Empty');
-            // });
+            it('should return a string "Empty"', () => {
+                const messageFragment = '0'.repeat(1024);
+                expect(convertFromBytes(messageFragment)).to.equal('Empty');
+            });
         });
 
         describe('when conversion from bytes returns null', () => {

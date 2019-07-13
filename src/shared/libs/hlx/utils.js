@@ -59,10 +59,10 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
  * @returns {string}
  */
 export const convertFromBytes = (bytes) => {
+    const pattern = /^0*$/g;
     const message = hbytesToAscii(bytes);
-    console.log('here ' + message + ' ' + bytes)
     /* eslint-disable no-control-regex */
-    if (bytes && message && /^[\x00-\xFF]*$/.test(message)) {
+    if ( !pattern.test(bytes) && message && /^[\x00-\xFF]*$/.test(message)) {
         console.log('inside if ' + message + ' ' + bytes)
         return message;
     }
