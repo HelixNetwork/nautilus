@@ -193,7 +193,22 @@ export class SeedExportComponent extends PureComponent {
             <form className={classNames(css.seedExport, css.step2)} onSubmit={this.exportSeed}>
                 <section>
                     <h1>
-                        <Icon icon="seedVault" size={120} />
+                    <div className={css.backup}>
+                                <Lottie
+                                    options={defaultOptions}
+                                    eventListeners={[
+                                        {
+                                            eventName: 'complete',
+                                            callback: () => {
+                                                if (typeof onEnd === 'function') {
+                                                    onEnd();
+                                                }
+                                            },
+                                        },
+                                    ]}
+                                />
+                                {/* <Icon icon="seedVault" size={120} /> */}
+                            </div>
                         {t('seedVault:exportSeedVault')}
                     </h1>
                     <PasswordInput
