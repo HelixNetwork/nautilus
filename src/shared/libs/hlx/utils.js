@@ -16,6 +16,7 @@ import { addChecksum, isValidChecksum } from '@helixnetwork/checksum';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
+import { bitsToChars ,hexToBits } from './converter';
 import { roundDown } from '../utils';
 
 export const MAX_SEED_LENGTH = 64; // should be 64 
@@ -59,11 +60,17 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
  * @returns {string}
  */
 export const convertFromBytes = (bytes) => {
-    const pattern = /^0*$/g;
-    const message = hbytesToAscii(bytes);
+    const bytesWithoutZero = bytes.replace(/00+$/, '');
+    let message;
+    try{
+     message = hbytesToAscii(bytesWithoutZero);
+    }
+    catch(err){
+    // Fall back to safe result in case of inconsistent conversion strings
+     message = null;
+    }
     /* eslint-disable no-control-regex */
-    if ( !pattern.test(bytes) && message && /^[\x00-\xFF]*$/.test(message)) {
-        console.log('inside if ' + message + ' ' + bytes)
+    if ( bytesWithoutZero && message && /^[\x00-\x7F]*$/.test(message)) {
         return message;
     }
     /* eslint-enable no-control-regex */
@@ -80,19 +87,23 @@ export const convertFromBytes = (bytes) => {
  *
  * @returns {string | array}
  */
-export const getChecksum = (
+export const getChecksum = async (
     input,
     // hbytes  to bits conversion creates Int8Array
-    length = isArray(input) || input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
+    length = input instanceof Int8Array ?SEED_CHECKSUM_LENGTH *8 :SEED_CHECKSUM_LENGTH ,
 ) => {
-    return addChecksum(
-        // https://github.com/iotaledger/iota.js/blob/develop/lib/utils/utils.js#L64
-        // iota.lib.js throws an exception for typed arrays
-        input instanceof Int8Array ? Array.from(input) : input,
-        length,
+    const isInputArray = input instanceof Int8Array;
+    const finalInput = isInputArray ? bitsToChars(Array.from(input)) : input;
+    const finalLength = isInputArray ? length/8 : length;
+
+  const result = await addChecksum(
+        finalInput,
+        finalLength,
         false,
     )
-        .slice(-length);
+        .slice(-finalLength);
+  const finalResult = isInputArray ? hexToBits(result) : result
+  return finalResult;
 };
 
 /**
