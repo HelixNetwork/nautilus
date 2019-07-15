@@ -50,7 +50,7 @@ const addressData = [
         spent: { local: false, remote: true },
     },
     {
-        address: '31c92f5d62df01670c7fb72fd5577972a45267994acc3f35032a43f36da07830',
+        address: 'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
         balance: 0,
         index: 6,
         checksum: '7f2083f2',

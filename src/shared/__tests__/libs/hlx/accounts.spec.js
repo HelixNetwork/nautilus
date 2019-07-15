@@ -21,41 +21,40 @@ describe('libs: helix/accounts', () => {
             accountName = 'TEST';
         });
 
-        // it('should mark input addresses as spent', () => {
-        //     const accountState = mockAccounts.accountInfo[accountName];
-        //     const inputAddress = '31c92f5d62df01670c7fb72fd5577972a45267994acc3f35032a43f36da07830';
+        it('should mark input addresses as spent', () => {
+            const accountState = mockAccounts.accountInfo[accountName];
+            const inputAddress = 'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619';
 
-        //     // Assert that input address is unspent before syncAccountOnValueTransactionFailure is called
-        //     const inputAddressDataBefore = find(accountState.addressData, { address: inputAddress });
-        //     expect(inputAddressDataBefore.spent.local).to.equal(false);
+            // Assert that input address is unspent before syncAccountOnValueTransactionFailure is called
+            const inputAddressDataBefore = find(accountState.addressData, { address: inputAddress });
+            expect(inputAddressDataBefore.spent.local).to.equal(false);
 
-        //     const result = syncAccountOnValueTransactionFailure(mockValueTransactionObjects, accountState);
+            const result = syncAccountOnValueTransactionFailure(mockValueTransactionObjects, accountState);
+            const inputAddressDataAfter = find(result.addressData, { address: inputAddress });
+            expect(inputAddressDataAfter.spent.local).to.equal(true);
+        });
 
-        //     const inputAddressDataAfter = find(result.addressData, { address: inputAddress });
-        //     expect(inputAddressDataAfter.spent.local).to.equal(true);
-        // });
+        it('should add new transaction objects to transactions in state (with persistence & broadcasted properties as false)', () => {
+            const accountState = mockAccounts.accountInfo[accountName];
+            const bundle = '2705c6d370ea00ef3406aa74b5e361bef55751bc0b6e46370b1384cdf1404374';
 
-        // it('should add new transaction objects to transactions in state (with persistence & broadcasted properties as false)', () => {
-        //     const accountState = mockAccounts.accountInfo[accountName];
-        //     const bundle = '2028ab80df9a63e7d41c39219b720a7be4c0b037f74f44c2d36f6ce01eaf5117';
+            // Assert that bundle does not exist in existing transactions
 
-        //     // Assert that bundle does not exist in existing transactions
+            expect(find(accountState.transactions, { bundle })).to.equal(undefined);
 
-        //     expect(find(accountState.transactions, { bundle })).to.equal(undefined);
+            const result = syncAccountOnValueTransactionFailure(mockValueTransactionObjects, accountState);
 
-        //     const result = syncAccountOnValueTransactionFailure(mockValueTransactionObjects, accountState);
+            expect(find(result.transactions, { bundle })).to.not.equal(undefined);
 
-        //     expect(find(result.transactions, { bundle })).to.not.equal(undefined);
-
-        //     expect(result.transactions).to.eql([
-        //         ...accountState.transactions,
-        //         ...map(mockValueTransactionObjects, (transaction) => ({
-        //             ...transaction,
-        //             persistence: false,
-        //             broadcasted: false,
-        //         })),
-        //     ]);
-        // });
+            expect(result.transactions).to.eql([
+                ...accountState.transactions,
+                ...map(mockValueTransactionObjects, (transaction) => ({
+                    ...transaction,
+                    persistence: false,
+                    broadcasted: false,
+                })),
+            ]);
+        });
     });
 
     describe('#syncAccountOnSuccessfulRetryAttempt', () => {
