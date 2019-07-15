@@ -66,8 +66,8 @@ function createWindow() {
     x: windowState.x,
     y: windowState.y,
     backgroundColor: '#011327',
-    resizable: true,
-    fullscreen: true,
+    resizable: false,
+    fullscreen:false,
     webPreferences: {
       nodeIntegration: false,
       preload: path.resolve(paths.preload, devMode ? 'preloadDev.js' : 'preloadProd.js'),

@@ -217,14 +217,14 @@ export class SeedExportComponent extends PureComponent {
                         <PasswordInput
                             focus
                             value={this.state.password}
-                            label={t('seedVault:key')}
+                            label="Password"
                             showScore
                             showValid
                             onChange={(value) => this.setState({ password: value })}
                         />
                         <PasswordInput
                             value={this.state.passwordConfirm}
-                            label={t('seedVault:retypeKey')}
+                            label="Confirm Password"
                             showValid
                             disabled={score.score < 4}
                             match={this.state.password}
