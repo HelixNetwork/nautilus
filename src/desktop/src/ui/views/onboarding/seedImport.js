@@ -9,7 +9,6 @@ import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
 import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
-// import Electron from '../../../../native/preload/electron';
 class SeedImport extends React.PureComponent {
 
     static propTypes = {
@@ -19,11 +18,18 @@ class SeedImport extends React.PureComponent {
 
     state = {
         ledger: false,
+<<<<<<< Updated upstream
         password:null,
         hidePass:'none',
         seedPhrase:null,
         isGenerated: Electron.getOnboardingGenerated(),
         importBuffer: []
+=======
+        importBuffer:null,
+        password:'',
+        hidePass:'none',
+        seedPhrase:''
+>>>>>>> Stashed changes
     };
 
     stepForward(route) {
@@ -66,7 +72,8 @@ class SeedImport extends React.PureComponent {
             seedSequence+= letter                                       
             });
             Electron.setOnboardingSeed(seed[0].seed,false);
-            // Electron.setOnboardingName(seed[0].name)
+            Electron.setOnboardingName(seed[0].title)
+            console.log(Electron.getOnboardingName());
             this.setState({
                 seedPhrase:seedSequence,
                 hidePass:'none'
@@ -76,7 +83,7 @@ class SeedImport extends React.PureComponent {
         catch(err){
             Electron.setOnboardingSeed(null);
             this.setState({
-                seedPhrase:null
+                seedPhrase:""
             });
         }
         
@@ -86,7 +93,7 @@ class SeedImport extends React.PureComponent {
         this.setState({
             importBuffer:null,
             hidePass:'none',
-            seedPhrase:null
+            seedPhrase:""
         });
     }
 
@@ -119,23 +126,15 @@ class SeedImport extends React.PureComponent {
                     )}
                         
 
-                                <h3 style={{ fontSize: '24px' }}>{t('seedReentry:enterYourSeed')}</h3>
-                                <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
-                                <div className={classNames(css.filebox)}>
-                                    <Dropzone onDrop={this.onDrop} />
-                                </div>
-                                <br />
-                                <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br />
-
-                            </div>
-                            <div className={css.onboard_nav}>
-
-                                <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('global:confirm')} <span>></span></Button>
-                            </div>
-
-                        </div>
                     </div>
+                    <div className={css.onboard_nav}>
+                        
+                        <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-wallet')}>{t('global:goBack')} <span>></span></Button>
+                        <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:confirm')} <span>></span></Button>
+                    </div>
+
+                  </div>
+                  </div>         
                 </section>
             </div>
         )
@@ -144,6 +143,7 @@ class SeedImport extends React.PureComponent {
 
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
+    additionalAccountName:Electron.getOnboardingName()
 };
 
 export default connect(null, mapDispatchToProps)(withI18n()(SeedImport));

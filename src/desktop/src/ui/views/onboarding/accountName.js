@@ -49,15 +49,16 @@ class AccountName extends React.PureComponent {
         if (Electron.getOnboardingGenerated()) {
             history.push('/onboarding/seed-backup');
         } else {
-
+            history.push('/onboarding/account-password');
         }
     }
 
     render() {
         const { t } = this.props;
         const { name } = this.state;
+        
         return (
-
+            
             <section className="spage_1">
                 <Logos size={20} />
                 <div className="container">
