@@ -7,7 +7,6 @@ import Button from 'ui/components/button';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Logos from 'ui/components/logos';
 import css from './index.scss';
-import Icon from 'ui/components/icon';
 import Modal from 'ui/components/modal';
 import SeedExport from 'ui/global/seedExport';
 import Lottie from 'react-lottie';

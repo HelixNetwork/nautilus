@@ -11,7 +11,7 @@ import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
 // import Electron from '../../../../native/preload/electron';
 class SeedImport extends React.PureComponent {
-  
+
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
@@ -19,10 +19,11 @@ class SeedImport extends React.PureComponent {
 
     state = {
         ledger: false,
-        importBuffer:null,
         password:null,
         hidePass:'none',
-        seedPhrase:null
+        seedPhrase:null,
+        isGenerated: Electron.getOnboardingGenerated(),
+        importBuffer: []
     };
 
     stepForward(route) {
@@ -91,7 +92,7 @@ class SeedImport extends React.PureComponent {
 
     render() {
         const { history, t } = this.props;
-        const {importBuffer,seedPhrase,hidePass} = this.state;
+        const {importBuffer,seedPhrase,hidePass, seed, isGenerated, } = this.state;
         return (
             <div>
             <Logos/>
@@ -118,17 +119,25 @@ class SeedImport extends React.PureComponent {
                     )}
                         
 
-                    </div>
-                    <div className={css.onboard_nav}>
-                        
-                        <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-wallet')}>{t('global:goBack')} <span>></span></Button>
-                        <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('global:confirm')} <span>></span></Button>
-                    </div>
+                                <h3 style={{ fontSize: '24px' }}>{t('seedReentry:enterYourSeed')}</h3>
+                                <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
+                                <div className={classNames(css.filebox)}>
+                                    <Dropzone onDrop={this.onDrop} />
+                                </div>
+                                <br />
+                                <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br />
 
-                </div>
+                            </div>
+                            <div className={css.onboard_nav}>
+
+                                <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>{t('global:confirm')} <span>></span></Button>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
-</div>
         )
     }
 }
