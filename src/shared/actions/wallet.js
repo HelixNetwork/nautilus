@@ -6,6 +6,7 @@ import reduce from 'lodash/reduce';
 
 export const ActionTypes = {
     MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
+    SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
 }
 
 /**
@@ -18,5 +19,10 @@ export const ActionTypes = {
  */
 export const mapStorageToState = (payload) => ({
     type: ActionTypes.MAP_STORAGE_TO_STATE,
+    payload,
+});
+
+export const setPassword = (payload) => ({
+    type: ActionTypes.SET_PASSWORD,
     payload,
 });

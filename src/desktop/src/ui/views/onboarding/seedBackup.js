@@ -60,7 +60,7 @@ class SeedBackup extends React.PureComponent {
                                 <nav className={css.choice}>
                                     <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
                                         <h3>{t('saveYourSeed:recommended')}</h3>
-                                        <div className = {css.backup}>
+                                        <div className={css.backup}>
                                             <Lottie
                                                 options={defaultOptions}
                                                 eventListeners={[
@@ -79,10 +79,10 @@ class SeedBackup extends React.PureComponent {
                                         <h4>{t('seedVault:exportSeedVault')}</h4>
                                     </a>
                                 </nav>
-                            </div>
-                            <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('global:confirm')} <span>></span></Button>
+                                <div className={css.onboard_btn}>
+                                    <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
+                                    <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('global:confirm')} <span>></span></Button>
+                                </div>
                             </div>
                         </div>
                     </div>

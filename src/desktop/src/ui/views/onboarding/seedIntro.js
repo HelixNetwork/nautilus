@@ -46,10 +46,10 @@ class SeedIntro extends React.PureComponent {
                                 <img src={image} alt="" />
                                 <h5>{t('walletSetup:helixSeedIsAccess')}</h5>
                                 <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
-                            </div>
-                            <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
+                                <div className={css.onboard_btn}>
+                                    <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
+                                    <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
+                                </div>
                             </div>
                         </div>
                     </div>

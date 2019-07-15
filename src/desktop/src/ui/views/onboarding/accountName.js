@@ -77,11 +77,12 @@ class AccountName extends React.PureComponent {
                                 />
                                 <br />
                                 {/* <img src={images} alt="send" className={(classNames(css.img))} /> */}
+                                <div className={css.onboard_btn}>
+                                    <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('global:goBack')} <span>></span></Button>
+                                    <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
+                                </div>
                             </div>
-                            <div className={css.onboard_nav}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('global:goBack')} <span>></span></Button>
-                                <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
-                            </div>
+
                         </form>
                     </div>
                 </div>

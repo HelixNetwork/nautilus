@@ -2,7 +2,7 @@
   display: block;
   width: 100%;
   max-width: 296px;
-  margin: 5px 799px;
+  margin: 0px auto;
   padding: 25px 0 30px;
   transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
@@ -175,7 +175,7 @@
       pointer-events: none;
     }
     a + input {
-      padding-right: 40px;
+      padding-right: 0px;
     }
   }
 
@@ -437,7 +437,7 @@
 
 .valid {
   position: absolute;
-  top: 11px;
+  top: 17px;
   right: -40px;
   opacity: 0.25;
   &.isValid {
@@ -593,30 +593,7 @@ input:focus + .tooltip {
   padding-left: 10px;
   padding-right: 40px;
 }
-@media screen and (min-width: 1920px){
-  .input{
-    width: 100%;
-    max-width: 296px;
-    margin: 5px 799px;
-  }
-}
 
-@media screen and (max-width: 1366px) {
-  .input{
-    max-width: 285px;
-    margin: 3px 482px;
-  }
-}
-@media screen and (min-width:840px){
-  .input {
-    display: block;
-    width: 100%;
-    // max-width: 326px;
-    margin: 3px 480px !important;
-    padding: 25px 0 30px;
-    
-  }
-}
 
 .sseed_textline{
   width:25vw;

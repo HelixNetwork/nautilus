@@ -193,22 +193,22 @@ export class SeedExportComponent extends PureComponent {
             <form className={classNames(css.seedExport, css.step2)} onSubmit={this.exportSeed}>
                 <section>
                     <h1>
-                    <div className={css.backup}>
-                                <Lottie
-                                    options={defaultOptions}
-                                    eventListeners={[
-                                        {
-                                            eventName: 'complete',
-                                            callback: () => {
-                                                if (typeof onEnd === 'function') {
-                                                    onEnd();
-                                                }
-                                            },
+                        <div className={css.backup}>
+                            <Lottie
+                                options={defaultOptions}
+                                eventListeners={[
+                                    {
+                                        eventName: 'complete',
+                                        callback: () => {
+                                            if (typeof onEnd === 'function') {
+                                                onEnd();
+                                            }
                                         },
-                                    ]}
-                                />
-                                {/* <Icon icon="seedVault" size={120} /> */}
-                            </div>
+                                    },
+                                ]}
+                            />
+                            {/* <Icon icon="seedVault" size={120} /> */}
+                        </div>
                         {t('seedVault:exportSeedVault')}
                     </h1>
                     <PasswordInput
@@ -229,11 +229,11 @@ export class SeedExportComponent extends PureComponent {
                     />
                 </section>
                 <footer>
-                    <Button onClick={this.onBackStep} className="square" variant="dark">
-                        {t('goBack')}
+                    <Button onClick={this.onBackStep} variant="backgroundNone" className="navleft">
+                        {t('goBack')} <span>></span>
                     </Button>
-                    <Button type="submit" variant="primary" className="square">
-                        {t('export')}
+                    <Button type="submit" variant="backgroundNone" className="navright">
+                        {t('export')} <span>></span>
                     </Button>
                 </footer>
             </form>

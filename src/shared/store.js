@@ -6,6 +6,12 @@ import home from "./reducers/home";
 import settings from './reducers/settings';
 import assign from 'lodash/assign';
 import { ActionTypes as WalletActionTypes } from './actions/wallet';
+import wallet from './reducers/wallet';
+import accounts from './reducers/accounts';
+import polling from './reducers/polling';
+import progress from './reducers/progress';
+import ui from './reducers/ui';
+import alerts from './reducers/alerts';
 
 /**
  *  This defines base configuration for setting up redux with react.
@@ -15,8 +21,14 @@ import { ActionTypes as WalletActionTypes } from './actions/wallet';
 let middlewares = [];
 
 const reducers = combineReducers({
+  accounts,
   home,
-  settings
+  settings,
+  wallet,
+  polling,
+  progress,
+  ui,
+  wallet
 });
 
 const rootReducer = (state, action) => {

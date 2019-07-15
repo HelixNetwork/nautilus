@@ -61,7 +61,7 @@ function createWindow() {
   const windowOptions = {
     width: windowState.width,
     height: windowState.height,
-    minWidth: 1280,
+    minWidth: 500,
     minHeight: 720,
     x: windowState.x,
     y: windowState.y,
@@ -97,8 +97,8 @@ function createWindow() {
       InputMenu.popup(windows.main);
     }
   });
-  if(process.env.NODE_ENV !== 'production'){
-  windows.main.webContents.openDevTools();
+  if (process.env.NODE_ENV !== 'production') {
+    windows.main.webContents.openDevTools();
   }
 
   /**
