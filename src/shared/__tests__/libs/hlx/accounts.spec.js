@@ -64,32 +64,32 @@ describe('libs: helix/accounts', () => {
             accountName = 'TEST';
         });
 
-        // it('should set "broadcasted" property to true for newly broadcasted transactions', () => {
-        //     const accountState = {
-        //         ...mockAccounts.accountInfo[accountName],
-        //         transactions: [
-        //             ...mockAccounts.accountInfo[accountName].transactions,
-        //             ...map(mockValueTransactionObjects, (transaction) => ({
-        //                 ...transaction,
-        //                 persistence: false,
-        //                 broadcasted: false,
-        //                 // Also assign a fake hash and test that it's overriden by the correct hash
-        //                 hash: '0'.repeat(64),
-        //             })),
-        //         ],
-        //     };
+        it('should set "broadcasted" property to true for newly broadcasted transactions', () => {
+            const accountState = {
+                ...mockAccounts.accountInfo[accountName],
+                transactions: [
+                    ...mockAccounts.accountInfo[accountName].transactions,
+                    ...map(mockValueTransactionObjects, (transaction) => ({
+                        ...transaction,
+                        persistence: false,
+                        broadcasted: false,
+                        // Also assign a fake hash and test that it's overriden by the correct hash
+                        hash: '0'.repeat(64),
+                    })),
+                ],
+            };
 
-        //     const result = syncAccountOnSuccessfulRetryAttempt(mockValueTransactionObjects, accountState);
+            const result = syncAccountOnSuccessfulRetryAttempt(mockValueTransactionObjects, accountState);
 
-        //     expect(result.transactions).to.eql([
-        //         ...mockAccounts.accountInfo[accountName].transactions,
-        //         ...map(mockValueTransactionObjects, (transaction) => ({
-        //             ...transaction,
-        //             persistence: false,
-        //             broadcasted: true,
-        //         })),
-        //     ]);
-        // });
+            expect(result.transactions).to.eql([
+                ...mockAccounts.accountInfo[accountName].transactions,
+                ...map(mockValueTransactionObjects, (transaction) => ({
+                    ...transaction,
+                    persistence: false,
+                    broadcasted: true,
+                })),
+            ]);
+        });
     });
 
     describe('#syncAccountDuringSnapshotTransition', () => {
