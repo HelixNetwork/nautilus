@@ -18,18 +18,10 @@ class SeedImport extends React.PureComponent {
 
     state = {
         ledger: false,
-<<<<<<< Updated upstream
-        password:null,
-        hidePass:'none',
-        seedPhrase:null,
-        isGenerated: Electron.getOnboardingGenerated(),
-        importBuffer: []
-=======
         importBuffer:null,
         password:'',
         hidePass:'none',
         seedPhrase:''
->>>>>>> Stashed changes
     };
 
     stepForward(route) {
