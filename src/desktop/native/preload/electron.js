@@ -5,6 +5,7 @@ import Realm from '../realm';
 const kdbx = require('../kdbx');
 let onboardingSeed = null;
 let onboardingGenerated = false;
+let onboardingName=null;
 
 const KEYTAR_SERVICE = remote.app.isPackaged ? 'Helix wallet' : 'Helix wallet (dev)';
 
@@ -78,6 +79,21 @@ const Electron = {
      */
     getOnboardingSeed: () => {
         return onboardingSeed;
+    },
+    /**
+     * Set onboarding account name
+     * @param {string} name - Onboarding account name
+     * @returns {undefined} 
+     */
+    setOnboardingName: (name) => {
+        onboardingName = name;
+    },
+    /**
+     * Get onboarding account name
+     * @returns {array} Onboarding account name
+     */
+    getOnboardingName: () => {
+        return onboardingName;
     },
 
     /**

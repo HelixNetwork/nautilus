@@ -9,6 +9,7 @@ import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
 import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
+import Electron from '../../../../native/preload/electron';
 class SeedImport extends React.PureComponent {
   
     static propTypes = {
@@ -20,7 +21,8 @@ class SeedImport extends React.PureComponent {
         ledger: false,
         importBuffer:null,
         password:null,
-        hidePass:'none'
+        hidePass:'none',
+        seedPhrase:null
     };
 
     stepForward(route) {
@@ -43,47 +45,53 @@ class SeedImport extends React.PureComponent {
                 'There was an error opening keystore file',
             );
         }
-        console.log(buffer);
-        
         this.setState({
             importBuffer: buffer,
             hidePass:'block'
         });
     };
     onChange(e){
-        console.log(e.target.value);
         this.setState({
             password:e.target.value
         });
     }
     onSubmit= async()=>{
-        console.log(this.state.password);
         try{
             const seed= await Electron.importSeed(this.state.importBuffer,this.state.password);
-           
+            console.log(seed[0]);
             let seedSequence="";
             seed[0].seed.map((byte,index)=>{
             const letter = indexToChar(byte);
             seedSequence+= letter                                       
             });
-            console.log(seedSequence);
+            Electron.setOnboardingSeed(seed[0].seed,false);
+            // Electron.setOnboardingName(seed[0].name)
+            this.setState({
+                seedPhrase:seedSequence,
+                hidePass:'none'
+            })
             
         }
         catch(err){
-            console.log(err);
+            Electron.setOnboardingSeed(null);
+            this.setState({
+                seedPhrase:null
+            });
         }
         
     }
     goBack(){
+        Electron.setOnboardingSeed(null);
         this.setState({
             importBuffer:null,
-            hidePass:'none'
+            hidePass:'none',
+            seedPhrase:null
         });
     }
 
     render() {
         const { history, t } = this.props;
-        const {importBuffer} = this.state;
+        const {importBuffer,seedPhrase,hidePass} = this.state;
         return (
             <div>
             <Logos/>
@@ -97,15 +105,15 @@ class SeedImport extends React.PureComponent {
                     <div className={classNames(css.sseed_box, css.cre_pgs)}>
 
                         <h3 style={{fontSize:'24px'}}>{t('seedReentry:enterYourSeed')}</h3>
-                        <input type="text" className={classNames(css.sseed_textline)}></input><br /><br />
+                        <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase}></input><br /><br />
                         <div className={classNames(css.filebox)}>
                         <Dropzone onDrop={this.onDrop} />
                         </div>
                         <br/>
                         {importBuffer && (
-                        <form className={classNames(css.sseed_box, css.cre_pgs)} onSubmit={()=>this.onSubmit()} style={{top:'-30px',left:'350px',display:this.state.hidePass}}>
+                        <form className={classNames(css.sseed_box, css.cre_pgs)} onSubmit={()=>this.onSubmit()} style={{top:'-30px',left:'350px',display:hidePass}}>
                             <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{marginTop:'55px'}}></input><br /><br />
-                            <Button onClick={()=>this.goBack.bind(this)}>Back</Button>&nbsp;&nbsp;&nbsp;<Button type="submit">Import Seed</Button>
+                            <Button onClick={this.goBack.bind(this)}>Cancel</Button>&nbsp;&nbsp;&nbsp;<Button type="submit">Import Seed</Button>
                         </form>
                     )}
                         
