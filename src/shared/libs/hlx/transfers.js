@@ -743,13 +743,13 @@ export const formatRelevantRecentTransactions = (transactions, addresses) => {
 /**
  * Sort transaction hbytes array
  *
- * @method sortTransactionHBytesArray
+ * @method sortTransactionBytesArray
  * @param {array} hbytes
  * @param {string} [sortBy]
  * @param {string} [order]
  *
  */
-export const sortTransactionHBytesArray = (hbytes, sortBy = 'currentIndex', order = 'desc') => {
+export const sortTransactionBytesArray = (hbytes, sortBy = 'currentIndex', order = 'desc') => {
     const sortableTransactionKeys = ['currentIndex', 'lastIndex', 'timestamp', 'attachmentTimestamp'];
 
     if (!includes(sortableTransactionKeys, sortBy) || !includes(['desc', 'asc'], order)) {
