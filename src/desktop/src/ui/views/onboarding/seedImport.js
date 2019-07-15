@@ -9,7 +9,7 @@ import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
 import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
-import Electron from '../../../../native/preload/electron';
+// import Electron from '../../../../native/preload/electron';
 class SeedImport extends React.PureComponent {
   
     static propTypes = {
