@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import Lottie from 'react-lottie';
+import Icon from 'ui/components/icon';
 import * as animationData from 'animations/done.json';
 
 import { createRandomSeed, randomBytes } from '../../../utils/crypto';
@@ -22,8 +23,8 @@ class SeedGenerate extends React.PureComponent {
         loop: PropTypes.bool,
     };
 
-    
- 
+
+
     state = {
         seed: Electron.getOnboardingSeed() || createRandomSeed(),
         seed1: [],
@@ -34,7 +35,7 @@ class SeedGenerate extends React.PureComponent {
         existingSeed: Electron.getOnboardingSeed(),
         clicks: [],
         viewSeed: 'none',
-        
+
         viewReload: 'block',
         viewReloadBlockTwo: 'block',
         viewReloadBlockThree: 'block',
@@ -156,28 +157,28 @@ class SeedGenerate extends React.PureComponent {
         this.unscramble();
     };
 
-    
+
     /**
      * Generate random seed[0] ℹ ｢wdm｣: Compiling...uence
      * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
      */
     generateNewSeed = () => {
         const newSeed = createRandomSeed();;
-        const newSeed1 = newSeed.slice(0,16);
-        const newSeed2 = newSeed.slice(16,32);
-        const newSeed3 = newSeed.slice(32,48);
-        const newSeed4 = newSeed.slice(48,64);
+        const newSeed1 = newSeed.slice(0, 16);
+        const newSeed2 = newSeed.slice(16, 32);
+        const newSeed3 = newSeed.slice(32, 48);
+        const newSeed4 = newSeed.slice(48, 64);
         Electron.setOnboardingSeed(null);
         this.setState(() => ({
-            seed:newSeed,
+            seed: newSeed,
             seed1: newSeed1,
             seed2: newSeed2,
             seed3: newSeed3,
             seed4: newSeed4,
             existingSeed: false,
             clicks: [],
-            viewReload:'none',
-            viewSeed:'block'
+            viewReload: 'none',
+            viewSeed: 'block'
         }));
 
         this.frame = 0;
@@ -228,7 +229,7 @@ class SeedGenerate extends React.PureComponent {
     //     this.props.history.goBack();
     // }
 
-    viewseed(index){
+    viewseed(index) {
         console.log(index)
     }
     saveAccountName = () => {

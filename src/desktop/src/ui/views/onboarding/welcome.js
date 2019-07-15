@@ -38,9 +38,9 @@ class Welcome extends React.PureComponent {
         const { history, acceptedTerms, acceptedPrivacy, acceptTerms, acceptPrivacy } = this.props;
         const { step } = this.state;
 
-        // if (acceptedTerms && acceptedPrivacy) {
-        //     return history.push('/onboarding/seed-intro');
-        // }
+        if (acceptedTerms && acceptedPrivacy) {
+            return history.push('/onboarding/seed-intro');
+        }
 
         switch (step) {
             case 'language':
