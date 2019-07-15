@@ -125,7 +125,7 @@
       height: 100%;
       min-width: 35px;
       top: 0px;
-      right: 0px;
+      right: -37px;;
       cursor: pointer;
       user-select: none;
       color: var(--input-alt);
@@ -400,11 +400,12 @@
   display: flex;
   position: absolute;
   top: -17px;
-  right: 0px;
+  right: -40px;
   span {
     display: block;
     height: 4px;
-    width: 50px;
+    border-radius: 10px;
+    width: 27px;
     background: var(--body-alt);
     margin-left: 2px;
   }
@@ -437,8 +438,8 @@
 
 .valid {
   position: absolute;
-  top: 11px;
-  right: -40px;
+  top: 23px;
+  right: -70px;
   opacity: 0.25;
   &.isValid {
     opacity: 1;

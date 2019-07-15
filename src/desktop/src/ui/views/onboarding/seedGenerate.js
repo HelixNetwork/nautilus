@@ -410,7 +410,7 @@ class SeedGenerate extends React.PureComponent {
                                             </div>
                                             <div className={css.seed} style={{ display: this.state.viewSeedFour }}>
                                                 {seed4.map((byte, index) => {
-                                                    const offset = scramble[index + 42];
+                                                    const offset = scramble[index + 48];
                                                     const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                     return (
                                                         <button

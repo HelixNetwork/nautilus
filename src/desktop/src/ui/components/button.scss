@@ -83,7 +83,8 @@
   color: #ffffff;
 }
 
-.navleft {
+.navleft,
+.modal_navleft {
   float: left;
   font-weight: bold;
   color: #7d7c7d;
@@ -91,9 +92,8 @@
   transition: all 0.5s;
   text-decoration: none;
   top:2px; 
-
-  
 }
+
 .navleft:hover{
   span{
     color: #dcab49;
@@ -106,7 +106,9 @@
   }
   color:black;
 }
-.navright {
+
+.navright ,
+.modal_navright {
   float: right;
   font-weight: bold;
   color: #7d7c7d;
@@ -116,3 +118,15 @@
   top:2px; 
 }
  
+.modal_navleft:hover{
+  span{
+    color: #dcab49;
+  }
+  color:white;
+}
+.modal_navright:hover{
+  span{
+    color: #dcab49;
+  }
+  color:white;
+}

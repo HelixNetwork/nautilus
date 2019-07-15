@@ -11,6 +11,7 @@ import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 
 import { passwordReasons } from 'libs/password';
 
+import Input from 'ui/components/input/text';
 import PasswordInput from 'ui/components/input/password';
 import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
@@ -59,7 +60,7 @@ export class SeedExportComponent extends PureComponent {
 
     onStep = (e) => {
         e.preventDefault();
-        this.setState({ step: this.state.step + 1 });
+        this.setState((prevState) => ({ step: prevState.step + 1 }));
     };
 
     /**
@@ -176,10 +177,10 @@ export class SeedExportComponent extends PureComponent {
                         {step === 3 && <p>{t('seedVault:seedVaultKeyExplanation')}</p>}
                     </section>
                     <footer>
-                        <Button onClick={this.onBackStep} variant="backgroundNone" className="navleft">
+                        <Button onClick={this.onBackStep} variant="backgroundNone" className="modal_navleft">
                             {t('goBack')} <span>></span>
                         </Button>
-                        <Button type="submit" variant="backgroundNone" className="navright">
+                        <Button type="submit" variant="backgroundNone" className="modal_navright">
                             {t('continue')} <span>></span>
                         </Button>
                     </footer>
@@ -193,47 +194,50 @@ export class SeedExportComponent extends PureComponent {
             <form className={classNames(css.seedExport, css.step2)} onSubmit={this.exportSeed}>
                 <section>
                     <h1>
-                    <div className={css.backup}>
-                                <Lottie
-                                    options={defaultOptions}
-                                    eventListeners={[
-                                        {
-                                            eventName: 'complete',
-                                            callback: () => {
-                                                if (typeof onEnd === 'function') {
-                                                    onEnd();
-                                                }
-                                            },
+                        <div className={css.backup}>
+                            <Lottie
+                                options={defaultOptions}
+                                eventListeners={[
+                                    {
+                                        eventName: 'complete',
+                                        callback: () => {
+                                            if (typeof onEnd === 'function') {
+                                                onEnd();
+                                            }
                                         },
-                                    ]}
-                                />
-                                {/* <Icon icon="seedVault" size={120} /> */}
-                            </div>
+                                    },
+                                ]}
+                            />
+                            {/* <Icon icon="seedVault" size={120} /> */}
+                        </div>
                         {t('seedVault:exportSeedVault')}
                     </h1>
-                    <PasswordInput
-                        focus
-                        value={this.state.password}
-                        label={t('seedVault:key')}
-                        showScore
-                        showValid
-                        onChange={(value) => this.setState({ password: value })}
-                    />
-                    <PasswordInput
-                        value={this.state.passwordConfirm}
-                        label={t('seedVault:retypeKey')}
-                        showValid
-                        disabled={score.score < 4}
-                        match={this.state.password}
-                        onChange={(value) => this.setState({ passwordConfirm: value })}
-                    />
+
+                    <div>
+                        <PasswordInput
+                            focus
+                            value={this.state.password}
+                            label={t('seedVault:key')}
+                            showScore
+                            showValid
+                            onChange={(value) => this.setState({ password: value })}
+                        />
+                        <PasswordInput
+                            value={this.state.passwordConfirm}
+                            label={t('seedVault:retypeKey')}
+                            showValid
+                            disabled={score.score < 4}
+                            match={this.state.password}
+                            onChange={(value) => this.setState({ passwordConfirm: value })}
+                        />
+                    </div>
                 </section>
                 <footer>
-                    <Button onClick={this.onBackStep} className="square" variant="dark">
-                        {t('goBack')}
+                    <Button onClick={this.onBackStep} className="modal_navleft" variant="backgroundNone">
+                        {t('goBack')} <span>></span>
                     </Button>
-                    <Button type="submit" variant="primary" className="square">
-                        {t('export')}
+                    <Button type="submit" variant="backgroundNone" className="modal_navright">
+                        {t('export')} <span>></span>
                     </Button>
                 </footer>
             </form>
