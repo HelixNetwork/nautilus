@@ -2,6 +2,7 @@ import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
 import Realm from '../realm';
+const { dialog } = require('electron').remote;
 const kdbx = require('../kdbx');
 let onboardingSeed = null;
 let onboardingGenerated = false;
@@ -125,8 +126,11 @@ const Electron = {
      * @returns {undefined}
      */
     exportSeeds: async (seeds, password) => {
+        console.log(seeds);
         try {
             const content = await kdbx.exportVault(seeds, password);
+            console.log("CONTENT===", content);
+            
             const now = new Date();
 
             const path = await dialog.showSaveDialog(currentWindow, {

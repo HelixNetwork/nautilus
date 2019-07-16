@@ -11,6 +11,7 @@ import Modal from 'ui/components/modal';
 import SeedExport from 'ui/global/seedExport';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/export.json';
+// import Electron from '../../../../native/preload/electron';
 
 class SeedBackup extends React.PureComponent {
     static propTypes = {
@@ -21,6 +22,7 @@ class SeedBackup extends React.PureComponent {
 
     state = {
         seed: Electron.getOnboardingSeed(),
+        onboardingname:Electron.getOnboardingName()!=null?Electron.getOnboardingName():'',
         writeVisible: false,
         exportVisible: false,
     };
@@ -34,9 +36,8 @@ class SeedBackup extends React.PureComponent {
         this.props.history.push(`/onboarding/${route}`);
     }
     render() {
-        const { loop, onboardingName, t } = this.props;
-        const { writeVisible, exportVisible, seed } = this.state;
-
+        const { loop, t } = this.props;
+        const { writeVisible, exportVisible, onboardingname,seed } = this.state;
         const defaultOptions = {
             loop: loop,
             autoplay: true,
@@ -100,7 +101,7 @@ class SeedBackup extends React.PureComponent {
                         ) : (
                                 <SeedExport
                                     seed={seed}
-                                    title={onboardingName}
+                                    title={onboardingname}
                                     onClose={() => this.setState({ exportVisible: false })}
                                 />
                             )}

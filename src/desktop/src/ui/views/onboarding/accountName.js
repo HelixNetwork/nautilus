@@ -11,6 +11,7 @@ import Input from 'ui/components/input/text';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import css from './index.scss';
 import Logos from 'ui/components/logos';
+// import Electron from '../../../../native/preload/electron';
 
 class AccountName extends React.PureComponent {
     static propTypes = {
@@ -45,8 +46,9 @@ class AccountName extends React.PureComponent {
         this.props.setAccountInfoDuringSetup({
             name: this.state.name
         });
-
+        Electron.setOnboardingName(name);
         if (Electron.getOnboardingGenerated()) {
+
             history.push('/onboarding/seed-backup');
         } else {
             history.push('/onboarding/account-password');
