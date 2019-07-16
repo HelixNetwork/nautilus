@@ -65,31 +65,24 @@ class AccountName extends React.PureComponent {
                     <div className="row">
                         <form onSubmit={this.setName}>
                             <div className="col-lg-12">
-                                {/* <h1>{t('walletSetup:Seed Verify')}<span> {t('walletSetup:seed')}</span></h1> */}
+                                <h1>{t('setSeedName:setAccountName')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                            <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <h4>{t('setSeedName:letsAddName')}</h4>
-                                <h5>{t('setSeedName:setAccountName')}</h5>
                                 <Input
                                     value={name}
                                     focus
                                     label={t('addAdditionalSeed:accountName')}
                                     onChange={(value) => this.setState({ name: value })}
                                 />
-                                <br />
-                                {/* <img src={images} alt="send" className={(classNames(css.img))} /> */}
-                                <div className={css.onboard_btn}>
-                                    <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('global:goBack')} <span>></span></Button>
-                                    <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
-                                </div>
                             </div>
-
+                            <div className={css.onboard_btn}>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('global:goBack')} <span>></span></Button>
+                                <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
+                            </div>
                         </form>
                     </div>
                 </div>
-                <footer className={classNames(css.footer)}>
-
-                </footer>
             </section>
 
         )

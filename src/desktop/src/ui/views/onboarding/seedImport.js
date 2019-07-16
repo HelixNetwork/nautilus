@@ -68,7 +68,7 @@ class SeedImport extends React.PureComponent {
                 const letter = indexToChar(byte);
                 seedSequence += letter
             });
-            Electron.setOnboardingSeed(seed[0].seed,false);
+            Electron.setOnboardingSeed(seed[0].seed, false);
             Electron.setOnboardingName(seed[0].title)
             console.log(Electron.getOnboardingName());
             this.setState({
@@ -80,7 +80,7 @@ class SeedImport extends React.PureComponent {
         catch (err) {
             Electron.setOnboardingSeed(null);
             this.setState({
-                seedPhrase:""
+                seedPhrase: ""
             });
         }
 
@@ -88,9 +88,9 @@ class SeedImport extends React.PureComponent {
     goBack() {
         Electron.setOnboardingSeed(null);
         this.setState({
-            importBuffer:null,
-            hidePass:'none',
-            seedPhrase:""
+            importBuffer: null,
+            hidePass: 'none',
+            seedPhrase: ""
         });
     }
 
@@ -152,8 +152,6 @@ class SeedImport extends React.PureComponent {
                                     <Button className="navright" variant="backgroundNone" onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                     <div className={css.onboard_nav}>

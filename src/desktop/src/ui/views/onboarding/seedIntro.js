@@ -40,17 +40,17 @@ class SeedIntro extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className={classNames(css.head_h1)}>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
+                                <h1>{t('walletSetup:doYouNeedASeed')}<span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?</h1>
                             </div>
-                            <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                            <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <img src={image} alt="" />
                                 <h5>{t('walletSetup:helixSeedIsAccess')}</h5>
                                 <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
-                                <div className={css.onboard_btn}>
-                                    <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
-                                    <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
-                                </div>
                             </div>
+                        </div>
+                        <div className={css.onboard_btn}>
+                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
+                            <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
                         </div>
                     </div>
                 </section>
