@@ -2827,28 +2827,28 @@ describe('libs: helix/addresses', () => {
     });
 
     describe('#filterAddressDataWithPendingOutgoingTransactions', () => {
-        //it('should filter address data with pending outgoing transactions', () => {
-        //     const result = addressesUtils.filterAddressDataWithPendingOutgoingTransactions(
-        //         mockAddressData,
-        //         transactions,
-        //     );
+        it('should filter address data with pending outgoing transactions', () => {
+            const result = addressesUtils.filterAddressDataWithPendingOutgoingTransactions(
+                mockAddressData,
+                transactions,
+            );
 
-        //     const addressesWithPendingOutgoingTransactions = [
-        //         // (Index 1) Part of unconfirmedValueTransactions.
-        //         '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
-        //         // (Index 2) Part of failedTransactionsWithCorrectTransactionHashes
-        //         'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
-        //         // (Index 3) Part of failedTransactionsWithIncorrectTransactionHashes
-        //         'b1ac2465b6597d5fc5e433a8cbf6c355a6081ded95309ca45c356948719022a4',
-        //     ];
+            const addressesWithPendingOutgoingTransactions = [
+                // Part of unconfirmedValueTransactions.
+                'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+                // Part of failedTransactionsWithCorrectTransactionHashes
+                '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
+                // Part of failedTransactionsWithIncorrectTransactionHashes
+                'fcb610407fba6820c44cbc800205013cd92707412c990ffc6669f5477346cffb',
+            ];
 
-        //     const expectedAddressData = filter(
-        //         mockAddressData,
-        //         (addressObject) => !includes(addressesWithPendingOutgoingTransactions, addressObject.address),
-        //     );
+            const expectedAddressData = filter(
+                mockAddressData,
+                (addressObject) => !includes(addressesWithPendingOutgoingTransactions, addressObject.address),
+            );
 
-        //     expect(result).to.eql(expectedAddressData);
-        // });
+            expect(result).to.eql(expectedAddressData);
+        });
     });
 
     describe('#isAnyAddressSpent', () => {
