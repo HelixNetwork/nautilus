@@ -2020,24 +2020,24 @@ describe('libs: helix/addresses', () => {
         });
 
         describe('when addressData passed as first argument is not an empty array and transactions passed as second argument is not an empty array', () => {
-            // it('should filter addressData with pending incoming value transactions', () => {
-            //     const result = addressesUtils.filterAddressDataWithPendingIncomingTransactions(
-            //         mockAddressData,
-            //         transactions,
-            //     );
+            it('should filter addressData with pending incoming value transactions', () => {
+                const result = addressesUtils.filterAddressDataWithPendingIncomingTransactions(
+                    mockAddressData,
+                    transactions,
+                );
 
-            //     const addressesWithPendingIncomingTransactions = [
-            //         // (Index 1) -> shared/__tests__/__samples__/transaction -> unconfirmedValueTransactions
-            //         '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
-            //     ];
+                const addressesWithPendingIncomingTransactions = [
+                    // (Index 1) -> shared/__tests__/__samples__/transaction -> unconfirmedValueTransactions
+                    '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
+                ];
 
-            //     const expectedResult = filter(
-            //         mockAddressData,
-            //         (addressObject) => !includes(addressesWithPendingIncomingTransactions, addressObject.address),
-            //     );
+                const expectedResult = filter(
+                    mockAddressData,
+                    (addressObject) => !includes(addressesWithPendingIncomingTransactions, addressObject.address),
+                );
 
-            //     expect(result).to.eql(expectedResult);
-            // });
+                expect(result).to.eql(expectedResult);
+            });
         });
     });
 
