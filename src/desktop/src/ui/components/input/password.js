@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
 import { zxcvbn } from 'libs/exports';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { passwordReasons } from 'libs/password';
+import passwordReasons from 'libs/password';
 
 import Icon from 'ui/components/icon';
 import css from './input.scss';
+import { faEye, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Password input component
@@ -66,9 +68,9 @@ class PasswordInput extends React.PureComponent {
     }
 
     setVisibility = () => {
-        this.setState({
-            hidden: !this.state.hidden,
-        });
+        this.setState((prevState) => ({
+            hidden: !prevState.hidden,
+        }));
     };
 
     setCapsLock = (e) => {

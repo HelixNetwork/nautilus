@@ -9,7 +9,6 @@ import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
 import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
-
 class SeedImport extends React.PureComponent {
 
     static propTypes = {
@@ -22,11 +21,12 @@ class SeedImport extends React.PureComponent {
 
     state = {
         ledger: false,
-        password: null,
         hidePass: 'none',
-        seedPhrase: null,
         isGenerated: Electron.getOnboardingGenerated(),
-        importBuffer: []
+        importBuffer: [],
+        password:'',
+        hidePass:'none',
+        seedPhrase:''
     };
 
     stepForward(route) {
@@ -68,8 +68,9 @@ class SeedImport extends React.PureComponent {
                 const letter = indexToChar(byte);
                 seedSequence += letter
             });
-            Electron.setOnboardingSeed(seed[0].seed, false);
-            // Electron.setOnboardingName(seed[0].name)
+            Electron.setOnboardingSeed(seed[0].seed,false);
+            Electron.setOnboardingName(seed[0].title)
+            console.log(Electron.getOnboardingName());
             this.setState({
                 seedPhrase: seedSequence,
                 hidePass: 'none'
@@ -79,7 +80,7 @@ class SeedImport extends React.PureComponent {
         catch (err) {
             Electron.setOnboardingSeed(null);
             this.setState({
-                seedPhrase: null
+                seedPhrase:""
             });
         }
 
@@ -87,9 +88,9 @@ class SeedImport extends React.PureComponent {
     goBack() {
         Electron.setOnboardingSeed(null);
         this.setState({
-            importBuffer: null,
-            hidePass: 'none',
-            seedPhrase: null
+            importBuffer:null,
+            hidePass:'none',
+            seedPhrase:""
         });
     }
 
@@ -155,6 +156,11 @@ class SeedImport extends React.PureComponent {
 
                         </div>
                     </div>
+                    <div className={css.onboard_nav}>
+
+                        <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-wallet')}>{t('global:goBack')} <span>></span></Button>
+                        <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:confirm')} <span>></span></Button>
+                    </div>
                 </section>
             </div>
         )
@@ -166,6 +172,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
+    additionalAccountName: Electron.getOnboardingName()
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(SeedImport));

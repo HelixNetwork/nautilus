@@ -475,7 +475,6 @@ export const createAddressData = (addresses, balances, addressesSpendStatuses, k
 export const markAddressesAsSpentSync = (bundles, addressData) => {
     const addressDataClone = cloneDeep(addressData);
     const addresses = map(addressData, (addressObject) => addressObject.address);
-
     // Iterate over all bundles and sort them between incoming
     // and outgoing transfers
     bundles.forEach((bundle) => {
@@ -495,7 +494,6 @@ export const markAddressesAsSpentSync = (bundles, addressData) => {
             }
         });
     });
-
     return addressDataClone;
 };
 
