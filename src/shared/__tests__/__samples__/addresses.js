@@ -8,25 +8,25 @@ const latestAddressObject = {
 
 const addressData = [
     {
-        address: 'ed7ddda54ba1666c2b760d8d397b88eaa76efb361e4707cd70073234248439f9',
+        address: '164838c044a83bbe80ce4bd24547442ae6d496caa5496c4746ae71470c13b4ed',
         balance: 0,
         index: 0,
-        checksum: 'c9a9f613',
+        checksum: '5bc16142',
         spent: { local: true, remote: true },
     },
     {
-        address: '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
+        address: '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
         balance: 0,
         index: 1,
-        checksum: '4abfc600',
-        spent: { local: true, remote: true },
-    },
-    {
-        address: 'e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f',
-        balance: 0,
-        index: 2,
         checksum: '324c0dec',
         spent: { local: true, remote: false },
+    },
+    {
+        address: 'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+        balance: 0,
+        index: 2,
+        checksum: 'ff9f209e',
+        spent: { local: true, remote: true },
     },
     {
         address: 'fcb610407fba6820c44cbc800205013cd92707412c990ffc6669f5477346cffb',
@@ -50,10 +50,10 @@ const addressData = [
         spent: { local: false, remote: true },
     },
     {
-        address: 'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+        address: 'ee1c15a76b2b1ce72acd7e559afafb7418ffac15246d7c2c9d1bfe0ea4b6a924',
         balance: 0,
         index: 6,
-        checksum: '7f2083f2',
+        checksum: '032e847c',
         spent: { local: false, remote: true },
     },
     {
