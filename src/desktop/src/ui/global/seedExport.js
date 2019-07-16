@@ -233,10 +233,10 @@ export class SeedExportComponent extends PureComponent {
                     </div>
                 </section>
                 <footer>
-                    <Button onClick={this.onBackStep} variant="backgroundNone" className="navleft">
+                    <Button onClick={this.onBackStep} variant="backgroundNone" className="modal_navleft">
                         {t('goBack')} <span>></span>
                     </Button>
-                    <Button type="submit" variant="backgroundNone" className="navright">
+                    <Button type="submit" variant="backgroundNone" className="modal_navright">
                         {t('export')} <span>></span>
                     </Button>
                 </footer>

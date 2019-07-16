@@ -5,7 +5,7 @@ import { withI18n } from 'react-i18next';
 import { zxcvbn } from 'libs/exports';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import passwordReasons from 'libs/password';
+import { passwordReasons } from 'libs/password';
 
 import Icon from 'ui/components/icon';
 import css from './input.scss';
@@ -84,7 +84,11 @@ class PasswordInput extends React.PureComponent {
         const { hidden, capsLock } = this.state;
 
         const score = zxcvbn(value);
+        console.log("SCORE=====", score);
+        
         const isValid = score.score === 4 && (typeof match !== 'string' || match === value);
+        console.log("ALERTMSG====",score.feedback.warning);
+
         return (
             <div
                 className={classNames(
@@ -110,7 +114,7 @@ class PasswordInput extends React.PureComponent {
                     />
                     <small>{label}</small>
                     <strong>
-                        <Icon icon="attention" size={14} />
+                        {/* <Icon icon="attention" size={14} /> */}
                         {t('capsLockIsOn')}
                     </strong>
                     {showScore ? (

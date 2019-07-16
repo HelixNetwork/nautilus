@@ -83,8 +83,7 @@
   color: #ffffff;
 }
 
-.navleft,
-.modal_navleft {
+.navleft {
   float: left;
   font-weight: bold;
   color: #7d7c7d;
@@ -93,6 +92,17 @@
   text-decoration: none;
   top:2px; 
   left: 20%;
+}
+
+.modal_navleft {
+  float: left;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  top:2px; 
+  left: 0%;
 }
 
 .navleft:hover{
@@ -108,8 +118,7 @@
   color:black;
 }
 
-.navright ,
-.modal_navright {
+.navright {
   float: right;
   font-weight: bold;
   color: #7d7c7d;
@@ -118,6 +127,16 @@
   text-decoration: none;
   top:2px; 
   right: 20%;
+}
+.modal_navright {
+  float: right;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  top:2px; 
+  right: 0%;
 }
  
 .modal_navleft:hover{
