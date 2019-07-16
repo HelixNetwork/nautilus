@@ -131,18 +131,19 @@ class Dropzone extends React.Component {
 
         return (
             <React.Fragment>
-                <h5 style={{position:'absolute',top:'-70px'}} onClick={this.open}>
-                    {/* <Icon icon="seedVault" size={48} color='red'/> */}
-                    <img style={{width: "86px"}}  src={shield} alt="" />{' '}
-                    <br/>
-                    <span style={{fontSize:'14px'}}>
-                        {t('seedVault:dropInstructions')}
-                    </span>
-                </h5>
-                <input {...inputAttributes} />
-                <div className={classNames(css.dropzone, this.state.isDragActive && css.active)}>
-                <img style={{width: "150px"}}  src={shield} alt="" />
-                    <h1>{t('seedVault:dropInstructions')}</h1>
+                <div className={classNames(css.filebox)} onClick={this.open}>
+                    <h5 style={{ position: 'absolute' }}>
+                        <img style={{ width: "86px" }} src={shield} alt="" />{' '}
+                        <br />
+                        <span style={{ fontSize: '14px' }}>
+                            {t('seedVault:dropInstructions')}
+                        </span>
+                    </h5>
+                    <input {...inputAttributes} />
+                    <div className={classNames(css.dropzone, this.state.isDragActive && css.active)}>
+                        <img style={{ width: "150px" }} src={shield} alt="" />
+                        <h1>{t('seedVault:dropInstructions')}</h1>
+                    </div>
                 </div>
             </React.Fragment>
         );

@@ -24,9 +24,9 @@ class SeedImport extends React.PureComponent {
         hidePass: 'none',
         isGenerated: Electron.getOnboardingGenerated(),
         importBuffer: [],
-        password:'',
-        hidePass:'none',
-        seedPhrase:''
+        password: '',
+        hidePass: 'none',
+        seedPhrase: ''
     };
 
     stepForward(route) {
@@ -131,14 +131,20 @@ class SeedImport extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1>{t('seedReentry:enterYourSeed')}</h1>
-
+                                <h1>{t('seedReentry:enterYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
+                                {isGenerated ? (
+                                    <span>{t('seedReentry:enterSeedBelow')}</span>
+                                ) : (
+                                        <p>
+                                            {t('enterSeed:seedExplanation', { maxLength: MAX_SEED_LENGTH })}{' '}
+                                            <strong>{t('enterSeed:neverShare')}</strong>
+                                        </p>
+                                    )}
                             </div>
-                            <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                            <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
+                                <label>Seed</label>
                                 <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase}></input><br /><br />
-                                <div className={classNames(css.filebox)}>
-                                    <Dropzone onDrop={this.onDrop} />
-                                </div>
+                                <Dropzone onDrop={this.onDrop} />
                                 <br />
                                 {importBuffer && (
                                     <form className={classNames(css.sseed_box, css.cre_pgs)} onSubmit={() => this.onSubmit()} style={{ top: '-30px', left: '350px', display: hidePass }}>
@@ -146,18 +152,13 @@ class SeedImport extends React.PureComponent {
                                         <Button onClick={this.goBack.bind(this)}>Cancel</Button>&nbsp;&nbsp;&nbsp;<Button type="submit">Import Seed</Button>
                                     </form>
                                 )}
-                                <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br />
-                                <div className={css.onboard_btn}>
-                                    <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
-                                    <Button className="navright" variant="backgroundNone" onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
-                                </div>
+                                {/* <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br /> */}
+                            </div>
+                            <div className={css.onboard_btn}>
+                                <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
                             </div>
                         </div>
-                    </div>
-                    <div className={css.onboard_nav}>
-
-                        <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-wallet')}>{t('global:goBack')} <span>></span></Button>
-                        <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:confirm')} <span>></span></Button>
                     </div>
                 </section>
             </div>

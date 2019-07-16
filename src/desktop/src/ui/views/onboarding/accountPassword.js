@@ -114,7 +114,7 @@ class AccountPassword extends React.PureComponent {
                     <section>
                         <h1>{t('setPassword:choosePassword')}</h1>
                         <span>{t('setPassword:anEncryptedCopy')}</span>
-                        <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                        <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                             <PasswordInput
                                 focus
                                 value={this.state.password}
@@ -131,10 +131,10 @@ class AccountPassword extends React.PureComponent {
                                 match={this.state.password}
                                 onChange={(value) => this.setState({ passwordConfirm: value })}
                             />
-                            <div className={css.onboard_btn}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepBack()}>{t('global:goBack')} <span>></span></Button>
-                                <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
-                            </div>
+                        </div>
+                        <div className={css.onboard_btn}>
+                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepBack()}>{t('global:goBack')} <span>></span></Button>
+                            <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
                         </div>
                     </section>
                 </form>

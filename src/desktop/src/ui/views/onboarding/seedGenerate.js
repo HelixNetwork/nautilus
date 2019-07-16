@@ -267,9 +267,6 @@ class SeedGenerate extends React.PureComponent {
                         <div className="row">
                             <div className="col-lg-12">
                                 <h1>{t('newSeedSetup:generateSeed')}<span className={classNames(css.text_color)}>.</span></h1>
-                            </div>
-
-                            <div className={classNames(css.sseed_box_wrap, css.cre_pgs, css.hlx_box)}>
                                 <h3>
                                     {!existingSeed && clicksLeft > 0 ? (
                                         <Trans i18nKey="newSeedSetup:individualLetterCount" count={clicksLeft}>
@@ -280,6 +277,10 @@ class SeedGenerate extends React.PureComponent {
                                             <span>&nbsp;</span>
                                         )}
                                 </h3>
+                            </div>
+
+                            <div className={classNames(css.sseed_box_wrap, css.cre_pgs, css.hlx_box)}>
+
                                 <div className={css.seed_wrapper}>
                                     <div className={css.seed_wrapbox}>
                                         <div className={css.seed_lotbox} style={{ width: "100%", height: "100%" }} onClick={this.generateNewSeed} style={{ display: this.state.viewReload }}>

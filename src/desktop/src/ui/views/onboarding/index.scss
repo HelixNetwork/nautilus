@@ -503,16 +503,6 @@ footer li::after {
 .arrow_bx span {
   color: #e8b349;
 }
-.filebox {
-  width: 290px;
-  padding: 35px 20px;
-  min-height: 25px;
-  position: absolute;
-  left: 20%;
-  bottom: 209px;
-  margin-left: 0px;
-  top: 158px;
-}
 
 .steps {
   display: flex;
@@ -815,7 +805,8 @@ footer li::after {
 }
 
 .backup {
-  height: 130px;
+  height: 200px;
+  cursor: pointer;
 }
 
 .onboard_btn {
@@ -826,13 +817,13 @@ footer li::after {
 }
 
 .hlx_box {
-  min-height: 350px;
-  min-width: 714px;
+  min-height: 250px;
+  min-width: 620px;
   position: absolute;
-  top: 20%;
+  top: 35%;
   bottom: 30%;
   left: 0;
   right: 0;
   margin: auto;
-  padding: 15px 0px 50px 0px;
+  padding: 5px 0px 80px 0px;
 }

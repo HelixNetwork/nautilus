@@ -21,3 +21,16 @@
         margin-bottom: 20px;
     }
 }
+
+.filebox {
+    width: 300px;
+    position: absolute;
+    top: 20%;
+    bottom: 30%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: dashed .5px;
+    cursor: pointer;
+    padding: 0px 80px;
+  }

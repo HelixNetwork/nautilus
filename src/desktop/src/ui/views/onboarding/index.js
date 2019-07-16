@@ -39,19 +39,14 @@ class Onboarding extends React.PureComponent {
             'seed-intro',
             'seed-generate',
             'account-name',
-            'seed-import',
-            'seed-verify',
-            'account-password',
-            'done',
             'seed-backup',
-            'login',
-            'seed-wallet'
-            
-            
+            'seed-import',
+            'account-password',
+            'done'
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
-            currentKey === 'seed-import' ? 2 : steps.indexOf(currentKey) + 1;
+        currentKey === 'seed-import' ? 2 : steps.indexOf(currentKey) + 1;
 
         if (currentIndex < 1) {
             return null;
@@ -83,8 +78,8 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/account-name" component={SeedName} />
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
-                                <Route path="/onboarding/seed-wallet" component={SeedWallet}/>
-                                <Route path="/onboarding/seed-backup" component={SeedBackup}/>
+                                <Route path="/onboarding/seed-wallet" component={SeedWallet} />
+                                <Route path="/onboarding/seed-backup" component={SeedBackup} />
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
                                 <Route path="/wallet" component={Wallet} />

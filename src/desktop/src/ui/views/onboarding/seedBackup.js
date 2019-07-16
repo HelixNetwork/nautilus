@@ -54,9 +54,9 @@ class SeedBackup extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className={classNames(css.head_h1)}>{t('saveYourSeed:saveYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
+                                <h1>{t('saveYourSeed:saveYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                            <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <nav className={css.choice}>
                                     <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
                                         <h3>{t('saveYourSeed:recommended')}</h3>
@@ -79,10 +79,10 @@ class SeedBackup extends React.PureComponent {
                                         <h4>{t('seedVault:exportSeedVault')}</h4>
                                     </a>
                                 </nav>
-                                <div className={css.onboard_btn}>
-                                    <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
-                                    <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('global:confirm')} <span>></span></Button>
-                                </div>
+                            </div>
+                            <div className={css.onboard_btn}>
+                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('global:confirm')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
