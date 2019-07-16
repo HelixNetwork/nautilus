@@ -28,7 +28,8 @@ const reducers = combineReducers({
   polling,
   progress,
   ui,
-  wallet
+  wallet,
+  alerts
 });
 
 const rootReducer = (state, action) => {

@@ -9,6 +9,8 @@ import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
 import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
+import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
+
 class SeedImport extends React.PureComponent {
 
     static propTypes = {

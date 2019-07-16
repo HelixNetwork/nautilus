@@ -13,6 +13,7 @@ import { initialise as initialiseStorage, realm } from 'database';
 import { assignAccountIndexIfNecessary } from 'actions/accounts';
 import { mapStorageToState as mapStorageToStateAction } from 'actions/wallet';
 import { mapStorageToState } from 'libs/mapStorageToState';
+import Alerts from 'ui/global/alert';
 
 const init = () => {
   const modalElement = document.createElement('div');
@@ -57,6 +58,7 @@ const init = () => {
       <I18nextProvider i18n={i18next}>
         <Router>
           <React.Fragment>
+            <Alerts />
             <Index />
           </React.Fragment>
         </Router>

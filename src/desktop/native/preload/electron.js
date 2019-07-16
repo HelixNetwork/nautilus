@@ -6,7 +6,7 @@ const { dialog } = require('electron').remote;
 const kdbx = require('../kdbx');
 let onboardingSeed = null;
 let onboardingGenerated = false;
-let onboardingName=null;
+let onboardingName = null;
 
 const KEYTAR_SERVICE = remote.app.isPackaged ? 'Helix wallet' : 'Helix wallet (dev)';
 
@@ -235,6 +235,23 @@ const Electron = {
     getOnboardingGenerated: () => {
         return onboardingGenerated;
     },
+
+    /**
+     * Get currrent operating system
+     * @returns {string} Operating system code - win32|linux|darwin
+     */
+    getOS: () => {
+        return process.platform;
+    },
+
+    /**
+     * Get currrent release number
+     * @returns {string}
+     */
+    getVersion: () => {
+        return version;
+    },
+
 };
 
 export default Electron;
