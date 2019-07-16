@@ -19,7 +19,7 @@ export default class Button extends React.PureComponent {
         style: PropTypes.object,
         disabled: PropTypes.bool,
         type: PropTypes.oneOf(['button', 'submit']),
-        className: PropTypes.oneOf(['outline', 'small', 'outlineSmall', 'square', 'icon', 'backgroundNone', 'navleft', 'navright']),
+        className: PropTypes.oneOf(['outline', 'small', 'outlineSmall', 'square', 'icon', 'backgroundNone', 'navleft', 'navright', 'modal_navleft', 'modal_navright']),
         loading: PropTypes.bool,
     }
 
