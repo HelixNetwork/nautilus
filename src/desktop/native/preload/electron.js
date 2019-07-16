@@ -2,7 +2,8 @@ import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
 import Realm from '../realm';
-const { dialog } = require('electron').remote;
+import fs from 'fs';
+const dialog = require('electron').remote.dialog;
 const kdbx = require('../kdbx');
 let onboardingSeed = null;
 let onboardingGenerated = false;
@@ -129,11 +130,8 @@ const Electron = {
         console.log(seeds);
         try {
             const content = await kdbx.exportVault(seeds, password);
-            console.log("CONTENT===", content);
-            
             const now = new Date();
-
-            const path = await dialog.showSaveDialog(currentWindow, {
+            const path = await dialog.showSaveDialog(remote.getCurrentWindow(), {
                 title: 'Export keyfile',
                 defaultPath: `seedvault-${now
                     .toISOString()
@@ -143,15 +141,13 @@ const Electron = {
                 buttonLabel: 'Export',
                 filters: [{ name: 'SeedVault File', extensions: ['kdbx'] }],
             });
-
             if (!path) {
                 throw Error('Export cancelled');
             }
-
             fs.writeFileSync(path, new Buffer(content));
-
             return false;
         } catch (error) {
+            console.log("CONTENTError===", error);
             return error.message;
         }
     },
@@ -252,6 +248,9 @@ const Electron = {
         return version;
     },
 
+    garbageCollect: () => {
+        global.gc();
+    },
 };
 
 export default Electron;
