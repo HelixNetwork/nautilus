@@ -1,7 +1,7 @@
 /* global Electron */
 import { ALIAS_REALM } from 'libs/realm';
 
-export const ACC_MAIN = 'Trinity';
+export const ACC_MAIN = 'Helix';
 // Maximum allowed account title
 export const MAX_ACC_LENGTH = 250;
 

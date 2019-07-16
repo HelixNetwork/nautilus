@@ -42,6 +42,7 @@ const Electron = {
      * @returns {promise} Promise resolves in account object
      */
     readKeychain: (accountName) => {
+        console.log("account",accountName);
         return keytar.getPassword(KEYTAR_SERVICE, accountName);
     },
 

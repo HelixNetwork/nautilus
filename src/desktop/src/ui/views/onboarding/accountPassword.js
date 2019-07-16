@@ -6,7 +6,8 @@ import { zxcvbn } from 'libs/exports';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import { setPassword } from 'actions/wallet';
 import SeedStore from 'libs/seed';
-import { hash, initKeychain, initVault } from 'libs/crypto';
+import { hash, initKeychain, initVault } from '../../../libs/crypto';
+import { generateAlert } from 'actions/alerts';
 import { passwordReasons } from 'libs/password';
 import Logos from 'ui/components/logos';
 import PasswordInput from 'ui/components/input/password';
@@ -21,6 +22,7 @@ class AccountPassword extends React.PureComponent {
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+        generateAlert: PropTypes.func.isRequired,
         additionalAccountName: PropTypes.string.isRequired,
         additionalAccountMeta: PropTypes.object.isRequired,
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
@@ -69,14 +71,15 @@ class AccountPassword extends React.PureComponent {
         try {
             await initKeychain();
         } catch (e) {
-
+            return generateAlert('error', t('errorAccessingKeychain'), t('errorAccessingKeychainExplanation'));
         }
 
         const passwordHash = await hash(password);
-
+        console.log("password", passwordHash)
         await initVault(passwordHash);
+        console.log("password2", passwordHash)
         setPassword(passwordHash);
-
+        console.log("password3", passwordHash)
         this.props.setAccountInfoDuringSetup({
             completed: true,
         });
@@ -151,6 +154,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     setPassword,
     setAccountInfoDuringSetup,
+    generateAlert,
 };
 
 
