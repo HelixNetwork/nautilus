@@ -2372,7 +2372,7 @@ describe('libs: helix/addresses', () => {
                                 branchTransaction: newZeroValueAttachedTransactionBaseBranch,
                             };
                         } else if (body.command === 'attachToTangle') {
-                            return { hbytes: newZeroValueTransactionBytes };
+                            return { bytes: newZeroValueTransactionBytes };
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
@@ -2437,13 +2437,13 @@ describe('libs: helix/addresses', () => {
                             return { states: map(addresses, () => false) };
                         } else if (body.command === 'findTransactions') {
                             return { hashes: [] };
-                        } else if (body.command === 'getTransactionsToApprove') {
+                        } else if (body.command === 'getTransactionsToApprove') {                        
                             return {
                                 trunkTransaction: newZeroValueAttachedTransactionBaseTrunk,
                                 branchTransaction: newZeroValueAttachedTransactionBaseBranch,
                             };
                         } else if (body.command === 'attachToTangle') {
-                            return { hbytes: newZeroValueTransactionBytes };
+                            return { bytes: newZeroValueTransactionBytes };
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
@@ -2468,39 +2468,39 @@ describe('libs: helix/addresses', () => {
                 nock.cleanAll();
             });
             // TODO
-            // it('should return an object with formatted address data', () => {
-            //     const accountState = mockAccounts.accountInfo[accountName];
+            it('should return an object with formatted address data', () => {
+                const accountState = mockAccounts.accountInfo[accountName];
 
-            //     return addressesUtils
-            //         .attachAndFormatAddress()(
-            //             latestAddressWithoutChecksum,
-            //             latestAddressIndex,
-            //             latestAddressBalance,
-            //             seedStore,
-            //             accountState,
-            //             null,
-            //         )
-            //         .then((result) => {
-            //             expect(result.attachedAddressObject).to.eql(latestAddressObject);
-            //         });
-            // });
+                return addressesUtils
+                    .attachAndFormatAddress()(
+                        latestAddressWithoutChecksum,
+                        latestAddressIndex,
+                        latestAddressBalance,
+                        seedStore,
+                        accountState,
+                        null,
+                    )
+                    .then((result) => {
+                        expect(result.attachedAddressObject).to.eql(latestAddressObject);
+                    });
+            });
 
-            // it('should return an object with newly attached transaction object', () => {
-            //     const accountState = mockAccounts.accountInfo[accountName];
+            it('should return an object with newly attached transaction object', () => {
+                const accountState = mockAccounts.accountInfo[accountName];
 
-            //     return addressesUtils
-            //         .attachAndFormatAddress()(
-            //             latestAddressWithoutChecksum,
-            //             latestAddressIndex,
-            //             latestAddressBalance,
-            //             seedStore,
-            //             accountState,
-            //             null,
-            //         )
-            //         .then((result) => {
-            //             expect(result.attachedTransactions).to.eql(newZeroValueAttachedTransaction);
-            //         });
-            // });
+                return addressesUtils
+                    .attachAndFormatAddress()(
+                        latestAddressWithoutChecksum,
+                        latestAddressIndex,
+                        latestAddressBalance,
+                        seedStore,
+                        accountState,
+                        null,
+                    )
+                    .then((result) => {
+                        expect(result.attachedTransactions).to.eql(newZeroValueAttachedTransaction);
+                    });
+            });
         });
     });
 

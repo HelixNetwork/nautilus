@@ -4,6 +4,7 @@ import has from 'lodash/has';
 import includes from 'lodash/includes';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
+import isEmpty from 'lodash/isEmpty'
 import { composeAPI } from '@helixnetwork/core';
 import { asTransactionHBytes , asTransactionObject } from "@helixnetwork/transaction-converter";
 import { helix, quorum } from './index';
@@ -204,7 +205,6 @@ const promoteTransaction = (settings, seedStore) => (
             )
             .then(({ bytes }) => {
                 cached.bytes = bytes;
-
                 return storeAndBroadcast(settings)(cached.bytes);
             })
             .then(() => hash)
@@ -232,7 +232,6 @@ const replayBundle = (settings, seedStore) => (
 
     return getBundle(settings)(hash)
         .then((bundle) => {
-            // TODO
             const convertToBytes = (tx) => asTransactionHBytes(tx);
             cached.bytes = map(bundle, convertToBytes);
             cached.transactionObjects = bundle;
@@ -247,8 +246,8 @@ const replayBundle = (settings, seedStore) => (
                 minWeightMagnitude,
             ),
         )
-        .then(({ bytes, transactionObjects }) => {
-            cached.bytes = bytes;
+        .then(({ hbytes, transactionObjects }) => {
+            cached.bytes = hbytes;
             cached.transactionObjects = transactionObjects;
 
             return storeAndBroadcast(settings)(cached.bytes);
@@ -309,6 +308,7 @@ const sendTransfer = (settings) => (
             return getTransactionsToApprove(settings)({}, depth);
         })
         .then(({ trunkTransaction, branchTransaction }) =>
+
             attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
@@ -316,10 +316,9 @@ const sendTransfer = (settings) => (
                 minWeightMagnitude,
             ),
         )
-        .then(({ bytes, transactionObjects }) => {
-            cached.bytes = bytes;
+        .then(({ hbytes, transactionObjects }) => {
+            cached.bytes = hbytes;
             cached.transactionObjects = transactionObjects;
-
             return storeAndBroadcast(settings)(cached.bytes);
         })
         .then(() => cached.transactionObjects);
@@ -333,10 +332,16 @@ const sendTransfer = (settings) => (
  *
  * @returns {function(*, number): Promise<object>}
  */
-const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>
-        getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
-            depth,
-            reference);
+const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>{
+    if(isEmpty(reference))
+        return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
+            depth);    
+    else
+        return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
+                depth,
+                reference);
+        
+    }
 
 /**
  * Helix prepareTransfers
@@ -365,8 +370,9 @@ export const prepareTransfers = (settings) => (seed, transfers, options = null, 
  *
  * @returns {function(array): Promise<any>}
  */
-const storeAndBroadcast = (settings) => (bytes) =>
+const storeAndBroadcast = (settings) => (bytes) =>{
         getHelixInstance(settings).storeAndBroadcast(bytes);
+}
 
 
 /**
@@ -431,7 +437,6 @@ const attachToTangle = (settings, seedStore) => (
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const shouldOffloadPow = get(seedStore, 'offloadPow') === true;
-
     if (shouldOffloadPow) {
         const request = (requestTimeout) =>
                 getHelixInstance(settings, requestTimeout).attachToTangle(
@@ -467,14 +472,12 @@ const attachToTangle = (settings, seedStore) => (
 
         return withRequestTimeoutsHandler(defaultRequestTimeout)(request);
     }
-
     return seedStore
         .performPow(bytes, trunkTransaction, branchTransaction, minWeightMagnitude)
         .then((result) => {
-            if (get(result, 'bytes') && get(result, 'transactionObjects')) {
+            if (get(result, 'hbytes') && get(result, 'transactionObjects')) {
                 return Promise.resolve(result);
             }
-
             // Batched proof-of-work only returns the attached bytes
             return constructBundleFromAttachedBytes(sortTransactionBytesArray(result), seedStore).then(
                 (transactionObjects) => ({
@@ -483,14 +486,14 @@ const attachToTangle = (settings, seedStore) => (
                 }),
             );
         })
-        .then(({ transactionObjects, bytes }) => {
+        .then(({ transactionObjects, hbytes }) => {
             if (
                 isBundle(transactionObjects) &&
                 isBundleTraversable(transactionObjects, trunkTransaction, branchTransaction)
             ) {
                 return {
                     transactionObjects,
-                    bytes,
+                    hbytes,
                 };
             }
 
