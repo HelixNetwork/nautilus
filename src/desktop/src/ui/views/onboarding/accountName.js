@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 
 import { getAccountNamesFromState } from 'selectors/accounts';
-
+import { generateAlert } from 'actions/alerts';
 import classNames from 'classnames';
 import Button from 'ui/components/button';
 import Input from 'ui/components/input/text';
@@ -17,6 +17,7 @@ class AccountName extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
+        generateAlert: PropTypes.func.isRequired,
         accountNames: PropTypes.array.isRequired,
         additionalAccountMeta: PropTypes.object.isRequired,
         additionalAccountName: PropTypes.string.isRequired,
@@ -56,7 +57,7 @@ class AccountName extends React.PureComponent {
     }
 
     render() {
-        const { t } = this.props;
+        const { t, generateAlert } = this.props;
         const { name } = this.state;
         
         return (
@@ -99,6 +100,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
+    generateAlert
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AccountName));

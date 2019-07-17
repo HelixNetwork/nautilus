@@ -62,6 +62,9 @@ class SeedImport extends React.PureComponent {
             password: e.target.value
         });
     }
+    onSeedChange(e){
+        console.log(e.target.value);
+    }
     onSubmit = async () => {
         try {
             const seed = await Electron.importSeed(this.state.importBuffer, this.state.password);
@@ -165,9 +168,8 @@ class SeedImport extends React.PureComponent {
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <label>Seed</label>
-                                <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase}></input><br /><br />
+                                <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase} onChange={()=>this.onSeedChange}></input><br /><br />
                                 <Dropzone style={{marginTop:'2vw'}} onDrop={this.onDrop} />
-                                <br />
                                 {importBuffer && (
                                     <form className={classNames(css.sseed_box, css.cre_pgs)} onSubmit={() => this.onSubmit()} style={{ top: '-30px', left: '350px', display: hidePass }}>
                                         <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{ marginTop: '55px' }}></input><br /><br />

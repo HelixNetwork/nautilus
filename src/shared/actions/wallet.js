@@ -1,8 +1,8 @@
-import extend from 'lodash/extend';
-import map from 'lodash/map';
-import noop from 'lodash/noop';
-import findLastIndex from 'lodash/findLastIndex';
-import reduce from 'lodash/reduce';
+// import extend from 'lodash/extend';
+// import map from 'lodash/map';
+// import noop from 'lodash/noop';
+// import findLastIndex from 'lodash/findLastIndex';
+// import reduce from 'lodash/reduce';
 
 export const ActionTypes = {
     MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
