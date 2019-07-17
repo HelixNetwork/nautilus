@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import { withI18n, Trans } from 'react-i18next';
 import Button from 'ui/components/button';
+import { generateAlert } from 'actions/alerts';
 import Dropzone from 'ui/components/dropzone';
 import { indexToChar } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
@@ -95,6 +96,25 @@ class SeedImport extends React.PureComponent {
             seedPhrase: ""
         });
     }
+    setSeed = async (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        const { isGenerated } = this.state; 
+    if (isGenerated) {
+        return generateAlert(
+            'error',
+            t('enterSeed:seedExplanation')
+        );
+    }else{
+        return generateAlert(
+            'error',
+            t('enterSeed:seedExplanation')
+        );
+    }
+   
+    }
+
 
     setSeed = async (e) => {
         if (e) {
@@ -177,6 +197,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
+    generateAlert,
     additionalAccountName: Electron.getOnboardingName()
 };
 
