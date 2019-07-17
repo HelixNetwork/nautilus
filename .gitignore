@@ -68,6 +68,7 @@ typings/
 
 # testing
 /coverage
+src/shared/__tests__/dev-sample
 
 # production
 /build

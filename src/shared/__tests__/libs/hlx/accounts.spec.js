@@ -23,7 +23,7 @@ describe('libs: helix/accounts', () => {
 
         it('should mark input addresses as spent', () => {
             const accountState = mockAccounts.accountInfo[accountName];
-            const inputAddress = 'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619';
+            const inputAddress = 'ee1c15a76b2b1ce72acd7e559afafb7418ffac15246d7c2c9d1bfe0ea4b6a924';
 
             // Assert that input address is unspent before syncAccountOnValueTransactionFailure is called
             const inputAddressDataBefore = find(accountState.addressData, { address: inputAddress });
@@ -36,7 +36,7 @@ describe('libs: helix/accounts', () => {
 
         it('should add new transaction objects to transactions in state (with persistence & broadcasted properties as false)', () => {
             const accountState = mockAccounts.accountInfo[accountName];
-            const bundle = '2705c6d370ea00ef3406aa74b5e361bef55751bc0b6e46370b1384cdf1404374';
+            const bundle = '38accd133327f0cdd345b6a657fd48082979cf585088fa87e11d61ea9973f759';
 
             // Assert that bundle does not exist in existing transactions
 

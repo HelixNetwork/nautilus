@@ -750,7 +750,6 @@ export const filterAddressDataWithPendingIncomingTransactions = (addressData, tr
  **/
 export const attachAndFormatAddress = (provider, withQuorum) => (address, index, balance, seedStore, accountState) => {
     let attachedTransactions = [];
-
     return findTransactions(provider)({ addresses: [address] })
         .then((hashes) => {
             if (size(hashes)) {

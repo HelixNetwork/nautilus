@@ -24,7 +24,7 @@ import reduce from 'lodash/reduce';
 import transform from 'lodash/transform';
 import orderBy from 'lodash/orderBy';
 import xor from 'lodash/xor';
-import { isBundle as bundleValidator} from '@helixnetwork/bundle-validator';
+import bundleValidator from '@helixnetwork/bundle-validator';
 import { asciiToHBytes } from '@helixnetwork/converter';
 import {addChecksum, removeChecksum } from '@helixnetwork/checksum';
 import { asTransactionObject ,asTransactionHBytes} from '@helixnetwork/transaction-converter';
@@ -169,7 +169,6 @@ export const isAboveMaxDepth = (attachmentTimestamp) => {
  **/
 export const prepareTransferArray = (address, value, message, addressData, tag = DEFAULT_TAG) => {
     const firstAddress = get(find(addressData, { index: 0 }), 'address');
-
     if (!firstAddress) {
         throw new Error(Errors.EMPTY_ADDRESS_DATA);
     }
