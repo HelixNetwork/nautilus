@@ -119,6 +119,7 @@ class AccountPassword extends React.PureComponent {
                         <span>{t('setPassword:anEncryptedCopy')}</span>
                         <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                             <PasswordInput
+                                style={{marginTop:"3vw"}}
                                 focus
                                 value={this.state.password}
                                 label={t('password')}

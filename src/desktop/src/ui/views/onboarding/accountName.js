@@ -70,7 +70,7 @@ class AccountName extends React.PureComponent {
                                 <h1>{t('setSeedName:setAccountName')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
-                                <h4>{t('setSeedName:letsAddName')}</h4>
+                                <h4 style={{marginTop:"8vw"}}>{t('setSeedName:letsAddName')}</h4>
                                 <Input
                                     value={name}
                                     focus

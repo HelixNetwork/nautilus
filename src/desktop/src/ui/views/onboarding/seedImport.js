@@ -134,19 +134,19 @@ class SeedImport extends React.PureComponent {
                         <div className="row">
                             <div className="col-lg-12">
                                 <h1>{t('seedReentry:enterYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
-                                {isGenerated ? (
+                                {/* {isGenerated ? (
                                     <span>{t('seedReentry:enterSeedBelow')}</span>
                                 ) : (
-                                        <p>
-                                            {t('enterSeed:seedExplanation', { maxLength: MAX_SEED_LENGTH })}{' '}
+                                        <p style={{marginTop:'2vw'}}>
+                                            {t('enterSeed:seedExplanation', { maxLength: MAX_SEED_LENGTH })}{' '}<br/>
                                             <strong>{t('enterSeed:neverShare')}</strong>
                                         </p>
-                                    )}
+                                    )} */}
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <label>Seed</label>
                                 <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase}></input><br /><br />
-                                <Dropzone onDrop={this.onDrop} />
+                                <Dropzone style={{marginTop:'2vw'}} onDrop={this.onDrop} />
                                 <br />
                                 {importBuffer && (
                                     <form className={classNames(css.sseed_box, css.cre_pgs)} onSubmit={() => this.onSubmit()} style={{ top: '-30px', left: '350px', display: hidePass }}>
@@ -154,7 +154,11 @@ class SeedImport extends React.PureComponent {
                                         <Button onClick={this.goBack.bind(this)}>Cancel</Button>&nbsp;&nbsp;&nbsp;<Button type="submit">Import Seed</Button>
                                     </form>
                                 )}
+                              
                                 {/* <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br /> */}
+                                <p style={{marginTop:'13vw',marginLeft:'2vw'}}>
+                                <strong>{t('enterSeed:neverShare')}</strong>
+                                </p>
                             </div>
                             <div className={css.onboard_btn}>
                                 <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
