@@ -4,7 +4,6 @@ import { ALIAS_REALM } from 'libs/realm';
 export const ACC_MAIN = 'Helix';
 // Maximum allowed account title
 export const MAX_ACC_LENGTH = 250;
-
 /**
  * Create random byte array
  * @param {number} Length - Random number array length.
@@ -93,6 +92,7 @@ export const decrypt = async (cipherText, hash) => {
 export const initVault = async (password) => {
     try {
         const vault = await Electron.readKeychain(ACC_MAIN);
+        console.log(vault.toString());
         const decryptedVault = vault === null ? {} : await decrypt(vault, password);
 
         const updatedVault = await encrypt(decryptedVault, password);
