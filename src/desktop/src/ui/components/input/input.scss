@@ -2,7 +2,7 @@
   display: block;
   width: 100%;
   max-width: 296px;
-  margin: 5px 799px;
+  margin: 0px auto;
   padding: 25px 0 30px;
   transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
@@ -114,7 +114,7 @@
     input:focus + small,
     textarea:focus + small,
     select:focus + small {
-      color: var(--label-hover);
+      color: var(--input-bg);
     }
     a {
       display: flex;
@@ -125,7 +125,7 @@
       height: 100%;
       min-width: 35px;
       top: 0px;
-      right: -37px;;
+      right: 0px;
       cursor: pointer;
       user-select: none;
       color: var(--input-alt);
@@ -175,7 +175,7 @@
       pointer-events: none;
     }
     a + input {
-      padding-right: 40px;
+      padding-right: 0px;
     }
   }
 
@@ -215,6 +215,7 @@
     line-height: 12px;
     color: var(--body);
     span {
+      position: absolute;
       float: left;
       margin: -1px 4px 0 0;
     }
@@ -243,7 +244,7 @@
       content: "";
       display: block;
       position: absolute;
-      top: 1px;
+      top: 6px;
       right: 40px;
       width: 46px;
       height: 46px;
@@ -400,7 +401,7 @@
   display: flex;
   position: absolute;
   top: -17px;
-  right: -40px;
+  right: 0px;
   span {
     display: block;
     height: 4px;
@@ -438,8 +439,8 @@
 
 .valid {
   position: absolute;
-  top: 23px;
-  right: -70px;
+  top: 16px;
+  right: -40px;
   opacity: 0.25;
   &.isValid {
     opacity: 1;
@@ -594,30 +595,7 @@ input:focus + .tooltip {
   padding-left: 10px;
   padding-right: 40px;
 }
-@media screen and (min-width: 1920px){
-  .input{
-    width: 100%;
-    max-width: 296px;
-    margin: 5px 799px;
-  }
-}
 
-@media screen and (max-width: 1366px) {
-  .input{
-    max-width: 285px;
-    margin: 3px 482px;
-  }
-}
-@media screen and (min-width:840px){
-  .input {
-    display: block;
-    width: 100%;
-    // max-width: 326px;
-    margin: 3px 480px !important;
-    padding: 25px 0 30px;
-    
-  }
-}
 
 .sseed_textline{
   width:25vw;

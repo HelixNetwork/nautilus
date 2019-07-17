@@ -5,7 +5,7 @@ import { withI18n } from 'react-i18next';
 import { zxcvbn } from 'libs/exports';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import passwordReasons from 'libs/password';
+import { passwordReasons } from 'libs/password';
 
 import Icon from 'ui/components/icon';
 import css from './input.scss';
@@ -14,7 +14,8 @@ import { faEye, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 /**
  * Password input component
  */
-export class PasswordComponent extends React.PureComponent {
+class PasswordInput extends React.PureComponent {
+
     static propTypes = {
         /** Current password value */
         value: PropTypes.string.isRequired,
@@ -83,7 +84,10 @@ export class PasswordComponent extends React.PureComponent {
         const { hidden, capsLock } = this.state;
 
         const score = zxcvbn(value);
+        console.log("SCORE=====", score);
+        
         const isValid = score.score === 4 && (typeof match !== 'string' || match === value);
+        console.log("ALERTMSG====",score.feedback.warning);
 
         return (
             <div
@@ -92,14 +96,13 @@ export class PasswordComponent extends React.PureComponent {
                     css.padded,
                     disabled ? css.disabled : null,
                     capsLock ? css.capsLock : null,
-                )} style={{right: "65%"}}
+                )}
             >
                 <fieldset>
                     <a className={hidden ? css.strike : null} onClick={this.setVisibility}>
-                    <FontAwesomeIcon icon={faEye} />
+                        <Icon icon="eye" size={16} />
                     </a>
                     <input
-                        {...disabled && { tabIndex: '-1' }}
                         type={hidden ? 'password' : 'text'}
                         ref={(input) => {
                             this.input = input;
@@ -111,7 +114,7 @@ export class PasswordComponent extends React.PureComponent {
                     />
                     <small>{label}</small>
                     <strong>
-                        <Icon icon="attention" size={14} />
+                        {/* <Icon icon="attention" size={14} /> */}
                         {t('capsLockIsOn')}
                     </strong>
                     {showScore ? (
@@ -130,13 +133,12 @@ export class PasswordComponent extends React.PureComponent {
                     ) : null}
                     {showValid ? (
                         <div className={classNames(css.valid, isValid ? css.isValid : null)}>
-                            <FontAwesomeIcon icon={faCheckCircle} />
+                            <Icon icon="tickRound" size={26} />
                         </div>
                     ) : null}
                 </fieldset>
             </div>
-        );
+        )
     }
 }
-
-export default withI18n()(PasswordComponent);
+export default withI18n()(PasswordInput);

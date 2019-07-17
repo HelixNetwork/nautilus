@@ -11,7 +11,6 @@ import Login from 'ui/views/onboarding/login';
 import SeedIntro from 'ui/views/onboarding/seedIntro';
 import GenerateSeed from 'ui/views/onboarding/seedGenerate';
 import seedImport from 'ui/views/onboarding/seedImport';
-import SeedEnter from 'ui/views/onboarding/seedVerify';
 import SeedName from 'ui/views/onboarding/accountName';
 import SeedBackup from 'ui/views/onboarding/seedBackup';
 import SeedWallet from 'ui/views/onboarding/seedwallet';
@@ -40,19 +39,14 @@ class Onboarding extends React.PureComponent {
             'seed-intro',
             'seed-generate',
             'account-name',
-            'seed-import',
-            'seed-verify',
-            'account-password',
-            'done',
             'seed-backup',
-            'login',
-            'seed-wallet'
-            
-            
+            'seed-import',
+            'account-password',
+            'done'
         ];
         const currentIndex =
             currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
-            currentKey === 'seed-import' ? 2 : steps.indexOf(currentKey) + 1;
+        currentKey === 'seed-import' ? 2 : steps.indexOf(currentKey) + 1;
 
         if (currentIndex < 1) {
             return null;
@@ -81,12 +75,11 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/seed-intro" component={SeedIntro} />
                                 <Route path="/onboarding/seed-generate" component={GenerateSeed} />
                                 <Route path="/onboarding/seed-import" component={seedImport} />
-                                <Route path="/onboarding/seed-verify" component={SeedEnter} />
                                 <Route path="/onboarding/account-name" component={SeedName} />
                                 <Route path="/onboarding/account-password" component={SecurityEnter} />
                                 <Route path="/onboarding/done" component={Done} />
-                                <Route path="/onboarding/seed-wallet" component={SeedWallet}/>
-                                <Route path="/onboarding/seed-backup" component={SeedBackup}/>
+                                <Route path="/onboarding/seed-wallet" component={SeedWallet} />
+                                <Route path="/onboarding/seed-backup" component={SeedBackup} />
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
                                 <Route path="/wallet" component={Wallet} />

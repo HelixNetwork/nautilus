@@ -11,6 +11,7 @@ import Modal from 'ui/components/modal';
 import SeedExport from 'ui/global/seedExport';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/export.json';
+// import Electron from '../../../../native/preload/electron';
 
 class SeedBackup extends React.PureComponent {
     static propTypes = {
@@ -21,6 +22,7 @@ class SeedBackup extends React.PureComponent {
 
     state = {
         seed: Electron.getOnboardingSeed(),
+        onboardingname:Electron.getOnboardingName()!=null?Electron.getOnboardingName():'',
         writeVisible: false,
         exportVisible: false,
     };
@@ -34,9 +36,8 @@ class SeedBackup extends React.PureComponent {
         this.props.history.push(`/onboarding/${route}`);
     }
     render() {
-        const { loop, onboardingName, t } = this.props;
-        const { writeVisible, exportVisible, seed } = this.state;
-
+        const { loop, t } = this.props;
+        const { writeVisible, exportVisible, onboardingname,seed } = this.state;
         const defaultOptions = {
             loop: loop,
             autoplay: true,
@@ -54,13 +55,13 @@ class SeedBackup extends React.PureComponent {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className={classNames(css.head_h1)}>{t('saveYourSeed:saveYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
+                                <h1>{t('saveYourSeed:saveYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
                             </div>
-                            <div className={classNames(css.sseed_box, css.cre_pgs)}>
+                            <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <nav className={css.choice}>
                                     <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
                                         <h3>{t('saveYourSeed:recommended')}</h3>
-                                        <div className = {css.backup}>
+                                        <div className={css.backup}>
                                             <Lottie
                                                 options={defaultOptions}
                                                 eventListeners={[
@@ -80,7 +81,7 @@ class SeedBackup extends React.PureComponent {
                                     </a>
                                 </nav>
                             </div>
-                            <div className={css.onboard_nav}>
+                            <div className={css.onboard_btn}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('account-name')}>{t('global:goBack')} <span>></span></Button>
                                 <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('global:confirm')} <span>></span></Button>
                             </div>
@@ -100,7 +101,7 @@ class SeedBackup extends React.PureComponent {
                         ) : (
                                 <SeedExport
                                     seed={seed}
-                                    title={onboardingName}
+                                    title={onboardingname}
                                     onClose={() => this.setState({ exportVisible: false })}
                                 />
                             )}

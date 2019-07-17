@@ -2,10 +2,12 @@ import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
 import Realm from '../realm';
+import fs from 'fs';
+const dialog = require('electron').remote.dialog;
 const kdbx = require('../kdbx');
 let onboardingSeed = null;
 let onboardingGenerated = false;
-let onboardingName=null;
+let onboardingName = null;
 
 const KEYTAR_SERVICE = remote.app.isPackaged ? 'Helix wallet' : 'Helix wallet (dev)';
 
@@ -40,6 +42,7 @@ const Electron = {
      * @returns {promise} Promise resolves in account object
      */
     readKeychain: (accountName) => {
+        console.log("account",accountName);
         return keytar.getPassword(KEYTAR_SERVICE, accountName);
     },
 
@@ -125,11 +128,11 @@ const Electron = {
      * @returns {undefined}
      */
     exportSeeds: async (seeds, password) => {
+        console.log(seeds);
         try {
             const content = await kdbx.exportVault(seeds, password);
             const now = new Date();
-
-            const path = await dialog.showSaveDialog(currentWindow, {
+            const path = await dialog.showSaveDialog(remote.getCurrentWindow(), {
                 title: 'Export keyfile',
                 defaultPath: `seedvault-${now
                     .toISOString()
@@ -139,15 +142,13 @@ const Electron = {
                 buttonLabel: 'Export',
                 filters: [{ name: 'SeedVault File', extensions: ['kdbx'] }],
             });
-
             if (!path) {
                 throw Error('Export cancelled');
             }
-
             fs.writeFileSync(path, new Buffer(content));
-
             return false;
         } catch (error) {
+            console.log("CONTENTError===", error);
             return error.message;
         }
     },
@@ -230,6 +231,26 @@ const Electron = {
 
     getOnboardingGenerated: () => {
         return onboardingGenerated;
+    },
+
+    /**
+     * Get currrent operating system
+     * @returns {string} Operating system code - win32|linux|darwin
+     */
+    getOS: () => {
+        return process.platform;
+    },
+
+    /**
+     * Get currrent release number
+     * @returns {string}
+     */
+    getVersion: () => {
+        return version;
+    },
+
+    garbageCollect: () => {
+        global.gc();
     },
 };
 
