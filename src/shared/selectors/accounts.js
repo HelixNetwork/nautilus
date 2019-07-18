@@ -39,3 +39,23 @@ export const getAccountNamesFromState = createSelector(
         return map(orderBy(accountNames, ['index']), getAccountName);
     },
 );
+
+/**
+ *   Selects getAccountInfoDuringSetup prop from accounts reducer state object.
+ *
+ *   @method getAccountInfoDuringSetup
+ *   @param {object} state
+ *   @returns {object}
+ **/
+export const getAccountInfoDuringSetup = createSelector(
+    getAccountsFromState,
+    (state) => state.accountInfoDuringSetup || {},
+);
+
+export const isSettingUpNewAccount = createSelector(
+    getAccountInfoDuringSetup,
+    (accountInfoDuringSetup) =>
+        accountInfoDuringSetup.completed === true &&
+        !isEmpty(accountInfoDuringSetup.name) &&
+        !isEmpty(accountInfoDuringSetup.meta),
+);

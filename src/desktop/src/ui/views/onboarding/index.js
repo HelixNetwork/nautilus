@@ -6,6 +6,9 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
+import { setAccountInfoDuringSetup } from 'actions/accounts';
+import { isSettingUpNewAccount } from 'selectors/accounts';
+
 import Welcome from 'ui/views/onboarding/welcome';
 import Login from 'ui/views/onboarding/login';
 import SeedIntro from 'ui/views/onboarding/seedIntro';
@@ -28,6 +31,7 @@ class Onboarding extends React.PureComponent {
         complete: PropTypes.bool,
         location: PropTypes.object,
         history: PropTypes.object,
+        setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
 
     state = {
@@ -97,11 +101,12 @@ class Onboarding extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-
+    complete: state.accounts.onboardingComplete || isSettingUpNewAccount(state),
+    isAuthorised: state.wallet.ready,
 });
 
 const mapDispatchToProps = {
-
+    setAccountInfoDuringSetup,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);
