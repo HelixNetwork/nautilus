@@ -124,7 +124,7 @@ class SeedImport extends React.PureComponent {
             e.preventDefault();
         }
         const { setAccountInfoDuringSetup, wallet, additionalAccountName, history, t } = this.props;
-        const { seed, isGenerated } = this.state;
+        const { seed, isGenerated } = this.state;        
 
         if (!isGenerated) {
             Electron.setOnboardingSeed(seed, false);
@@ -149,6 +149,8 @@ class SeedImport extends React.PureComponent {
     render() {
         const { history, t } = this.props;
         const { importBuffer, seedPhrase, hidePass, seed, isGenerated, } = this.state;
+        console.log("Import->SeedIsGenerated====",isGenerated);
+
         return (
             <div>
                 <Logos />
@@ -176,7 +178,7 @@ class SeedImport extends React.PureComponent {
                                         <Button onClick={this.goBack.bind(this)}>Cancel</Button>&nbsp;&nbsp;&nbsp;<Button type="submit">Import Seed</Button>
                                     </form>
                                 )}
-                              
+                              <br/>
                                 {/* <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br /> */}
                                 <p style={{marginTop:'13vw',marginLeft:'2vw'}}>
                                 <strong>{t('enterSeed:neverShare')}</strong>

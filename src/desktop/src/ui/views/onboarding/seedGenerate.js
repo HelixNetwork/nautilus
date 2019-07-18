@@ -241,6 +241,15 @@ class SeedGenerate extends React.PureComponent {
         Electron.setOnboardingSeed(seed, true);
         history.push('/onboarding/account-name');
     }
+
+    onRequestPrevious = () => {
+        const { history } = this.props;
+
+        Electron.setOnboardingSeed(null);
+
+        history.push('/onboarding/seed-intro');
+    };
+    
     render() {
         const { t } = this.props;
         const { ledger } = this.state;
@@ -411,7 +420,7 @@ class SeedGenerate extends React.PureComponent {
                                         </div>
                                         <div className={css.seed} style={{ display: this.state.viewSeedFour }}>
                                             {seed4.map((byte, index) => {
-                                                const offset = scramble[index + 42];
+                                                const offset = scramble[index + 48];
                                                 const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
                                                 return (
                                                     <button
@@ -432,9 +441,8 @@ class SeedGenerate extends React.PureComponent {
                                 </div>
                             </div>
                             <div className={css.onboard_btn}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-intro')} >{t('global:goBack')} <span>></span></Button>
-                                {/* <Button disabled={clicksLeft > 0} className="navright" variant="backgroundNone" onClick={this.saveAccountName}>{t('global:continue')} <span>></span> </Button> */}
-                                <Button className="navright" variant="backgroundNone" onClick={this.saveAccountName}>{t('global:continue')} <span>></span> </Button>
+                                <Button className="navleft" variant="backgroundNone" onClick={this.onRequestPrevious} >{t('global:goBack')} <span>></span></Button>
+                                <Button disabled={clicksLeft > 0} className="navright" variant="backgroundNone" onClick={this.saveAccountName}>{t('global:continue')} <span>></span> </Button>
                             </div>
                         </div>
                     </div>
