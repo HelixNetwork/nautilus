@@ -11,7 +11,7 @@ import { generateAlert } from 'actions/alerts';
 import Button from 'ui/components/button';
 import Confirm from 'ui/components/modal/Confirm';
 import ModalPassword from 'ui/components/modal/Password';
-import { getEncryptionKey, ALIAS_REALM } from 'libs/realm';
+import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
 
 
 /**

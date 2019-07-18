@@ -5,6 +5,7 @@ import Realm from '../realm';
 import fs from 'fs';
 const dialog = require('electron').remote.dialog;
 const kdbx = require('../kdbx');
+const argon2 = require('argon2');
 let onboardingSeed = null;
 let onboardingGenerated = false;
 let onboardingName = null;
@@ -42,7 +43,7 @@ const Electron = {
      * @returns {promise} Promise resolves in account object
      */
     readKeychain: (accountName) => {
-        console.log("account",accountName);
+        console.log("account", accountName);
         return keytar.getPassword(KEYTAR_SERVICE, accountName);
     },
 
@@ -54,6 +55,14 @@ const Electron = {
      */
     setKeychain: (accountName, content) => {
         return keytar.setPassword(KEYTAR_SERVICE, accountName, content);
+    },
+
+    /**
+     * Get all keychain account entries
+     * @returns {promise} Promise resolves in an Array of entries
+     */
+    listKeychain: () => {
+        return keytar.findCredentials(KEYTAR_SERVICE);
     },
 
     /**
@@ -234,6 +243,19 @@ const Electron = {
     },
 
     /**
+     * Hash input using argon2
+     * @param {Uint8Array} input - Input data
+     * @param {Uint8Array} salt - Salt used fro hashing
+     * @returns {Uint8Array} Raw Argon2 hash
+     */
+    argon2: (input, salt) => {
+        return argon2.hash(input, {
+            raw: true,
+            salt: Buffer.from(salt),
+        });
+    },
+
+    /**
      * Get currrent operating system
      * @returns {string} Operating system code - win32|linux|darwin
      */
@@ -251,7 +273,7 @@ const Electron = {
 
     garbageCollect: () => {
         global.gc();
-    },
+    }
 };
 
 export default Electron;

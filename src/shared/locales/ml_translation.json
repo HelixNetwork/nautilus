@@ -1,9 +1,9 @@
 {
     "global": {
-        "send": "SEND",
-        "cancel": "Cancel",
-        "continue?": "Are you sure you want to continue?",
-        "noTransactions": "NO RECENT HISTORY",
+        "send": "അയയ്‌ക്കുക",
+        "cancel": "റദ്ദാക്കുക",
+        "continue?": "തുടരണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?",
+        "noTransactions": "സമീപകാല ചരിത്രം ഇല്ല",
         "refresh": "Refresh",
         "balanceError": "Not enough balance",
         "balanceErrorMessage": "You do not have enough IOTA to complete this transfer.",
@@ -27,19 +27,19 @@
         "thisNodeOutOfSync": "This node is out of sync. Please change node or try again.",
         "seed": "Seed",
         "checksum": "Checksum",
-        "back": "Back",
-        "goBack": "Go back",
-        "goBackStep": "Go back a step",
+        "back": "തിരികെ",
+        "goBack": "മടങ്ങിപ്പോവുക",
+        "goBackStep": "ഒരു പടി പിന്നോട്ട് പോകുക",
         "done": "Done",
         "prev": "PREV",
         "next": "Next",
         "apply": "Apply",
         "save": "Save",
         "close": "Close",
-        "export": "Export",
+        "export": "എക്‌സ്‌പോർട്ട്",
         "help": "Help",
         "import": "Import",
-        "continue": "Continue",
+        "continue": "തുടരുക",
         "enable": "Enable",
         "disable": "Disable",
         "enabled": "Enabled",
@@ -51,12 +51,12 @@
         "share": "Share",
         "proceed": "Proceed",
         "qr": "QR",
-        "enterSeed": "Please enter your seed.",
+        "enterSeed": "നിങ്ങളുടെ സീഡ് നൽകുക.",
         "yes": "Yes",
         "no": "No",
         "okay": "Okay",
         "skip": "Skip",
-        "password": "Password",
+        "password": "പാസ്സ്‌വേർഡ് ",
         "unrecognisedPassword": "Unrecognised password",
         "unrecognisedPasswordExplanation": "The password was not recognised. Please try again.",
         "unrecognisedAccount": "Unrecognised account",
@@ -74,9 +74,9 @@
         "attachToTangleUnavailable": "Remote Proof of Work is unavailable",
         "attachToTangleUnavailableExplanation": "Remote Proof of Work is not available on your selected node. Either change node or set Proof of Work to Local in Advanced Settings.",
         "attachToTangleUnavailableExplanationShort": "Remote Proof of Work is not available on your selected node.",
-        "wallet": "Wallet",
-        "all": "All",
-        "sent": "Sent",
+        "wallet": "വാലറ്റ് ",
+        "all": "എല്ലാം",
+        "sent": "അയച്ചു",
         "youReceived": "You received",
         "youSent": "You sent",
         "received": "Received",
@@ -154,7 +154,7 @@
         "errorAccessingKeychain": "Keychain error",
         "errorAccessingKeychainExplanation": "Cannot access keychain required for secure storage.",
         "mainWallet": "MAIN ACCOUNT",
-        "confirm": "Confirm",
+        "confirm": "സ്ഥിരീകരിക്കുക",
         "delete": "Delete",
         "shouldUpdate": "A new update is available",
         "shouldUpdateExplanation": "A new update has been released. It is recommended that you update to the latest version.",
@@ -194,8 +194,8 @@
         "currentPassword": "Current Password",
         "newPassword": "New Password",
         "confirmPassword": "Confirm New Password",
-        "passwordTooWeak": "Password too weak",
-        "passwordTooWeakReason": "Your password is too weak. Use a combination of words, and avoid common phrases, names or dates.",
+        "passwordTooWeak": "ശക്തി കുറഞ്ഞ പാസ്സ് വേഡ്",
+        "passwordTooWeakReason": "നിങ്ങളുടെ പാസ്‌വേഡ് വളരെ ദുർബലമാണ്. പദങ്ങളുടെ സംയോജനം ഉപയോഗിക്കുക, കൂടാതെ പൊതുവായ ശൈലികൾ, പേരുകൾ അല്ലെങ്കിൽ തീയതികൾ ഒഴിവാക്കുക.",
         "reasonRow": "Straight rows of keys are easy to guess.",
         "reasonPattern": "Short patterns of keys are easy to guess.",
         "reasonNames": "Common names and surnames are easy to guess.",
@@ -211,13 +211,13 @@
         "reasonWord": "A single word is easy to guess."
     },
     "setPassword": {
-        "choosePassword": "Choose a new password",
+        "choosePassword": "ഒരു പുതിയ പാസ്‌വേഡ് തിരഞ്ഞെടുക്കുക",
         "passwordTooShort": "Password is too short",
         "passwordTooShortExplanation": "Your password must be at least {{minLength}} characters. It is currently {{currentLength}} characters long. Please try again.",
         "passwordMismatch": "Passwords do not match",
         "passwordMismatchExplanation": "The passwords you have entered do not match. Please try again.",
-        "anEncryptedCopy": "This is your main wallet password. You will use it to log in.",
-        "retypePassword": "Retype Password"
+        "anEncryptedCopy": "ഇതാണ് നിങ്ങളുടെ പ്രധാന വാലറ്റ് പാസ്‌വേഡ്. ലോഗിൻ ചെയ്യാൻ നിങ്ങൾക്  ഇത് ഉപയോഗിക്കും.",
+        "retypePassword": "പാസ്വേഡ് വീണ്ടും ടൈപ്പുചെയ്യുക"
     },
     "copyToClipboard": {
         "seedCleared": "Clipboard cleared",
@@ -230,7 +230,7 @@
         "seedTooLong": "Seed is too long",
         "seedTooShortExplanation": "Seeds must be {{maxLength}} characters long. Your seed is currently {{currentLength}} characters long. Please try again.",
         "seedExplanation": "Seeds should be {{maxLength}} characters long, and should contain capital letters A-Z, or the number 9. You cannot use seeds longer than {{maxLength}} characters.",
-        "neverShare": "NEVER SHARE YOUR SEED WITH ANYONE"
+        "neverShare": "നിങ്ങളുടെ സീഡ്  ആരുമായും പങ്കിടരുത്"
     },
     "home": {
         "balance": "BALANCE",
@@ -240,8 +240,8 @@
         "settings": "SETTINGS"
     },
     "languageSetup": {
-        "language": "Language",
-        "letsGetStarted": "Let's get started"
+        "language": "ഭാഷ",
+        "letsGetStarted": "നമുക്ക് തുടങ്ങാം"
     },
     "login": {
         "emptyPassword": "Empty password",
@@ -260,10 +260,10 @@
         "takingAWhile": "This seems to be taking a while"
     },
     "newSeedSetup": {
-        "generateSeed": "Generate Seed",
-        "loginWithYourSeed": "Login With Your seed",
+        "generateSeed": "സീഡ് സൃഷ്ടിക്കുക",
+        "loginWithYourSeed": "നിങ്ങളുടെ സീഡ് ഉപയോഗിച്ച് പ്രവേശിക്കുക",
         "randomiseSeedMore": "Press 10 more letters to randomise your seed even more",
-        "createSeed": "Create Seed",
+        "createSeed": "സീഡ് സൃഷ്ടിക്കുക ",
         "generatedSeed": "Generated seed",
         "seedNotGenerated": "Seed has not been generated",
         "seedNotGeneratedExplanation": "Please generate a new seed.",
@@ -316,10 +316,10 @@
         "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
     },
     "saveYourSeed": {
-        "saveYourSeed": "Back up your seed",
+        "saveYourSeed": "ിങ്ങളുടെ സീഡ് ബാക്കപ്പ് ചെയ്യുക",
         "seedCleared": "Seed cleared",
         "mostSecure": "Most Secure",
-        "recommended": "Recommended",
+        "recommended": "ശുപാർശ ചെയ്തത് ",
         "leastSecure": "Least Secure",
         "paperWallet": "Paper Wallet",
         "writeYourSeedDown": "Write your seed down",
@@ -336,7 +336,7 @@
     "seedReentry": {
         "pleaseConfirmYourSeed": "Please confirm your seed",
         "helixWillNeverAskToReenter": "Helix will never ask you to re-enter this seed unless you reset your wallet or delete the app.",
-        "enterYourSeed": "Enter your seed",
+        "enterYourSeed": "നിങ്ങളുടെ സീഡ്  നൽകുക",
         "incorrectSeed": "Incorrect seed",
         "incorrectSeedExplanation": "The seed you entered is incorrect. Please try again.",
         "ifYouHaveNotSaved": "If you have not backed up your seed, please go back and do so.",
@@ -377,8 +377,8 @@
         "enterReceiverAddress": "Enter Receiver Address"
     },
     "setSeedName": {
-        "letsAddName": "Let's add a name",
-        "setAccountName": "Set your Account Name",
+        "letsAddName": "നമുക്ക് ഒരു പേര് ചേർക്കാം",
+        "setAccountName": "നിങ്ങളുടെ അക്കൗണ്ട് നാമം സജ്ജമാക്കുക",
         "canUseMultipleSeeds": "You can use multiple seeds with this wallet. Each seed requires an account name.",
         "youCanAdd": "You can add more seeds in the Settings menu."
     },
@@ -451,21 +451,21 @@
     "walletSetup": {
         "seed": "seed",
         "okay": "Okay. Let's set up your wallet!",
-        "doYouNeedASeed": "Do you need to create a new",
+        "doYouNeedASeed": "നിങ്ങൾക് ഒരു പുതിയ സീഡ് ക്രീറ്റ ചെയ്യണോ ",
         "seedExplanation": "Your IOTA seed is the master key to your funds. It is 81 characters long, using only letters A-Z or the number 9.",
         "noIHaveOne": "No, I have one",
         "yesINeedASeed": "Yes, I need a seed",
-        "explanation": "You can use it to access your funds from any wallet, on any device.",
+        "explanation": "ഏത് ഉപകരണത്തിലും ഏത് വാലറ്റിൽ നിന്നും നിങ്ങളുടെ ഫണ്ടുകൾ ആക്സസ് ചെയ്യുന്നതിന് നിങ്ങൾക്ക് ഇത് ഉപയോഗിക്കാൻ കഴിയും.",
         "loseSeed": "But if you lose your seed, you also lose your IOTA.",
         "keepSafe": "Please keep your seed safe.",
         "Seed Verify": "Verify",
         "coin": "sent coin",
-        "helixSeedIsAccess": "Your helix seed is your account access."
+        "helixSeedIsAccess": "നിങ്ങളുടെ ആക്സസ് ആണ് നിങ്ങളുടെ ഹെലിക്സ് സീഡ്."
     },
     "welcome": {
-        "welcome": "Welcome",
+        "welcome": "സ്വാഗതം",
         "thankYou": "നന്ദി",
-        "thankYouDescription": "for downloading the Helix Wallet"
+        "thankYouDescription": "ഹെലിക്സ് വാലറ്റ് ഡൗൻലോഡ് ചെയ്തതിന് "
     },
     "writeSeedDown": {
         "writeDownYourSeed": "<0> Write down your seed and checksum and </0><1>triple check</1><2> that they are correct.</2>",
@@ -647,13 +647,13 @@
         "sendingAnEmptyMessage": "Sending an empty message"
     },
     "seedVault": {
-        "exportSeedVault": "Export SeedVault",
-        "seedVaultExplanation": "A SeedVault is an encrypted file for backing up your seed. The seed is encrypted with a SeedVault Key and cannot be accessed without that key.",
-        "seedVaultWarning": "Make sure you back up the file in multiple locations (e.g. hard drive, cloud, USB). If you lose this file and have not stored your seed elsewhere, you will lose your IOTA.",
+        "exportSeedVault": "എക്‌സ്‌പോർട്ട്  സീഡ്വാൾട്ട് ",
+        "seedVaultExplanation": "നിങ്ങളുടെ സീഡ്  ബാക്കപ്പ് ചെയ്യുന്നതിനുള്ള ഒരു എൻ‌ക്രിപ്റ്റ് ചെയ്ത ഫയലാണ് സീഡ്വാൾട്ട്. സീഡ്വാൾട്ട് കീ ഉപയോഗിച്ച് സീഡ് എൻ‌ക്രിപ്റ്റ് ചെയ്തിരിക്കുന്നു, ആ കീ ഇല്ലാതെ ആക്സസ് ചെയ്യാൻ കഴിയില്ല.",
+        "seedVaultWarning": "നിങ്ങൾ ഒന്നിലധികം സ്ഥലങ്ങളിൽ ഫയൽ ബാക്കപ്പ് ചെയ്യുന്നുവെന്ന് ഉറപ്പാക്കുക (ഉദാ. ഹാർഡ് ഡ്രൈവ്, ക്ലൗഡ്, യുഎസ്ബി). നിങ്ങൾക്ക് ഈ ഫയൽ നഷ്‌ടപ്പെടുകയും നിങ്ങളുടെ സീഡ് മറ്റെവിടെയെങ്കിലും സംഭരിക്കാതിരിക്കുകയും ചെയ്താൽ, നിങ്ങളുടെ IOTA നഷ്‌ടപ്പെടും",
         "exportFail": "SeedVault export failed",
         "exportFailExplanation": "There was an problem exporting the SeedVault. Please ensure you have the appropriate permissions and enough free space.",
-        "exportSuccess": "SeedVault exported",
-        "exportSuccessExplanation": "Your encrypted seed file was exported successfully.",
+        "exportSuccess": "സീഡ്‌വാൾട്ട് എക്‌സ്‌പോർട്ടുചെയ്‌തു",
+        "exportSuccessExplanation": "നിങ്ങളുടെ എൻ‌ക്രിപ്റ്റ് ചെയ്ത സീഡ്  ഫയൽ വിജയകരമായി എക്‌സ്‌പോർട്ടുചെയ്‌തു.",
         "unrecognisedKey": "Unrecognised SeedVault Key",
         "unrecognisedKeyExplanation": "The key was not recognised. Please try again.",
         "emptyKey": "No SeedVault Key entered",
@@ -662,8 +662,8 @@
         "importSuccessExplanation": "Your seed was imported successfully.",
         "saveToDownloadFolder": "Save to Download Folder",
         "importSeedVault": "Import SeedVault",
-        "dropInstructions": "Drop SeedVault or text here <1></1> or click to browse",
-        "dropActive": "Drop SeedVault or text here",
+        "dropInstructions": "സീഡ്വാൾട്ട് അല്ലെങ്കിൽ വാചകം ഇവിടെ ഇടുക <1></1> അല്ലെങ്കിൽ ബ്രൗസുചെയ്യാൻ ക്ലിക്കുചെയ്യുക",
+        "dropActive": "സീഡ്വാൾട്ട് അല്ലെങ്കിൽ വാചകം ഇവിടെ ഇടുക",
         "enterKeyExplanation": "Enter your key to open the SeedVault",
         "noSeedFound": "SeedVault does not contain a valid seed",
         "noSeedFoundExplanation": "The SeedVault is either empty or contains a seed in an invalid format.",
@@ -671,7 +671,7 @@
         "seedFileErrorExplanation": "There was a problem opening the SeedVault. If you selected the correct file then it may be corrupted.",
         "invalidSeedFileError": "Invalid SeedVault file",
         "invalidSeedFileErrorExplanation": "This file format is not supported. Only SeedVault files (.kdbx) created via Helix or a password manager are supported.",
-        "seedVaultKeyExplanation": "First we need to secure your SeedVault. Please choose a key to encrypt the file. You will use this key if you need to restore your seed from the SeedVault back up.",
+        "seedVaultKeyExplanation": " ആദ്യം ഞങ്ങൾ നിങ്ങളുടെ സീഡ്വാൾട്ട് സുരക്ഷിതമാക്കേണ്ടതുണ്ട്. ഫയൽ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നതിന് ദയവായി ഒരു കീ തിരഞ്ഞെടുക്കുക. സീഡ്വാൾട്ടിൽ നിന്ന് നിങ്ങളുടെ  സീഡ് പുന രേസ്റൊരെ സ്ഥാപിക്കണമെങ്കിൽ നിങ്ങൾ ഈ കീ ഉപയോഗിക്കും.",
         "retypeKey": "Retype key",
         "key": "Key"
     },

@@ -163,7 +163,9 @@ class SeedGenerate extends React.PureComponent {
      * @returns {undefined}[0] ℹ ｢wdm｣: Compiling...
      */
     generateNewSeed = () => {
-        const newSeed = createRandomSeed();;
+        const newSeed = createRandomSeed();
+        console.log("newSeed=====", newSeed);
+        
         const newSeed1 = newSeed.slice(0, 16);
         const newSeed2 = newSeed.slice(16, 32);
         const newSeed3 = newSeed.slice(32, 48);

@@ -75,7 +75,7 @@ export class SeedExportComponent extends PureComponent {
         if (event) {
             event.preventDefault();
         }
-
+        
         const score = zxcvbn(password);
 
         if (score.score < 4) {

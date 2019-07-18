@@ -1,14 +1,18 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import { zxcvbn } from 'libs/exports';
+
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import { setPassword } from 'actions/wallet';
+import { generateAlert } from 'actions/alerts';
+
 import SeedStore from 'libs/seed';
 import { hash, initKeychain, initVault } from '../../../libs/crypto';
-import { generateAlert } from 'actions/alerts';
 import { passwordReasons } from 'libs/password';
+
 import Logos from 'ui/components/logos';
 import PasswordInput from 'ui/components/input/password';
 import css from './index.scss';
@@ -35,9 +39,11 @@ class AccountPassword extends React.PureComponent {
     };
 
     createAccount = async (e) => {
-        const { additionalAccountMeta, additionalAccountName, setPassword, history, t } = this.props;
+        console.log("Creating Account.......");
+        
+        const { additionalAccountMeta, additionalAccountName, setPassword, history, t, generateAlert } = this.props;
         const { password, passwordConfirm } = this.state;
-
+        console.log(password,passwordConfirm, "Setpassword====",setPassword);
         if (e) {
             e.preventDefault();
         }
@@ -56,11 +62,20 @@ class AccountPassword extends React.PureComponent {
             return generateAlert('error', t('changePassword:passwordTooWeak'), reason);
         }
 
-        if (password !== passwordConfirm) {
+        if (password != passwordConfirm) {
+            console.log('password not matching');
+            console.log(generateAlert(
+                'error',
+                t('changePassword:passwordsDoNotMatch'),
+                t('changePassword:passwordsDoNotMatchExplanation'),
+                1000
+            ));
+            
             return generateAlert(
                 'error',
                 t('changePassword:passwordsDoNotMatch'),
                 t('changePassword:passwordsDoNotMatchExplanation'),
+                1000
             );
         }
 
@@ -70,8 +85,9 @@ class AccountPassword extends React.PureComponent {
 
         try {
             await initKeychain();
-        } catch (e) {
-            return generateAlert('error', t('errorAccessingKeychain'), t('errorAccessingKeychainExplanation'));
+        } catch (err) {
+            console.log(err)
+            return generateAlert('error', t('global:errorAccessingKeychain'), t('global:errorAccessingKeychainExplanation'));
         }
 
         const passwordHash = await hash(password);
@@ -85,6 +101,8 @@ class AccountPassword extends React.PureComponent {
         });
 
         const seedStore = await new SeedStore[additionalAccountMeta.type](passwordHash);
+        console.log("SEEDSTORE===,seedStore");
+        
         await seedStore.addAccount(additionalAccountName, Electron.getOnboardingSeed());
 
         Electron.setOnboardingSeed(null);
@@ -119,6 +137,7 @@ class AccountPassword extends React.PureComponent {
                         <span>{t('setPassword:anEncryptedCopy')}</span>
                         <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                             <PasswordInput
+                                style={{marginTop:'3vw'}}
                                 focus
                                 value={this.state.password}
                                 label={t('password')}
