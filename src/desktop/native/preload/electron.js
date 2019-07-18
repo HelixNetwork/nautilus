@@ -43,7 +43,7 @@ const Electron = {
      * @returns {promise} Promise resolves in account object
      */
     readKeychain: (accountName) => {
-        console.log("account",accountName);
+        console.log("account", accountName);
         return keytar.getPassword(KEYTAR_SERVICE, accountName);
     },
 
@@ -62,7 +62,7 @@ const Electron = {
      * @returns {promise} Promise resolves in an Array of entries
      */
     listKeychain: () => {
-        return keytar.findCredentials('Helix wallet');
+        return keytar.findCredentials(KEYTAR_SERVICE);
     },
 
     /**
@@ -273,7 +273,7 @@ const Electron = {
 
     garbageCollect: () => {
         global.gc();
-    },
+    }
 };
 
 export default Electron;

@@ -50,9 +50,9 @@ middlewares.push(logger);
 
 // add freeze dev middleware
 // this prevents state from being mutated anywhere in the app during dev
-if (process.env.NODE_ENV !== "production") {
-  middlewares.push(freeze);
-}
+// if (process.env.NODE_ENV !== "production") {
+//   middlewares.push(freeze);
+// }
 
 // apply middlewares
 let middleware = applyMiddleware(...middlewares);
