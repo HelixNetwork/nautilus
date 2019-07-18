@@ -173,8 +173,8 @@ describe('libs: helix/inputs', () => {
                                     ...[
                                         {
                                             address:
-                                                'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
-                                            balance: 60,
+                                                '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
+                                            balance: 536561674354400,
                                         },
                                     ],
                                 ],
@@ -220,48 +220,48 @@ describe('libs: helix/inputs', () => {
             });
 
             describe('when has enough balance after filtering addresses in address data with pending incoming transactions', () => {
-            //     it('should not include addresses with incoming transactions in selected inputs', () => {
-            //         const threshold = 160;
-            //         const addressesWithPendingIncomingTransactions = [
-            //             // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
-            //             '00fcef037138c5e7d49391e8e6f56bff0f4c3ad56acbf1c86e6cb363cbc6ed8a',
-            //         ];
+                it('should not include addresses with incoming transactions in selected inputs', () => {
+                    const threshold = 160;
+                    const addressesWithPendingIncomingTransactions = [
+                        // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
+                        'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+                    ];
 
-            //         return getInputs()(mockAddressData, mockTransactions, threshold).then((inputs) => {
-            //             const inputAddresses = map(inputs, (input) => input.address);
+                    return getInputs()(mockAddressData, mockTransactions, threshold).then((inputs) => {
+                        const inputAddresses = map(inputs, (input) => input.address);
 
-            //             // FIXME (laumair): Also assert #prepareInputs is not called with any address with pending incoming transactions
-            //             each(inputAddresses, (address) =>
-            //                 expect(includes(addressesWithPendingIncomingTransactions, address)).to.equal(false),
-            //             );
-            //         });
-            //     });
-            // });
+                        // FIXME (laumair): Also assert #prepareInputs is not called with any address with pending incoming transactions
+                        each(inputAddresses, (address) =>
+                            expect(includes(addressesWithPendingIncomingTransactions, address)).to.equal(false),
+                        );
+                    });
+                });
+            });
 
-            // describe('when does not have enough balance after filtering addresses in address data with pending incoming transactions', () => {
-            //     it('should throw with an error with message "Incoming transfers to all selected inputs"', () => {
-            //         const threshold = 300;
-            //         const addressesWithPendingIncomingTransactions = [
-            //             // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
-            //             '00fcef037138c5e7d49391e8e6f56bff0f4c3ad56acbf1c86e6cb363cbc6ed8a',
-            //         ];
+            describe('when does not have enough balance after filtering addresses in address data with pending incoming transactions', () => {
+                it('should throw with an error with message "Incoming transfers to all selected inputs"', () => {
+                    const threshold = 300;
+                    const addressesWithPendingIncomingTransactions = [
+                        // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
+                        'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+                    ];
 
-            //         return getInputs()(
-            //             map(mockAddressData, (addressObject) => {
-            //                 if (includes(addressesWithPendingIncomingTransactions, addressObject.address)) {
-            //                     return { ...addressObject, balance: addressObject.balance + 100 };
-            //                 }
+                    return getInputs()(
+                        map(mockAddressData, (addressObject) => {
+                            if (includes(addressesWithPendingIncomingTransactions, addressObject.address)) {
+                                return { ...addressObject, balance: addressObject.balance + 100 };
+                            }
 
-            //                 return addressObject;
-            //             }),
-            //             mockTransactions,
-            //             threshold,
-            //         )
-            //             .then(() => {
-            //                 throw new Error();
-            //             })
-            //             .catch((error) => expect(error.message).to.equal('Incoming transfers to all selected inputs'));
-            //     });
+                            return addressObject;
+                        }),
+                        mockTransactions,
+                        threshold,
+                    )
+                        .then(() => {
+                            throw new Error();
+                        })
+                        .catch((error) => expect(error.message).to.equal('Incoming transfers to all selected inputs'));
+                });
             });
         });
 
@@ -360,11 +360,11 @@ describe('libs: helix/inputs', () => {
                 //     const threshold = 300;
                 //     const addressesWithPendingOutgoingTransactions = [
                 //         // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
-                //         '00fcef037138c5e7d49391e8e6f56bff0f4c3ad56acbf1c86e6cb363cbc6ed8a',
+                //         '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
                 //         // See shared/__tests__/__samples/transactions -> failedTransactionsWithCorrectTransactionHashes
-                //         '47d661bf9be08f9a2c7a2cd8981911600aef33a2ba3869b80099bee26ec1e0a2',
+                //         'e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f',
                 //         // See shared/__tests__/__samples/transactions -> failedTransactionsWithIncorrectTransactionHashes
-                //         '629eeeb6cc719aaa8a17c235d4e127c677a6c6a584d86c4ee549cd89c544a424',
+                //         'e8beb08da8930027eacd19f806a417ff919bafcc216d9e9483398368be3921ea',
                 //     ];
 
                 //     return getInputs()(

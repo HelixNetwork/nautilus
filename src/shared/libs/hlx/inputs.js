@@ -49,7 +49,7 @@ export const prepareInputs = (addressData, threshold, maxInputs = 2, security = 
     if (!isNumber(maxInputs)) {
         _throw(Errors.INVALID_MAX_INPUTS_PROVIDED);
     }
-
+    
     const availableInputs = filter(
         transformAddressDataToInputs(addressData, security),
         // Also filter addresses with zero balance
@@ -209,18 +209,18 @@ export const getInputs = (settings, withQuorum) => (addressData, transactions, t
                 addressData,
                 flatMap(fundedBundles),
             );
-
+                console.log('hi'+reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0)
+                +threshold);
+                console.log(addressDataForInputs)
             if (reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0) < threshold) {
                 throw new Error(Errors.INCOMING_TRANSFERS);
             }
 
             // Filter addresses with pending outgoing transactions
             addressDataForInputs = filterAddressDataWithPendingOutgoingTransactions(addressDataForInputs, transactions);
-
             if (reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0) < threshold) {
                 throw new Error(Errors.ADDRESS_HAS_PENDING_TRANSFERS);
             }
-
             // Filter all spent addresses
             return filterSpentAddressData(settings, withQuorum)(addressDataForInputs, transactions);
         })
