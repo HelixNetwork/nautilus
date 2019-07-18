@@ -49,8 +49,7 @@ class Onboarding extends React.PureComponent {
             'done'
         ];
         const currentIndex =
-            currentKey === 'seed-verify' ? 2 : steps.indexOf(currentKey) + 1;
-        currentKey === 'seed-import' ? 2 : steps.indexOf(currentKey) + 1;
+            currentKey === 'seed-import' && !Electron.getOnboardingSeed() ? 2 : steps.indexOf(currentKey) + 1;
 
         if (currentIndex < 1) {
             return null;
