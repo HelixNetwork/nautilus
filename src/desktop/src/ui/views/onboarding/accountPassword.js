@@ -33,6 +33,7 @@ class AccountPassword extends React.PureComponent {
     };
 
     state = {
+        isGenerated: Electron.getOnboardingGenerated(),
         password: '',
         passwordConfirm: '',
         loading: false,
@@ -126,6 +127,8 @@ class AccountPassword extends React.PureComponent {
 
     render() {
         const { t } = this.props;
+        const { isGenerated } = this.state;
+        console.log("Password->SeedIsGenerated====",isGenerated);
         const score = zxcvbn(this.state.password);
 
         return (
@@ -155,7 +158,8 @@ class AccountPassword extends React.PureComponent {
                             />
                         </div>
                         <div className={css.onboard_btn}>
-                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepBack()}>{t('global:goBack')} <span>></span></Button>
+                            <Button className="navleft" variant="backgroundNone" to={`/onboarding/${isGenerated ? 'seed-import' : 'account-name'}`}>{t('global:goBack')} <span>></span></Button>
+                            {/* onClick={() => this.stepBack()} */}
                             <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
                         </div>
                     </section>

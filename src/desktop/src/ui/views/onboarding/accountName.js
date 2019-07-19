@@ -25,6 +25,8 @@ class AccountName extends React.PureComponent {
         setAccountInfoDuringSetup: PropTypes.func.isRequired
     };
     state = {
+        isGenerated: Electron.getOnboardingGenerated(),
+
         name:
             this.props.additionalAccountName && this.props.additionalAccountName.length
                 ? this.props.additionalAccountName
@@ -79,7 +81,8 @@ class AccountName extends React.PureComponent {
 
     render() {
         const { t, generateAlert } = this.props;
-        const { name } = this.state;
+        const { name, isGenerated } = this.state;
+        console.log("Name->SeedIsGenerated====",isGenerated);
 
         return (
 
@@ -101,7 +104,8 @@ class AccountName extends React.PureComponent {
                                 />
                             </div>
                             <div className={css.onboard_btn}>
-                                <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('global:goBack')} <span>></span></Button>
+                                <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'generate' : 'import'}`} >{t('global:goBack')} <span>></span></Button>      
+                                {/* onClick={() => this.stepForward('seed-generate')} */}
                                 <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
                             </div>
                         </form>
