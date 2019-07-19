@@ -20,6 +20,14 @@ class WalletHistory extends React.PureComponent {
         }).isRequired,
         t: PropTypes.func.isRequired,
     }
+    state={
+        active:'li0'
+    };
+    handleActive(element){
+        this.setState({
+            active:element
+        });
+    }
     render() {
         const { t } = this.props;
         return (
@@ -41,17 +49,17 @@ class WalletHistory extends React.PureComponent {
                                         <div className={classNames(css.main_div)}>
                                             <div className={classNames(css.Left_div)}>
                                                 <ul>
-                                                    <li className={classNames(css.list, css.active)}>ALL</li>
-                                                    <li className={classNames(css.list)}><a className={classNames(css.list_anchor)} href="#">SEND</a></li>
-                                                    <li className={classNames(css.list)}><a className={classNames(css.list_anchor)} href="#">RECEIVED</a></li>
-                                                    <li className={classNames(css.list)}><a className={classNames(css.list_anchor)} href="#">TRANSFERRED</a></li>
+                                                    <li className={classNames(css.list,(this.state.active=='li0'?css.active:''))} onClick={this.handleActive.bind(this,'li0')}>ALL</li>
+                                                    <li className={classNames(css.list,(this.state.active=='li1'?css.active:''))} onClick={this.handleActive.bind(this,'li1')}><a className={classNames(css.list_anchor)} href="#">SEND</a></li>
+                                                    <li className={classNames(css.list,(this.state.active=='li2'?css.active:''))} onClick={this.handleActive.bind(this,'li2')}><a className={classNames(css.list_anchor)} href="#">RECEIVED</a></li>
+                                                    <li className={classNames(css.list,(this.state.active=='li3'?css.active:''))} onClick={this.handleActive.bind(this,'li3')}><a className={classNames(css.list_anchor)} href="#">TRANSFERRED</a></li>
                                                 </ul>
                                             </div>
                                             <div className={classNames(css.right_div)}>
                                                 <div className={classNames(css.input_group)}>
                                                     <input type="text" name="name" className={classNames(css.search_text)} placeholder="Search Transaction" />
                                                     <button className={classNames(css.bts)} variant="backgroundNone" type=""> <FontAwesomeIcon style={{ verticalAlign: "-1.125em" , marginLeft: "-140px" }} icon={faSearch} /></button>
-                                                </div>/
+                                                </div>
                                              </div>
                                              
                                             <table className={classNames(css.table)}>
