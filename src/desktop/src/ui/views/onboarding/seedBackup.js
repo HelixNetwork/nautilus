@@ -89,22 +89,14 @@ class SeedBackup extends React.PureComponent {
                     </div>
                     <Modal
                         variant="confirm"
-                        isOpen={writeVisible || exportVisible}
-                        onClose={() => this.setState({ writeVisible: false, exportVisible: false })}
+                        isOpen={ exportVisible}
+                        onClose={() => this.setState({ exportVisible: false })}
                     >
-                        {writeVisible ? (
-                            <SeedSaveWrite
-                                seed={seed}
-                                checksum={checksum}
-                                onClose={() => this.setState({ writeVisible: false })}
-                            />
-                        ) : (
-                                <SeedExport
+                        <SeedExport
                                     seed={seed}
                                     title={onboardingname}
                                     onClose={() => this.setState({ exportVisible: false })}
                                 />
-                            )}
                     </Modal>
                 </section>
             </div>

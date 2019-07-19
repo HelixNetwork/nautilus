@@ -827,3 +827,14 @@ footer li::after {
   margin: auto;
   padding: 5px 0px 10px 0px;
 }
+
+modal_footer{
+  background: var(--body-bg) !important;
+  position: absolute;
+  bottom: 42px;
+  height: 136px;
+  width: 46.7%;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
