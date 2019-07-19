@@ -203,15 +203,15 @@ export const getInputs = (settings, withQuorum) => (addressData, transactions, t
         : filterNonFundedBundles(settings, withQuorum)(constructBundlesFromTransactions(pendingTransactions))
     )
         .then((fundedBundles) => {
+            console.log('fund');
+            
+            console.log(fundedBundles)
             // Remove addresses from addressData with (still funded) pending incoming transactions
             // This mitigates an attack where an adversary could broadcast a fake transaction to block spending from this input address.
             let addressDataForInputs = filterAddressDataWithPendingIncomingTransactions(
                 addressData,
                 flatMap(fundedBundles),
             );
-                console.log('hi'+reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0)
-                +threshold);
-                console.log(addressDataForInputs)
             if (reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0) < threshold) {
                 throw new Error(Errors.INCOMING_TRANSFERS);
             }

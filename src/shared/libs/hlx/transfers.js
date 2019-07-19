@@ -368,7 +368,6 @@ export const constructBundlesFromTransactions = (transactions) => {
         },
         { broadcastedTailTransactions: [], failedTailTransactions: [] },
     );
-
     return [
         ...map(broadcastedTailTransactions, (tailTransaction) => constructBundle(tailTransaction, transactions)),
         // Bundles for failed transactions cannot be properly constructed because trunk/branch hashes aren't properly set.
