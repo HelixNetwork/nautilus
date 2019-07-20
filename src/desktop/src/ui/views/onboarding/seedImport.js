@@ -28,11 +28,9 @@ class SeedImport extends React.PureComponent {
 
     state = {
         ledger: false,
-        hidePass: 'none',
         isGenerated: Electron.getOnboardingGenerated(),
         importBuffer: [],
         password: '',
-        hidePass: 'none',
         seedPhrase: '',
         importVisible: false,
     };
@@ -156,7 +154,7 @@ class SeedImport extends React.PureComponent {
     }
     render() {
         const { history, t } = this.props;
-        const { importBuffer, seedPhrase, hidePass, seed, isGenerated, importVisible } = this.state;
+        const { importBuffer, seedPhrase, seed, isGenerated, importVisible } = this.state;
         console.log("Import->SeedIsGenerated====", isGenerated, importBuffer);
 
         return (
@@ -210,7 +208,7 @@ class SeedImport extends React.PureComponent {
                             </div>
                             <div className={css.onboard_btn}>
                                 <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" disabled= {seedPhrase == ""} onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
