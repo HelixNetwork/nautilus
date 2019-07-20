@@ -2028,7 +2028,7 @@ describe('libs: helix/addresses', () => {
 
                 const addressesWithPendingIncomingTransactions = [
                     // (Index 1) -> shared/__tests__/__samples__/transaction -> unconfirmedValueTransactions
-                    '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
+                    '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
                 ];
 
                 const expectedResult = filter(

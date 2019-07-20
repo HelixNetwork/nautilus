@@ -800,6 +800,7 @@ export const isFundedBundle = (settings, withQuorum) => (bundle) => {
     return getBalances(settings, withQuorum)(
         reduce(bundle, (acc, tx) => (tx.value < 0 ? [...acc, tx.address] : acc), []),
     ).then((balances) => {
+        
         return (
             reduce(bundle, (acc, tx) => (tx.value < 0 ? acc + Math.abs(tx.value) : acc), 0) <=
             accumulateBalance(map(balances.balances, Number))

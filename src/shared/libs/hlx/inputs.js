@@ -196,16 +196,14 @@ export const getInputs = (settings, withQuorum) => (addressData, transactions, t
     }
 
     const pendingTransactions = filter(transactions, (transaction) => transaction.persistence === false);
-
+    
+    
     // Filter pending transactions with non-funded inputs
     return (isEmpty(pendingTransactions)
         ? Promise.resolve([])
         : filterNonFundedBundles(settings, withQuorum)(constructBundlesFromTransactions(pendingTransactions))
     )
         .then((fundedBundles) => {
-            console.log('fund');
-            
-            console.log(fundedBundles)
             // Remove addresses from addressData with (still funded) pending incoming transactions
             // This mitigates an attack where an adversary could broadcast a fake transaction to block spending from this input address.
             let addressDataForInputs = filterAddressDataWithPendingIncomingTransactions(
