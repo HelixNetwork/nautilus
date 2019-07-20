@@ -18,9 +18,23 @@ class SettingsLanguage extends React.PureComponent {
     static propTypes = {
         t: PropTypes.func.isRequired,
         setLocale: PropTypes.func.isRequired,
+
     }
     state = {
-        selection: null
+        step: 'language',
+        scrollEnd: false,
+    };
+    changeLocale = (e) => {
+        e.preventDefault();
+
+        const { selection } = this.state;
+
+        this.props.setLocale(selection);
+        i18next.changeLanguage(selection);
+
+        this.setState({
+            selection: null,
+        });
     };
 
     render() {
@@ -36,7 +50,7 @@ class SettingsLanguage extends React.PureComponent {
                         <div className="col-lg-8">
                             <div className={classNames(css.foo_bxx12)}>
                                 <div cllassname={classNames(css.set_bxac)}>
-
+                                <form onSubmit={(e) => this.changeLocale(e)}>
                                    <div style={{marginLeft:'-25vw',marginTop:'11vw'}}>
                                     {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
                                     <Select 
@@ -48,12 +62,13 @@ class SettingsLanguage extends React.PureComponent {
                                         })}
                                     />
                                     </div>
-                                    <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
+                                    <Button style={{marginLeft:'-9vw',marginTop:'4vw'}} type="submit" disabled={!selection || selection === locale} >{t('global:save')}</Button>
                                     <div className={classNames(css.spe_bx)}>
                                         {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt="" /><br />Lorem Ipsum  -></a>
                                         <hr className={classNames(css.ser_bts)} />
                                         <a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt="" /></a> */}
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
