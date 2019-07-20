@@ -368,7 +368,6 @@ export const constructBundlesFromTransactions = (transactions) => {
         },
         { broadcastedTailTransactions: [], failedTailTransactions: [] },
     );
-
     return [
         ...map(broadcastedTailTransactions, (tailTransaction) => constructBundle(tailTransaction, transactions)),
         // Bundles for failed transactions cannot be properly constructed because trunk/branch hashes aren't properly set.
@@ -801,6 +800,7 @@ export const isFundedBundle = (settings, withQuorum) => (bundle) => {
     return getBalances(settings, withQuorum)(
         reduce(bundle, (acc, tx) => (tx.value < 0 ? [...acc, tx.address] : acc), []),
     ).then((balances) => {
+        
         return (
             reduce(bundle, (acc, tx) => (tx.value < 0 ? acc + Math.abs(tx.value) : acc), 0) <=
             accumulateBalance(map(balances.balances, Number))

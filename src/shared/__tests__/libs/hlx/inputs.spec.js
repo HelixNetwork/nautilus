@@ -173,8 +173,8 @@ describe('libs: helix/inputs', () => {
                                     ...[
                                         {
                                             address:
-                                                '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
-                                            balance: 536561674354400,
+                                                '45068a64449bf0830a9d965d658e26bea92551255634e8cd16a093ee8621f062',
+                                            balance: 536561674354700,
                                         },
                                     ],
                                 ],
@@ -224,7 +224,7 @@ describe('libs: helix/inputs', () => {
                     const threshold = 160;
                     const addressesWithPendingIncomingTransactions = [
                         // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
-                        'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+                        '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
                     ];
 
                     return getInputs()(mockAddressData, mockTransactions, threshold).then((inputs) => {
@@ -243,7 +243,7 @@ describe('libs: helix/inputs', () => {
                     const threshold = 300;
                     const addressesWithPendingIncomingTransactions = [
                         // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
-                        'c212548bd3c4b596bf24b16c36aaa69a5ecaf5a8240232380b0a26539b6b8619',
+                        '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
                     ];
 
                     return getInputs()(
@@ -253,9 +253,9 @@ describe('libs: helix/inputs', () => {
                             }
 
                             return addressObject;
-                        }),
+                        }),   
                         mockTransactions,
-                        threshold,
+                        threshold
                     )
                         .then(() => {
                             throw new Error();
@@ -356,35 +356,35 @@ describe('libs: helix/inputs', () => {
             });
 
             describe('when does not have enough balance after filtering addresses in address data with pending outgoing transactions', () => {
-                // it('should throw with an error with message "Input addresses already used in a pending transfer."', () => {
-                //     const threshold = 300;
-                //     const addressesWithPendingOutgoingTransactions = [
-                //         // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
-                //         '6214373e99f3e335e630441a96341fbb8fbff9b416a793e1069c5bd28a76eb53',
-                //         // See shared/__tests__/__samples/transactions -> failedTransactionsWithCorrectTransactionHashes
-                //         'e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f',
-                //         // See shared/__tests__/__samples/transactions -> failedTransactionsWithIncorrectTransactionHashes
-                //         'e8beb08da8930027eacd19f806a417ff919bafcc216d9e9483398368be3921ea',
-                //     ];
+                it('should throw with an error with message "Input addresses already used in a pending transfer."', () => {
+                    const threshold = 300;
+                    const addressesWithPendingOutgoingTransactions = [
+                        // See shared/__tests__/__samples/transactions -> unconfirmedValueTransactions
+                        '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
+                        // See shared/__tests__/__samples/transactions -> failedTransactionsWithCorrectTransactionHashes
+                        'e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f',
+                        // See shared/__tests__/__samples/transactions -> failedTransactionsWithIncorrectTransactionHashes
+                        'e8beb08da8930027eacd19f806a417ff919bafcc216d9e9483398368be3921ea',
+                    ];
 
-                //     return getInputs()(
-                //         map(mockAddressData, (addressObject) => {
-                //             if (includes(addressesWithPendingOutgoingTransactions, addressObject.address)) {
-                //                 return { ...addressObject, balance: addressObject.balance + 100 };
-                //             }
+                    return getInputs()(
+                        map(mockAddressData, (addressObject) => {
+                            if (includes(addressesWithPendingOutgoingTransactions, addressObject.address)) {
+                                return { ...addressObject, balance: addressObject.balance + 100 };
+                            }
 
-                //             return addressObject;
-                //         }),
-                //         mockTransactions,
-                //         threshold,
-                //     )
-                //         .then(() => {
-                //             throw new Error();
-                //         })
-                //         .catch((error) =>
-                //             expect(error.message).to.equal('Input addresses already used in a pending transfer.'),
-                //         );
-                // });
+                            return addressObject;
+                        }),
+                        mockTransactions,
+                        threshold,
+                    )
+                        .then(() => {
+                            throw new Error();
+                        })
+                        .catch((error) =>
+                            expect(error.message).to.equal('Input addresses already used in a pending transfer.'),
+                        );
+                });
             });
         });
 

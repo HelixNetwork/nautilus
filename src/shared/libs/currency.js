@@ -72,6 +72,16 @@ export const getCurrencySymbol = (currency) => {
             return 'R';
     }
 };
+/**
+ * Returns fiat balance
+ * @param {number} balance
+ * @param {number} usdPrice
+ * @param {number} conversionRate
+ */
+export const getFiatBalance = (balance, usdPrice, conversionRate) => {
+    return balance * usdPrice / 1000000 * conversionRate;
+}
+
 
 export const availableCurrencies = [
     'USD',

@@ -196,7 +196,8 @@ export const getInputs = (settings, withQuorum) => (addressData, transactions, t
     }
 
     const pendingTransactions = filter(transactions, (transaction) => transaction.persistence === false);
-
+    
+    
     // Filter pending transactions with non-funded inputs
     return (isEmpty(pendingTransactions)
         ? Promise.resolve([])
@@ -209,9 +210,6 @@ export const getInputs = (settings, withQuorum) => (addressData, transactions, t
                 addressData,
                 flatMap(fundedBundles),
             );
-                console.log('hi'+reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0)
-                +threshold);
-                console.log(addressDataForInputs)
             if (reduce(addressDataForInputs, (acc, addressObject) => acc + addressObject.balance, 0) < threshold) {
                 throw new Error(Errors.INCOMING_TRANSFERS);
             }

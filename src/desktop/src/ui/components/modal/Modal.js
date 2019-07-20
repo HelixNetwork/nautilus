@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import css from './modal.scss';
 
-import Logos from '../logos'
-
 /**
  * Modal window component
  */
@@ -44,7 +42,7 @@ export default class Modal extends React.Component {
 
         const content = (
             <div>
-                <Logos size={20} />
+               
             <div className={classNames(css.backdrop, css[variant], !isOpen ? css.hidden : null)}>
                 <div className={css.wrapper}>
                     <div className={css.content}>{this.props.children}</div>
