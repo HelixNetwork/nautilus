@@ -10,11 +10,13 @@ import {
     getAccountInfoDuringSetup,
     selectedAccountStateFactory,
 } from '../selectors/accounts';
+import { nodesConfigurationFactory } from '../selectors/global';
 export const ActionTypes = {
     SET_ACCOUNT_INFO_DURING_SETUP: 'HELIX/ACCOUNTS/SET_ACCOUNT_INFO_DURING_SETUP',
     SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE',
     FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
 }
+import NodesManager from '../libs/hlx/NodesManager';
 
 /**
  * Dispatch to store account information during setup
