@@ -92,6 +92,7 @@ export const decrypt = async (cipherText, hash) => {
 export const initVault = async (password) => {
     try {
         const vault = await Electron.readKeychain(ACC_MAIN);
+        console.log(vault.toString());
         const decryptedVault = vault === null ? {} : await decrypt(vault, password);
 
         const updatedVault = await encrypt(decryptedVault, password);
