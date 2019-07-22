@@ -46,6 +46,9 @@ class AccountName extends React.PureComponent {
         const { wallet, accountNames, history, generateAlert, t } = this.props;
         const name = this.state.name.replace(/^\s+|\s+$/g, '');
 
+        console.log("Acount", Electron.getOnboardingGenerated());
+        console.log("Acount Names", accountNames);
+
         if (!name.length) {
             generateAlert('error', t('addAdditionalSeed:noNickname'), t('addAdditionalSeed:noNicknameExplanation'));
             return;

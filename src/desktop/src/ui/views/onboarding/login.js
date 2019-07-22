@@ -7,9 +7,10 @@ import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import css from './index.scss';
+import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
 
 import { hash, authorize } from 'libs/crypto';
-import { setPassword } from 'actions/wallet';
+import { setPassword, clearWalletData } from 'actions/wallet';
 
 class Login extends React.PureComponent {
 
@@ -47,7 +48,7 @@ class Login extends React.PureComponent {
         /** @ignore */
         getMarketData: PropTypes.func.isRequired,
         /** @ignore */
-        getCurrencyData: PropTypes.func.isRequired,
+        // getCurrencyData: PropTypes.func.isRequired,
         /** @ignore */
         generateAlert: PropTypes.func.isRequired,
         /** @ignore */
@@ -146,7 +147,7 @@ class Login extends React.PureComponent {
      * @param {event} Event - Form submit event
      * @returns {undefined}
      */
-    
+
     handleSubmit = async (e) => {
         if (e) {
             e.preventDefault();
@@ -194,8 +195,8 @@ class Login extends React.PureComponent {
             }
         }
     };
-        // const { history } = this.props;
-        // history.push('/wallet');
+    // const { history } = this.props;
+    // history.push('/wallet');
     render() {
         const { t } = this.props;
         return (
@@ -207,11 +208,11 @@ class Login extends React.PureComponent {
                             <form onSubmit={(e) => this.handleSubmit(e)}>
                                 <h5>{t('login:enterPassword')}<span className={classNames(css.text_color)}>.</span> </h5>
                                 <input type="password" className={classNames(css.sseed_textline)}></input><br /><br />
-                                <Button  type="submit" >{t('login:login')}</Button>
+                                <Button type="submit" >{t('login:login')}</Button>
                             </form>
                         </div>
                         {/* <div className={css.onboard_nav}> */}
-                            <Button style={{top:'440px',left:'550px'}} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')} >{t('global:goBack')} <span>></span></Button>                            </div>
+                        <Button style={{ top: '440px', left: '550px' }} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')} >{t('global:goBack')} <span>></span></Button>                            </div>
                     {/* </div> */}
                 </div>
             </section>
@@ -219,9 +220,25 @@ class Login extends React.PureComponent {
     }
 }
 
-const mapDispatchToProps = (state)=> ({
-    password: state.password,
-    generateAlert,
+const mapStateToProps = (state) => ({
+    password: state.wallet.password,
+    currentAccountName: getSelectedAccountName(state),
+    currentAccountMeta: getSelectedAccountMeta(state),
+    addingAdditionalAccount: isSettingUpNewAccount(state),
+    additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta,
+    additionalAccountName: state.accounts.accountInfoDuringSetup.name,
+    ui: state.ui,
+    currency: state.settings.currency,
+    forceUpdate: state.wallet.forceUpdate,
+    completedMigration: state.settings.completedMigration,
 });
 
-export default connect(null, mapDispatchToProps)(withI18n()(Login));
+const mapDispatchToProps = {
+    generateAlert,
+    setPassword,
+    clearWalletData,
+    getFullAccountInfo,
+    getAccountInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(Login));

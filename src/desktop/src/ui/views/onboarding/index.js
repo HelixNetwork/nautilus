@@ -65,6 +65,7 @@ class Onboarding extends React.PureComponent {
     }
 
     render() {
+        console.log("this state", this.props);
         const { history, location, complete, isAuthorised } = this.props;
         const indexComponent = complete ? Login : Welcome;
         const currentKey = location.pathname.split('/')[2] || '/';
@@ -100,7 +101,7 @@ class Onboarding extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-    complete: state.accounts.onboardingComplete || isSettingUpNewAccount(state),
+    complete: state.accounts.onboardingComplete,
     isAuthorised: state.wallet.ready,
 });
 
