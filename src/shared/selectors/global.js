@@ -43,9 +43,12 @@ export const getSeedIndexFromState = createSelector(
  * @returns {object}
  **/
 export const nodesConfigurationFactory = (overrides) =>
+
     createSelector(
         getSettingsFromState,
         (state) => {
+            console.log("Function===",getSettingsFromState);
+
             console.log("State===", state);
 
             const config = {

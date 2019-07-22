@@ -17,6 +17,8 @@ export const ActionTypes = {
     FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
 }
 import NodesManager from '../libs/hlx/NodesManager';
+import { syncAccount, getAccountData } from '../libs/hlx/accounts';
+
 
 /**
  * Dispatch to store account information during setup

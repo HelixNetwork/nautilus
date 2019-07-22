@@ -6,6 +6,7 @@ import home from "./reducers/home";
 import settings from './reducers/settings';
 import assign from 'lodash/assign';
 import { ActionTypes as WalletActionTypes } from './actions/wallet';
+import { SettingsActionTypes } from './actions/types';
 import wallet from './reducers/wallet';
 import accounts from './reducers/accounts';
 import polling from './reducers/polling';
@@ -34,7 +35,9 @@ const reducers = combineReducers({
 
 const rootReducer = (state, action) => {
   /* eslint-disable no-param-reassign */
-
+  if (action.type === SettingsActionTypes.WALLET_RESET) {
+    state = undefined;
+}
   if (action.type === WalletActionTypes.MAP_STORAGE_TO_STATE) {
     return reducers(assign({}, state, action.payload), action);
 }

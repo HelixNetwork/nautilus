@@ -81,6 +81,21 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 language: action.payload,
             };
+            case ActionTypes.UPDATE_QUORUM_CONFIG:
+            return {
+                ...state,
+                quorum: { ...state.quorum, ...action.payload },
+            };
+        case ActionTypes.UPDATE_NODE_AUTO_SWITCH_SETTING:
+            return {
+                ...state,
+                nodeAutoSwitch: action.payload,
+            };
+        case ActionTypes.UPDATE_AUTO_NODE_LIST_SETTING:
+            return {
+                ...state,
+                autoNodeList: action.payload,
+            };
     }
     return state;
 };
