@@ -32,14 +32,7 @@ class AccountName extends React.PureComponent {
                 ? this.props.additionalAccountName
                 : '',
     };
-    stepForward(route) {
-        this.props.setAccountInfoDuringSetup({
-            meta: { type: 'keychain' },
-        });
-
-        this.props.history.push(`/onboarding/${route}`);
-    }
-
+    
     setName = async (event) => {
         event.preventDefault();
 
@@ -108,7 +101,6 @@ class AccountName extends React.PureComponent {
                             </div>
                             <div className={css.onboard_btn}>
                                 <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'generate' : 'import'}`} >{t('global:goBack')} <span>></span></Button>      
-                                {/* onClick={() => this.stepForward('seed-generate')} */}
                                 <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
                             </div>
                         </form>
@@ -123,7 +115,8 @@ class AccountName extends React.PureComponent {
 const mapStateToProps = (state) => ({
     accountNames: getAccountNamesFromState(state),
     additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta,
-    additionalAccountName: state.accounts.accountInfoDuringSetup.name
+    additionalAccountName: state.accounts.accountInfoDuringSetup.name,
+    wallet: state.wallet,
 });
 
 const mapDispatchToProps = {

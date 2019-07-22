@@ -1,4 +1,5 @@
 import { ActionTypes } from '../actions/settings';
+import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from '../config';
 const initialState = {
     /**
      * Selected locale for wallet
@@ -8,6 +9,32 @@ const initialState = {
      * Selected language name
      */
     language: 'English (International)',
+
+    node: DEFAULT_NODE,
+    /**
+     * List of IRI nodes
+     */
+    nodes: DEFAULT_NODES,
+    /**
+     * List of custom nodes added by user
+     */
+    customNodes: [],
+    /**
+     * Active wallet mode
+     * Could either be Expert or Standard
+     */
+    mode: 'Standard',
+    quorum: {
+        /**
+         * User-defined quorum size
+         */
+        size: QUORUM_SIZE,
+        /**
+         * Determines if quorum is enabled
+         */
+        enabled: true,
+    },
+
     /**
      * Selected currency for conversions in wallet
      */
