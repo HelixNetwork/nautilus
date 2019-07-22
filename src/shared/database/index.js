@@ -288,7 +288,6 @@ class Wallet {
      * @returns {object}
      */
     static getObjectForId(id = Wallet.version) {
-        console.log("id", id);
         return realm.objectForPrimaryKey('Wallet', id);
     }
 
@@ -377,6 +376,12 @@ class Wallet {
             data.accountInfoDuringSetup = assign({}, data.accountInfoDuringSetup, payload);
         });
         console.log("account two", Wallet.latestData);
+    }
+
+    static setOnboardingComplete() {
+        realm.write(() => {
+            Wallet.latestData.onboardingComplete = true;
+        });
     }
 }
 

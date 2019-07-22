@@ -22,3 +22,10 @@ export const getThemeFromState = createSelector(
     getThemeNameFromState,
     (themeName) => Themes[themeName] || Themes.Default,
 );
+
+export const getWalletFromState = (state) => state.wallet || {};
+
+export const getSeedIndexFromState = createSelector(
+    getWalletFromState,
+    (state) => state.seedIndex || 0,
+);

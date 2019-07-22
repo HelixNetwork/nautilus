@@ -8,6 +8,7 @@ import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import css from './index.scss';
 import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
+import { getSelectedAccountName, getSelectedAccountMeta, isSettingUpNewAccount } from 'selectors/accounts';
 
 import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
@@ -42,12 +43,6 @@ class Login extends React.PureComponent {
         /** @ignore */
         clearWalletData: PropTypes.func.isRequired,
         /** @ignore */
-        getChartData: PropTypes.func.isRequired,
-        /** @ignore */
-        getPrice: PropTypes.func.isRequired,
-        /** @ignore */
-        getMarketData: PropTypes.func.isRequired,
-        /** @ignore */
         // getCurrencyData: PropTypes.func.isRequired,
         /** @ignore */
         generateAlert: PropTypes.func.isRequired,
@@ -66,8 +61,6 @@ class Login extends React.PureComponent {
     };
 
     componentDidMount() {
-        Electron.updateMenu('authorised', false);
-
         const { password, addingAdditionalAccount } = this.props;
 
         if (password.length && addingAdditionalAccount) {
@@ -231,6 +224,7 @@ const mapStateToProps = (state) => ({
     currency: state.settings.currency,
     forceUpdate: state.wallet.forceUpdate,
     completedMigration: state.settings.completedMigration,
+    themeName: state.settings.themeName,
 });
 
 const mapDispatchToProps = {

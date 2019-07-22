@@ -9,6 +9,7 @@ import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import transform from 'lodash/transform';
 import { createSelector } from 'reselect';
+import { getSeedIndexFromState } from './global';
 
 
 /**
@@ -59,4 +60,32 @@ export const isSettingUpNewAccount = createSelector(
         accountInfoDuringSetup.completed === true &&
         !isEmpty(accountInfoDuringSetup.name) &&
         !isEmpty(accountInfoDuringSetup.meta),
+);
+
+export const getAccountInfoFromState = createSelector(
+    getAccountsFromState,
+    (state) => state.accountInfo || {},
+);
+
+
+export const getSelectedAccountName = createSelector(
+    getAccountNamesFromState,
+    getSeedIndexFromState,
+    (accountNames, seedIndex) => {
+        return get(accountNames, seedIndex);
+    },
+);
+
+export const selectAccountInfo = createSelector(
+    getAccountInfoFromState,
+    getSelectedAccountName,
+    (accountInfo, accountName) => {
+        const account = get(accountInfo, accountName);
+        return account || {};
+    },
+);
+
+export const getSelectedAccountMeta = createSelector(
+    selectAccountInfo,
+    (account) => get(account, 'meta'),
 );
