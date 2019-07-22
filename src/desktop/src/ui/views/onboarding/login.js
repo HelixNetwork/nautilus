@@ -13,7 +13,6 @@ import { getSelectedAccountName, getSelectedAccountMeta, isSettingUpNewAccount }
 import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
 import SeedStore from 'libs/seed';
-
 class Login extends React.PureComponent {
 
     static propTypes = {
@@ -132,10 +131,10 @@ class Login extends React.PureComponent {
             throw e;
         }
 
-        this.props.getPrice();
-        this.props.getChartData();
-        this.props.getMarketData();
-        this.props.getCurrencyData(currency);
+        // this.props.getPrice();
+        // this.props.getChartData();
+        // this.props.getMarketData();
+        // this.props.getCurrencyData(currency);
 
         if (addingAdditionalAccount) {
             this.props.getFullAccountInfo(seedStore, accountName);

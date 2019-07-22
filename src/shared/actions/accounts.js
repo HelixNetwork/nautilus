@@ -3,9 +3,17 @@ import some from 'lodash/some';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
 import { Wallet } from '../database';
+import {
+    selectedAccountTasksFactory,
+    selectedAccountSetupInfoFactory,
+    getAccountNamesFromState,
+    getAccountInfoDuringSetup,
+    selectedAccountStateFactory,
+} from '../selectors/accounts';
 export const ActionTypes = {
     SET_ACCOUNT_INFO_DURING_SETUP: 'HELIX/ACCOUNTS/SET_ACCOUNT_INFO_DURING_SETUP',
-    SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE'
+    SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE',
+    FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
 }
 
 /**
@@ -23,6 +31,17 @@ export const setAccountInfoDuringSetup = (payload) => {
         payload,
     };
 };
+
+/**
+ * Dispatch when information for an additional account is about to be fetched
+ *
+ * @method fullAccountInfoFetchRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const fullAccountInfoFetchRequest = () => ({
+    type: ActionTypes.FULL_ACCOUNT_INFO_FETCH_REQUEST,
+});
 
 
 /**
