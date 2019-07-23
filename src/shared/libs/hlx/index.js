@@ -1,6 +1,6 @@
 import { composeAPI } from '@helixnetwork/core'
 // TODO
-// import IOTA from 'iota.lib.js';
+// import HELIX from 'iota.lib.js';
 import 'proxy-polyfill';
 import Quorum from './quorum';
 import { DEFAULT_NODE, DEFAULT_NODES, DEFAULT_NODE_REQUEST_TIMEOUT, QUORUM_SIZE } from '../../config';

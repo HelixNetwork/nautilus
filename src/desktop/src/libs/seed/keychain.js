@@ -2,7 +2,7 @@
 import { ACC_MAIN, sha256, encrypt, decrypt } from 'libs/crypto';
 import { ALIAS_REALM } from 'libs/realm';
 import { tritsToChars, byteToTrit } from 'libs/hlx/converter';
-import { prepareTransfersAsync } from 'libs/hlx/extendedApi';
+import { prepareTransfers as prepareTransfer } from 'libs/hlx/extendedApi';
 
 import SeedStoreCore from './seedStoreCore';
 
@@ -179,7 +179,7 @@ class Keychain extends SeedStoreCore {
      */
     prepareTransfers = async (transfers, options = null) => {
         const seed = await this.getSeed(true);
-        const transfer = await prepareTransfersAsync()(seed, transfers, options);
+        const transfer = await prepareTransfer()(seed, transfers, options);
 
         for (let i = 0; i < seed.length * 3; i++) {
             seed[i % seed.length] = 0;

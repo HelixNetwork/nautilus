@@ -22,7 +22,7 @@ import {
 } from '../libs/hlx/extendedApi';
 import { getSelectedNodeFromState, getNodesFromState, getRemotePoWFromState } from '../selectors/global';
 import { selectedAccountStateFactory } from '../selectors/accounts';
-import { withRetriesOnDifferentNodes, fetchRemoteNodes, getRandomNodes, isLastTritZero } from '../libs/hlx/utils';
+import { withRetriesOnDifferentNodes, fetchRemoteNodes, getRandomNodes, isLastBitZero } from '../libs/hlx/utils';
 import { setNextStepAsActive, reset as resetProgress } from './progress';
 import { clearSendFields } from './ui';
 import {
@@ -465,9 +465,9 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
         dispatch(setNextStepAsActive());
 
         // Check the last trit for validity
-        return Promise.resolve(isLastTritZero(address))
-            .then((lastTritIsZero) => {
-                if (!lastTritIsZero) {
+        return Promise.resolve(isLastBitZero(address))
+            .then((lastBitZero) => {
+                if (!lastBitZero) {
                     throw new Error(Errors.INVALID_LAST_TRIT);
                 }
 

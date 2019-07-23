@@ -4,15 +4,15 @@ import map from 'lodash/map';
 import { formatChartData, getUrlTimeFormat, getUrlNumberFormat } from '../libs/utils';
 
 export const ActionTypes = {
-    SET_TIMEFRAME: 'IOTA/MARKET_DATA/SET_TIMEFRAME',
-    SET_CHART_DATA: 'IOTA/MARKET_DATA/SET_CHART_DATA',
-    SET_STATISTICS: 'IOTA/MARKET_DATA/SET_STATISTICS',
-    SET_CURRENCY: 'IOTA/MARKET_DATA/SET_CURRENCY',
-    SET_PRICE: 'IOTA/MARKET_DATA/SET_PRICE',
+    SET_TIMEFRAME: 'HELIX/MARKET_DATA/SET_TIMEFRAME',
+    SET_CHART_DATA: 'HELIX/MARKET_DATA/SET_CHART_DATA',
+    SET_STATISTICS: 'HELIX/MARKET_DATA/SET_STATISTICS',
+    SET_CURRENCY: 'HELIX/MARKET_DATA/SET_CURRENCY',
+    SET_PRICE: 'HELIX/MARKET_DATA/SET_PRICE',
 };
 
 /**
- * Dispatch to set timeframe for IOTA time series price information
+ * Dispatch to set timeframe for HELIX time series price information
  *
  * @method setTimeframe
  * @param {string} timeframe
@@ -27,7 +27,7 @@ export function setTimeframe(timeframe) {
 }
 
 /**
- * Dispatch to set latest IOTA market information in state
+ * Dispatch to set latest HELIX market information in state
  *
  * @method setMarketData
  * @param {object} data
@@ -67,7 +67,7 @@ export function setCurrency(currency) {
 }
 
 /**
- * Dispatch to set latest IOTA price information in state
+ * Dispatch to set latest HELIX price information in state
  *
  * @method setPrice
  * @param {object} data
@@ -91,7 +91,7 @@ export function setPrice(data) {
 }
 
 /**
- * Gets latest IOTA price information
+ * Gets latest HELIX price information
  *
  * @method getPrice
  *

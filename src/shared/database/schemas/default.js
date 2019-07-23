@@ -76,7 +76,7 @@ export const WalletSettingsSchema = {
             default: 'USD',
         },
         /**
-         * Conversion rate for IOTA token.
+         * Conversion rate for HELIX token.
          */
         conversionRate: {
             type: 'int',

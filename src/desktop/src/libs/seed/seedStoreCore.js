@@ -1,8 +1,8 @@
 /* global Electron */
 import { performPow } from 'libs/hlx/transfers';
 import {
-
-} from "libs/hlx"
+    astransactionObject
+} from "@helixnetwork/transaction-converter"
 export default class SeedStoreCore {
     /**
      * Performs proof-of-works on provided trytes

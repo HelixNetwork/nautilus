@@ -118,6 +118,44 @@ export const fullAccountInfoFetchError = () => ({
     type: ActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
 });
 
+/**
+ * Dispatch to update account state after sending a transaction*
+ *
+ * @method updateAccountInfoAfterSpending
+ *
+ * @param {object} payload
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const updateAccountInfoAfterSpending = (payload) => ({
+    type: AccountsActionTypes.UPDATE_ACCOUNT_INFO_AFTER_SPENDING,
+    payload,
+});
+
+/**
+ * Dispatch to update account state before manually promoting a transaction
+ *
+ * @method syncAccountBeforeManualPromotion
+ *
+ * @param {object} payload
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const syncAccountBeforeManualPromotion = (payload) => ({
+    type: AccountsActionTypes.SYNC_ACCOUNT_BEFORE_MANUAL_PROMOTION,
+    payload,
+});
+
+/**
+ * Dispatch to update account state after a transaction reattachment
+ *
+ * @method updateAccountAfterReattachment
+ *
+ * @param {object} payload
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const updateAccountAfterReattachment = (payload) => ({
+    type: AccountsActionTypes.UPDATE_ACCOUNT_AFTER_REATTACHMENT,
+    payload,
+});
 
 export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
     console.log("here -", accountName);

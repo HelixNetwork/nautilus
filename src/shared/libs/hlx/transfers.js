@@ -30,7 +30,6 @@ import {addChecksum, removeChecksum } from '@helixnetwork/checksum';
 import { asTransactionObject ,asTransactionHBytes} from '@helixnetwork/transaction-converter';
 import { isHash } from '@helixnetwork/validators';
 import { DEFAULT_TAG, DEFAULT_MIN_WEIGHT_MAGNITUDE, BUNDLE_OUTPUTS_THRESHOLD } from '../../config';
-// import { iota } from './index';
 import { accumulateBalance } from './addresses';
 import {
     getBalances,
