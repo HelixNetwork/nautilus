@@ -120,12 +120,12 @@ import Password from 'ui/components/input/password';
                                         <div cllassname={classNames(css.set_bxac)}>
                                             <form onSubmit={(e) => this.changePassword(e)}>
                                                   <h5 style={{marginLeft:'14vw',marginTop:'7vw'}}>{t('changePassword:currentPassword')}</h5>
-                                                  <Password type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br />
-                                                  <h5 style={{marginLeft:'14vw',marginTop:'2vw'}}>{t('changePassword:newPassword')}</h5>
-                                                  <input type="text"   value={passwordNew}  onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)}></input><br /><br />
-                                                  <h5 style={{marginLeft:'14vw',marginTop:'2vw'}}>{t('changePassword:confirmPassword')}</h5>
-                                                  <input type="text" value={passwordConfirm}   onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)}></input><br /><br />
-                                                  <Button  style={{marginLeft:'14vw',marginTop:'1vw'}} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
+                                                  <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br />
+                                                  <h5 style={{marginLeft:'14vw',marginTop:'-6vw'}}>{t('changePassword:newPassword')}</h5>
+                                                  <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text"   showScore value={passwordNew}  onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)}/><br /><br />
+                                                  <h5 style={{marginLeft:'14vw',marginTop:'-6vw'}}>{t('changePassword:confirmPassword')}</h5>
+                                                  <Password style={{marginLeft:'14vw',marginTop:'-2vw'}} type="text" value={passwordConfirm}   onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)}/><br /><br />
+                                                  <Button  style={{marginLeft:'18vw',marginTop:'1vw'}} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
                                                   <div  className={classNames(css.spe_bx)}>
                                                   {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                       <hr className={classNames(css.ser_bts)}/>
