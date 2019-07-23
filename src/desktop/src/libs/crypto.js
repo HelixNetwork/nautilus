@@ -121,7 +121,7 @@ export const initKeychain = async () => {
  */
 export const authorize = async (key) => {
     const vault = await Electron.readKeychain(ACC_MAIN);
-
+    console.log(vault);
     if (!vault) {
         throw new Error('Local storage not available');
     }

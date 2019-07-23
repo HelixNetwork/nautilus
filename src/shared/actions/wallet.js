@@ -7,6 +7,7 @@
 export const ActionTypes = {
     MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
     SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
+    CLEAR_WALLET_DATA: 'IOTA/WALLET/CLEAR_WALLET_DATA',
 }
 
 /**
@@ -25,4 +26,8 @@ export const mapStorageToState = (payload) => ({
 export const setPassword = (payload) => ({
     type: ActionTypes.SET_PASSWORD,
     payload,
+});
+
+export const clearWalletData = () => ({
+    type: ActionTypes.CLEAR_WALLET_DATA,
 });

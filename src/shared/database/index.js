@@ -288,7 +288,6 @@ class Wallet {
      * @returns {object}
      */
     static getObjectForId(id = Wallet.version) {
-
         return realm.objectForPrimaryKey('Wallet', id);
     }
 
@@ -347,7 +346,6 @@ class Wallet {
      */
     static createIfNotExists() {
         const shouldCreate = isEmpty(Wallet.getObjectForId());
-
         if (shouldCreate) {
             realm.write(() =>
                 realm.create('Wallet', {
@@ -372,9 +370,17 @@ class Wallet {
     }
 
     static updateAccountInfoDuringSetup(payload) {
+        console.log("account one", payload);
         realm.write(() => {
             const data = Wallet.latestData;
             data.accountInfoDuringSetup = assign({}, data.accountInfoDuringSetup, payload);
+        });
+        console.log("account two", Wallet.latestData);
+    }
+
+    static setOnboardingComplete() {
+        realm.write(() => {
+            Wallet.latestData.onboardingComplete = true;
         });
     }
 }
@@ -390,8 +396,9 @@ class Wallet {
  */
 const migrateToNewStoragePath = (config) => {
     const oldRealm = new Realm(config);
-
+    console.log("schema", config.schemaVersion)
     const walletData = oldRealm.objectForPrimaryKey('Wallet', config.schemaVersion);
+    console.log("wallet data", walletData)
 
     const newRealm = new Realm(assign({}, config, { path: latestStoragePath }));
 
@@ -444,6 +451,8 @@ const initialise = (getEncryptionKeyPromise) => {
                 Realm.schemaVersion(getDeprecatedStoragePath(0), encryptionKey) !== -1;
         } catch (error) { }
 
+        console.log('version', hasVersionZeroRealmAtDeprecatedPath);
+
         const versionZeroConfig = {
             encryptionKey,
             schemaVersion: 0,
@@ -466,7 +475,6 @@ const initialise = (getEncryptionKeyPromise) => {
 
         const schemasSize = size(schemas);
         realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
-        console.log(realm);
         initialiseSync();
     });
 };

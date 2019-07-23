@@ -1,4 +1,5 @@
 import { ActionTypes } from '../actions/settings';
+import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from '../config';
 const initialState = {
     /**
      * Selected locale for wallet
@@ -8,6 +9,34 @@ const initialState = {
      * Selected language name
      */
     language: 'English (International)',
+
+    node: DEFAULT_NODE,
+    /**
+     * List of IRI nodes
+     */
+    nodes: DEFAULT_NODES,
+    /**
+     * List of custom nodes added by user
+     */
+    customNodes: [],
+    /**
+     * Active wallet mode
+     * Could either be Expert or Standard
+     */
+    mode: 'Standard',
+    quorum: {
+        /**
+         * User-defined quorum size
+         */
+        size: QUORUM_SIZE,
+        /**
+         * Determines if quorum is enabled
+         */
+        enabled: true,
+    },
+
+    nodeAutoSwitch: true,
+    autoNodeList: true,
     /**
      * Selected currency for conversions in wallet
      */
@@ -53,6 +82,21 @@ const settingsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 language: action.payload,
+            };
+            case ActionTypes.UPDATE_QUORUM_CONFIG:
+            return {
+                ...state,
+                quorum: { ...state.quorum, ...action.payload },
+            };
+        case ActionTypes.UPDATE_NODE_AUTO_SWITCH_SETTING:
+            return {
+                ...state,
+                nodeAutoSwitch: action.payload,
+            };
+        case ActionTypes.UPDATE_AUTO_NODE_LIST_SETTING:
+            return {
+                ...state,
+                autoNodeList: action.payload,
             };
     }
     return state;

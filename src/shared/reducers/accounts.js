@@ -228,6 +228,16 @@ const account = (
                 ...state,
                 ...updateAccountInfo(state, action.payload),
             };
+            case ActionTypes.FULL_ACCOUNT_INFO_FETCH_SUCCESS:
+            return {
+                ...state,
+                ...updateAccountInfo(state, action.payload),
+                accountInfoDuringSetup: {
+                    name: '',
+                    meta: {},
+                    usedExistingSeed: false,
+                },
+            };
         case ActionTypes.FULL_ACCOUNT_INFO_FETCH_SUCCESS:
             return {
                 ...state,

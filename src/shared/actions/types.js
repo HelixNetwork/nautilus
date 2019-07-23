@@ -208,3 +208,4 @@ export const WalletActionTypes = {
     POP_TO_ROUTE: 'HELIX/APP/WALLET/POP_TO_ROUTE',
     RESET_ROUTE: 'HELIX/APP/WALLET/RESET_ROUTE',
 };
+

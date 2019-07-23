@@ -33,6 +33,7 @@ class SeedImport extends React.PureComponent {
         password: '',
         seedPhrase: '',
         importVisible: false,
+        seed: [],
     };
 
     stepForward(route) {
@@ -67,7 +68,9 @@ class SeedImport extends React.PureComponent {
         });
     }
     onSeedChange(e) {
-        console.log("SeedChange", e.target.value);
+        this.setState(() => ({
+            seed: value,
+        }));
     }
     onSubmit = async () => {
         try {
@@ -93,7 +96,7 @@ class SeedImport extends React.PureComponent {
             this.setState({
                 seedPhrase: ""
             });
-            this.props.generateAlert('error','Wrong password','The password you have entered is incorrect.');
+            this.props.generateAlert('error', 'Wrong password', 'The password you have entered is incorrect.');
         }
 
     }
@@ -105,25 +108,6 @@ class SeedImport extends React.PureComponent {
             seedPhrase: ""
         });
     }
-    setSeed = async (e) => {
-        if (e) {
-            e.preventDefault();
-        }
-        const { isGenerated } = this.state;
-        if (isGenerated) {
-            return generateAlert(
-                'error',
-                t('enterSeed:seedExplanation')
-            );
-        } else {
-            return generateAlert(
-                'error',
-                t('enterSeed:seedExplanation')
-            );
-        }
-
-    }
-
 
     setSeed = async (e) => {
         if (e) {
@@ -185,18 +169,18 @@ class SeedImport extends React.PureComponent {
                                         onClose={() => this.setState({ importVisible: false })}
                                     >
                                         <form style={{ top: '-30px', left: '350px' }}>
-                                        {/* <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{ marginTop: '55px' }}></input><br /><br /> */}
-                                        <PasswordInput
-                                            focus
-                                            value={this.state.password}
-                                            label="Password"
-                                            showValid
-                                            onChange={(value) => {console.log(value);this.setState({ password: value })}}
-                                        />
-                                       
-                                        <Button onClick={this.goBack.bind(this)} variant="backgroundNone" className="modal_navleft">Cancel <span>></span></Button>
-                                        <Button onClick={this.onSubmit.bind(this)} variant="backgroundNone" className="modal_navright">Import Seed <span>></span></Button>
-                                    
+                                            {/* <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{ marginTop: '55px' }}></input><br /><br /> */}
+                                            <PasswordInput
+                                                focus
+                                                value={this.state.password}
+                                                label="Password"
+                                                showValid
+                                                onChange={(value) => { console.log(value); this.setState({ password: value }) }}
+                                            />
+
+                                            <Button onClick={this.goBack.bind(this)} variant="backgroundNone" className="modal_navleft">Cancel <span>></span></Button>
+                                            <Button onClick={this.onSubmit.bind(this)} variant="backgroundNone" className="modal_navright">Import Seed <span>></span></Button>
+
                                         </form>
                                     </Modal>
                                 )}
