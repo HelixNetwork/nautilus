@@ -3,7 +3,7 @@ import has from 'lodash/has';
 import filter from 'lodash/filter';
 import { createSelector } from 'reselect';
 import Themes from '../themes/themes';
-import { DEFAULT_NODE } from '../config';
+import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from '../config';
 /**
  *   Selects settings prop from state.
  *
@@ -63,7 +63,10 @@ export const nodesConfigurationFactory = (overrides) =>
                 /** Wallet's active node */
                 primaryNode: state.node,
                 /** Determines if quorum is enabled/disabled */
-                quorum: state.quorum,
+                quorum: {
+                    size: QUORUM_SIZE,
+                    enabled: true,
+                },
                 /**
                  * Determines if (primary) node should automatically be auto-switched
                  */

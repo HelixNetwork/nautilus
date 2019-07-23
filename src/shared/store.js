@@ -29,7 +29,6 @@ const reducers = combineReducers({
   polling,
   progress,
   ui,
-  wallet,
   alerts
 });
 

@@ -15,6 +15,11 @@ import Settings from 'ui/views/settings/index';
 import SettingsLanguage from 'ui/views/settings/language';
 import css from './index.scss';
 import { setOnboardingComplete, setAccountInfoDuringSetup } from 'actions/accounts';
+import { getAccountNamesFromState, isSettingUpNewAccount } from 'selectors/accounts';
+import { fetchNodeList } from 'actions/polling';
+import {
+    setPassword
+} from 'actions/wallet';
 
 /**
  * Wallet wrapper component
@@ -26,6 +31,7 @@ class App extends React.Component {
         themeName: PropTypes.string.isRequired,
         updateTheme: PropTypes.func.isRequired,
         locale: PropTypes.string.isRequired,
+        accountNames: PropTypes.array.isRequired,
     }
     constructor(props) {
         super(props);
@@ -35,6 +41,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchNodeList();
         Electron.changeLanguage(this.props.t);
     }
 
@@ -99,15 +106,19 @@ class App extends React.Component {
 const mapStateToProps = state => ({
     locale: state.settings.locale,
     themeName: state.settings.themeName,
+    accountNames: getAccountNamesFromState(state),
+    addingAdditionalAccount: isSettingUpNewAccount(state),
     wallet: state.wallet,
     onboardingComplete: state.accounts.onboardingComplete,
     hasErrorFetchingFullAccountInfo: state.ui.hasErrorFetchingFullAccountInfo,
 });
 
 const mapDispatchToProps = {
+    setPassword,
     updateTheme,
     setOnboardingComplete,
     setAccountInfoDuringSetup,
+    fetchNodeList
 };
 
 export default withRouter(connect(

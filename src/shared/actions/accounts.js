@@ -15,6 +15,7 @@ export const ActionTypes = {
     SET_ACCOUNT_INFO_DURING_SETUP: 'HELIX/ACCOUNTS/SET_ACCOUNT_INFO_DURING_SETUP',
     SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE',
     FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
+    FULL_ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR',
 }
 import NodesManager from '../libs/hlx/NodesManager';
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
@@ -97,6 +98,11 @@ export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = 
             });
     };
 };
+
+export const fullAccountInfoFetchError = () => ({
+    type: ActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
+});
+
 
 export const getFullAccountInfo = (seedStore, accountName, quorum = false) => {
     return (dispatch, getState) => {

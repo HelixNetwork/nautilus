@@ -35,6 +35,8 @@ const initialState = {
         enabled: true,
     },
 
+    nodeAutoSwitch: true,
+    autoNodeList: true,
     /**
      * Selected currency for conversions in wallet
      */
