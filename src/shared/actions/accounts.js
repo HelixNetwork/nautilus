@@ -108,7 +108,7 @@ export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = 
                 dispatch(accountInfoFetchSuccess(result));
             })
             .catch((err) => {
-                setTimeout(() => dispatch(generateErrorAlert(generateAccountInfoErrorAlert, err)), 500);
+                setTimeout(() => dispatch(generateAlert(generateAccountInfoErrorAlert, err)), 500);
                 dispatch(accountInfoFetchError());
             });
     };
@@ -160,6 +160,7 @@ export const updateAccountAfterReattachment = (payload) => ({
 export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
     console.log("here -", accountName);
     return (dispatch, getState) => {
+        console.log('getstate',getState());
         dispatch(fullAccountInfoFetchRequest());
 
         // const selectedNode = getSelectedNodeFromState(getState());

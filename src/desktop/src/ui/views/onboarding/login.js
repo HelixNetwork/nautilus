@@ -126,6 +126,7 @@ class Login extends React.PureComponent {
         let seedStore;
         try {
             seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
+            console.log('seeedstore',seedStore);
         } catch (e) {
             e.accountName = accountName;
             throw e;
@@ -188,7 +189,7 @@ class Login extends React.PureComponent {
             try {
                 console.log("here AJI");
                 await this.setupAccount();
-                this.props.history.push('wallet/dashboard');
+                
             } catch (err) {
                 console.log(err);
                 generateAlert(
