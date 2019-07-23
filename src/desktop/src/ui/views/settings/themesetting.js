@@ -6,10 +6,10 @@ import { withI18n, Trans } from 'react-i18next';
 import { Switch, Route ,withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import Top from '../../components/topbar';
-import Sidebar from '../../components/sidebar';
+import themes from 'themes/themes';
 import Button from 'ui/components/button';
 import Select from 'ui/components/input/select';
-
+import {updateTheme} from 'actions/settings';
 
 
 /**
@@ -25,10 +25,15 @@ import Select from 'ui/components/input/select';
         }).isRequired,
         t: PropTypes.func.isRequired,
      }
+     state={
+         themeName: null,
+     }
      render(){
 
-        const { location, history, t } = this.props;
+        const { location, history,updateTheme, t } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
+        const {themeName} =this.state;
+   
          return(
             <div>
                     <Top
@@ -52,19 +57,39 @@ import Select from 'ui/components/input/select';
                                 {/* <div className={classNames(css.set_bx)}> */}
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div className={classNames(css.set_bxac)}>
+                                        <form  onSubmit={(e) => {
+                                               e.preventDefault();
+                                               if (themeName) {document.body.style.background = themes[themeName].body.bg;
+                                                                updateTheme(themeName);
+                                                              }
+                                         }}>
                                             <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('themeCustomisation:theme')}</h5>
-                                            <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
-                                            <div ClassName={classNames(css.theme_bx)}>
+                                            <Select
+                                                 label={t('settings:theme')}
+                                                 value={themeName || this.props.themeName}
+                                                 valueLabel={t(`themes:${themeName ? themeName.toLowerCase() : this.props.themeName.toLowerCase()}`,
+                                                             )}
+                                                 onChange={(value) => this.setState({ themeName: value })}
+                                                 options={Object.keys(themes).map((item) => {
+                                                 return {
+                                                         value: item,
+                                                         label: t(`themes:${item.toLowerCase()}`),
+                                                         };
+                                                 })}
+                                            />
+                                            {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
+                                            {/* <div ClassName={classNames(css.theme_bx)}>
                                                     <h5 style={{marginLeft:'14vw',marginTop:'2vw'}}>{t('themeCustomisation:mockup')}</h5>
                                                     <input type="text" placeholder="Mockup" className={classNames(css.ssetting_textline)}></input><br /><br />
                                                   
-                                            </div>
-                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
+                                            </div> */}
+                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} type="submit"  disabled={!themeName || themeName === this.props.themeName}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
                                                {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                <hr className={classNames(css.ser_bts)}/>
                                          		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
                                             </div>
+                                        </form>
                                         </div>
                                     </div>
                                 {/* </div> */}
@@ -75,7 +100,11 @@ import Select from 'ui/components/input/select';
          );
      }
  }
- const mapDispatchToProps = {
+ const mapStateToProps = (state) => ({
+    themeName: state.settings.themeName,
+});
 
+const mapDispatchToProps = {
+    updateTheme,
 };
-export default connect(null, mapDispatchToProps)(withI18n()(SettingsTheme));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(SettingsTheme));
