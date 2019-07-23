@@ -47,7 +47,7 @@ export const nodesConfigurationFactory = (overrides) =>
     createSelector(
         getSettingsFromState,
         (state) => {
-            console.log("Function===",getSettingsFromState);
+            console.log("Function===", getSettingsFromState);
 
             console.log("State===", state);
 
@@ -99,3 +99,23 @@ export const nodesConfigurationFactory = (overrides) =>
             return config;
         },
     );
+
+/**
+*   Selects IRI nodes prop from settings reducer state object.
+*   Uses getSettingsFromState selector for slicing settings state from the whole state object.
+*
+*   @method getNodesFromState
+*   @param {object} state
+*   @returns {array}
+**/
+export const getNodesFromState = createSelector(getSettingsFromState, (state) => state.nodes || []);
+
+/**
+ *   Selects selected IRI node prop from settings reducer state object.
+ *   Uses getSettingsFromState selector for slicing settings state from the whole state object.
+ *
+ *   @method getSelectedNodeFromState
+ *   @param {object} state
+ *   @returns {array}
+ **/
+export const getSelectedNodeFromState = createSelector(getSettingsFromState, (state) => state.node || DEFAULT_IRI_NODE);

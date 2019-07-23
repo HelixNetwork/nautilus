@@ -10,7 +10,19 @@ import {
     getAccountInfoDuringSetup,
     selectedAccountStateFactory,
 } from '../selectors/accounts';
-import { nodesConfigurationFactory } from '../selectors/global';
+
+import {
+    generateAccountInfoErrorAlert,
+    generateSyncingCompleteAlert,
+    generateSyncingErrorAlert,
+    generateAccountDeletedAlert,
+    generateNodeOutOfSyncErrorAlert,
+    generateUnsupportedNodeErrorAlert,
+    generateAccountSyncRetryAlert,
+    generateLedgerCancelledAlert,
+} from '../actions/alerts';
+
+import { nodesConfigurationFactory, getNodesFromState, getSelectedNodeFromState } from '../selectors/global';
 export const ActionTypes = {
     SET_ACCOUNT_INFO_DURING_SETUP: 'HELIX/ACCOUNTS/SET_ACCOUNT_INFO_DURING_SETUP',
     SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE',
@@ -19,6 +31,9 @@ export const ActionTypes = {
 }
 import NodesManager from '../libs/hlx/NodesManager';
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
+import { setSeedIndex } from './wallet';
+import { withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
+import { DEFAULT_RETRIES } from '../config';
 
 
 /**
@@ -104,16 +119,26 @@ export const fullAccountInfoFetchError = () => ({
 });
 
 
-export const getFullAccountInfo = (seedStore, accountName, quorum = false) => {
+export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
+    console.log("here -", accountName);
     return (dispatch, getState) => {
         dispatch(fullAccountInfoFetchRequest());
 
+        // const selectedNode = getSelectedNodeFromState(getState());
+        const selectedNode = 'https://hlxtest.net:8087'
         const existingAccountNames = getAccountNamesFromState(getState());
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
 
-        return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
-            .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(getAccountData)(seedStore, accountName)
-            .then((result) => {
+        console.log("here - nodes", selectedNode);
+        console.log("here - name", existingAccountNames);
+        console.log("here - seed", usedExistingSeed);
+        withRetriesOnDifferentNodes(
+            [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
+            () => dispatch(generateAccountSyncRetryAlert()),
+        )((...args) => getAccountData(...[...args, withQuorum]))(seedStore, accountName)
+            .then(({ node, result }) => {
+                dispatch(changeNode(node));
+
                 const seedIndex = existingAccountNames.length;
 
                 dispatch(setSeedIndex(seedIndex));
@@ -134,11 +159,23 @@ export const getFullAccountInfo = (seedStore, accountName, quorum = false) => {
                 dispatch(fullAccountInfoFetchSuccess(resultWithAccountMeta));
             })
             .catch((err) => {
+                console.log(err)
+                const dispatchErrors = () => {
+                    if (err.message === Errors.NODE_NOT_SYNCED) {
+                        dispatch(generateNodeOutOfSyncErrorAlert());
+                    } else if (err.message === Errors.UNSUPPORTED_NODE) {
+                        dispatch(generateUnsupportedNodeErrorAlert());
+                    } else {
+                        dispatch(generateAccountInfoErrorAlert(err));
+                    }
+                };
                 dispatch(fullAccountInfoFetchError());
-                if (existingAccountNames.length !== 0) {
+                if (existingAccountNames.length === 0) {
+                    setTimeout(dispatchErrors, 500);
+                } else {
+                    dispatchErrors();
                     seedStore.removeAccount(accountName);
                 }
-                setTimeout(() => dispatch(generateErrorAlert(generateAccountInfoErrorAlert, err)), 500);
             });
     };
 };
