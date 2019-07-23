@@ -47,6 +47,7 @@ class App extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("this prpps", this.props);
+        console.log(nextProps);       
         /* On language change */
         if (nextProps.locale !== this.props.locale) {
             i18next.changeLanguage(nextProps.locale);

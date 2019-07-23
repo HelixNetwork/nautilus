@@ -50,6 +50,7 @@ export const nodesConfigurationFactory = (overrides) =>
             console.log("Function===", getSettingsFromState);
 
             console.log("State===", state);
+            console.log(overrides);
 
             const config = {
                 /** Node that should be given priority while connecting. */
@@ -65,7 +66,7 @@ export const nodesConfigurationFactory = (overrides) =>
                 /** Determines if quorum is enabled/disabled */
                 quorum: {
                     size: QUORUM_SIZE,
-                    enabled: true,
+                    enabled: false,
                 },
                 /**
                  * Determines if (primary) node should automatically be auto-switched

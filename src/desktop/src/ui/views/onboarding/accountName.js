@@ -43,7 +43,7 @@ class AccountName extends React.PureComponent {
         console.log("Acount Names", accountNames);
 
         if (!name.length) {
-            generateAlert('error', t('addAdditionalSeed:noNickname'), t('addAdditionalSeed:noNicknameExplanation'));
+            generateAlert('error', t('addAdditionalSeed:noNickname'), t('addAdditionalSeed:noNicknameExplanation'), 1000);
             return;
         }
 
