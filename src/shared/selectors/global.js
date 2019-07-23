@@ -119,3 +119,16 @@ export const getNodesFromState = createSelector(getSettingsFromState, (state) =>
  *   @returns {array}
  **/
 export const getSelectedNodeFromState = createSelector(getSettingsFromState, (state) => state.node || DEFAULT_IRI_NODE);
+
+
+export const getRemotePoWFromState = createSelector(getSettingsFromState, (state) => state.remotePoW);
+
+/**
+ *   Selects custom nodes prop from settings reducer state object.
+ *   Uses getSettingsFromState selector for slicing settings state from the whole state object.
+ *
+ *   @method getCustomNodesFromState
+ *   @param {object} state
+ *   @returns {array}
+ **/
+export const getCustomNodesFromState = createSelector(getSettingsFromState, (state) => state.customNodes || []);

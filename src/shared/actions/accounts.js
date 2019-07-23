@@ -29,11 +29,11 @@ export const ActionTypes = {
     FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
     FULL_ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR',
 }
-import NodesManager from '../libs/hlx/NodesManager';
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
 import { setSeedIndex } from './wallet';
 import { withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
 import { DEFAULT_RETRIES } from '../config';
+import Errors from '../libs/errors';
 
 
 /**

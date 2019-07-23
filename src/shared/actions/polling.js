@@ -8,7 +8,7 @@ import reduce from 'lodash/reduce';
 import union from 'lodash/union';
 import unionBy from 'lodash/unionBy';
 import { setPrice, setChartData, setMarketData } from './marketData';
-import { quorum, getRandomNode, changeHELIXNode } from '../libs/hlx';
+import { quorum, getRandomNode, changeHelixNode } from '../libs/hlx';
 import { setNodeList, setRandomlySelectedNode, setAutoPromotion, changeNode } from './settings';
 import { fetchRemoteNodes, withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
 import { formatChartData, getUrlTimeFormat, getUrlNumberFormat } from '../libs/utils';
@@ -351,7 +351,7 @@ export const fetchNodeList = (chooseRandomNode = false) => {
             if (chooseRandomNode) {
                 const node = getRandomNode(nodesList);
                 dispatch(setRandomlySelectedNode(node));
-                changeHELIXNode(node);
+                changeHelixNode(node);
             }
         };
 

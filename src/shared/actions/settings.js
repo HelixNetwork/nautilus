@@ -1,5 +1,7 @@
 import i18next from '../libs/i18next';
 import { Wallet } from '../database';
+import { getSelectedNodeFromState } from '../selectors/global';
+
 export const ActionTypes = {
     SET_LOCALE: 'HELIX/SETTINGS/LOCALE',
     UPDATE_THEME: 'HELIX/SETTINGS/UPDATE_THEME',
@@ -70,4 +72,20 @@ export const acceptPrivacy = () => {
     return {
         type: ActionTypes.ACCEPT_PRIVACY,
     };
+};
+
+/**
+ * Dispatch to change selected IRI node
+ *
+ * @method changeNode
+ * @param {string} payload
+ *
+ * @returns {{type: {string}, payload: {string} }}
+ */
+export const changeNode = (payload) => (dispatch, getState) => {
+    if (getSelectedNodeFromState(getState()) !== payload) {
+        dispatch(setNode(payload));
+        // Change provider on global iota instance
+        changeIotaNode(payload);
+    }
 };
