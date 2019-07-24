@@ -10,7 +10,7 @@ import {
     getAccountInfoDuringSetup,
     selectedAccountStateFactory,
 } from '../selectors/accounts';
-
+import Errors from '../libs/errors';
 import {
     generateAccountInfoErrorAlert,
     generateSyncingCompleteAlert,

@@ -95,6 +95,7 @@ class ModalPassword extends PureComponent {
                 'error',
                 t('changePassword:incorrectPassword'),
                 t('changePassword:incorrectPasswordExplanation'),
+                1000
             );
             return;
         }

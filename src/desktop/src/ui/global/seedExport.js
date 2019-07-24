@@ -80,7 +80,7 @@ export class SeedExportComponent extends PureComponent {
                 ? t(`changePassword:${passwordReasons[score.feedback.warning]}`)
                 : t('changePassword:passwordTooWeakReason');
 
-            return generateAlert('error', t('changePassword:passwordTooWeak'), reason);
+            return generateAlert('error', t('changePassword:passwordTooWeak'), reason, 1000);
         }
 
         if (password !== passwordConfirm) {
@@ -88,6 +88,7 @@ export class SeedExportComponent extends PureComponent {
                 'error',
                 t('changePassword:passwordsDoNotMatch'),
                 t('changePassword:passwordsDoNotMatchExplanation'),
+                1000
             );
         }
 
@@ -96,6 +97,7 @@ export class SeedExportComponent extends PureComponent {
                 'error',
                 t('global:somethingWentWrong'),
                 t('global:somethingWentWrongTryAgain'),
+                1000
             );
         }
 
@@ -121,12 +123,12 @@ export class SeedExportComponent extends PureComponent {
                     'error',
                     t('seedVault:exportFail'),
                     t('seedVault:exportFailExplanation'),
-                    10000,
+                    1000,
                     error,
                 );
             }
         } else {
-            generateAlert('success', t('seedVault:exportSuccess'), t('seedVault:exportSuccessExplanation'));
+            generateAlert('success', t('seedVault:exportSuccess'), t('seedVault:exportSuccessExplanation'), 1000);
         }
 
         Electron.garbageCollect();
