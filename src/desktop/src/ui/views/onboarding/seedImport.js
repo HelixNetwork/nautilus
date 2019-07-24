@@ -83,7 +83,6 @@ class SeedImport extends React.PureComponent {
             });
             Electron.setOnboardingSeed(seed[0].seed, false);
             Electron.setOnboardingName(seed[0].title)
-            console.log(Electron.getOnboardingName());
             this.setState({
                 seedPhrase: seedSequence,
                 hidePass: 'none',
@@ -139,8 +138,6 @@ class SeedImport extends React.PureComponent {
     render() {
         const { history, t } = this.props;
         const { importBuffer, seedPhrase, seed, isGenerated, importVisible } = this.state;
-        console.log("Import->SeedIsGenerated====", isGenerated, importBuffer);
-
         return (
             <div>
                 <Logos />
@@ -175,7 +172,7 @@ class SeedImport extends React.PureComponent {
                                                 value={this.state.password}
                                                 label="Password"
                                                 showValid
-                                                onChange={(value) => { console.log(value); this.setState({ password: value }) }}
+                                                onChange={(value) => { this.setState({ password: value }) }}
                                             />
 
                                             <Button onClick={this.goBack.bind(this)} variant="backgroundNone" className="modal_navleft">Cancel <span>></span></Button>
@@ -192,7 +189,7 @@ class SeedImport extends React.PureComponent {
                             </div>
                             <div className={css.onboard_btn}>
                                 <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}>{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" disabled= {seedPhrase == ""} onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" disabled={seedPhrase == ""} onClick={this.setSeed}>{t('global:confirm')} <span>></span></Button>
                             </div>
                         </div>
                     </div>
