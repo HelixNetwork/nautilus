@@ -6,13 +6,16 @@ import { withI18n, Trans } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
-import css from './index.scss';
+import Loading from 'ui/components/loading';
+import SeedStore from 'libs/seed';
+
 import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
 import { getSelectedAccountName, getSelectedAccountMeta, isSettingUpNewAccount } from 'selectors/accounts';
-
 import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
-import SeedStore from 'libs/seed';
+
+import css from './index.scss';
+
 class Login extends React.PureComponent {
 
     static propTypes = {
@@ -126,7 +129,7 @@ class Login extends React.PureComponent {
         let seedStore;
         try {
             seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
-            console.log('seeedstore',seedStore);
+            console.log('seeedstore', seedStore);
         } catch (e) {
             e.accountName = accountName;
             throw e;
@@ -189,7 +192,7 @@ class Login extends React.PureComponent {
             try {
                 console.log("here AJI");
                 await this.setupAccount();
-                
+
             } catch (err) {
                 console.log(err);
                 generateAlert(
@@ -200,11 +203,22 @@ class Login extends React.PureComponent {
             }
         }
     };
-    // const { history } = this.props;
-    // history.push('/wallet');
+
     render() {
-        const { t } = this.props;
-        console.log("login state", this.state);
+        const { forceUpdate, t, addingAdditionalAccount, ui, completedMigration, themeName } = this.props;
+        const { shouldMigrate } = this.state;
+        console.log("login props", this.props);
+        console.log("login states", this.state);
+        if (ui.isFetchingAccountInfo) {
+            return (
+                <Loading
+                    loop
+                    title={addingAdditionalAccount ? t('loading:loadingFirstTime') : null}
+                    subtitle={addingAdditionalAccount ? t('loading:thisMayTake') : null}
+                    themeName={themeName}
+                />
+            );
+        }
         return (
             <section className="spage_1">
                 <Logos />
