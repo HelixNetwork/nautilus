@@ -400,15 +400,6 @@ class Wallet {
         });
     }
     
-<<<<<<< Updated upstream
-    /**
-     * Updates error log.
-     *
-     * @method updateErrorLog
-     * @param {object | array} payload
-     */
-=======
->>>>>>> Stashed changes
     static updateErrorLog(payload) {
         realm.write(() => {
             if (isArray(payload)) {
