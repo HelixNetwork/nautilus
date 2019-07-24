@@ -553,6 +553,8 @@ const isNodeHealthy = (settings) => {
                 latestSolidSubtangleMilestone,
                 latestSolidSubtangleMilestoneIndex,
             }) => {
+                console.log('app'+appVersion);
+                
                 if (['rc', 'beta', 'alpha'].some((el) => appVersion.toLowerCase().indexOf(el) > -1)) {
                     throw new Error(Errors.UNSUPPORTED_NODE);
                 }
