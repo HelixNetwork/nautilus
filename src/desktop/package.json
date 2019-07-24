@@ -73,7 +73,9 @@
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
     "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl",
     "package:win": "electron-packager . helix-app --platform=win32 --arch=x64 --overwrite=true --out=../../release",
-    "package:linux": "electron-packager . helix-app --platform=linux --arch=x64 --overwrite=true --out=../../release"
+    "package:linux": "electron-packager . helix-app --platform=linux --arch=x64 --overwrite=true --out=../../release",
+    "package:mac": "electron-packager . helix-app --platform=darwin --arch=x64 --prune=true --overwrite=true --out=../../release",
+    "dist": "build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -102,6 +104,7 @@
     },
     "extends": null,
     "files": [
+      "./dist/**/*",
       "./build/**/*",
       "./node_modules/**/*",
       "./package.json",

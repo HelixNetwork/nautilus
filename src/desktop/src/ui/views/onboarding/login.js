@@ -142,6 +142,7 @@ class Login extends React.PureComponent {
 
         if (addingAdditionalAccount) {
             this.props.getFullAccountInfo(seedStore, accountName);
+            this.props.history.push('/wallet/')
         } else {
             this.props.getAccountInfo(seedStore, accountName, Electron.notify);
         }
