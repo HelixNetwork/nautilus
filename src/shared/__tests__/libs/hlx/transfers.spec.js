@@ -182,21 +182,21 @@ describe('libs: helix/transfers', () => {
 
     describe('#computeTransactionMessage', () => {
         describe('when bundle has no transaction with a message', () => {
-            // it(`should return ${EMPTY_TRANSACTION_MESSAGE}`, () => {
-            //     expect(computeTransactionMessage([{ signatureMessageFragment: '0'.repeat(1536) }])).to.equal('Empty');
-            // });
+            it(`should return ${EMPTY_TRANSACTION_MESSAGE}`, () => {
+                expect(computeTransactionMessage([{ signatureMessageFragment: '0'.repeat(1536) }])).to.equal('Empty');
+            });
         });
 
         describe('when bundle has a transaction with message', () => {
-            // it('should return message', () => {
-            //     const messageBytes = '54455354204d455353414745';
-            //     expect(
-            //         computeTransactionMessage([
-            //             { signatureMessageFragment: '0'.repeat(1536) },
-            //             { signatureMessageFragment: `${messageBytes}${'0'.repeat(1536 - messageBytes.length)}` },
-            //         ]),
-            //     ).to.equal('TEST MESSAGE');
-            // });
+            it('should return message', () => {
+                const messageBytes = '54455354204d455353414745';
+                expect(
+                    computeTransactionMessage([
+                        { signatureMessageFragment: '0'.repeat(1536) },
+                        { signatureMessageFragment: `${messageBytes}${'0'.repeat(1536 - messageBytes.length)}` },
+                    ]),
+                ).to.equal('TEST MESSAGE');
+            });
         });
     });
 
