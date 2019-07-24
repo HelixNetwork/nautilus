@@ -41,7 +41,7 @@ class AccountName extends React.PureComponent {
 
         console.log("Acount", Electron.getOnboardingGenerated());
         console.log("Acount Names", accountNames);
-
+        Electron.setOnboardingName(name);
         if (!name.length) {
             generateAlert('error', t('addAdditionalSeed:noNickname'), t('addAdditionalSeed:noNicknameExplanation'), 1000);
             return;

@@ -33,7 +33,6 @@ import { syncAccount, getAccountData } from '../libs/hlx/accounts';
 import { setSeedIndex } from './wallet';
 import { withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
 import { DEFAULT_RETRIES } from '../config';
-import Errors from '../libs/errors';
 
 
 /**

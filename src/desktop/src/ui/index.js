@@ -81,7 +81,7 @@ class App extends React.Component {
 
     Init = (props) => {
         return (
-            <Loading loop={false} onEnd={() => this.props.history.push('/onboarding/')} />
+            <Loading loop={false} onEnd={() => this.props.history.push('/wallet/')} />
         );
     };
 

@@ -16,6 +16,7 @@ import Button from 'ui/components/button';
 import css from './seedExport.scss';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/export.json';
+import Electron from '../../../native/preload/electron';
 
 /**
  * SeedVault export component
@@ -104,7 +105,7 @@ export class SeedExportComponent extends PureComponent {
         const error = await Electron.exportSeeds(
             [
                 {
-                    title: title,
+                    title: Electron.getOnboardingName(),
                     seed: seed,
                 },
             ],
