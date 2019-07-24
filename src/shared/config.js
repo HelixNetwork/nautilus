@@ -27,9 +27,12 @@ export const NODES_WITH_POW_DISABLED = [
 
 export const NODES_WITH_POW_ENABLED = [
     'https://hlxtest.net:8087',
-    'https://nodes.thetangle.org:443',
-    'https://iotanode.us:443',
-    'https://pool.trytes.eu',
+    'https://node1.hlxtest.net:8087',
+    'https://node2.hlxtest.net:8087',
+    'https://node3.hlxtest.net:8087',
+    // 'https://nodes.thetangle.org:443',
+    // 'https://iotanode.us:443',
+    // 'https://pool.trytes.eu',
     'https://pow.iota.community:443',
 ].map((url) => ({
     url,
