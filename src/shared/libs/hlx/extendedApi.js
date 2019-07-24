@@ -6,7 +6,7 @@ import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty'
 import { composeAPI } from '@helixnetwork/core';
-import { asTransactionHBytes , asTransactionObject } from "@helixnetwork/transaction-converter";
+import { asTransactionHBytes , asTransactionObject,asTransactionObjects } from "@helixnetwork/transaction-converter";
 import { helix, quorum } from './index';
 import Errors from '../errors';
 import { isWithinMinutes } from '../date';
@@ -119,9 +119,9 @@ const getNodeInfo = (settings) => () =>
  *
  * @returns {function(array): Promise<any>}
  */
-const getTransactionsObjects = () => (hashes) =>
-                asTransactionObject(hashes);
-   
+const getTransactionsObjects = (settings) => (hashes) =>
+      getHelixInstance(settings).getTransactionObjects(hashes);
+
 // TODO : Check if fintransaction objects to be used the new dedicated helix method
 /**
  * Helix findTransactionObjects
@@ -132,7 +132,8 @@ const getTransactionsObjects = () => (hashes) =>
  * @returns {function(object): Promise<any>}
  */
 const findTransactionObjects = (settings) => (args) =>
-    findTransactions(settings)(args).then((hashes) => getTransactionsObjects(settings)(hashes));
+    findTransactions(settings)(args).then((hashes) => 
+         getTransactionsObjects(settings)(hashes));
 
 /**
  * Helix findTransactions
@@ -275,7 +276,7 @@ const getBundle = (settings) => (tailTransactionHash) =>
  * @returns {function(array): Promise<array>}
  */
 const wereAddressesSpentFrom = (settings, withQuorum = true) => (addresses) =>
-    withQuorum
+ withQuorum
         ? quorum.wereAddressesSpentFrom(addresses)
         :    getHelixInstance(settings, getApiTimeout('wereAddressesSpentFrom')).wereAddressesSpentFrom(addresses);
 
@@ -539,6 +540,8 @@ const isNodeHealthy = (settings) => {
                 latestSolidSubtangleMilestone,
                 latestSolidSubtangleMilestoneIndex,
             }) => {
+                console.log('app'+appVersion);
+                
                 if (['rc', 'beta', 'alpha'].some((el) => appVersion.toLowerCase().indexOf(el) > -1)) {
                     throw new Error(Errors.UNSUPPORTED_NODE);
                 }

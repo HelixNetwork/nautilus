@@ -3,7 +3,7 @@ export const __TEST__ = process.env.NODE_ENV === 'test';
 /** Default IRI node object */
 export const DEFAULT_NODE = __TEST__
     ? {
-        url: 'https://hlxtest.net:8087', // http://localhost:14265
+        url: 'http://localhost:14265', 
         pow: false,
         token: '',
         password: '',
@@ -26,11 +26,11 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-    'https://hlxtest.net:8087'
-    // 'https://nodes.thetangle.org:443',
-    // 'https://iotanode.us:443',
-    // 'https://pool.trytes.eu',
-    // 'https://pow.iota.community:443',
+    'https://hlxtest.net:8087',
+    'https://nodes.thetangle.org:443',
+    'https://iotanode.us:443',
+    'https://pool.trytes.eu',
+    'https://pow.iota.community:443',
 ].map((url) => ({
     url,
     pow: true,
@@ -70,11 +70,11 @@ export const IRI_API_VERSION = '1';
 
 // TODO Recheck Quorum size
 
-export const QUORUM_THRESHOLD = 100; //66
-export const QUORUM_SIZE = 1; //3
+export const QUORUM_THRESHOLD = 66; //66
+export const QUORUM_SIZE = 3; //3
 export const QUORUM_SYNC_CHECK_INTERVAL = 120;
-export const MINIMUM_QUORUM_SIZE = 1; // 2
-export const MAXIMUM_QUORUM_SIZE = 1; // 7
+export const MINIMUM_QUORUM_SIZE = 2; // 2
+export const MAXIMUM_QUORUM_SIZE = 7; // 7
 
 /** Maximum milestone fallbehind threshold for node sync checks */
 export const MAX_MILESTONE_FALLBEHIND = 2;
