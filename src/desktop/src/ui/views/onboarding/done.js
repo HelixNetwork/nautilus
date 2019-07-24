@@ -87,7 +87,7 @@ class Done extends React.PureComponent {
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-verify')} >{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >{t('login:login')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/login')} >{t('login:login')} <span>></span></Button>
                             </div>
                         </div>
                     </div>

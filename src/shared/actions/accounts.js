@@ -163,8 +163,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
         console.log('getstate',getState());
         dispatch(fullAccountInfoFetchRequest());
 
-        // const selectedNode = getSelectedNodeFromState(getState());
-        const selectedNode = 'https://hlxtest.net:8087'
+        const selectedNode = getSelectedNodeFromState(getState());
         const existingAccountNames = getAccountNamesFromState(getState());
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
 

@@ -487,11 +487,13 @@ export const getRandomNodes = (nodes, size = 5, blacklistedNodes = [], PoW = fal
  * @returns {Promise<boolean>}
  */
 export const throwIfNodeNotHealthy = (settings) => {
+    console.log("settings data", settings)
     return isNodeHealthy(settings).then((isSynced) => {
+        console.log("is synced", isSynced)
         if (!isSynced) {
             throw new Error(Errors.NODE_NOT_SYNCED_BY_TIMESTAMP);
         }
-
+        
         return isSynced;
     });
 };
