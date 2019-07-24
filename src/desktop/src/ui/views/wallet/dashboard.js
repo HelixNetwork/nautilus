@@ -18,7 +18,6 @@ class Dashboard extends React.PureComponent {
     render() {
         return (
             <Switch>
-                
                 <Route path="/wallet/send" component={Send} />
                 <Route path="/wallet/receive" component={Receive} />
                 <Route path="/wallet/chart" component={Chart}/>

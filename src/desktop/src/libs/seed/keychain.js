@@ -1,7 +1,7 @@
 /* global Electron */
 import { ACC_MAIN, sha256, encrypt, decrypt } from 'libs/crypto';
 import { ALIAS_REALM } from 'libs/realm';
-import { tritsToChars, byteToTrit } from 'libs/hlx/converter';
+import { bitsToChars, indexToBit } from 'libs/hlx/converter';
 import { prepareTransfers as prepareTransfer } from 'libs/hlx/extendedApi';
 
 import SeedStoreCore from './seedStoreCore';
@@ -162,12 +162,12 @@ class Keychain extends SeedStoreCore {
         Electron.garbageCollect();
 
         return !options.total || options.total === 1
-            ? tritsToChars(addresses)
-            : addresses.map((trits) => tritsToChars(trits));
+            ? bitsToChars(addresses)
+            : addresses.map((bits) => bitsToChars(bits));
     };
 
     /**
-     * Placeholder for Trinity compatibillity
+     * Placeholder for Helix Wallet compatibillity
      * @returns {boolean}
      */
     validateAddress = () => {
@@ -192,10 +192,10 @@ class Keychain extends SeedStoreCore {
 
     /**
      * Get seed from keychain
-     * @param {boolean} rawTrits - Should return raw trits
+     * @param {boolean} rawBits - Should return raw bits
      * @returns {array} Decrypted seed
      */
-    getSeed = async (rawTrits) => {
+    getSeed = async (rawBits) => {
         const vault = await Electron.readKeychain(this.accountId);
 
         if (!vault) {
@@ -203,12 +203,12 @@ class Keychain extends SeedStoreCore {
         }
 
         const decryptedVault = await decrypt(vault, this.key);
-        if (rawTrits) {
-            let trits = [];
+        if (rawBits) {
+            let bits = [];
             for (let i = 0; i < decryptedVault.length; i++) {
-                trits = trits.concat(byteToTrit(decryptedVault[i]));
+                bits = bits.concat(indexToBit(decryptedVault[i]));
             }
-            return trits;
+            return bits;
         }
         return decryptedVault;
     };
