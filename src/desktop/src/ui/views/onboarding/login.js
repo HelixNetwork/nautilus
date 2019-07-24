@@ -167,7 +167,7 @@ class Login extends React.PureComponent {
         try {
             passwordHash = await hash(password);
         } catch (err) {
-            generateAlert('error', t('errorAccessingKeychain'), t('errorAccessingKeychainExplanation'), 20000, err);
+            generateAlert('error', t('errorAccessingKeychain'), t('errorAccessingKeychainExplanation'), 2000, err);
         }
         console.log("Hashed", passwordHash);
         try {

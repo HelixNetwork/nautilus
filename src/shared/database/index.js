@@ -341,6 +341,22 @@ class Wallet {
     }
 
     /**
+     * Updates error log.
+     *
+     * @method updateErrorLog
+     * @param {object | array} payload
+     */
+    static updateErrorLog(payload) {
+        realm.write(() => {
+            if (isArray(payload)) {
+                each(payload, (value) => Wallet.latestData.errorLog.push(value));
+            } else {
+                Wallet.latestData.errorLog.push(payload);
+            }
+        });
+    }
+
+    /**
      * Creates a wallet object if it does not already exist.
      * @method createIfNotExists
      */
@@ -384,12 +400,6 @@ class Wallet {
         });
     }
     
-    /**
-     * Updates error log.
-     *
-     * @method updateErrorLog
-     * @param {object | array} payload
-     */
     static updateErrorLog(payload) {
         realm.write(() => {
             if (isArray(payload)) {

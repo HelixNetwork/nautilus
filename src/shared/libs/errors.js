@@ -35,7 +35,7 @@ export default {
     INVALID_INPUT: 'Invalid input.',
     INVALID_TRANSFER: 'Invalid transfer.',
     INVALID_ADDRESS_DATA: 'Invalid address data.',
-    INVALID_LAST_TRIT: 'Last trit from the address is not 0',
+    INVALID_LAST_BIT: 'Last bit from the address is not 0',
     CANNOT_SWEEP_TO_SAME_ADDRESS: 'Cannot sweep to same address.',
     BALANCE_MISMATCH: 'Balance mismatch.',
     PROMOTIONS_LIMIT_REACHED: 'Promotions limit reached.',

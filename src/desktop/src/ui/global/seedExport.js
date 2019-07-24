@@ -16,7 +16,6 @@ import Button from 'ui/components/button';
 import css from './seedExport.scss';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/export.json';
-
 /**
  * SeedVault export component
  */
@@ -80,7 +79,7 @@ export class SeedExportComponent extends PureComponent {
                 ? t(`changePassword:${passwordReasons[score.feedback.warning]}`)
                 : t('changePassword:passwordTooWeakReason');
 
-            return generateAlert('error', t('changePassword:passwordTooWeak'), reason);
+            return generateAlert('error', t('changePassword:passwordTooWeak'), reason, 1000);
         }
 
         if (password !== passwordConfirm) {
@@ -88,6 +87,7 @@ export class SeedExportComponent extends PureComponent {
                 'error',
                 t('changePassword:passwordsDoNotMatch'),
                 t('changePassword:passwordsDoNotMatchExplanation'),
+                1000
             );
         }
 
@@ -96,13 +96,14 @@ export class SeedExportComponent extends PureComponent {
                 'error',
                 t('global:somethingWentWrong'),
                 t('global:somethingWentWrongTryAgain'),
+                1000
             );
         }
 
         const error = await Electron.exportSeeds(
             [
                 {
-                    title: title,
+                    title: Electron.getOnboardingName(),
                     seed: seed,
                 },
             ],
@@ -121,12 +122,12 @@ export class SeedExportComponent extends PureComponent {
                     'error',
                     t('seedVault:exportFail'),
                     t('seedVault:exportFailExplanation'),
-                    10000,
+                    1000,
                     error,
                 );
             }
         } else {
-            generateAlert('success', t('seedVault:exportSuccess'), t('seedVault:exportSuccessExplanation'));
+            generateAlert('success', t('seedVault:exportSuccess'), t('seedVault:exportSuccessExplanation'), 1000);
         }
 
         Electron.garbageCollect();

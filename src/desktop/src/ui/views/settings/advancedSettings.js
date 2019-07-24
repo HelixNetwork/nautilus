@@ -11,8 +11,10 @@ import { generateAlert } from 'actions/alerts';
 import Button from 'ui/components/button';
 import Confirm from 'ui/components/modal/Confirm';
 import ModalPassword from 'ui/components/modal/Password';
+import { reinitialise as reinitialiseStorage } from 'database';
 import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
-import  InputText from 'ui/components/input/text';
+
+
 
 /**
  * Advanced settings component
@@ -20,12 +22,12 @@ import  InputText from 'ui/components/input/text';
 
  class AdvancedSettings extends React.PureComponent{
      static propTypes= {
-
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+      
         generateAlert: PropTypes.func.isRequired,
         wallet: PropTypes.object,
         settings: PropTypes.object.isRequired,
@@ -34,6 +36,11 @@ import  InputText from 'ui/components/input/text';
         resetConfirm: false,
         resetCountdown: 0,
     };
+    componentWillUnmount() {
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+    }
      //reset wallet  
      resetWallet = async () => {
         const { t, generateAlert } = this.props;
@@ -55,11 +62,13 @@ import  InputText from 'ui/components/input/text';
             return;
         }
     };
+
+
     confirmReset = () => {
         const { wallet } = this.props;
 
         this.setState({ resetConfirm: !this.state.resetConfirm, resetCountdown: 15 });
-
+        console.log('value address here');
         if (!wallet || !wallet.isOpen) {
             this.interval = setInterval(() => {
                 if (this.state.resetCountdown === 1) {
@@ -111,13 +120,13 @@ import  InputText from 'ui/components/input/text';
                                             <React.Fragment> will be lost.</React.Fragment>
                                              </p>
                                           </Trans>
-                                         <Button className="small"style={{marginLeft:'20vw',marginTop:'7vw'}} onClick={this.confirmReset} variant="negative">
+                                         <Button variant="negative" className="small"style={{marginLeft:'20vw',marginTop:'7vw'}} onClick={this.confirmReset}>
                                           {t('settings:reset')}
                                       </Button>
                                      
                           {wallet && wallet.ready ? (
                                                            
-                            <ModalPassword
+                            <ModalPassword 
                                 isOpen={resetConfirm}
                                 category="negative"
                                 onSuccess={() => this.resetWallet()}
@@ -133,8 +142,11 @@ import  InputText from 'ui/components/input/text';
                                                 <strong>other account information</strong>
                                                 <React.Fragment> will be lost.</React.Fragment>
                                             </React.Fragment>
+                                             {/* <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br /> */}
+                                           
                                         </Trans>
                                     ),
+                                    
                                     confirm: t('settings:reset'),
                                 }}
                             />
@@ -163,86 +175,7 @@ import  InputText from 'ui/components/input/text';
                                 onConfirm={() => this.resetWallet()}
                             />
                         )}
-                              
-                              
-                               {/*condition for reset wallet */}
-                               {wallet && wallet.ready ? (
-                            <React.Fragment>
-                                <h3>{t('pow:powUpdated')}</h3>
-                                <Toggle
-                                    checked={settings.remotePoW}
-                                    onChange={() => changePowSettings()}
-                                    on={t('pow:remote')}
-                                    off={t('pow:local')}
-                                />
-                                <p>
-                                    {t('pow:feeless')} {t('pow:localOrRemote')}
-                                </p>
-                                <hr />
-
-                                <h3>{t('advancedSettings:autoPromotion')}</h3>
-                                <Toggle
-                                    checked={settings.autoPromotion}
-                                    onChange={() => changeAutoPromotionSettings()}
-                                    on={t('enabled')}
-                                    off={t('disabled')}
-                                />
-                                <p>{t('advancedSettings:autoPromotionExplanation')}</p>
-                                <hr />
-
-                                {Electron.getOS() === 'darwin' && (
-                                    <React.Fragment>
-                                        <h3>{t('tray:trayApplication')}</h3>
-                                        <Toggle
-                                            checked={settings.isTrayEnabled}
-                                            onChange={this.setTray}
-                                            on={t('enabled')}
-                                            off={t('disabled')}
-                                        />
-                                        <p>{t('tray:trayExplanation')}</p>
-                                        <hr />
-                                    </React.Fragment>
-                                )}
-
-                                <h3>{t('notifications:notifications')}</h3>
-                                <Toggle
-                                    checked={settings.notifications.general}
-                                    onChange={() =>
-                                        setNotifications({ type: 'general', enabled: !settings.notifications.general })
-                                    }
-                                    on={t('enabled')}
-                                    off={t('disabled')}
-                                />
-                                <Checkbox
-                                    disabled={!settings.notifications.general}
-                                    checked={settings.notifications.confirmations}
-                                    label={t('notifications:typeConfirmations')}
-                                    className="small"
-                                    onChange={(value) => setNotifications({ type: 'confirmations', enabled: value })}
-                                />
-                                <Checkbox
-                                    disabled={!settings.notifications.general}
-                                    checked={settings.notifications.messages}
-                                    label={t('notifications:typeMessages')}
-                                    className="small"
-                                    onChange={(value) => setNotifications({ type: 'messages', enabled: value })}
-                                />
-                                <p>{t('notifications:notificationExplanation')}</p>
-                                <hr />
-
-                                <TextInput
-                                    value={lockScreenTimeout.toString()}
-                                    label={t('settings:lockScreenTimeout')}
-                                    onChange={this.changeLockScreenTimeout}
-                                />
-                                <hr />
-                            </React.Fragment>
-                        ) : null}
-
-
-
-                                           
-                                            <div  className={classNames(css.spe_bx)}>
+                         <div  className={classNames(css.spe_bx)}>
                                
                                             </div>
                                         </div>
@@ -263,5 +196,6 @@ import  InputText from 'ui/components/input/text';
 
 const mapDispatchToProps = {
     generateAlert,
+    
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AdvancedSettings));

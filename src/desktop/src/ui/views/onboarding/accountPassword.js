@@ -57,7 +57,7 @@ class AccountPassword extends React.PureComponent {
                 ? t(`changePassword:${passwordReasons[score.feedback.warning]}`)
                 : t('changePassword:passwordTooWeakReason');
 
-            return generateAlert('error', t('changePassword:passwordTooWeak'), reason);
+            return generateAlert('error', t('changePassword:passwordTooWeak'), reason, 1000);
         }
 
         if (password != passwordConfirm) {
@@ -76,7 +76,7 @@ class AccountPassword extends React.PureComponent {
         try {
             await initKeychain();
         } catch (err) {
-            return generateAlert('error', t('global:errorAccessingKeychain'), t('global:errorAccessingKeychainExplanation'));
+            return generateAlert('error', t('global:errorAccessingKeychain'), t('global:errorAccessingKeychainExplanation'), 1000);
         }
 
         const passwordHash = await hash(password);
