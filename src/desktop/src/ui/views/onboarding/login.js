@@ -6,10 +6,15 @@ import { withI18n, Trans } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
-import css from './index.scss';
+import Loading from 'ui/components/loading';
+import SeedStore from 'libs/seed';
 
+import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
+import { getSelectedAccountName, getSelectedAccountMeta, isSettingUpNewAccount } from 'selectors/accounts';
 import { hash, authorize } from 'libs/crypto';
-import { setPassword } from 'actions/wallet';
+import { setPassword, clearWalletData } from 'actions/wallet';
+
+import css from './index.scss';
 
 class Login extends React.PureComponent {
 
@@ -41,13 +46,7 @@ class Login extends React.PureComponent {
         /** @ignore */
         clearWalletData: PropTypes.func.isRequired,
         /** @ignore */
-        getChartData: PropTypes.func.isRequired,
-        /** @ignore */
-        getPrice: PropTypes.func.isRequired,
-        /** @ignore */
-        getMarketData: PropTypes.func.isRequired,
-        /** @ignore */
-        getCurrencyData: PropTypes.func.isRequired,
+        // getCurrencyData: PropTypes.func.isRequired,
         /** @ignore */
         generateAlert: PropTypes.func.isRequired,
         /** @ignore */
@@ -61,12 +60,10 @@ class Login extends React.PureComponent {
 
     state = {
         password: '',
-        // shouldMigrate: false,
+        shouldMigrate: false,
     };
 
     componentDidMount() {
-        Electron.updateMenu('authorised', false);
-
         const { password, addingAdditionalAccount } = this.props;
 
         if (password.length && addingAdditionalAccount) {
@@ -92,6 +89,7 @@ class Login extends React.PureComponent {
      * @param {string} password - Password value
      */
     setPassword = (password) => {
+        console.log('password', password);
         this.setState({
             password: password,
         });
@@ -118,21 +116,29 @@ class Login extends React.PureComponent {
             currentAccountMeta,
         } = this.props;
 
+        console.log("props", this.props)
+
+        console.log("account addi", addingAdditionalAccount)
+
         const accountName = addingAdditionalAccount ? additionalAccountName : currentAccountName;
         const accountMeta = addingAdditionalAccount ? additionalAccountMeta : currentAccountMeta;
 
+        console.log("account name", accountName)
+
+        console.log("account meta", accountMeta)
         let seedStore;
         try {
             seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
+            console.log('seeedstore', seedStore);
         } catch (e) {
             e.accountName = accountName;
             throw e;
         }
 
-        this.props.getPrice();
-        this.props.getChartData();
-        this.props.getMarketData();
-        this.props.getCurrencyData(currency);
+        // this.props.getPrice();
+        // this.props.getChartData();
+        // this.props.getMarketData();
+        // this.props.getCurrencyData(currency);
 
         if (addingAdditionalAccount) {
             this.props.getFullAccountInfo(seedStore, accountName);
@@ -146,8 +152,8 @@ class Login extends React.PureComponent {
      * @param {event} Event - Form submit event
      * @returns {undefined}
      */
-    
-    handleSubmit = async (e) => {
+
+    doLogin = async (e) => {
         if (e) {
             e.preventDefault();
         }
@@ -157,13 +163,13 @@ class Login extends React.PureComponent {
 
         let passwordHash = null;
         let authorised = false;
-
+        console.log("Password", password);
         try {
             passwordHash = await hash(password);
         } catch (err) {
             generateAlert('error', t('errorAccessingKeychain'), t('errorAccessingKeychainExplanation'), 20000, err);
         }
-
+        console.log("Hashed", passwordHash);
         try {
             authorised = await authorize(passwordHash);
         } catch (err) {
@@ -171,6 +177,7 @@ class Login extends React.PureComponent {
         }
 
         if (authorised) {
+            console.log("here");
             setPassword(passwordHash);
 
             this.setState({
@@ -183,9 +190,11 @@ class Login extends React.PureComponent {
             // }
 
             try {
+                console.log("here AJI");
                 await this.setupAccount();
-                this.props.history.push('wallet/dashboard');
+
             } catch (err) {
+                console.log(err);
                 generateAlert(
                     'error',
                     t('unrecognisedAccount'),
@@ -194,24 +203,41 @@ class Login extends React.PureComponent {
             }
         }
     };
-        // const { history } = this.props;
-        // history.push('/wallet');
+
     render() {
-        const { t } = this.props;
+        const { forceUpdate, t, addingAdditionalAccount, ui, completedMigration, themeName } = this.props;
+        const { shouldMigrate } = this.state;
+        console.log("login props", this.props);
+        console.log("login states", this.state);
+        if (ui.isFetchingAccountInfo) {
+            return (
+                <Loading
+                    loop
+                    title={addingAdditionalAccount ? t('loading:loadingFirstTime') : null}
+                    subtitle={addingAdditionalAccount ? t('loading:thisMayTake') : null}
+                    themeName={themeName}
+                />
+            );
+        }
         return (
             <section className="spage_1">
                 <Logos />
                 <div className="container">
                     <div className="row">
                         <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                            <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <form onSubmit={(e) => this.doLogin(e)}>
                                 <h5>{t('login:enterPassword')}<span className={classNames(css.text_color)}>.</span> </h5>
-                                <input type="password" className={classNames(css.sseed_textline)}></input><br /><br />
-                                <Button  type="submit" >{t('login:login')}</Button>
+                                <input type="password"
+                                    value={this.state.password}
+                                    label={t('password')}
+                                    name="password"
+                                    onChange={(e) => this.setPassword(e.target.value)}
+                                    className={classNames(css.sseed_textline)}></input><br /><br />
+                                <Button type="submit" >{t('login:login')}</Button>
                             </form>
                         </div>
                         {/* <div className={css.onboard_nav}> */}
-                            <Button style={{top:'440px',left:'550px'}} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')} >{t('global:goBack')} <span>></span></Button>                            </div>
+                        <Button style={{ top: '440px', left: '550px' }} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')} >{t('global:goBack')} <span>></span></Button>                            </div>
                     {/* </div> */}
                 </div>
             </section>
@@ -219,9 +245,26 @@ class Login extends React.PureComponent {
     }
 }
 
-const mapDispatchToProps = (state)=> ({
-    password: state.password,
-    generateAlert,
+const mapStateToProps = (state) => ({
+    password: state.wallet.password,
+    currentAccountName: getSelectedAccountName(state),
+    currentAccountMeta: getSelectedAccountMeta(state),
+    addingAdditionalAccount: isSettingUpNewAccount(state),
+    additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta,
+    additionalAccountName: state.accounts.accountInfoDuringSetup.name,
+    ui: state.ui,
+    currency: state.settings.currency,
+    forceUpdate: state.wallet.forceUpdate,
+    completedMigration: state.settings.completedMigration,
+    themeName: state.settings.themeName,
 });
 
-export default connect(null, mapDispatchToProps)(withI18n()(Login));
+const mapDispatchToProps = {
+    generateAlert,
+    setPassword,
+    clearWalletData,
+    getFullAccountInfo,
+    getAccountInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(Login));

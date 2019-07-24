@@ -10,11 +10,8 @@ import { generateAlert } from 'actions/alerts';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 
 import { passwordReasons } from 'libs/password';
-
-import Input from 'ui/components/input/text';
 import PasswordInput from 'ui/components/input/password';
 import Button from 'ui/components/button';
-import Icon from 'ui/components/icon';
 
 import css from './seedExport.scss';
 import Lottie from 'react-lottie';

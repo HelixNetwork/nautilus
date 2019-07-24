@@ -6,7 +6,7 @@
         "noTransactions": "NO RECENT HISTORY",
         "refresh": "Refresh",
         "balanceError": "Not enough balance",
-        "balanceErrorMessage": "You do not have enough IOTA to complete this transfer.",
+        "balanceErrorMessage": "You do not have enough HELIX to complete this transfer.",
         "totalBalance": "Total balance",
         "transferError": "Transfer error",
         "transferErrorMessage": "Something went wrong while sending your transfer. Please try again.",
@@ -124,8 +124,8 @@
         "nodeAutoChangedExplanation": "Switched to new node {{- nodeAddress}} as selected node is offline.",
         "touchSensor": "Touch the fingerprint sensor",
         "fingerprintOnSend": "Touch fingerprint reader to authorise the transfer",
-        "masterKey": "Your IOTA seed is the master key to your funds.",
-        "seedThief": "If someone else has your seed they can steal your IOTA.",
+        "masterKey": "Your HELIX seed is the master key to your funds.",
+        "seedThief": "If someone else has your seed they can steal your HELIX.",
         "googlePlayServicesNotAvailable": "Google Play Services not available",
         "couldNotVerifyDeviceIntegrity": "Could not verify device integrity because Google Play Services are not available.",
         "clear": "Clear",
@@ -283,7 +283,7 @@
     },
     "paperWallet": {
         "neverShare": "Never share your seed with anyone.",
-        "iotaLogo": "IOTA logo",
+        "HELIXLogo": "HELIX logo",
         "print": "Print",
         "paperConvenience": "Printing a paper copy of your seed is a convenient way to store it.",
         "publicInsecure": "But printing on public wifi or a public printer is insecure.",
@@ -311,7 +311,7 @@
         "generateAnAddress": "Generate address",
         "generateAnAddressTitle": "Generate an address",
         "generateAnAddressExplanation": "Please generate an address before using this function.",
-        "generateAddressInformation": "Generate a new deposit address every time you wish to receive IOTA",
+        "generateAddressInformation": "Generate a new deposit address every time you wish to receive HELIX",
         "receiveCoins": "Receive HLX Coins",
         "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
     },
@@ -352,7 +352,7 @@
         "invalidAddressExplanation4": "Please check that you have entered the address correctly.",
         "invalidAddressExplanationGeneric": "Valid addresses should be 90 characters and contain only A-Z or 9.",
         "notEnoughFunds": "Insufficient funds",
-        "notEnoughFundsExplanation": "You do not have enough IOTA to complete this transfer.",
+        "notEnoughFundsExplanation": "You do not have enough HELIX to complete this transfer.",
         "recipientAddress": "Recipient address",
         "amount": "Amount",
         "max": "MAX",
@@ -363,9 +363,9 @@
         "invalidMessageTooLongExplanation": "The message exceeds the max. amount of characters (1093).",
         "send": "Send",
         "invalidAmount": "Incorrect amount entered",
-        "invalidAmountExplanation": "Please enter a valid transaction amount. It may be helpful to view the IOTA unit explanation at the bottom of this page.",
+        "invalidAmountExplanation": "Please enter a valid transaction amount. It may be helpful to view the HELIX unit explanation at the bottom of this page.",
         "maximumSelected": "MAXIMUM amount selected",
-        "iotaUnits": "IOTA units explained",
+        "HELIXUnits": "HELIX units explained",
         "sendMax": "SEND MAX",
         "totalTime": "Total time",
         "addressPasteDetected": "Address paste detected",
@@ -386,7 +386,7 @@
         "advanced": "Advanced",
         "standard": "Standard",
         "advancedModeExplanation": "Advanced mode will display more detailed technical information.",
-        "modesExplanation": "Only enable Advanced mode if you are experienced using IOTA. You may find it confusing otherwise.",
+        "modesExplanation": "Only enable Advanced mode if you are experienced using HELIX. You may find it confusing otherwise.",
         "modeUpdated": "Mode updated",
         "modeUpdatedExplanation": "You have changed to {{mode}} mode"
     },
@@ -453,11 +453,11 @@
         "seed": "seed",
         "okay": "Okay. Let's set up your wallet!",
         "doYouNeedASeed": "Do you need to create a new",
-        "seedExplanation": "Your IOTA seed is the master key to your funds. It is 81 characters long, using only letters A-Z or the number 9.",
+        "seedExplanation": "Your HELIX seed is the master key to your funds. It is 81 characters long, using only letters A-Z or the number 9.",
         "noIHaveOne": "No, I have one",
         "yesINeedASeed": "Yes, I need a seed",
         "explanation": "You can use it to access your funds from any wallet, or any device.",
-        "loseSeed": "But if you lose your seed, you also lose your IOTA.",
+        "loseSeed": "But if you lose your seed, you also lose your HELIX.",
         "keepSafe": "Please keep your seed safe.",
         "Seed Verify": "Verify",
         "coin": "sent coin",
@@ -492,8 +492,8 @@
         "pleaseWait": "Please wait, Helix is promoting another bundle.",
         "typeHelp": "Type !help for available commands",
         "searchHelpText": "Search by bundle hash or message content",
-        "searchHelpValue": "Find transactions by exact iota value",
-        "searchHelpUnits": "Find transactions by iota value and unit",
+        "searchHelpValue": "Find transactions by exact HELIX value",
+        "searchHelpUnits": "Find transactions by HELIX value and unit",
         "searchHelpMore": "Find transactions with a value greater than X",
         "searchHelpLess": "Find transactions with a value less than X"
     },
@@ -569,11 +569,11 @@
         "million": "Million",
         "thousand": "Thousand",
         "one": "One",
-        "unitInfoExplanation": "IOTAs are typically acquired in multiples of one million, but can be transferred as a single IOTA."
+        "unitInfoExplanation": "HELIXs are typically acquired in multiples of one million, but can be transferred as a single HELIX."
     },
     "usedAddressModal": {
         "cantSpendFullBalanceQuestion": "Why can't I spend my full balance?",
-        "spentAddressExplanation": "You have funds on one or more spent addresses. Address reuse is dangerous in IOTA, so this wallet does not allow you to send from the same address more than once.",
+        "spentAddressExplanation": "You have funds on one or more spent addresses. Address reuse is dangerous in HELIX, so this wallet does not allow you to send from the same address more than once.",
         "discordInformation": "Please head to the #help channel on Discord to find out what you can do."
     },
     "deleteAccount": {
@@ -608,7 +608,7 @@
         "didSaveSeed": "Did you back up your seed?",
         "iHaveBackedUp": "I have safely backed up my seed",
         "reenterSeed": "At the next step you need to re-enter your seed.",
-        "reenterSeedWarning": "If you have not backed up your seed and your device fails, you will lose all of your IOTA.",
+        "reenterSeedWarning": "If you have not backed up your seed and your device fails, you will lose all of your HELIX.",
         "pleaseConfirm": "Please confirm you have securely stored your seed."
     },
     "walletResetConfirmation": {
@@ -695,7 +695,7 @@
         "continueDepsiteRisk": "Do you wish to continue despite this risk?"
     },
     "pow": {
-        "feeless": "It is necessary to complete a little proof of work to send feeless transactions in IOTA.",
+        "feeless": "It is necessary to complete a little proof of work to send feeless transactions in HELIX.",
         "localOrRemote": "Proof of work can either be completed locally on your device, or offloaded to a node.",
         "local": "Local",
         "remote": "Remote",
@@ -741,13 +741,13 @@
     "deepLink": {
         "autofill": "Autofill success",
         "autofillExplanation": "Transaction data autofilled from link.",
-        "deepLinkingOverview": "Deep links are clickable links (iota://...) that automatically fill transaction data in Helix.",
+        "deepLinkingOverview": "Deep links are clickable links (HELIX://...) that automatically fill transaction data in Helix.",
         "deepLinkingWarning": "Be aware of phishing scams. Make sure the link you open navigates to the official Helix app.",
         "deepLinkingUpdated": "Deep linking settings",
         "deepLinkingEnabled": "You have enabled deep linking.",
         "deepLinkingDisabled": "You have disabled deep linking.",
         "deepLinkingInfoTitle": "Deep linking is not enabled",
-        "deepLinkingInfoMessage": "You opened an iota:// deep link but deep linking is not enabled."
+        "deepLinkingInfoMessage": "You opened an HELIX:// deep link but deep linking is not enabled."
     },
     "updates": {
         "errorRetrievingUpdateData": "Error retrieving update data",
@@ -831,8 +831,8 @@
         "connectionExplanation": "A Ledger device must be connected to perform this function.",
         "transactionTitle": "Scroll through and approve the transaction on your Ledger",
         "transactionExplanation": "Use your Ledger device to approve the outgoing transaction.",
-        "applicationTitle": "Open Ledger IOTA app",
-        "applicationExplanation": "Go to your Ledger and open the IOTA app to continue using Helix.",
+        "applicationTitle": "Open Ledger HELIX app",
+        "applicationExplanation": "Go to your Ledger and open the HELIX app to continue using Helix.",
         "cannotSendZeroValueTitle": "Cannot send zero value transfer",
         "cannotSendZeroValueExplanation": "Cannot send zero value transfers with a Ledger device.",
         "ledgerDisconnectedTitle": "Ledger device disconnected",
@@ -844,7 +844,7 @@
         "checkAddress": "Check the receive address",
         "checkAddressExplanation": "Check that the address matches the one displayed on your Ledger device.",
         "applicationNotInitialised": "Warning unconfirmed",
-        "applicationNotInitialisedExplanation": "Reopen the IOTA app on your Ledger device, accept the informational warning and try again.",
+        "applicationNotInitialisedExplanation": "Reopen the HELIX app on your Ledger device, accept the informational warning and try again.",
         "udevError": "Could not communicate with Ledger device",
         "udevErrorExplanation": "Helix could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
     }

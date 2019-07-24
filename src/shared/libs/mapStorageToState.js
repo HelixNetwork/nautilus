@@ -3,6 +3,7 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import transform from 'lodash/transform';
 import { Account, Node, Wallet } from '../database';
+import { DEFAULT_NODE } from '../config';
 
 /**
  * Map persisted state to redux state
@@ -51,9 +52,15 @@ export const mapStorageToState = () => {
             ),
         },
         settings: assign({}, settings, {
-            nodes: map(nodes, (node) => node.url),
+            node: find(nodes, { url: settings.node }) || DEFAULT_NODE,
+            nodes: map(nodes, ({ url, pow, token, password }) => ({ url, pow, token, password })),
             availableCurrencies: map(settings.availableCurrencies, (currency) => currency),
-            customNodes: map(filter(nodes, (node) => node.custom === true), (node) => node.url),
+            customNodes: map(filter(nodes, (node) => node.custom === true), ({ url, pow, token, password }) => ({
+                url,
+                pow,
+                token,
+                password,
+            })),
         }),
         alerts: { notificationLog: map(errorLog, (error) => error) },
     };

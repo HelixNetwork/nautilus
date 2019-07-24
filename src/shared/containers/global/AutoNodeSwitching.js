@@ -25,7 +25,7 @@ export default function withAutoNodeSwitching(AutoNodeSwitchedComponent) {
 
         componentWillMount() {
             const { autoNodeSwitching } = this.props;
-            // re-inject auto switching to iota lib module up on startup
+            // re-inject auto switching to helix lib module up on startup
             SwitchingConfig.callbacks.push(this.showAlertOnAutoNodeSwitch);
             SwitchingConfig.autoSwitch = autoNodeSwitching;
         }

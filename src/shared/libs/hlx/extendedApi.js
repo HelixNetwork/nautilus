@@ -68,9 +68,21 @@ const getApiTimeout = (method) => {
  * @returns {object} HELIX instance
  */
 const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOUT) => {
+    let  url, token, password ;
     if (settings) {
         // TODO
-        const { url, token, password } = settings;
+        
+        if(settings.url === undefined)
+        {
+             url = settings;
+        }
+        else{
+            // const { url, token, password } = settings;
+            url = settings.url;
+            token = settings.token;
+            password = settings.password;
+        }
+        
 
         const instance = composeAPI({
             provider: url

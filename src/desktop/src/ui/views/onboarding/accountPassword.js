@@ -40,11 +40,8 @@ class AccountPassword extends React.PureComponent {
     };
 
     createAccount = async (e) => {
-        console.log("Creating Account.......");
-        
         const { additionalAccountMeta, additionalAccountName, setPassword, history, t, generateAlert } = this.props;
         const { password, passwordConfirm } = this.state;
-        console.log(password,passwordConfirm, "Setpassword====",setPassword);
         if (e) {
             e.preventDefault();
         }
@@ -64,14 +61,6 @@ class AccountPassword extends React.PureComponent {
         }
 
         if (password != passwordConfirm) {
-            console.log('password not matching');
-            console.log(generateAlert(
-                'error',
-                t('changePassword:passwordsDoNotMatch'),
-                t('changePassword:passwordsDoNotMatchExplanation'),
-                1000
-            ));
-            
             return generateAlert(
                 'error',
                 t('changePassword:passwordsDoNotMatch'),
@@ -87,25 +76,18 @@ class AccountPassword extends React.PureComponent {
         try {
             await initKeychain();
         } catch (err) {
-            console.log(err)
             return generateAlert('error', t('global:errorAccessingKeychain'), t('global:errorAccessingKeychainExplanation'));
         }
 
         const passwordHash = await hash(password);
-        console.log("password", passwordHash)
         await initVault(passwordHash);
-        console.log("password2", passwordHash)
         setPassword(passwordHash);
-        console.log("password3", passwordHash)
         this.props.setAccountInfoDuringSetup({
             completed: true,
         });
 
         const seedStore = await new SeedStore[additionalAccountMeta.type](passwordHash);
-        console.log("SEEDSTORE===,seedStore");
-        
         await seedStore.addAccount(additionalAccountName, Electron.getOnboardingSeed());
-
         Electron.setOnboardingSeed(null);
 
         history.push('/onboarding/done');
@@ -128,7 +110,6 @@ class AccountPassword extends React.PureComponent {
     render() {
         const { t } = this.props;
         const { isGenerated } = this.state;
-        console.log("Password->SeedIsGenerated====",isGenerated);
         const score = zxcvbn(this.state.password);
 
         return (
@@ -140,7 +121,7 @@ class AccountPassword extends React.PureComponent {
                         <span>{t('setPassword:anEncryptedCopy')}</span>
                         <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                             <PasswordInput
-                                style={{marginTop:'3vw'}}
+                                style={{ marginTop: '3vw' }}
                                 focus
                                 value={this.state.password}
                                 label={t('password')}

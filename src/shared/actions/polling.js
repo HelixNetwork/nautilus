@@ -8,7 +8,7 @@ import reduce from 'lodash/reduce';
 import union from 'lodash/union';
 import unionBy from 'lodash/unionBy';
 import { setPrice, setChartData, setMarketData } from './marketData';
-import { quorum, getRandomNode, changeHELIXNode } from '../libs/hlx';
+import { quorum, changeHelixNode } from '../libs/hlx';
 import { setNodeList, setRandomlySelectedNode, setAutoPromotion, changeNode } from './settings';
 import { fetchRemoteNodes, withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
 import { formatChartData, getUrlTimeFormat, getUrlNumberFormat } from '../libs/utils';
@@ -19,9 +19,9 @@ import { getSelectedNodeFromState, getNodesFromState, getCustomNodesFromState } 
 import { syncAccount } from '../libs/hlx/accounts';
 import { forceTransactionPromotion } from './transfers';
 import {
-    nodes as defaultNodes,
-    nodesWithPowEnabled as defaultNodesWithPowEnabled,
-    nodesWithPowDisabled as defaultNodesWithPowDisabled,
+    DEFAULT_NODE as defaultNodes,
+    NODES_WITH_POW_DISABLED as defaultNodesWithPowEnabled,
+    NODES_WITH_POW_ENABLED as defaultNodesWithPowDisabled,
     DEFAULT_RETRIES,
 } from '../config';
 import Errors from '../libs/errors';
@@ -349,9 +349,9 @@ export const fetchNodeList = (chooseRandomNode = false) => {
 
         const setRandomNode = (nodesList) => {
             if (chooseRandomNode) {
-                const node = getRandomNode(nodesList);
+                const node = getRandomNodes(nodesList);
                 dispatch(setRandomlySelectedNode(node));
-                changeHELIXNode(node);
+                changeHelixNode(node);
             }
         };
 

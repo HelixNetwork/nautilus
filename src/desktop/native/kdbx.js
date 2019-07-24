@@ -25,15 +25,15 @@ kdbxweb.CryptoEngine.argon2 = (password, salt, memory, iterations, length, paral
  */
 const exportVault = async (seeds, password) => {
     const credentials = new kdbxweb.Credentials(kdbxweb.ProtectedValue.fromString(password));
-    const db = kdbxweb.Kdbx.create(credentials, 'Trinity');
+    const db = kdbxweb.Kdbx.create(credentials, 'Helix');
 
     db.upgrade();
 
     for (let i = 0; i < seeds.length; i++) {
         const entry = db.createEntry(db.getDefaultGroup());
-        entry.fields.Title = seeds[i].title || `IOTA Seed #${i + 1}`;
+        entry.fields.Title = seeds[i].title || `HELIX Seed #${i + 1}`;
         entry.fields.Seed = kdbxweb.ProtectedValue.fromString(
-            seeds[i].seed.map((byte) => '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(byte % 27)).join(''),
+            seeds[i].seed.map((byte) => 'abcdef0123456789'.charAt(byte % 16)).join(''),
         );
     }
 
@@ -61,7 +61,7 @@ const importVault = async (buffer, password) => {
                 title: entries[i].fields.Title || `Seed #${i + 1}`,
                 seed: entries[i].fields.Seed.getText()
                     .split('')
-                    .map((char) => '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(char.toUpperCase()))
+                    .map((char) => 'abcdef0123456789'.indexOf(char.toLowerCase()))
                     .filter((byte) => byte > -1),
             });
         }

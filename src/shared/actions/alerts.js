@@ -22,7 +22,7 @@ export const ActionTypes = {
  *
  * @returns {{ type: {string}, category: {string}, title: {string}, message: {string}, category: {string}, closeInterval: {number} }}
  */
-const generate = (category, title, message, closeInterval = 5500) => ({
+const generate = (category, title, message, closeInterval = null) => ({
     type: ActionTypes.SHOW,
     category,
     title,

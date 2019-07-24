@@ -1,14 +1,15 @@
 /* global Electron */
-import { iota } from 'libs/hlx';
 import { performPow } from 'libs/hlx/transfers';
-
+import {
+    astransactionObject
+} from "@helixnetwork/transaction-converter"
 export default class SeedStoreCore {
     /**
      * Performs proof-of-works on provided trytes
      *
      * @method performPow
      *
-     * @param {array} trytes
+     * @param {array} hbytes
      * @param {string} trunkTransaction
      * @param {string} branchTransaction
      * @param {number} minWeightMagnitude
@@ -16,12 +17,12 @@ export default class SeedStoreCore {
      *
      * @returns {Promise<object>}
      */
-    performPow(trytes, trunkTransaction, branchTransaction, minWeightMagnitude, batchedPow = true) {
+    performPow(hbytes, trunkTransaction, branchTransaction, minWeightMagnitude, batchedPow = true) {
         const powFn = Electron.getPowFn(batchedPow);
         return performPow(
             powFn,
             this.getDigest,
-            trytes,
+            hbytes,
             trunkTransaction,
             branchTransaction,
             minWeightMagnitude,
@@ -30,15 +31,15 @@ export default class SeedStoreCore {
     }
 
     /**
-     * Gets digest for provided trytes
+     * Gets digest for provided hbytes
      *
      * @method getDigest
      *
-     * @param {string} trytes
+     * @param {string} hbytes
      *
      * @returns {Promise<string>}
      */
-    getDigest(trytes) {
-        return Promise.resolve(iota.utils.transactionObject(trytes).hash);
+    getDigest(hbytes) {
+        return Promise.resolve(astransactionObject(hbytes).hash);
     }
 }

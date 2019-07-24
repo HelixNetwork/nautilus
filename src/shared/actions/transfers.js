@@ -13,17 +13,16 @@ import size from 'lodash/size';
 import every from 'lodash/every';
 import includes from 'lodash/includes';
 import uniq from 'lodash/uniq';
-import { hlx } from '../libs/hlx';
 import {
-    replayBundleAsync,
-    promoteTransactionAsync,
-    getTransactionsToApproveAsync,
-    attachToTangleAsync,
-    storeAndBroadcastAsync,
+    replayBundle,
+    promoteTransaction as promoteTx,
+    getTransactionsToApprove,
+    attachToTangle,
+    storeAndBroadcast,
 } from '../libs/hlx/extendedApi';
 import { getSelectedNodeFromState, getNodesFromState, getRemotePoWFromState } from '../selectors/global';
 import { selectedAccountStateFactory } from '../selectors/accounts';
-import { withRetriesOnDifferentNodes, fetchRemoteNodes, getRandomNodes, isLastTritZero } from '../libs/hlx/utils';
+import { withRetriesOnDifferentNodes, fetchRemoteNodes, getRandomNodes, isLastBitZero } from '../libs/hlx/utils';
 import { setNextStepAsActive, reset as resetProgress } from './progress';
 import { clearSendFields } from './ui';
 import {
@@ -64,6 +63,15 @@ import i18next from '../libs/i18next.js';
 import Errors from '../libs/errors';
 import { DEFAULT_RETRIES } from '../config';
 import { Account } from '../database';
+
+import {
+    getChecksum,
+    noChecksum
+} from '../libs/hlx/utils';
+
+import {
+    asTransactionObject
+} from '@helixnetwork/transaction-converter';
 
 export const ActionTypes = {
     PROMOTE_TRANSACTION_REQUEST: 'hlx/TRANSFERS/PROMOTE_TRANSACTION_REQUEST',
@@ -272,12 +280,12 @@ export const promoteTransaction = (bundleHash, accountName, seedStore, withQuoru
                     // See: extendedApi#attachToTangle
                     remotePoW
                         ? extend(
-                              {
-                                  __proto__: seedStore.__proto__,
-                              },
-                              seedStore,
-                              { offloadPow: true },
-                          )
+                            {
+                                __proto__: seedStore.__proto__,
+                            },
+                            seedStore,
+                            { offloadPow: true },
+                        )
                         : seedStore,
                 ),
             );
@@ -352,7 +360,7 @@ export const forceTransactionPromotion = (
 
         promotionAttempt += 1;
 
-        return promoteTransactionAsync(null, seedStore)(hash).catch((error) => {
+        return promoteTx(null, seedStore)(hash).catch((error) => {
             const isTransactionInconsistent = includes(error.message, Errors.TRANSACTION_IS_INCONSISTENT);
 
             if (
@@ -387,7 +395,7 @@ export const forceTransactionPromotion = (
         const tailTransaction = head(tailTransactionHashes);
         const hash = tailTransaction.hash;
 
-        return replayBundleAsync(null, seedStore)(hash).then((reattachment) => {
+        return replayBundle(null, seedStore)(hash).then((reattachment) => {
             if (shouldGenerateAlert) {
                 dispatch(
                     generateAlert(
@@ -432,13 +440,13 @@ export const forceTransactionPromotion = (
  *
  * @returns {function} dispatch
  */
-export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true) => (
+export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true) => async (
     dispatch,
     getState,
 ) => {
     dispatch(sendTransferRequest());
 
-    const address = size(receiveAddress) === 90 ? receiveAddress : hlx.utils.addChecksum(receiveAddress);
+    const address = size(receiveAddress) === 90 ? receiveAddress : await getChecksum(receiveAddress);
 
     // Keep track if the inputs are signed
     let hasSignedInputs = false;
@@ -457,9 +465,9 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
         dispatch(setNextStepAsActive());
 
         // Check the last trit for validity
-        return Promise.resolve(isLastTritZero(address))
-            .then((lastTritIsZero) => {
-                if (!lastTritIsZero) {
+        return Promise.resolve(isLastBitZero(address))
+            .then((lastBitZero) => {
+                if (!lastBitZero) {
                     throw new Error(Errors.INVALID_LAST_TRIT);
                 }
 
@@ -499,7 +507,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 // Do not allow receiving address to be one of the user's own input addresses.
                 const isSendingToAnyInputAddress = some(
                     inputs,
-                    (input) => input.address === hlx.utils.noChecksum(address),
+                    (input) => input.address === noChecksum(address),
                 );
 
                 if (isSendingToAnyInputAddress) {
@@ -518,7 +526,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                         // Make sure inputs are blacklisted
                         ...map(inputs, (input) => input.address),
                         // Make sure receive address is blacklisted
-                        hlx.utils.noChecksum(receiveAddress),
+                        noChecksum(receiveAddress),
                     ],
                 ).then(({ remainderAddress, remainderIndex, addressDataUptoRemainder }) => {
                     // getAddressesUptoRemainder returns the latest unused address as the remainder address
@@ -539,7 +547,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     const isZeroValue = value === 0;
 
     const cached = {
-        trytes: [],
+        hex: [],
         transactionObjects: [],
     };
 
@@ -558,22 +566,22 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
 
                 return seedStore.prepareTransfers(transfer, options);
             })
-            .then((trytes) => {
+            .then((hex) => {
                 if (!isZeroValue) {
                     hasSignedInputs = true;
                 }
 
-                cached.trytes = trytes;
+                cached.hex = hex;
 
-                const convertToTransactionObjects = (tryteString) => hlx.utils.transactionObject(tryteString);
-                cached.transactionObjects = map(cached.trytes, convertToTransactionObjects);
+                const convertToTransactionObjects = (hexString) => asTransactionObject(hexString);
+                cached.transactionObjects = map(cached.hex, convertToTransactionObjects);
 
                 if (isBundle(cached.transactionObjects)) {
                     isValidBundle = true;
                     // Progressbar step => (Getting transactions to approve)
                     dispatch(setNextStepAsActive());
 
-                    return getTransactionsToApproveAsync()();
+                    return getTransactionsToApprove()();
                 }
 
                 throw new Error(Errors.INVALID_BUNDLE);
@@ -585,7 +593,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 dispatch(setNextStepAsActive());
 
                 const performLocalPow = () =>
-                    attachToTangleAsync(null, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
+                    attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.hex);
 
                 if (!shouldOffloadPow) {
                     return performLocalPow();
@@ -597,7 +605,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 // 1) Find nodes with PoW enabled
                 // 2) Auto retry offloading PoW
                 // 3) If auto retry fails, perform proof of work locally
-                return attachToTangleAsync(
+                return attachToTangle(
                     null,
                     // See: extendedApi#attachToTangle
                     extend(
@@ -607,7 +615,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                         seedStore,
                         { offloadPow: true },
                     ),
-                )(trunkTransaction, branchTransaction, cached.trytes).catch(() => {
+                )(trunkTransaction, branchTransaction, cached.hex).catch(() => {
                     dispatch(
                         generateAlert(
                             'info',
@@ -632,7 +640,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                                     getSelectedNodeFromState(getState()),
                                 ]),
                             )((provider) =>
-                                attachToTangleAsync(
+                                attachToTangle(
                                     provider,
                                     extend(
                                         {
@@ -642,7 +650,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                                         { offloadPow: true },
                                     ),
                                 ),
-                            )(trunkTransaction, branchTransaction, cached.trytes);
+                            )(trunkTransaction, branchTransaction, cached.hex);
                         })
                         .then(({ result }) => result)
                         .catch(() => {
@@ -662,10 +670,10 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 });
             })
             // Re-check spend statuses of all addresses in bundle
-            .then(({ trytes, transactionObjects }) => {
+            .then(({ hex, transactionObjects }) => {
                 // Skip this check if it's a zero value transaction
                 if (isZeroValue) {
-                    return Promise.resolve({ trytes, transactionObjects });
+                    return Promise.resolve({ hex, transactionObjects });
                 }
 
                 // Progressbar step => (Validating transaction addresses)
@@ -678,11 +686,11 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                         throw new Error(Errors.KEY_REUSE);
                     }
 
-                    return { trytes, transactionObjects };
+                    return { hex, transactionObjects };
                 });
             })
-            .then(({ trytes, transactionObjects }) => {
-                cached.trytes = trytes;
+            .then(({ hex, transactionObjects }) => {
+                cached.hex = hex;
                 cached.transactionObjects = transactionObjects;
 
                 // Progressbar step => (Broadcasting)
@@ -711,7 +719,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                                 20000,
                             ),
                         ),
-                )(storeAndBroadcastAsync)(cached.trytes);
+                )(storeAndBroadcast)(cached.hex);
             })
             .then(() => {
                 return syncAccountAfterSpending(undefined, withQuorum)(
@@ -744,7 +752,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 if (message === Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW) {
                     isValidBundle = false;
                 }
-                // Only keep the failed trytes locally if the bundle was valid
+                // Only keep the failed hex locally if the bundle was valid
                 // In case the bundle is invalid, discard the signing as it was never broadcast
                 if (hasSignedInputs && isValidBundle) {
                     const newState = syncAccountOnValueTransactionFailure(
@@ -921,12 +929,12 @@ export const retryFailedTransaction = (accountName, bundleHash, seedStore, withQ
                     // See: extendedApi#attachToTangle
                     shouldOffloadPow
                         ? extend(
-                              {
-                                  __proto__: seedStore.__proto__,
-                              },
-                              seedStore,
-                              { offloadPow: true },
-                          )
+                            {
+                                __proto__: seedStore.__proto__,
+                            },
+                            seedStore,
+                            { offloadPow: true },
+                        )
                         : seedStore,
                 );
             })
