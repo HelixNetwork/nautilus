@@ -42,13 +42,13 @@ class Send extends React.PureComponent {
                                             <span className={classNames(css.er2)}>26,74</span>
                                             <input type="text" classNames={css.er1} placeholder="EUR"></input>
                                         </div> */}
-                                        <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{marginLeft:'335px',background:'#081276',color:'#eaac32'}} placeholder="EUR"></input>
+                                        <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{marginLeft:'335px',background:'#081726',color:'#eaac32'}} placeholder="EUR"></input>
                                         <h1 className={classNames(css.eq)}>=</h1>
                                         {/* <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div> */}
-                                        <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{marginLeft:'335px',background:'#081276',color:'#eaac32'}} placeholder="mHLX"></input>
+                                        <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{marginLeft:'335px',background:'#081726',color:'#eaac32'}} placeholder="mHLX"></input>
                                         <h5>{t('send:enterReceiverAddress')}</h5>
                                         <input type="text" name="name" className={css.reci_text} /> <br />
                                         <a href="#" className={css.send_bts}><img src={ic1} alt="" /></a>
