@@ -10,6 +10,7 @@ let timeout = null;
  * @returns {Promise}
  */
 const exec = (payload) => {
+    console.log("helix tangled payload", payload);
     return new Promise((resolve, reject) => {
         const child = fork(path.resolve(__dirname, 'helixTangled.js'));
 
