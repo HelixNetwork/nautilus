@@ -16,7 +16,6 @@ import Button from 'ui/components/button';
 import css from './seedExport.scss';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/export.json';
-
 /**
  * SeedVault export component
  */
