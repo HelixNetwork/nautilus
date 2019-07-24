@@ -103,6 +103,16 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
                     ),
                     isBundle,
                 );
+                    let res = map(filter(transactionsFromBundles, (tx) => tx.currentIndex === 0), (tailTransaction) =>
+                    constructBundle(tailTransaction, transactionsFromBundles),
+                )
+                console.log('redad');
+                
+                console.log(res);
+                console.log(validBundles);
+                
+                
+
 
                 if (isEmpty(validBundles)) {
                     // Check both recipient & input addresses

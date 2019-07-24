@@ -297,6 +297,9 @@ export const isReceivedTransfer = (bundle, addresses) => !isSentTransfer(bundle,
 export const constructBundle = (tailTransaction, allTransactionObjects) => {
     // Start from the tail transaction object
     // This will also preserve the order since the next objects will be pushed
+    // console.log('heretdf');
+    
+    
     const bundle = [tailTransaction];
 
     // In case tail transaction is only transfer in the bundle
@@ -335,6 +338,7 @@ export const constructBundle = (tailTransaction, allTransactionObjects) => {
             hasFoundLastTransfer = true;
         }
     }
+console.log(bundle);
 
     return bundle;
 };
