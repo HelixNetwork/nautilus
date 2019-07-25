@@ -313,65 +313,55 @@ describe('libs: helix/transfers', () => {
             bundle = [
                 {
                     currentIndex: 0,
-                    hash: 'NGX9LKVXKGMLJDKVMSNOCZYPSSCKYVQBCWPFZUAAKMIUVORXJAFRGRJSDWOMEFIOWFBUQVORWGID99999',
-                    bundle: '9DCUNBJYTSWOYRRLJC9LLPCIUCEXCIVZGPWEKOJHSDLWFZX9HOUNFNKAQZGHDYHFPBRLJFORLFHIRVVC9',
-                    address: 'AWHJTOTMFXZUAVJAWHXULZJFTQNHYAIQHIDKOSTEMR9ZBHWFWDLIQYPHDKTVXYDJYRHKMXYLDUULJMMWW',
-                    value: 1,
-                    signatureMessageFragment: '9'.repeat(2187),
+                    hash: '00006a5ebc28b580099eca765a12c0fa2063772398c932a6df1cce5b8c75e028',
+                    bundle: '0e0e19b18f216b643189b00fd5c15e5a89e773e9b4b43cd8dfa165335c061cbd',
+                    address: 'ee1c15a76b2b1ce72acd7e559afafb7418ffac15246d7c2c9d1bfe0ea4b6a924',
+                    value: 20,
+                    signatureMessageFragment: '0'.repeat(1536),
                     timestamp,
                     attachmentTimestamp,
                 },
                 {
                     currentIndex: 1,
                     hash: 'GAYYEUVRGFRDNEPLP9BTYLBPQGZGUHOGUFHCCAOFTPDFYOBNCGGGGAZ9JTT9AHVWMBLTRDZTBCEX99999',
-                    bundle: '9DCUNBJYTSWOYRRLJC9LLPCIUCEXCIVZGPWEKOJHSDLWFZX9HOUNFNKAQZGHDYHFPBRLJFORLFHIRVVC9',
-                    address: 'JMJHGMMVBEOWEVMEUYFYWJGZK9ITVBZAIWXITUANTYYLAKSHYRCZBBN9ULEDLRYITFNQMAUPZP9WMLEHB',
-                    value: -2201,
-                    signatureMessageFragment: '9'.repeat(2187),
+                    bundle: '0e0e19b18f216b643189b00fd5c15e5a89e773e9b4b43cd8dfa165335c061cbd',
+                    address: '1d8fb2f8512e174f861356886f8f0429c64207d3963d59b7f33f463b072f865d',
+                    value: -536561674354768,
+                    signatureMessageFragment: '0'.repeat(1536),
                     timestamp,
                     attachmentTimestamp,
                 },
                 {
                     currentIndex: 2,
                     hash: 'SHGVLJDUPADJ9ASLTVTWNJDOVLV9AQHCGBBAK9GLIZJRNKK9CBFNPNDWRWZZU9OHPHZZSDZWSESLZ9999',
-                    bundle: '9DCUNBJYTSWOYRRLJC9LLPCIUCEXCIVZGPWEKOJHSDLWFZX9HOUNFNKAQZGHDYHFPBRLJFORLFHIRVVC9',
-                    address: 'JMJHGMMVBEOWEVMEUYFYWJGZK9ITVBZAIWXITUANTYYLAKSHYRCZBBN9ULEDLRYITFNQMAUPZP9WMLEHB',
-                    value: 0,
-                    signatureMessageFragment: '9'.repeat(2187),
+                    bundle: '0e0e19b18f216b643189b00fd5c15e5a89e773e9b4b43cd8dfa165335c061cbd',
+                    address: '1d8fb2f8512e174f861356886f8f0429c64207d3963d59b7f33f463b072f865d',
+                    value: 536561674354748,
+                    signatureMessageFragment: '0'.repeat(1536),
                     timestamp,
                     attachmentTimestamp,
-                },
-                {
-                    currentIndex: 3,
-                    hash: 'XFGRJCCUXXDL9UQTKRDRKPIIJKZIONDLPOHUINXJWZ99HPGTYAFEGQDNQMLFG9VIWPKTRURTSFJH99999',
-                    bundle: '9DCUNBJYTSWOYRRLJC9LLPCIUCEXCIVZGPWEKOJHSDLWFZX9HOUNFNKAQZGHDYHFPBRLJFORLFHIRVVC9',
-                    address: 'GEFNJWYGCACGXYEXAS999VIRYWLJSAQJNRTSTDNOKKR9SULNXGHPVHCHJQVMIKEVJNKMEQMYMFZUXZPGC',
-                    value: 2201,
-                    signatureMessageFragment: '9'.repeat(2187),
-                    timestamp,
-                    attachmentTimestamp,
-                },
+                }
             ];
 
             addresses = [
-                'JMJHGMMVBEOWEVMEUYFYWJGZK9ITVBZAIWXITUANTYYLAKSHYRCZBBN9ULEDLRYITFNQMAUPZP9WMLEHB',
-                'UTPQWLFOSBVOEXMMEDNDGCIKGOHFSRVZ9HDEFFNAOLXGDUKC9TEENGI9RAWMZSY9UTMKLHZPRUTFJDBOY',
+                '1d8fb2f8512e174f861356886f8f0429c64207d3963d59b7f33f463b072f865d',
+                '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
             ];
 
             tailTransactions = [
                 {
                     currentIndex: 0,
-                    hash: 'NGX9LKVXKGMLJDKVMSNOCZYPSSCKYVQBCWPFZUAAKMIUVORXJAFRGRJSDWOMEFIOWFBUQVORWGID99999',
-                    bundle: '9DCUNBJYTSWOYRRLJC9LLPCIUCEXCIVZGPWEKOJHSDLWFZX9HOUNFNKAQZGHDYHFPBRLJFORLFHIRVVC9',
-                    address: 'AWHJTOTMFXZUAVJAWHXULZJFTQNHYAIQHIDKOSTEMR9ZBHWFWDLIQYPHDKTVXYDJYRHKMXYLDUULJMMWW',
+                    hash: '00006a5ebc28b580099eca765a12c0fa2063772398c932a6df1cce5b8c75e028',
+                    bundle: '0e0e19b18f216b643189b00fd5c15e5a89e773e9b4b43cd8dfa165335c061cbd',
+                    address: 'ee1c15a76b2b1ce72acd7e559afafb7418ffac15246d7c2c9d1bfe0ea4b6a924',
                     value: 1,
                     attachmentTimestamp,
                 },
                 {
                     currentIndex: 0,
-                    hash: 'F9AN9GUWLXFGAIWNYEHRZKGUI9GLOTEIIXNNCGNPAIMZWM9BTSXQAIELQLZPADIMXYHDXWXJPOLSA9999',
-                    bundle: 'DAVBDNDIHERQQNZGRXHUBHECQFGGKPACOQCFKEFNLRZUGRRLFELDBVBQB9YOODGOXLKQXKBFSKXJIQXLA',
-                    address: 'UTPQWLFOSBVOEXMMEDNDGCIKGOHFSRVZ9HDEFFNAOLXGDUKC9TEENGI9RAWMZSY9UTMKLHZPRUTFJDBOY',
+                    hash: '0000e7b4f6e130b3f145e9b05d5f895fd8e6932a73895ec60a131b395c09b041',
+                    bundle: 'b2b43b3b04c06d640cb0b418817b713f11d6b5080e122f42c80efae73f44adda',
+                    address: '5e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194',
                     value: 23300,
                     attachmentTimestamp,
                 },
@@ -379,62 +369,62 @@ describe('libs: helix/transfers', () => {
         });
 
         // Note: Test internally used functions separately
-        // it('should return an object with "bundle" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('bundle');
-        // });
+        it('should return an object with "bundle" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('bundle');
+        });
 
-        // it('should return an object with "timestamp" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('timestamp');
-        // });
+        it('should return an object with "timestamp" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('timestamp');
+        });
 
-        // it('should return an object with "attachmentTimestamp" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('attachmentTimestamp');
-        // });
+        it('should return an object with "attachmentTimestamp" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('attachmentTimestamp');
+        });
 
-        // it('should return an object with "inputs" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('inputs');
-        // });
+        it('should return an object with "inputs" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('inputs');
+        });
 
-        // it('should return an object with "outputs" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('inputs');
-        // });
+        it('should return an object with "outputs" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('inputs');
+        });
 
-        // it('should return an object with "persistence" prop equalling fourth argument', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false).persistence).to.equal(false);
-        // });
+        it('should return an object with "persistence" prop equalling fourth argument', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false).persistence).to.equal(false);
+        });
 
-        // it('should return an object with "incoming" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('incoming');
-        // });
+        it('should return an object with "incoming" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('incoming');
+        });
 
-        // it('should return an object with "transferValue" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('transferValue');
-        // });
+        it('should return an object with "transferValue" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('transferValue');
+        });
 
-        // it('should return an object with "message" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('transferValue');
-        // });
+        it('should return an object with "message" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('transferValue');
+        });
 
-        // it('should return an object with "tailTransactions" prop', () => {
-        //     expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('tailTransactions');
-        // });
+        it('should return an object with "tailTransactions" prop', () => {
+            expect(normaliseBundle(bundle, addresses, tailTransactions, false)).to.include.keys('tailTransactions');
+        });
 
-        // it('should only keep tail transactions of the same bundle', () => {
-        //     const normalisedBundle = normaliseBundle(bundle, addresses, tailTransactions, false);
+        it('should only keep tail transactions of the same bundle', () => {
+            const normalisedBundle = normaliseBundle(bundle, addresses, tailTransactions, false);
 
-        //     const tailTransactionFromBundle = find(bundle, { currentIndex: 0 });
-        //     normalisedBundle.tailTransactions.forEach((tailTransaction) =>
-        //         expect(tailTransaction.hash).to.equal(tailTransactionFromBundle.hash),
-        //     );
-        // });
+            const tailTransactionFromBundle = find(bundle, { currentIndex: 0 });
+            normalisedBundle.tailTransactions.forEach((tailTransaction) =>
+                expect(tailTransaction.hash).to.equal(tailTransactionFromBundle.hash),
+            );
+        });
 
-        // it('should only have "hash" and "attachmentTimestamp" props in each object of "tailTransactions" prop', () => {
-        //     const normalisedBundle = normaliseBundle(bundle, addresses, tailTransactions, false);
+        it('should only have "hash" and "attachmentTimestamp" props in each object of "tailTransactions" prop', () => {
+            const normalisedBundle = normaliseBundle(bundle, addresses, tailTransactions, false);
 
-        //     normalisedBundle.tailTransactions.forEach((tailTransaction) =>
-        //         expect(keys(tailTransaction)).to.eql(['hash', 'attachmentTimestamp']),
-        //     );
-        // });
+            normalisedBundle.tailTransactions.forEach((tailTransaction) =>
+                expect(keys(tailTransaction)).to.eql(['hash', 'attachmentTimestamp']),
+            );
+        });
     });
 
     describe('#categoriseBundleByInputsOutputs', () => {
