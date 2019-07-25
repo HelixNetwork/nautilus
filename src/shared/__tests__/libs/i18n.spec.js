@@ -5,8 +5,8 @@ describe('libs: i18n', () => {
     describe('#getLabelFromLocale', () => {
         describe('when a supported locale code is passed', () => {
             it('should return the correct label', () => {
-                const locale = 'de';
-                expect(getLabelFromLocale(locale)).to.equal('Deutsch - German');
+                const locale = 'en';
+                expect(getLabelFromLocale(locale)).to.equal('English (International)');
             });
         });
 
@@ -21,8 +21,8 @@ describe('libs: i18n', () => {
     describe('#getLocaleFromLabel', () => {
         describe('when a locale label is passed', () => {
             it('should return the correct locale code', () => {
-                const label = 'Deutsch - German';
-                expect(getLocaleFromLabel(label)).to.equal('de');
+                const label = 'English (International)';
+                expect(getLocaleFromLabel(label)).to.equal('en');
             });
         });
     });
