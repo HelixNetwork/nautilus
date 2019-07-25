@@ -323,7 +323,7 @@ describe('libs: helix/transfers', () => {
                 },
                 {
                     currentIndex: 1,
-                    hash: 'GAYYEUVRGFRDNEPLP9BTYLBPQGZGUHOGUFHCCAOFTPDFYOBNCGGGGAZ9JTT9AHVWMBLTRDZTBCEX99999',
+                    hash: '00006bf18e4ff0afc2d3cb437613ceabb66eb17746de842c17415ab7f7decfd7',
                     bundle: '0e0e19b18f216b643189b00fd5c15e5a89e773e9b4b43cd8dfa165335c061cbd',
                     address: '1d8fb2f8512e174f861356886f8f0429c64207d3963d59b7f33f463b072f865d',
                     value: -536561674354768,
@@ -333,7 +333,7 @@ describe('libs: helix/transfers', () => {
                 },
                 {
                     currentIndex: 2,
-                    hash: 'SHGVLJDUPADJ9ASLTVTWNJDOVLV9AQHCGBBAK9GLIZJRNKK9CBFNPNDWRWZZU9OHPHZZSDZWSESLZ9999',
+                    hash: '000030865fdb3e5f2377cd57ef8cd8f28ab81ea9e6ab49d255da18702ed8ac61',
                     bundle: '0e0e19b18f216b643189b00fd5c15e5a89e773e9b4b43cd8dfa165335c061cbd',
                     address: '1d8fb2f8512e174f861356886f8f0429c64207d3963d59b7f33f463b072f865d',
                     value: 536561674354748,
