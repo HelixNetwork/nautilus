@@ -119,8 +119,8 @@ import Password from 'ui/components/input/password';
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
                                             <form onSubmit={(e) => this.changePassword(e)}>
-                                                  <h5 style={{marginLeft:'14vw',marginTop:'7vw'}}>{t('changePassword:currentPassword')}</h5>
-                                                  <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br />
+                                                  <h5 style={{marginLeft:'14vw',marginTop:'1vw'}}>{t('changePassword:currentPassword')}</h5>
+                                                  <Password style={{marginLeft:'14vw',marginTop:'-4vw'}}type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br />
                                                   <h5 style={{marginLeft:'14vw',marginTop:'-6vw'}}>{t('changePassword:newPassword')}</h5>
                                                   <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text"   showScore value={passwordNew}  onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)}/><br /><br />
                                                   <h5 style={{marginLeft:'14vw',marginTop:'-6vw'}}>{t('changePassword:confirmPassword')}</h5>

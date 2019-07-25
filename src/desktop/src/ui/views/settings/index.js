@@ -35,6 +35,12 @@ class Settings extends React.PureComponent {
     render() {
 
         const { history ,t} = this.props;
+        console.log(location.pathname);
+        const currentKey = location.pathname.split('/')[2] ;
+        console.log(currentKey);
+        if (currentKey == undefined) {
+            console.log(currentKey);
+
         return (
             <div>
                 <Top
@@ -60,11 +66,11 @@ class Settings extends React.PureComponent {
                                              <input type="text" className={classNames(css.ssetting_textline)} style={{width:'18vw'}}></input><br /><br />
                             
                                             <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}> </Button>
-                                            <div  className={classNames(css.spe_bx)}>
+                                            {/* <div  className={classNames(css.spe_bx)}> */}
                                                {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                <hr className={classNames(css.ser_bts)}/>
                                          		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
-                                            </div>
+                                            {/* </div> */}
                                         </div>
                                     </div>
                                 {/* </div> */}
@@ -74,8 +80,13 @@ class Settings extends React.PureComponent {
                         </div>
                     </div>
                 </section>
+                </div>
+                );   }
+else{
+    console.log(currentKey);
+                return(
                 <Switch>
-                    {/* <Route path="/settings" component={AccountName} /> */}
+                    <Route path="/settings/editname" component={AccountName} />
                     <Route path="/settings/language" component={SettingsLanguage} />
                     <Route path="/settings/node" component={SettingsNode} />
                     <Route path="/settings/currency" component={Currency} />
@@ -86,10 +97,11 @@ class Settings extends React.PureComponent {
                     <Route path="/settings/mode" component={SettingsMode} />
                     <Route path="/settings/accountsetting" component={AdvancedSettings}/>
                 </Switch>
-            </div>
-        );
+           
+                );
     }
-
+   
+}
 }
 
 const mapStateToProps = (state) => ({
