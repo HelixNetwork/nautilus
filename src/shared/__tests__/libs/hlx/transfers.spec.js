@@ -1274,11 +1274,11 @@ describe('libs: helix/transfers', () => {
             branchTransaction = '009c7c8371e3c8cd5b36a438bb858812bbf308114b8018958075f8b7228df251';
         });
 
-        // it('should return true for bundle with correct trunk/branch assignment', () => {
-        //     expect(isBundleTraversable(newValueAttachedTransaction, trunkTransaction, branchTransaction)).to.equal(
-        //         true,
-        //     );
-        // });
+        it('should return true for bundle with correct trunk/branch assignment', () => {
+            expect(isBundleTraversable(newValueAttachedTransaction, trunkTransaction, branchTransaction)).to.equal(
+                true,
+            );
+        });
 
         it('should return false for bundle with incorrect trunk/branch assignment', () => {
             expect(
