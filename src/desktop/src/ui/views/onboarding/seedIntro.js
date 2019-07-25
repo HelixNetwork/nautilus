@@ -2,24 +2,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withI18n, Trans } from 'react-i18next';
+import { withI18n } from 'react-i18next';
 import image from 'ui/images/ex_mark.png';
 
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Button from 'ui/components/button'
 import Logos from 'ui/components/logos';
 import css from './index.scss';
-import Top from '../../components/topbar';
+
 class SeedIntro extends React.PureComponent {
 
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
+        setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
 
     state = {
         ledger: false,
     };
+
+
+    componentDidMount() {
+        Electron.setOnboardingSeed(null);
+    }
 
     stepForward(route) {
         this.props.setAccountInfoDuringSetup({
@@ -30,7 +36,7 @@ class SeedIntro extends React.PureComponent {
     }
 
     render() {
-        const { history, t } = this.props;
+        const { t } = this.props;
 
         return (
             <div>

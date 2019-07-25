@@ -71,7 +71,6 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
     if (settings) {
         // TODO
         const { url, token, password } = settings;
-
         const instance = composeAPI({
             provider: url
         })
@@ -541,6 +540,8 @@ const isNodeHealthy = (settings) => {
                 latestSolidSubtangleMilestone,
                 latestSolidSubtangleMilestoneIndex,
             }) => {
+                console.log('app'+appVersion);
+                
                 if (['rc', 'beta', 'alpha'].some((el) => appVersion.toLowerCase().indexOf(el) > -1)) {
                     throw new Error(Errors.UNSUPPORTED_NODE);
                 }

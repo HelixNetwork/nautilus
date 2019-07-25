@@ -62,7 +62,7 @@ Lorem ipsum dolor sit amet, nam et dicit tamquam. Purto mundi inciderint ut eum.
 
 Habeo labore verear ut eam. No nec reque discere scaevola. Natum melius ad vix, per laudem oportere aliquando at. Dicam scaevola ea mea, usu exerci ridens at. Qui duis solet melius ut, sed omnium labores no.
 
-Epicurei repudiandae mel et, ea sint habeo ponderum pri, cu sed accusam inimicus. Ferri malis at cum. Altera insolens deterruisset pri ex, quo no accumsan deleniti. Et vel esse tantas epicuri, vero justo pri cu. Vel oporteat platonem ut. Nihil disputando referrentur his ut, omittam blandit epicurei duo no, ius lorem antiopam voluptatibus ad.Should you fail to comply with the instructions of the IOTA Foundation, you shall be responsible for all damages suffered by yourself, the IOTA Foundation or a third party. The IOTA Foundation can carry out software updates or end the provision of software.
+Epicurei repudiandae mel et, ea sint habeo ponderum pri, cu sed accusam inimicus. Ferri malis at cum. Altera insolens deterruisset pri ex, quo no accumsan deleniti. Et vel esse tantas epicuri, vero justo pri cu. Vel oporteat platonem ut. Nihil disputando referrentur his ut, omittam blandit epicurei duo no, ius lorem antiopam voluptatibus ad.Should you fail to comply with the instructions of the HELIX Foundation, you shall be responsible for all damages suffered by yourself, the HELIX Foundation or a third party. The HELIX Foundation can carry out software updates or end the provision of software.
 
 Ferri scaevola sea eu. Eu vim veri intellegat. An pro impetus nominavi detraxit. Ne pro sonet convenire.
 

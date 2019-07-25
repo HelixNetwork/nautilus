@@ -24,6 +24,8 @@ let locales = {
     confirmedOut: 'Outgoing {{value}} transaction was confirmed at {{account}}',
 };
 
+import HelixTangled from '../helixTangled';
+
 /**
  * Global Electron helper for native support
  */
@@ -273,7 +275,29 @@ const Electron = {
 
     garbageCollect: () => {
         global.gc();
-    }
+    },
+    /**
+     * Generate address
+     * @param {string | array} seed - Input seed
+     * @param {number} index - Address index
+     * @param {number} security - Address generation security level
+     * @param {total} total - Amount of addresses to generate
+     * @returns {string} Generated address
+     */
+    genFn: async (seed, index, security, total) => {
+        if (!total || total === 1) {
+            return await HelixTangled.genFn(seed, index, security);
+        }
+
+        const addresses = [];
+
+        for (let i = 0; i < total; i++) {
+            const address = await HelixTangled.genFn(seed, index + i, security);
+            addresses.push(address);
+        }
+
+        return addresses;
+    },
 };
 
 export default Electron;

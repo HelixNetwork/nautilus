@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
+import assign from 'lodash/assign';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router";
@@ -14,6 +15,7 @@ import { assignAccountIndexIfNecessary } from 'actions/accounts';
 import { mapStorageToState as mapStorageToStateAction } from 'actions/wallet';
 import { mapStorageToState } from 'libs/mapStorageToState';
 import Alerts from 'ui/global/alert';
+import { changeHelixNode, quorum } from 'libs/hlx';
 
 const init = () => {
   const modalElement = document.createElement('div');
@@ -40,6 +42,10 @@ const init = () => {
         console.log("data", data);
         const node = get(data, 'settings.node');
 
+        changeHelixNode(assign({}, node, { provider: node.url }));
+
+        // Set quorum size
+        quorum.setSize(get(data, 'settings.quorum.size'));
         console.log("node", node);
         // Update store with persisted state
         store.dispatch(mapStorageToStateAction(data));

@@ -37,15 +37,18 @@ class Send extends React.PureComponent {
                                         <h3 >{t('send:sendCoins')}<span>.</span></h3>
                                         <h6 >{t('send:irrevocableTransactionWarning')}</h6>
                                      <form >
-                                        <div className={classNames(css.bbx_box1, css.tr_box)}>
+                                        {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
-                                        </div>
+                                            <input type="text" classNames={css.er1} placeholder="EUR"></input>
+                                        </div> */}
+                                        <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{marginLeft:'335px',background:'#081726',color:'#eaac32'}} placeholder="EUR"></input>
                                         <h1 className={classNames(css.eq)}>=</h1>
-                                        <div className={classNames(css.bbx_box1)}>
+                                        {/* <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
-                                        </div>
+                                        </div> */}
+                                        <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{marginLeft:'335px',background:'#081726',color:'#eaac32'}} placeholder="mHLX"></input>
                                         <h5>{t('send:enterReceiverAddress')}</h5>
                                         <input type="text" name="name" className={css.reci_text} /> <br />
                                         <a href="#" className={css.send_bts}><img src={ic1} alt="" /></a>

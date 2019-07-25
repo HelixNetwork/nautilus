@@ -49,12 +49,12 @@ export const getAccountData = (settings, withQuorum) => (seedStore, accountName,
         filter(existingTransactions, (transaction) => includes(existingAddresses, transaction.address)),
         (transaction) => transaction.hash,
     );
-
+        console.log('Hi sachu', settings);
     return throwIfNodeNotHealthy(settings)
         .then(() => getFullAddressHistory(settings, withQuorum)(seedStore, existingAccountState))
         .then((history) => {
             data = { ...data, ...history };
-
+            console.log('Hi sachu data', data);
             return syncTransactions(settings)(
                 getTransactionsDiff(existingTransactionsHashes, history.hashes),
                 existingTransactions,

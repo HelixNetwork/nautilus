@@ -17,12 +17,13 @@ class SeedBackup extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
+        onboardingName: PropTypes.string.isRequired,
     };
 
 
     state = {
         seed: Electron.getOnboardingSeed(),
-        onboardingname:Electron.getOnboardingName()!=null?Electron.getOnboardingName():'',
+        onboardingname: Electron.getOnboardingName() != null ? Electron.getOnboardingName() : '',
         writeVisible: false,
         exportVisible: false,
     };
@@ -31,13 +32,11 @@ class SeedBackup extends React.PureComponent {
         this.props.setAccountInfoDuringSetup({
             meta: { type: 'keychain' },
         });
-
-
         this.props.history.push(`/onboarding/${route}`);
     }
     render() {
         const { loop, t } = this.props;
-        const { writeVisible, exportVisible, onboardingname,seed } = this.state;
+        const { exportVisible, onboardingname, seed } = this.state;
         const defaultOptions = {
             loop: loop,
             autoplay: true,
@@ -89,22 +88,27 @@ class SeedBackup extends React.PureComponent {
                     </div>
                     <Modal
                         variant="confirm"
-                        isOpen={ exportVisible}
+                        isOpen={exportVisible}
                         onClose={() => this.setState({ exportVisible: false })}
                     >
                         <SeedExport
-                                    seed={seed}
-                                    title={onboardingname}
-                                    onClose={() => this.setState({ exportVisible: false })}
-                                />
+                            seed={seed}
+                            title={onboardingname}
+                            onClose={() => this.setState({ exportVisible: false })}
+                        />
                     </Modal>
                 </section>
             </div>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    onboardingName: state.accounts.accountInfoDuringSetup.name,
+});
+
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
 };
 
-export default connect(null, mapDispatchToProps)(withI18n()(SeedBackup));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(SeedBackup));

@@ -44,7 +44,7 @@ const bitStrings = hexBits.map((bit) => bit.toString());
 
 /**
  * Convert index of hexBits  to an ASCII character
- * @param {bit} bit - raw Trit input
+ * @param {bit} bit - raw Bit input
  */
 const indexToChar = (bit) => {
     return 'abcdef0123456789'.charAt(bit % 16);

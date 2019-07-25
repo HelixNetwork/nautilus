@@ -16,7 +16,7 @@ import { addChecksum, isValidChecksum } from '@helixnetwork/checksum';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
 import Errors from '../errors';
-import { bitsToChars ,hexToBits } from './converter';
+import { bitsToChars, hexToBits } from './converter';
 import { roundDown } from '../utils';
 
 export const MAX_SEED_LENGTH = 64; // should be 64 
@@ -62,15 +62,15 @@ export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 export const convertFromBytes = (bytes) => {
     const bytesWithoutZero = bytes.replace(/00+$/, '');
     let message;
-    try{
-     message = hbytesToAscii(bytesWithoutZero);
+    try {
+        message = hbytesToAscii(bytesWithoutZero);
     }
-    catch(err){
-    // Fall back to safe result in case of inconsistent conversion strings
-     message = null;
+    catch (err) {
+        // Fall back to safe result in case of inconsistent conversion strings
+        message = null;
     }
     /* eslint-disable no-control-regex */
-    if ( bytesWithoutZero && message && /^[\x00-\x7F]*$/.test(message)) {
+    if (bytesWithoutZero && message && /^[\x00-\x7F]*$/.test(message)) {
         return message;
     }
     /* eslint-enable no-control-regex */
@@ -90,20 +90,20 @@ export const convertFromBytes = (bytes) => {
 export const getChecksum = async (
     input,
     // hbytes  to bits conversion creates Int8Array
-    length = input instanceof Int8Array ?SEED_CHECKSUM_LENGTH *8 :SEED_CHECKSUM_LENGTH ,
+    length = input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
 ) => {
     const isInputArray = input instanceof Int8Array;
     const finalInput = isInputArray ? bitsToChars(Array.from(input)) : input;
-    const finalLength = isInputArray ? length/8 : length;
+    const finalLength = isInputArray ? length / 8 : length;
 
-  const result = await addChecksum(
+    const result = await addChecksum(
         finalInput,
         finalLength,
         false,
     )
         .slice(-finalLength);
-  const finalResult = isInputArray ? hexToBits(result) : result
-  return finalResult;
+    const finalResult = isInputArray ? hexToBits(result) : result
+    return finalResult;
 };
 
 /**
@@ -487,11 +487,13 @@ export const getRandomNodes = (nodes, size = 5, blacklistedNodes = [], PoW = fal
  * @returns {Promise<boolean>}
  */
 export const throwIfNodeNotHealthy = (settings) => {
+    console.log("settings data", settings)
     return isNodeHealthy(settings).then((isSynced) => {
+        console.log("is synced", isSynced)
         if (!isSynced) {
             throw new Error(Errors.NODE_NOT_SYNCED_BY_TIMESTAMP);
         }
-
+        
         return isSynced;
     });
 };
@@ -530,3 +532,41 @@ export const withRequestTimeoutsHandler = (timeout) => {
 
     return handleTimeout;
 };
+
+
+/**
+*   Removes the 8-hbytes checksum of an address
+*
+*   @method noChecksum
+*   @param {string | list} address
+*   @returns {string | list} address (without checksum)
+**/
+export const noChecksum = function (address) {
+
+    var isSingleAddress = inputValidator.isString(address)
+
+    if (isSingleAddress && address.length === 64) {
+
+        return address
+    }
+
+    // If only single address, turn it into an array
+    if (isSingleAddress) address = new Array(address);
+
+    var addressesWithChecksum = [];
+
+    address.forEach(function (thisAddress) {
+        addressesWithChecksum.push(thisAddress.slice(0, 64))
+    })
+
+    // return either string or the list
+    if (isSingleAddress) {
+
+        return addressesWithChecksum[0];
+
+    } else {
+
+        return addressesWithChecksum;
+
+    }
+}

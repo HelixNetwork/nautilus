@@ -11,7 +11,9 @@ import { generateAlert } from 'actions/alerts';
 import Button from 'ui/components/button';
 import Confirm from 'ui/components/modal/Confirm';
 import ModalPassword from 'ui/components/modal/Password';
+import { reinitialise as reinitialiseStorage } from 'database';
 import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
+
 
 
 /**
@@ -20,12 +22,12 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
 
  class AdvancedSettings extends React.PureComponent{
      static propTypes= {
-
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+      
         generateAlert: PropTypes.func.isRequired,
         wallet: PropTypes.object,
         settings: PropTypes.object.isRequired,
@@ -34,6 +36,11 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
         resetConfirm: false,
         resetCountdown: 0,
     };
+    componentWillUnmount() {
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+    }
      //reset wallet  
      resetWallet = async () => {
         const { t, generateAlert } = this.props;
@@ -55,11 +62,13 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
             return;
         }
     };
+
+
     confirmReset = () => {
         const { wallet } = this.props;
 
         this.setState({ resetConfirm: !this.state.resetConfirm, resetCountdown: 15 });
-
+        console.log('value address here');
         if (!wallet || !wallet.isOpen) {
             this.interval = setInterval(() => {
                 if (this.state.resetCountdown === 1) {
@@ -100,6 +109,7 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
                                 {/* <div className={classNames(css.set_bx)}> */}
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
+
                                             <h3 style={{marginLeft:'21vw',marginTop:'5vw'}}>{t('settings:reset')}</h3>
                                             <Trans i18nKey="walletResetConfirmation:warning">
                                                  <p>
@@ -110,12 +120,13 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
                                             <React.Fragment> will be lost.</React.Fragment>
                                              </p>
                                           </Trans>
-                                         <Button className="small"style={{marginLeft:'20vw',marginTop:'7vw'}} onClick={this.confirmReset} variant="negative">
+                                         <Button variant="negative" className="small"style={{marginLeft:'20vw',marginTop:'7vw'}} onClick={this.confirmReset}>
                                           {t('settings:reset')}
                                       </Button>
                                      
                           {wallet && wallet.ready ? (
-                            <ModalPassword
+                                                           
+                            <ModalPassword 
                                 isOpen={resetConfirm}
                                 category="negative"
                                 onSuccess={() => this.resetWallet()}
@@ -131,8 +142,11 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
                                                 <strong>other account information</strong>
                                                 <React.Fragment> will be lost.</React.Fragment>
                                             </React.Fragment>
+                                             {/* <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br /> */}
+                                           
                                         </Trans>
                                     ),
+                                    
                                     confirm: t('settings:reset'),
                                 }}
                             />
@@ -161,8 +175,7 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
                                 onConfirm={() => this.resetWallet()}
                             />
                         )}
-                                           
-                                            <div  className={classNames(css.spe_bx)}>
+                         <div  className={classNames(css.spe_bx)}>
                                
                                             </div>
                                         </div>
@@ -183,5 +196,6 @@ import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
 
 const mapDispatchToProps = {
     generateAlert,
+    
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AdvancedSettings));

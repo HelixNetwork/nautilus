@@ -31,7 +31,7 @@ export default class Confirm extends React.PureComponent {
             <Modal variant="confirm" onClose={this.props.onCancel} isOpen={isOpen}>
                 {content.title ? <h1 className={category ? css[category] : null}>{content.title}</h1> : null}
                 {content.message ? <p>{content.message}</p> : null}
-                <footer>
+               
                     <Button id="confirm-cancel" onClick={this.props.onCancel} variant="dark">
                         {content.cancel}
                     </Button>
@@ -43,7 +43,7 @@ export default class Confirm extends React.PureComponent {
                     >
                         {countdown && countdown > 0 ? countdown : content.confirm}
                     </Button>
-                </footer>
+              
             </Modal>
         );
     }

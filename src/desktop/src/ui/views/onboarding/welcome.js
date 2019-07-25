@@ -26,7 +26,7 @@ class Welcome extends React.PureComponent {
         acceptedTerms: PropTypes.bool.isRequired,
         acceptTerms: PropTypes.func.isRequired,
         acceptPrivacy: PropTypes.func.isRequired,
-
+        forceUpdate: PropTypes.bool.isRequired,
     }
     state = {
         step: 'language',
@@ -34,7 +34,6 @@ class Welcome extends React.PureComponent {
     };
 
     onNextClick = () => {
-        console.log("onclick", this.props);
         const { history, acceptedTerms, acceptedPrivacy, acceptTerms, acceptPrivacy } = this.props;
         const { step } = this.state;
 
@@ -63,17 +62,15 @@ class Welcome extends React.PureComponent {
     }
 
     render() {
-        const { language, t } = this.props;
+        const { t } = this.props;
         const { step, scrollEnd } = this.state;
         let markdown = '';
         markdown = step === 'terms' ? enTermsAndConditionsIOS : enPrivacyPolicyIOS;
-
         let styles = {
             color: '#E9B339',
             fontSize: '20px'
 
         };
-
         return (
             <div>
                 <Logos size={20} />
@@ -108,7 +105,6 @@ class Welcome extends React.PureComponent {
                             : !scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
                         <span style={styles}> ></span></Button>
                 </section>
-                {/* <footer className={classNames(css.none)}></footer> */}
             </div>
         )
     }
@@ -116,7 +112,8 @@ class Welcome extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
     acceptedPrivacy: state.settings.acceptedPrivacy,
-    acceptedTerms: state.settings.acceptedTerms
+    acceptedTerms: state.settings.acceptedTerms,
+    forceUpdate: state.wallet.forceUpdate,
 });
 
 const mapDispatchToProps = {

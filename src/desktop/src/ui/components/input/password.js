@@ -84,11 +84,7 @@ class PasswordInput extends React.PureComponent {
         const { hidden, capsLock } = this.state;
 
         const score = zxcvbn(value);
-        console.log("SCORE=====", score);
-        
         const isValid = score.score === 4 && (typeof match !== 'string' || match === value);
-        console.log("ALERTMSG====",score.feedback.warning);
-
         return (
             <div
                 className={classNames(

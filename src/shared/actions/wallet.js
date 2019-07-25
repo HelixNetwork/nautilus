@@ -7,6 +7,7 @@
 export const ActionTypes = {
     MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
     SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
+    CLEAR_WALLET_DATA: 'HELIX/WALLET/CLEAR_WALLET_DATA',
 }
 
 /**
@@ -24,5 +25,22 @@ export const mapStorageToState = (payload) => ({
 
 export const setPassword = (payload) => ({
     type: ActionTypes.SET_PASSWORD,
+    payload,
+});
+
+export const clearWalletData = () => ({
+    type: ActionTypes.CLEAR_WALLET_DATA,
+});
+
+/**
+ * Dispatch to set active seed (account) index in state
+ *
+ * @method setSeedIndex
+ * @param {number} payload
+ *
+ * @returns {{type: {string}, payload: {number} }}
+ */
+export const setSeedIndex = (payload) => ({
+    type: WalletActionTypes.SET_SEED_INDEX,
     payload,
 });
