@@ -51,7 +51,7 @@ class SettingsLanguage extends React.PureComponent {
                             <div className={classNames(css.foo_bxx12)}>
                                 <div cllassname={classNames(css.set_bxac)}>
                                 <form onSubmit={(e) => this.changeLocale(e)}>
-                                   <div style={{marginLeft:'-10vw',marginTop:'11vw'}}>
+                                   <div style={{marginLeft:'-9vw',marginTop:'11vw'}}>
                                     {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
                                     <Select 
                                         label={t('languageSetup:language')}
@@ -61,8 +61,9 @@ class SettingsLanguage extends React.PureComponent {
                                             return { value: item, label: I18N_LOCALE_LABELS[index] };
                                         })}
                                     />
+                                    <Button style={{marginLeft:'19vw',marginTop:'4vw'}} type="submit" >{t('global:save')}</Button>
+
                                     </div>
-                                    <Button style={{marginLeft:'13vw',marginTop:'4vw'}} type="submit" disabled={!selection || selection === locale} >{t('global:save')}</Button>
                                     <div className={classNames(css.spe_bx)}>
                                         {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt="" /><br />Lorem Ipsum  -></a>
                                         <hr className={classNames(css.ser_bts)} />

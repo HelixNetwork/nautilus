@@ -103,7 +103,7 @@ class PasswordInput extends React.PureComponent {
                         ref={(input) => {
                             this.input = input;
                         }}
-                      
+                        style={(this.props.style?this.props.style:{})}
                         value={value}
                         onClick={this.setCapsLock}
                         onKeyDown={this.setCapsLock}

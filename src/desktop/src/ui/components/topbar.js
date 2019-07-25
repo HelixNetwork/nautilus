@@ -18,7 +18,7 @@ class Top extends React.PureComponent {
                 <div style={{ marginRight: '30px', marginTop: '-36px' }}>
                     <a href="#" className={classNames(css.main_mn)} style={{ display: this.props.user }}><img src={log} style={{ width: '40px' }} alt="" /></a>
                     <a onClick={() => this.props.history.push('/')} className={classNames(css.setting)} style={{ display: this.props.common }}><FontAwesomeIcon icon={faPowerOff} /> Logout </a>
-                    <a onClick={() => this.props.history.push('/settings')} className={classNames(css.setting)} style={{ display: this.props.common }}><FontAwesomeIcon icon={faCog} /> Settings</a>
+                    <a onClick={() => this.props.history.push('/settings/editname')} className={classNames(css.setting)} style={{ display: this.props.common }}><FontAwesomeIcon icon={faCog} /> Settings</a>
                     <a onClick={() => this.props.history.push('/wallet')} className={classNames(css.setting)} style={{ display: this.props.main }}><FontAwesomeIcon icon={faTh} /> Main Menu</a>
                 </div>
 
