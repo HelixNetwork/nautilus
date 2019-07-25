@@ -3,7 +3,7 @@
 
 ## Prerequisites
 
-- Node.js (8+)
+- Node.js (10.16.0)
 - Electron (npm install electron -g)
 - Yarn >= v1.16.0
 
