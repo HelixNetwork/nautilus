@@ -92,7 +92,9 @@ class PasswordInput extends React.PureComponent {
                     css.padded,
                     disabled ? css.disabled : null,
                     capsLock ? css.capsLock : null,
+                    
                 )}
+                style={(this.props.style?this.props.style:{})}
             >
                 <fieldset>
                     <a className={hidden ? css.strike : null} onClick={this.setVisibility}>
@@ -103,7 +105,6 @@ class PasswordInput extends React.PureComponent {
                         ref={(input) => {
                             this.input = input;
                         }}
-                       
                         value={value}
                         onClick={this.setCapsLock}
                         onKeyDown={this.setCapsLock}

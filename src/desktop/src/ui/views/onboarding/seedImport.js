@@ -168,6 +168,7 @@ class SeedImport extends React.PureComponent {
                                         <form style={{ top: '-30px', left: '350px' }}>
                                             {/* <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{ marginTop: '55px' }}></input><br /><br /> */}
                                             <PasswordInput
+                                           
                                                 focus
                                                 value={this.state.password}
                                                 label="Password"

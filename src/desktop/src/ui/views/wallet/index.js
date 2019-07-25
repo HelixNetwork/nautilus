@@ -66,7 +66,7 @@ class Wallet extends React.PureComponent {
                                         <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faDownload} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
                                         <div onClick={() => history.push('/wallet/chart')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faChartLine} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
                                         <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
-                                        <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faHistory} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div>
+                                    
                                         {/* <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faExchange} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Swap <span>></span></h2></div> */}
                                 </div>
                             </div>

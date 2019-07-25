@@ -34,7 +34,10 @@ class Settings extends React.PureComponent {
     }
     render() {
 
-        const { history ,t} = this.props;
+        const { history, t, location } = this.props;
+        console.log("settings index", location);
+        const currentKey = location.pathname.split('/')[2] || '/';
+
         return (
             <div>
                 <Top
@@ -43,49 +46,29 @@ class Settings extends React.PureComponent {
                     user={'none'}
                     history={history}
                 />
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-4">
-                            <div className={classNames(css.menu_box)}>
-                                <Sidebar
-                                    disp={'none'}
-                                    history={history}
-                                />
-                                    <div className="col-lg-8">
-                                {/* <div className={classNames(css.set_bx)}> */}
-                                    <div className={classNames(css.foo_bxx12)}>
-                                        <div cllassname={classNames(css.set_bxac)}>
-                                            
-                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('accountManagement:editAccountName')}</h5>
-                                             <input type="text" className={classNames(css.ssetting_textline)} style={{width:'18vw'}}></input><br /><br />
-                            
-                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}> </Button>
-                                            <div  className={classNames(css.spe_bx)}>
-                                               {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
-                                               <hr className={classNames(css.ser_bts)}/>
-                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {/* </div> */}
-                            </div>
-                                <a ></a>
-                            </div>
+                <div className="container">
+                    <div className="col-lg-4">
+                        <div className={classNames(css.menu_box)}>
+                            <Sidebar
+                                disp={'none'}
+                                history={history}
+                                active={currentKey}
+                            />
+                            <Switch>
+                                <Route path="/settings/editname" component={AccountName} />
+                                <Route path="/settings/language" component={SettingsLanguage} />
+                                <Route path="/settings/node" component={SettingsNode} />
+                                <Route path="/settings/currency" component={Currency} />
+                                <Route path="/settings/theme" component={SettingsTheme} />
+                                <Route path="/settings/viewseed" component={Viewseed} />
+                                <Route path="/settings/address" component={Viewaddress} />
+                                <Route path="/settings/password" component={Changepassword} />
+                                <Route path="/settings/mode" component={SettingsMode} />
+                                <Route path="/settings/accountsetting" component={AdvancedSettings} />
+                            </Switch>
                         </div>
                     </div>
-                </section>
-                <Switch>
-                    {/* <Route path="/settings" component={AccountName} /> */}
-                    <Route path="/settings/language" component={SettingsLanguage} />
-                    <Route path="/settings/node" component={SettingsNode} />
-                    <Route path="/settings/currency" component={Currency} />
-                    <Route path="/settings/theme" component={SettingsTheme} />
-                    <Route path="/settings/viewseed" component={Viewseed} />
-                    <Route path="/settings/address" component={Viewaddress} />
-                    <Route path="/settings/password" component={Changepassword} />
-                    <Route path="/settings/mode" component={SettingsMode} />
-                    <Route path="/settings/accountsetting" component={AdvancedSettings}/>
-                </Switch>
+                </div>
             </div>
         );
     }
@@ -99,4 +82,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withI18n()(Settings)));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(Settings));
