@@ -74,7 +74,7 @@ src/shared/__tests__/dev-sample
 /build
 /release/
 /src/desktop/dist/
-/src/desktop/out
+/src/desktop/out/
 # misc
 .DS_Store
 .env.local
