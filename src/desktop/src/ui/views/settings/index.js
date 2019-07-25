@@ -36,6 +36,7 @@ class Settings extends React.PureComponent {
 
         const { history, t, location } = this.props;
         console.log("settings index", location);
+        const currentKey = location.pathname.split('/')[2] || '/';
 
         return (
             <div>
@@ -51,6 +52,7 @@ class Settings extends React.PureComponent {
                             <Sidebar
                                 disp={'none'}
                                 history={history}
+                                active={currentKey}
                             />
                             <Switch>
                                 <Route path="/settings/editname" component={AccountName} />

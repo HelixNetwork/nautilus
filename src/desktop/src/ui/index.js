@@ -47,7 +47,7 @@ class App extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("this prpps", this.props);
-        console.log(nextProps);       
+        console.log(nextProps);
         /* On language change */
         if (nextProps.locale !== this.props.locale) {
             i18next.changeLanguage(nextProps.locale);
@@ -81,7 +81,7 @@ class App extends React.Component {
 
     Init = (props) => {
         return (
-            <Loading loop={false} onEnd={() => this.props.history.push('/wallet/')} />
+            <Loading loop={false} onEnd={() => this.props.history.push('/onboarding/')} />
         );
     };
 
