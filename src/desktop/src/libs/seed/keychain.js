@@ -5,6 +5,7 @@ import { bitsToChars, indexToBit } from 'libs/hlx/converter';
 import { prepareTransfers as prepareTransfer } from 'libs/hlx/extendedApi';
 
 import SeedStoreCore from './seedStoreCore';
+import { generateAddress } from '@helixnetwork/core';
 
 // Prefix for seed account titles stored in Keychain
 const ACC_PREFIX = 'account';
@@ -153,17 +154,25 @@ class Keychain extends SeedStoreCore {
      */
     generateAddress = async (options) => {
         const seed = await this.getSeed(true);
-        const addresses = await Electron.genFn(seed, options.index, options.security, options.total);
-
-        for (let i = 0; i < seed.length * 3; i++) {
+        console.log(" seed convert", bitsToChars(seed));
+        console.log("options ", options)
+        let hexSeed = bitsToChars(seed);
+        let addresses = []
+        for (let k =0;k<options.total;k++){
+            addresses[k] = await generateAddress(hexSeed, options.index + k, options.security);
+        }
+        // addresses = await generateAddress(hexSeed, options.index, options.security);
+        //const addresses = await Electron.genFn(seed, options.index, options.security, options.total);
+        for (let i = 0; i < seed.length * 8; i++) {
             seed[i % seed.length] = 0;
         }
 
         Electron.garbageCollect();
 
-        return !options.total || options.total === 1
-            ? bitsToChars(addresses)
-            : addresses.map((bits) => bitsToChars(bits));
+        return addresses;
+        // !options.total || options.total === 1
+        //     ? bitsToChars(addresses)
+        //     : addresses.map((bits) => bitsToChars(bits));
     };
 
     /**

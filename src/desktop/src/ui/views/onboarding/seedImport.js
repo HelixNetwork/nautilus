@@ -68,14 +68,19 @@ class SeedImport extends React.PureComponent {
         });
     }
     onSeedChange(e) {
-        this.setState(() => ({
-            seed: value,
-        }));
+        // To do
     }
     onSubmit = async () => {
         try {
             const seed = await Electron.importSeed(this.state.importBuffer, this.state.password);
-            console.log(seed[0]);
+            this.setState({
+                importBuffer: null,
+            });
+
+            if (!seed || !seed.length) {
+                throw Error('SeedNotFound');
+            }
+
             let seedSequence = "";
             seed[0].seed.map((byte, index) => {
                 const letter = indexToChar(byte);
@@ -84,6 +89,7 @@ class SeedImport extends React.PureComponent {
             Electron.setOnboardingSeed(seed[0].seed, false);
             Electron.setOnboardingName(seed[0].title)
             this.setState({
+                seed: seed[0].seed,
                 seedPhrase: seedSequence,
                 hidePass: 'none',
                 importVisible: false
@@ -112,8 +118,39 @@ class SeedImport extends React.PureComponent {
         if (e) {
             e.preventDefault();
         }
-        const { setAccountInfoDuringSetup, wallet, additionalAccountName, history, t } = this.props;
-        const { seed, isGenerated, importVisible } = this.state;
+        const { setAccountInfoDuringSetup, wallet, additionalAccountName, history, t, generateAlert } = this.props;
+        const { seed, isGenerated } = this.state;
+
+        console.log('verify props', this.props);
+        console.log('verify state', this.state);
+        console.log('is seed gener', isGenerated);
+
+        if (
+            isGenerated &&
+            (seed.length !== Electron.getOnboardingSeed().length ||
+                !Electron.getOnboardingSeed().every((v, i) => v % 27 === seed[i] % 27))
+        ) {
+            generateAlert('error', t('seedReentry:incorrectSeed'), t('seedReentry:incorrectSeedExplanation'));
+            return;
+        }
+
+        if (wallet.password.length) {
+            const seedStore = await new SeedStore.keychain(wallet.password);
+            const isUniqueSeed = await seedStore.isUniqueSeed(seed);
+            if (!isUniqueSeed) {
+                generateAlert('error', t('addAdditionalSeed:seedInUse'), t('addAdditionalSeed:seedInUseExplanation'));
+                return;
+            }
+        }
+        console.log("seed length", seed.length)
+        if (seed.length !== MAX_SEED_LENGTH) {
+            generateAlert(
+                'error',
+                seed.length < MAX_SEED_LENGTH ? t('enterSeed:seedTooShort') : t('enterSeed:seedTooLong'),
+                t('enterSeed:seedTooShortExplanation', { maxLength: MAX_SEED_LENGTH, currentLength: seed.length }),
+            );
+            return;
+        }
 
         if (!isGenerated) {
             Electron.setOnboardingSeed(seed, false);
@@ -146,18 +183,10 @@ class SeedImport extends React.PureComponent {
                         <div className="row">
                             <div className="col-lg-12">
                                 <h1>{t('seedReentry:enterYourSeed')}<span className={classNames(css.text_color)}>.</span></h1>
-                                {/* {isGenerated ? (
-                                    <span>{t('seedReentry:enterSeedBelow')}</span>
-                                ) : (
-                                        <p style={{marginTop:'2vw'}}>
-                                            {t('enterSeed:seedExplanation', { maxLength: MAX_SEED_LENGTH })}{' '}<br/>
-                                            <strong>{t('enterSeed:neverShare')}</strong>
-                                        </p>
-                                    )} */}
                             </div>
                             <div className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}>
                                 <label>Seed</label>
-                                <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase} onChange={() => this.onSeedChange}></input><br /><br />
+                                <input type="text" className={classNames(css.sseed_textline)} value={seedPhrase} onChange={this.onSeedChange.bind(this)}></input><br /><br />
                                 <Dropzone style={{ marginTop: '2vw' }} onDrop={this.onDrop} />
                                 {importBuffer && (
                                     <Modal
@@ -166,24 +195,19 @@ class SeedImport extends React.PureComponent {
                                         onClose={() => this.setState({ importVisible: false })}
                                     >
                                         <form style={{ top: '-30px', left: '350px' }}>
-                                            {/* <input type="password" name="password" className={classNames(css.sseed_textline)} onChange={this.onChange.bind(this)} style={{ marginTop: '55px' }}></input><br /><br /> */}
                                             <PasswordInput
-                                           
                                                 focus
                                                 value={this.state.password}
                                                 label="Password"
                                                 showValid
                                                 onChange={(value) => { this.setState({ password: value }) }}
                                             />
-
                                             <Button onClick={this.goBack.bind(this)} variant="backgroundNone" className="modal_navleft">Cancel <span>></span></Button>
                                             <Button onClick={this.onSubmit.bind(this)} variant="backgroundNone" className="modal_navright">Import Seed <span>></span></Button>
-
                                         </form>
                                     </Modal>
                                 )}
                                 <br />
-                                {/* <input type="password" className={classNames(css.sseed_textline)} placeholder="Enter key" style={{ position: 'relative', top: '60px' }} onChange={this.onChange}></input><br /><br /> */}
                                 <p style={{ marginTop: '13vw', marginLeft: '2vw' }}>
                                     <strong>{t('enterSeed:neverShare')}</strong>
                                 </p>

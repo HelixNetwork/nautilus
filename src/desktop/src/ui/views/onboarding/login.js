@@ -67,7 +67,7 @@ class Login extends React.PureComponent {
         const { password, addingAdditionalAccount } = this.props;
 
         if (password.length && addingAdditionalAccount) {
-            // this.setupAccount();
+            this.setupAccount();
         } else {
             this.props.clearWalletData();
             this.props.setPassword({});
@@ -76,7 +76,7 @@ class Login extends React.PureComponent {
 
     componentDidUpdate(prevProps) {
         if (this.state.shouldMigrate && !prevProps.completedMigration && this.props.completedMigration) {
-            // this.setupAccount();
+            this.setupAccount();
         }
     }
 
@@ -96,8 +96,6 @@ class Login extends React.PureComponent {
     };
 
     stepForward(route) {
-        // this.handleClick=this.handleClick.bind(this);
-
         this.props.history.push(`/onboarding/${route}`);
     }
     /**
@@ -142,7 +140,6 @@ class Login extends React.PureComponent {
 
         if (addingAdditionalAccount) {
             this.props.getFullAccountInfo(seedStore, accountName);
-            this.props.history.push('/wallet/')
         } else {
             this.props.getAccountInfo(seedStore, accountName, Electron.notify);
         }

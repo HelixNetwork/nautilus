@@ -16,6 +16,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@helixnetwork/core": "^1.0.0-alpha.3",
     "@helixnetwork/sha3": "^1.0.0-alpha.3",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.3",
     "argon2": "^0.24.0",
