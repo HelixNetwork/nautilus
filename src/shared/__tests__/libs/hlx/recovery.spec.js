@@ -246,13 +246,11 @@
 //                     });
 
 //                     it('should promote pending transactions', () => {
-//                         console.log("Thisisit");
+//                         console.log("This is inside");
                         
 //                         const stub = sinon
 //                             .stub(transferUtils, 'promoteTransactionTilConfirmed')
-//                             .returns(() => Promise.resolve({}));
-//                         console.log('reched hgj');
-                        
+//                             .returns(() => Promise.resolve({}));                        
 //                         return (
 //                             sweep(null)(seedStore, seed, validInput, validTransfer)
 //                                 // Because provided seed is incorrect, it will lead to incorrect signatures and will throw

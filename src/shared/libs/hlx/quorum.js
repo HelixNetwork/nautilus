@@ -200,11 +200,6 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
 
             idx += 1;
         }
-        console.log('reched too');
-        console.log(quorumResult);
-        
-        
-
         return quorumResult;
     };
 
@@ -262,13 +257,8 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
  * @returns {function(string, array, [array], *) => Promise<array | object | string>}
  */
 const getQuorum = (quorumSize) => (method, syncedNodes, payload, ...args) => {
-    console.log('inside g');
     const requestArgs = [...(isEmpty(payload) ? [] : [payload]), ...(isEmpty(args) ? [] : args)];
     const helixApiMethod = head(split(method, ':'));
-    console.log('inside q');
-    console.log(helixApiMethod);
-    
-    
     return rejectIfNotEnoughSyncedNodes(syncedNodes, quorumSize)
         .then(() =>
             Promise.all(
@@ -297,9 +287,7 @@ const getQuorum = (quorumSize) => (method, syncedNodes, payload, ...args) => {
             ),
         )
         .then((results) => {
-            const requestPayloadSize = size(payload);
-            console.log('reched');
-            
+            const requestPayloadSize = size(payload);            
             return prepareQuorumResults(method, quorumSize, ...args)(results, requestPayloadSize);
         });
 };
@@ -382,10 +370,6 @@ export default function Quorum(config) {
          * @returns {Promise}
          */
         wereAddressesSpentFrom(addresses) {
-            console.log('quorum');
-            console.log(addresses);
-            
-            
             return isEmpty(addresses)
                 ? Promise.resolve([])
                 : findSyncedNodesIfNecessary().then((syncedNodes) =>
