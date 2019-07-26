@@ -7,15 +7,86 @@ import Top from '../../components/topbar';
 import PropTypes from 'prop-types';
 import ic1 from 'ui/images/send_bt.png';
 import { withI18n } from 'react-i18next';
-
+import SeedStore from 'libs/seed';
+import Modal from 'ui/components/modal/Modal';
 class Send extends React.PureComponent {
+   
     static propTypes = {
+        /** @ignore */
+        fields: PropTypes.shape({
+            address: PropTypes.string.isRequired,
+            amount: PropTypes.string.isRequired,
+            message: PropTypes.string.isRequired,
+        }),
+        /** @ignore */
+        isSending: PropTypes.bool.isRequired,
+        /** @ignore */
+        password: PropTypes.object.isRequired,
+        /** @ignore */
+        accountMeta: PropTypes.object.isRequired,
+        /** @ignore */
+        accountName: PropTypes.string.isRequired,
+        /** @ignore */
+        availableBalance: PropTypes.number.isRequired,
+        /** @ignore */
+        settings: PropTypes.shape({
+            conversionRate: PropTypes.number.isRequired,
+            currency: PropTypes.string.isRequired,
+            usdPrice: PropTypes.number.isRequired,
+        }),
+        /** @ignore */
+        progress: PropTypes.shape({
+            progress: PropTypes.number,
+            title: PropTypes.string,
+        }),
+        /** @ignore */
+        validateInputs: PropTypes.func.isRequired,
+        /** @ignore */
+        sendTransfer: PropTypes.func.isRequired,
+        /** @ignore */
+        setSendAddressField: PropTypes.func.isRequired,
+        /** @ignore */
+        setSendAmountField: PropTypes.func.isRequired,
+        /** @ignore */
+        setSendMessageField: PropTypes.func.isRequired,
+        /** @ignore */
+        t: PropTypes.func.isRequired,
+        /** @ignore */
+        themeName: PropTypes.string.isRequired,
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
-        t: PropTypes.func.isRequired,
+    };
+
+state={
+    address:''
+}
+    confirmTransfer = async () => {
+        const { fields, password, accountName, accountMeta, sendTransfer } = this.props;
+
+        this.setState({
+            isTransferModalVisible: false,
+        });
+
+        const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
+
+        const message =
+            SeedStore[accountMeta.type].isMessageAvailable || parseInt(fields.amount || '0') === 0
+                ? fields.message
+                : '';
+
+            
+        
+        sendTransfer(seedStore, fields.address, parseInt(fields.amount) || 0, message);
+    };
+
+    send(){
+        this.setState({
+            address:'1234'
+        });
     }
+
     render() {
         const { history, t } = this.props;
         return (
@@ -51,9 +122,14 @@ class Send extends React.PureComponent {
                                             <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="mHLX"></input>
                                             <h5>{t('send:enterReceiverAddress')}</h5>
                                             <input type="text" name="name" className={css.reci_text} /> <br />
-                                            <a href="#" className={css.send_bts}><img src={ic1} alt="" /></a>
+                                            <a href="#" className={css.send_bts} onClick={this.send.bind(this)}><img src={ic1} alt="" /></a>
                                             <h2 className={classNames(css.send_bts_h2)}>Send <span>></span></h2>
                                         </form>
+                                        {this.state.address!=''&&<Modal
+                                        isOpen={true}
+                                        >
+                                            hi
+                                        </Modal>}
                                     </div>
                                 </div>
                             </div>
