@@ -150,10 +150,10 @@
     // box-shadow: -5px 4px 5px 0px rgba(0, 0, 0, 0.15);
     width: 963px;
     padding: 35px 20px;
-    height: 469px;
+    height: 477px;
     position: absolute;
     left: 50%;
-    bottom: 64px;
+    bottom: 56px;
     margin-top: -27px;
     margin-left: -513px;
     background-color: #ffffff;
@@ -643,6 +643,41 @@ margin-right: 16px;
   color: #fff;
   border-color: #908a8a;
 }
+
+.hlx_wallet_box {
+  width: 714px;
+  background-color: #000b20;
+  border-radius: 5px;
+  box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
+  min-height:310px;
+  min-width: 620px;
+  position: absolute;
+  top: 30%;
+  bottom: 3%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index:1000;
+  padding: 5px 0px 10px 0px;
+}
+
+.hlx_receive_box {
+  width: 85%;
+  height:60%;
+  border-radius: 5px;
+  // box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
+  top: 3%;
+  // bottom: 3%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index:1000;
+  padding: 5px 0px 10px 0px;
+}
+
+
+
+
   @media  screen and (min-width: 1920px) {
     .bal_bxs{
       position: absolute;

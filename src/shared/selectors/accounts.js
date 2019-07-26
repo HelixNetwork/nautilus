@@ -9,6 +9,7 @@ import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import transform from 'lodash/transform';
 import { createSelector } from 'reselect';
+import { accumulateBalance, getLatestAddress } from '../libs/hlx/addresses';
 import { getSeedIndexFromState } from './global';
 
 
@@ -84,6 +85,19 @@ export const selectAccountInfo = createSelector(
         return account || {};
     },
 );
+
+/**
+ *   Selects latest address from account info state partial.
+ *
+ *   @method selectLatestAddressFromAccountFactory
+ *   @param {object} accountName
+ *   @returns {string}
+ **/
+export const selectLatestAddressFromAccountFactory = (withChecksum = true) =>
+    createSelector(
+        selectAccountInfo,
+        (state) => getLatestAddress(state.addressData, withChecksum),
+    );
 
 export const getSelectedAccountMeta = createSelector(
     selectAccountInfo,
