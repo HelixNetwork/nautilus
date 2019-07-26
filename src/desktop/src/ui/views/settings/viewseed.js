@@ -20,7 +20,7 @@ import Button from 'ui/components/button';
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
-
+        seed: PropTypes.array.isRequired,
         
      }
      state = {
@@ -51,7 +51,7 @@ import Button from 'ui/components/button';
                                         <div cllassname={classNames(css.set_bxac)}>
                                             
                                             <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('accountManagement:viewSeed')}</h5>
-                                             <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
+                                             <input type="text" className={classNames(css.ssetting_textline)} value={this.props.seed}></input><br /><br />
                             
                                             <Button style={{marginLeft:'14vw',marginTop:'4vw'}}  onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>

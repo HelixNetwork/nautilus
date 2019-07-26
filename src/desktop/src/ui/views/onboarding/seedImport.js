@@ -10,7 +10,7 @@ import Button from 'ui/components/button';
 import { generateAlert } from 'actions/alerts';
 import Dropzone from 'ui/components/dropzone';
 import PasswordInput from 'ui/components/input/password';
-import { indexToChar } from 'libs/hlx/converter';
+import { indexToChar, charToIndex } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 import Modal from 'ui/components/modal/Modal';
 
@@ -32,6 +32,7 @@ class SeedImport extends React.PureComponent {
         importBuffer: [],
         password: '',
         seedPhrase: '',
+        seedIn:'',
         importVisible: false,
         seed: [],
     };
@@ -46,6 +47,7 @@ class SeedImport extends React.PureComponent {
 
     onPaste = (e) => {
         e.preventDefault();
+        console.log(e);
     };
 
     onDrop = async (buffer) => {
@@ -62,13 +64,23 @@ class SeedImport extends React.PureComponent {
             hidePass: 'block'
         });
     };
-    onChange(e) {
-        this.setState({
-            password: e.target.value
-        });
-    }
+    
     onSeedChange(e) {
         // To do
+        e.preventDefault();
+        const ch = e.target.value;
+        if(!/([a-f0-9])$/.test(ch)){
+        return this.props.generateAlert(
+                'error',
+                'Invalid seed',
+                'You have a entered an invalid character in seed.',
+                1000
+            ); 
+        }
+        this.setState({
+            seedPhrase:e.target.value
+        });
+
     }
     onSubmit = async () => {
         try {
@@ -119,16 +131,20 @@ class SeedImport extends React.PureComponent {
             e.preventDefault();
         }
         const { setAccountInfoDuringSetup, wallet, additionalAccountName, history, t, generateAlert } = this.props;
-        const { seed, isGenerated } = this.state;
+        const { seed, isGenerated , seedPhrase} = this.state;
 
         console.log('verify props', this.props);
         console.log('verify state', this.state);
         console.log('is seed gener', isGenerated);
-
+        if(Electron.getOnboardingSeed()==null && seedPhrase !=''){
+            for(let i=0;i<64;i++){
+                seed.push(charToIndex(seedPhrase[i]));
+            }
+        }
         if (
             isGenerated &&
             (seed.length !== Electron.getOnboardingSeed().length ||
-                !Electron.getOnboardingSeed().every((v, i) => v % 27 === seed[i] % 27))
+                !Electron.getOnboardingSeed().every((v, i) => v % 16 === seed[i] % 16))
         ) {
             generateAlert('error', t('seedReentry:incorrectSeed'), t('seedReentry:incorrectSeedExplanation'));
             return;
