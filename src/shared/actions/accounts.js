@@ -31,8 +31,10 @@ export const ActionTypes = {
 }
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
 import { setSeedIndex } from './wallet';
+import { changeNode } from './settings';
 import { withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
 import { DEFAULT_RETRIES } from '../config';
+import { AccountsActionTypes } from './types';
 
 
 /**
@@ -156,10 +158,39 @@ export const updateAccountAfterReattachment = (payload) => ({
     payload,
 });
 
+/**
+ * Dispatch to set basic account info in state
+ *
+ * For example: To keep track of whether a seed was generated within Trinity
+ *
+ * @method setBasicAccountInfo
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const setBasicAccountInfo = (payload) => ({
+    type: AccountsActionTypes.SET_BASIC_ACCOUNT_INFO,
+    payload,
+});
+
+/**
+ * Dispatch when account information for an additional account is successfully fetched
+ *
+ * @method fullAccountInfoFetchSuccess
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const fullAccountInfoFetchSuccess = (payload) => ({
+    type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_SUCCESS,
+    payload,
+});
+
+
 export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
     console.log("here -", accountName);
     return (dispatch, getState) => {
-        console.log('getstate',getState());
+        console.log('getstate', getState());
         dispatch(fullAccountInfoFetchRequest());
 
         const selectedNode = getSelectedNodeFromState(getState());

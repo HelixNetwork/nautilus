@@ -155,7 +155,6 @@ class Keychain extends SeedStoreCore {
     generateAddress = async (options) => {
         const seed = await this.getSeed(true);
         console.log(" seed convert", bitsToChars(seed));
-        console.log("options ", options)
         let hexSeed = bitsToChars(seed);
         let addresses = []
         for (let k =0;k<options.total;k++){
