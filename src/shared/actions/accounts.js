@@ -161,7 +161,7 @@ export const updateAccountAfterReattachment = (payload) => ({
 /**
  * Dispatch to set basic account info in state
  *
- * For example: To keep track of whether a seed was generated within Trinity
+ * For example: To keep track of whether a seed was generated within Helix
  *
  * @method setBasicAccountInfo
  * @param {object} payload

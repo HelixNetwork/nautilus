@@ -23,9 +23,9 @@ export default class AmountInput extends React.PureComponent {
         /** Max available amount */
         balance: PropTypes.number.isRequired,
         /** Fiat currency settings
-         * @property {string} conversionRate - Active currency conversion rate to Miota
+         * @property {string} conversionRate - Active currency conversion rate to hlx
          * @property {string} currency - Active currency name
-         * @property {string} usdPrice - Current USD price per Miota
+         * @property {string} usdPrice - Current USD price per hlx
          */
         settings: PropTypes.shape({
             conversionRate: PropTypes.number.isRequired,

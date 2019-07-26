@@ -135,7 +135,7 @@ const account = (
         accountInfo: {},
         /**
          * Keeps track information during account setup.
-         * For example: Keeps track if a user used an existing seed or generated within Trinity
+         * For example: Keeps track if a user used an existing seed or generated within Helix
          */
         setupInfo: {},
         /**

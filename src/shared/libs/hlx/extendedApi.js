@@ -81,7 +81,6 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
         return instance;
     }
 
-    // iota.api.setApiTimeout(requestTimeout);
 
     return helix;
 };
@@ -352,7 +351,6 @@ const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_
  * @returns {function(string, array, *): Promise<any>}
  */
 export const prepareTransfers = (settings) => (seed, transfers, options = null, signatureFn = null) => {
-    // https://github.com/iotaledger/iota.lib.js/blob/e60c728c836cb37f3d6fb8b0eff522d08b745caa/lib/api/api.js#L1058
     let args = [seed, transfers];
 
     if (options) {

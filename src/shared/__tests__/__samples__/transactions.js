@@ -394,7 +394,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: true,
 //         incoming: true,
 //         transferValue: 0,
-//         message: 'Trinity test zero value one',
+//         message: 'Helix test zero value one',
 //         tailTransactions: [
 //             {
 //                 hash: '0000ce52d35762c89dd3d946b19056d28ddca22474792b9e43bb6d1787de202e',
@@ -446,7 +446,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: true,
 //         incoming: true,
 //         transferValue: 1,
-//         message: 'Trinity test transaction one',
+//         message: 'Helix test transaction one',
 //         tailTransactions: [
 //             {
 //                 hash: 'MFZXHOXKGVVBDGSVXIGEFBFDXICQDK9UQFVSQCAJMZICRXDGBRZMHHJUGTDPWTEHWSREZFDCRRYD99999',
@@ -494,7 +494,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: true,
 //         incoming: false,
 //         transferValue: 1,
-//         message: 'Trinity test transaction two',
+//         message: 'Helix test transaction two',
 //         tailTransactions: [
 //             {
 //                 hash: 'GERAGOPQB9ULOVZJWJWQQ9ONFRNAIECCAHCMIGDOWSLJOKKDFGBFYZYGMU9UVEW9DOMKDE9VPSLJZ9999',
@@ -546,7 +546,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: false,
 //         incoming: true,
 //         transferValue: 5,
-//         message: 'Trinity test transaction three',
+//         message: 'Helix test transaction three',
 //         tailTransactions: [
 //             {
 //                 hash: 'AWHIUDGXYYMKHGOJMDTMYPAOZHWCDUWEXH9HCNWPGXEXTJLQQHELQYZLCUC9UDNUHQUFGLKGNKENZ9999',
@@ -590,7 +590,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: false,
 //         incoming: false,
 //         transferValue: 5,
-//         message: 'Trinity test transaction four',
+//         message: 'Helix test transaction four',
 //         tailTransactions: [
 //             {
 //                 hash: 'IXZUUKVWLWPWWTJWGSAO9GUVVDCEYOUNJRTPPDQVAJQKGTLSZHDHUPGBNJJPZHZADJENZQ9MGQVR99999',
@@ -634,7 +634,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: false,
 //         incoming: false,
 //         transferValue: 1,
-//         message: 'Trinity test transaction six (failed)',
+//         message: 'Helix test transaction six (failed)',
 //         tailTransactions: [
 //             {
 //                 hash: 'ULVGVNQB9QBUEVHZZUWFIEFXFCODGMWQUKJFCA9QZOQPESMWGEVOWEYKIGPGUGUBI9DGIHBTUOPWZ9999',
@@ -678,7 +678,7 @@ const failedTransactionsWithIncorrectTransactionHashes = [ { hash:
 //         persistence: false,
 //         incoming: false,
 //         transferValue: 2,
-//         message: 'Trinity test transaction eight (failed)',
+//         message: 'Helix test transaction eight (failed)',
 //         tailTransactions: [
 //             {
 //                 hash: 'JTBWOTAADTOSUQDQYLS9NW9NCIM9ZQGICGXWUAVLEUUZKJYNPMFTDDBBCFBX9OXWMGQOEVMXNMHXKOQNE',

@@ -225,7 +225,7 @@ export const categoriseBundleByInputsOutputs = (bundle, addresses, outputsThresh
     );
 
     // Note: Ideally we should categorise all outputs
-    // But some bundles esp carriota field donation bundles are huge
+    // But some bundles are huge
     // and on devices with restricted storage storing them can cause the problem.
 
     // Now this does not mean that large bundles should not be validated.
@@ -559,7 +559,6 @@ export const performPow = (
 /**
  *
  * Performs sequential proof of work (Can be run in parallel with getTransactionsToApprove).
- * See: https://github.com/iotaledger/trinity-wallet/issues/205
  *
  * @method performSequentialPow
  *
@@ -652,7 +651,6 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
     const isInvalidTransactionHash = ({ hash }) =>
         hash === EMPTY_HASH_BYTES || !isHash(hash);
         // TODO recheck
-        // iota.utils.isTransactionHash(hash, DEFAULT_MIN_WEIGHT_MAGNITUDE);
 
     // Verify if all transaction objects have valid hash
     // Proof of work was not performed correctly if any transaction has invalid hash
@@ -1070,7 +1068,6 @@ export const isBundleTraversable = (bundle, trunkTransaction, branchTransaction)
     );
 
 /**
- * Wraps iota.utils.isBundle (https://github.com/iotaledger/iota.js/blob/develop/lib/utils/utils.js#L421)
  * Ensures transaction objects in bundle are in correct (ascending) order
  *
  * @method isBundle

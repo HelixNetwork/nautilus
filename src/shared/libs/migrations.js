@@ -127,7 +127,6 @@ export const migrateAccounts = (accounts) => {
                     addressData,
                     // Transactions structure has been changed in the updated Account schema model. See schema/index.js.
                     // Previously, transactions were normalised before they were added to storage
-                    // The transaction structure has been updated now and it follows (https://domschiener.gitbooks.io/iota-guide/content/chapter1/transactions-and-bundles.html)
                     // It's impossible to reverse engineer updated transactions structure from normalised transactions, so we sync transactions from scratch.
                     // NOTE: A user will lose transactions that were pruned in the most recent snapshot. However, failed transactions will be kept.
                     transactions: [],

@@ -79,7 +79,7 @@ const Electron = {
     /**
     * Set onboarding seed variable to bypass Redux
     * @param {array} Seed - Target seed byte array
-    * @param {boolean} isGenerated - Is the seed generated using Trinity
+    * @param {boolean} isGenerated - Is the seed generated using Helix
     * @returns {undefined}
     */
     setOnboardingSeed: (seed, isGenerated) => {
@@ -182,7 +182,7 @@ const Electron = {
      */
     changeLanguage: (t) => {
         ipc.send('menu.language', {
-            about: t('settings:aboutTrinity'),
+            about: t('settings:aboutHelix'),
             errorLog: t('notificationLog:errorLog'),
             checkUpdate: t('checkForUpdates'),
             sendFeedback: 'Send feedback',

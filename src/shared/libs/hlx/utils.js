@@ -501,7 +501,6 @@ export const throwIfNodeNotHealthy = (settings) => {
 /**
  * Handles timeouts for network requests made to IRI nodes
  * Catches "request timeout" exceptions and retries network request with increased timeout
- * See (https://github.com/iotaledger/iota.js/blob/master/lib/utils/makeRequest.js#L115)
  *
  * @method withRequestTimeoutsHandler
  *

@@ -78,9 +78,9 @@ export const getLabelFromLocale = (locale) => {
 };
 
 /**
- * Handles edge cases where the locale code reported by the OS may not match a Trinity locale code
+ * Handles edge cases where the locale code reported by the OS may not match a Helix locale code
  * @param  {string} locale Locale code reported by OS
- * @return {string}        Trinity locale code
+ * @return {string}        Helix locale code
  */
 export const detectLocale = (locale) => {
     const adaptedLocale = locale.substring(0, 2);

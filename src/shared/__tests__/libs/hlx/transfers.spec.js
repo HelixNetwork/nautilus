@@ -957,7 +957,7 @@ describe('libs: helix/transfers', () => {
 
         //     // failedBytesWithCorrectTransactionHashes is in ascending order by default to assert with a reversed list
         //     expect(result).to.eql(failedBytesWithCorrectTransactionHashes.slice().reverse());
-        //     expect(iota.utils.transactionObject(result[0], EMPTY_TRANSACTION_BYTES).currentIndex).to.equal(2);
+        //     expect(hlx.utils.transactionObject(result[0], EMPTY_TRANSACTION_BYTES).currentIndex).to.equal(2);
         // });
     });
 
