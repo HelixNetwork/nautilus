@@ -1,5 +1,7 @@
 # Helix Wallet
-
+```
+WALLET IS IN ACTIVE DEVELOPMENT. CODE IS NOT OPTIMIZED FOR PRODUCTION.
+```
 
 ## Prerequisites
 
