@@ -141,9 +141,7 @@ class App extends React.Component {
                 if (item.indexOf('settings/account') === 0) {
                     this.props.history.push(`/${item}/${this.props.seedIndex}`);
                 } else {
-                    console.log(item);
                     this.props.history.push(`/${item}`);
-                    console.log('props', this.props);
                 }
                 break;
         }

@@ -35,7 +35,6 @@ class Settings extends React.PureComponent {
     render() {
 
         const { history, t, location } = this.props;
-        console.log("settings index", location);
         const currentKey = location.pathname.split('/')[2] || '/';
 
         return (
