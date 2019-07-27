@@ -295,19 +295,18 @@ const sendTransfer = (settings) => (
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const cached = {
-        txBytes: [],
+        txs: [],
         transactionObjects: [],
     };
 
     return seedStore
         .prepareTransfers(settings)(transfers, options)
-        .then((txBytes) => {
-            cached.txBytes = txBytes;
-
+        .then((txs) => {
+            cached.txs = txs;     
             return getTransactionsToApprove(settings)({}, depth);
         })
         .then(({ trunkTransaction, branchTransaction }) =>
-
+        
             attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
@@ -458,7 +457,7 @@ const attachToTangle = (settings, seedStore) => (
                                     if (
                                         isBundle(transactionObjects) &&
                                         isBundleTraversable(transactionObjects, trunkTransaction, branchTransaction)
-                                    ) {
+                                    ) {                                        
                                         resolve({
                                             transactionObjects,
                                             txs: attachedBytes,
@@ -479,25 +478,25 @@ const attachToTangle = (settings, seedStore) => (
     return seedStore
         .performPow(txBytes, trunkTransaction, branchTransaction, minWeightMagnitude)
         .then((result) => {
-            if (get(result, 'txBytes') && get(result, 'transactionObjects')) {
+            if (get(result, 'txs') && get(result, 'transactionObjects')) {
                 return Promise.resolve(result);
             }
             // Batched proof-of-work only returns the attached txBytes
             return constructBundleFromAttachedTxBytes(sortTransactionTxBytesArray(result), seedStore).then(
                 (transactionObjects) => ({
                     transactionObjects: orderBy(transactionObjects, 'currentIndex', ['desc']),
-                    txBytes: result,
+                    txs: result,
                 }),
             );
         })
-        .then(({ transactionObjects, txBytes }) => {
+        .then(({ transactionObjects, txs }) => {
             if (
                 isBundle(transactionObjects) &&
                 isBundleTraversable(transactionObjects, trunkTransaction, branchTransaction)
             ) {
                 return {
                     transactionObjects,
-                    txBytes,
+                    txs,
                 };
             }
 
