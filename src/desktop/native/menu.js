@@ -184,22 +184,22 @@ export const initMenu = (app, getWindowFunc) => {
                         submenu: [
                             {
                                 label: language.language,
-                                click: () => navigate('/settings/language'),
+                                click: () => navigate('settings/language'),
                                 enabled: state.enabled,
                             },
                             {
                                 label: language.node,
-                                click: () => navigate('/settings/node'),
+                                click: () => navigate('settings/node'),
                                 enabled: state.enabled,
                             },
                             {
                                 label: language.currency,
-                                click: () => navigate('/settings/currency'),
+                                click: () => navigate('settings/currency'),
                                 enabled: state.enabled,
                             },
                             {
                                 label: language.theme,
-                                click: () => navigate('/settings/theme'),
+                                click: () => navigate('settings/theme'),
                                 enabled: state.enabled,
                             },
                             {
@@ -208,11 +208,11 @@ export const initMenu = (app, getWindowFunc) => {
                             {
                                 label: language.changePassword,
                                 enabled: state.authorised && state.enabled,
-                                click: () => navigate('/settings/password'),
+                                click: () => navigate('settings/password'),
                             },
                             {
                                 label: language.advanced,
-                                click: () => navigate('/settings/accountsetting'),
+                                click: () => navigate('settings/accountsetting'),
                             },
                         ],
                     },

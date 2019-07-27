@@ -298,6 +298,42 @@ const Electron = {
 
         return addresses;
     },
+
+    /**
+     * Add native window wallet event listener
+     * @param {string} event - Target event name
+     * @param {function} callback - Event trigger callback
+     * @returns {undefined}
+     */
+    onEvent: function (event, callback) {
+        console.log("event", event);
+        let listeners = this._eventListeners[event];
+        if (!listeners) {
+            listeners = this._eventListeners[event] = [];
+            ipc.on(event, (e, args) => {
+                listeners.forEach((call) => {
+                    call(args);
+                });
+            });
+        }
+        listeners.push(callback);
+    },
+    /**
+     * Remove native window wallet event listener
+     * @param {string} event - Target event name
+     * @param {function} callback - Event trigger callback
+     * @returns {undefined}
+     */
+    removeEvent: function (event, callback) {
+        const listeners = this._eventListeners[event];
+        listeners.forEach((call, index) => {
+            if (call === callback) {
+                listeners.splice(index, 1);
+            }
+        });
+    },
+
+    _eventListeners: {},
 };
 
 export default Electron;
