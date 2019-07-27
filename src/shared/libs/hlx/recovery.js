@@ -60,7 +60,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
 
     const cached = {
         transactionObjects: [],
-        TxBytes: [],
+        txs: [],
     };
 
     // Before proceeding make sure:
@@ -103,17 +103,6 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
                     ),
                     isBundle,
                 );
-                    let res = map(filter(transactionsFromBundles, (tx) => tx.currentIndex === 0), (tailTransaction) =>
-                    constructBundle(tailTransaction, transactionsFromBundles),
-                )
-                console.log('redad');
-                
-                console.log(res);
-                console.log(validBundles);
-                
-                
-
-
                 if (isEmpty(validBundles)) {
                     // Check both recipient & input addresses
                     return wereAddressesSpentFrom(settings, withQuorum)([
@@ -195,11 +184,11 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
 
             throw new Error(Errors.ALREADY_SPENT_FROM_ADDRESSES);
         })
-        .then((TxBytes) => {
-            cached.TxBytes = TxBytes;
+        .then((txs) => {
+            cached.txs = txs;
 
             const convertToTransactionObjects = (TxByteString) => asTransactionObject(TxByteString);
-            cached.transactionObjects = map(cached.TxBytes, convertToTransactionObjects);
+            cached.transactionObjects = map(cached.txs, convertToTransactionObjects);
 
             // Check if prepared bundle is valid, especially if its signed correctly.
             if (isBundle(cached.transactionObjects)) {
@@ -209,13 +198,13 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             throw new Error(Errors.INVALID_BUNDLE);
         })
         .then(({ trunkTransaction, branchTransaction }) => {
-            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.TxBytes);
+            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.txs);
         })
-        .then(({ TxBytes, transactionObjects }) => {
-            cached.TxBytes = TxBytes;
+        .then(({ txs, transactionObjects }) => {
+            cached.txs = txs;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcast(settings)(cached.TxBytes);
+            return storeAndBroadcast(settings)(cached.txs);
         })
         .then(() => cached);
 };
