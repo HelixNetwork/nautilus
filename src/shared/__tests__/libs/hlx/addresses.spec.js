@@ -2480,7 +2480,7 @@ describe('libs: helix/addresses', () => {
                         accountState,
                         null,
                     )
-                    .then((result) => {
+                    .then((result) => {               
                         expect(result.attachedAddressObject).to.eql(latestAddressObject);
                     });
             });

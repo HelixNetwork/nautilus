@@ -284,7 +284,6 @@ export const mapLatestAddressData = (settings, withQuorum) => (addressData, tran
  *  @returns {function(object, object): Promise<object>}
  */
 export const getFullAddressHistory = (settings, withQuorum) => (seedStore, existingAccountState = {}) => {
-    console.log('Address');
     let generatedAddresses = [];
     const addressData = { hashes: [], balances: [], wereSpent: [] };
     const { transactions } = existingAccountState;
