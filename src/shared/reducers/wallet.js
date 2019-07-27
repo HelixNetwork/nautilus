@@ -66,7 +66,7 @@ export default (state = initialState, action) => {
                 seed: !isEmpty(action.payload.seed) ? action.payload.seed : state.seed,
             };
         case ActionTypes.SET_PASSWORD:
-                console.log("action.payload REDUCER===",action.payload);            
+            console.log("action.payload REDUCER===", action.payload);
             return {
                 ...state,
                 password: action.payload,

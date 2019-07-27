@@ -334,6 +334,23 @@ const Electron = {
     },
 
     _eventListeners: {},
+
+    /**
+     * Remove all local storage items
+     * @returns {undefined}
+     */
+    clearStorage() {
+        const keys = electronSettings.getAll();
+        Object.keys(keys).forEach((key) => this.removeStorage(key));
+    },
+
+    /**
+     * Reload Wallet window to initial location
+     * @returns {undefined}
+     */
+    reload: () => {
+        remote.getCurrentWindow().webContents.goToIndex(0);
+    },
 };
 
 export default Electron;
