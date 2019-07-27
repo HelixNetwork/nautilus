@@ -39,14 +39,12 @@ const init = () => {
         // Get persisted data from Realm storage
         const persistedDataFromRealm = mapStorageToState();
         const data = hasDataToMigrate ? oldPersistedData : persistedDataFromRealm;
-        console.log("data", data);
         const node = get(data, 'settings.node');
 
         changeHelixNode(assign({}, node, { provider: node.url }));
 
         // Set quorum size
         quorum.setSize(get(data, 'settings.quorum.size'));
-        console.log("node", node);
         // Update store with persisted state
         store.dispatch(mapStorageToStateAction(data));
 

@@ -7,7 +7,6 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
-console.log("env", process.env.NODE_ENV);
 const devMode = process.env.NODE_ENV === "development";
 
 
@@ -57,6 +56,7 @@ try {
     windowState = windowStateData;
   }
 } catch (error) { }
+
 function createWindow() {
   const windowOptions = {
     width: windowState.width,
