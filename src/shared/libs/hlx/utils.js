@@ -11,7 +11,7 @@ import size from 'lodash/size';
 import cloneDeep from 'lodash/cloneDeep';
 import URL from 'url-parse';
 import { BigNumber } from 'bignumber.js';
-import { hbytesToAscii, asciiToHBytes } from '@helixnetwork/converter';
+import { TxBytesToAscii, asciiToTxHex } from '@helixnetwork/converter';
 import { addChecksum, isValidChecksum } from '@helixnetwork/checksum';
 import { isNodeHealthy } from './extendedApi';
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
@@ -43,27 +43,27 @@ export const HASH_SIZE = 64;
 
 export const TRANSACTION_BYTES_SIZE = 1536;
 
-export const EMPTY_HASH_BYTES = '0'.repeat(HASH_SIZE);
+export const EMPTY_HASH_TXBYTES = '0'.repeat(HASH_SIZE);
 
-export const EMPTY_TRANSACTION_BYTES = '0'.repeat(TRANSACTION_BYTES_SIZE);
+export const EMPTY_TRANSACTION_HEX = '0'.repeat(TRANSACTION_BYTES_SIZE);
 
 export const EMPTY_TRANSACTION_MESSAGE = 'Empty';
 
 export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 
 /**
- * Converts hbytes to ascii
+ * Converts TxBytes to ascii
  *
  * @method convertFromBytes
- * @param {string} hbytes
+ * @param {string} TxBytes
  *
  * @returns {string}
  */
-export const convertFromBytes = (bytes) => {
-    const bytesWithoutZero = bytes.replace(/00+$/, '');
+export const convertFromBytes = (txBytes) => {
+    const bytesWithoutZero = txBytes.replace(/00+$/, '');
     let message;
     try {
-        message = hbytesToAscii(bytesWithoutZero);
+        message = TxBytesToAscii(bytesWithoutZero);
     }
     catch (err) {
         // Fall back to safe result in case of inconsistent conversion strings
@@ -82,14 +82,14 @@ export const convertFromBytes = (bytes) => {
  *
  * @method getChecksum
  *
- * @param {string | array} input - seed bytes | seed bits
+ * @param {string | array} input - seed txBytes | seed txBits
  * @param {number} [length]
  *
  * @returns {string | array}
  */
 export const getChecksum = async (
     input,
-    // hbytes  to bits conversion creates Int8Array
+    // TxBytes  to txBits conversion creates Int8Array
     length = input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
 ) => {
     const isInputArray = input instanceof Int8Array;
@@ -259,7 +259,7 @@ export const isValidAddress = (address) => {
 };
 
 /**
- * Checks if the last bit is 0
+ * Checks if the last txBit is 0
  *
  * @method isLastBitZero
  * @param {string} address
@@ -277,7 +277,7 @@ export const isLastBitZero = (address) => !/[ace13579]/.test(address.slice(60, 6
  * @returns {boolean}
  */
 export const isValidMessage = (message) => {
-    return hbytesToAscii(asciiToHBytes(message)) === message;
+    return TxBytesToAscii(asciiToTxHex(message)) === message;
 };
 
 /**
@@ -534,7 +534,7 @@ export const withRequestTimeoutsHandler = (timeout) => {
 
 
 /**
-*   Removes the 8-hbytes checksum of an address
+*   Removes the 8-TxBytes checksum of an address
 *
 *   @method noChecksum
 *   @param {string | list} address

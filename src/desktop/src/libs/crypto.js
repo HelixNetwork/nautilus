@@ -5,27 +5,27 @@ export const ACC_MAIN = 'Helix';
 // Maximum allowed account title
 export const MAX_ACC_LENGTH = 250;
 /**
- * Create random byte array
+ * Create random txByte array
  * @param {number} Length - Random number array length.
- * @param {number} Max - Random byte max range
+ * @param {number} Max - Random txByte max range
  * @returns {array} Random number array
  */
-export const randomBytes = (size, max = 256) => {
+export const randomTxBytes = (size, max = 256) => {
     if (size !== parseInt(size, 10) || size < 0) {
         return false;
     }
 
     const rawBytes = new Uint8Array(size);
 
-    const bytes = global.crypto.getRandomValues(rawBytes);
+    const txBytes = global.crypto.getRandomValues(rawBytes);
 
-    for (let i = 0; i < bytes.length; i++) {
-        while (bytes[i] >= 256 - (256 % max)) {
-            bytes[i] = randomBytes(1, max)[0];
+    for (let i = 0; i < txBytes.length; i++) {
+        while (txBytes[i] >= 256 - (256 % max)) {
+            txBytes[i] = randomTxBytes(1, max)[0];
         }
     }
 
-    return Array.from(bytes);
+    return Array.from(txBytes);
 };
 
 /**

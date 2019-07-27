@@ -3,11 +3,11 @@ import isEqual from 'lodash/isEqual';
 import map from 'lodash/map';
 import { expect } from 'chai';
 import nock from 'nock';
-import { asTransactionHBytes , asTransactionObject } from "@helixnetwork/transaction-converter";
+import { asTransactionStrings , asTransactionObject } from "@helixnetwork/transaction-converter";
 import { getHelixInstance, isNodeHealthy, allowsRemotePow } from '../../../libs/hlx/extendedApi';
 import { helix } from '../../../libs/hlx/index';
-import { newZeroValueTransactionBytes } from '../../__samples__/bytes';
-import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
+import { newZeroValueTransactionBytes } from '../../__samples__/txBytes';
+import { EMPTY_HASH_TXBYTES } from '../../../libs/hlx/utils';
 import { IRI_API_VERSION, MAX_MILESTONE_FALLBEHIND } from '../../../config';
 
 describe('libs: helix/extendedApi', () => {
@@ -82,7 +82,7 @@ describe('libs: helix/extendedApi', () => {
                         const resultMap = {
                             getNodeInfo: {
                                 appVersion: '0.0.0',
-                                latestMilestone: EMPTY_HASH_BYTES,
+                                latestMilestone: EMPTY_HASH_TXBYTES,
                                 latestSolidSubtangleMilestone: '0'.repeat(64),
                             },
                         };
@@ -104,7 +104,7 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-        describe(`when latestMilestone is ${EMPTY_HASH_BYTES}`, () => {
+        describe(`when latestMilestone is ${EMPTY_HASH_TXBYTES}`, () => {
             beforeEach(() => {
                 nock('http://localhost:14265', {
                     reqheaders: {
@@ -121,8 +121,8 @@ describe('libs: helix/extendedApi', () => {
                         const resultMap = {
                             getNodeInfo: {
                                 appVersion: '0.0.0',
-                                latestMilestone: EMPTY_HASH_BYTES,
-                                latestSolidSubtangleMilestone: EMPTY_HASH_BYTES,
+                                latestMilestone: EMPTY_HASH_TXBYTES,
+                                latestSolidSubtangleMilestone: EMPTY_HASH_TXBYTES,
                             },
                         };
 
@@ -144,7 +144,7 @@ describe('libs: helix/extendedApi', () => {
         });
 
         describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND} less than latestMilestoneIndex`, () => {
-            describe('when "timestamp" on bytes is from five minutes ago', () => {
+            describe('when "timestamp" on txBytes is from five minutes ago', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
                         reqheaders: {
@@ -165,7 +165,7 @@ describe('libs: helix/extendedApi', () => {
                                     latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'a'.repeat(64),
                                 },
-                                getHBytes: { hbytes: [head(newZeroValueTransactionBytes)] },
+                                getTransactionStrings: { txs: [head(newZeroValueTransactionBytes)] },
                             };
 
                             return resultMap[command] || {};
@@ -181,7 +181,7 @@ describe('libs: helix/extendedApi', () => {
                 });
             });
 
-            describe('when "timestamp" on bytes is within five minutes', () => {
+            describe('when "timestamp" on txBytes is within five minutes', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
                         reqheaders: {
@@ -203,14 +203,14 @@ describe('libs: helix/extendedApi', () => {
                                     latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'a'.repeat(64),
                                 },
-                                getHBytes: {
-                                    hbytes: [
+                                getTransactionStrings: {
+                                    txs: [
                                         head(
                                             map(newZeroValueTransactionBytes, (byteString) => {
                                                 const transactionObject = asTransactionObject(byteString);
                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-                                                return asTransactionHBytes({
+                                                return asTransactionStrings({
                                                     ...transactionObject,
                                                     timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
                                                 });
@@ -236,7 +236,7 @@ describe('libs: helix/extendedApi', () => {
 
         describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND -
             1} less than latestMilestoneIndex`, () => {
-            describe('when "timestamp" on bytes is from five minutes ago', () => {
+            describe('when "timestamp" on txBytes is from five minutes ago', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
                         reqheaders: {
@@ -258,7 +258,7 @@ describe('libs: helix/extendedApi', () => {
                                     latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'a'.repeat(64),
                                 },
-                                getHBytes: { hbytes: [head(newZeroValueTransactionBytes)] },
+                                getTransactionStrings: { txs: [head(newZeroValueTransactionBytes)] },
                             };
 
                             return resultMap[command] || {};
@@ -274,7 +274,7 @@ describe('libs: helix/extendedApi', () => {
                 });
             });
 
-            describe('when "timestamp" on bytes is within five minutes', () => {
+            describe('when "timestamp" on txBytes is within five minutes', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
                         reqheaders: {
@@ -296,14 +296,14 @@ describe('libs: helix/extendedApi', () => {
                                     latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'a'.repeat(64),
                                 },
-                                getHBytes: {
-                                    hbytes: [
+                                getTransactionStrings: {
+                                    txs: [
                                         head(
-                                            map(newZeroValueTransactionBytes, (hbyteString) => {
-                                                const transactionObject = asTransactionObject(hbyteString);
+                                            map(newZeroValueTransactionBytes, (TxByteString) => {
+                                                const transactionObject = asTransactionObject(TxByteString);
                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-                                                return asTransactionHBytes({
+                                                return asTransactionStrings({
                                                     ...transactionObject,
                                                     timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
                                                 });
@@ -321,14 +321,14 @@ describe('libs: helix/extendedApi', () => {
                     nock.cleanAll();
                 });
 
-                it('should return true if "timestamp" on bytes is within five minutes', () => {
+                it('should return true if "timestamp" on txBytes is within five minutes', () => {
                     return isNodeHealthy().then((result) => expect(result).to.equal(true));
                 });
             });
         });
 
-        describe(`when latestMilestone is not ${EMPTY_HASH_BYTES} and is equal to latestSolidSubtangleMilestone`, () => {
-            describe('when "timestamp" on bytes is from five minutes ago', () => {
+        describe(`when latestMilestone is not ${EMPTY_HASH_TXBYTES} and is equal to latestSolidSubtangleMilestone`, () => {
+            describe('when "timestamp" on txBytes is from five minutes ago', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
                         reqheaders: {
@@ -348,7 +348,7 @@ describe('libs: helix/extendedApi', () => {
                                     latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'c'.repeat(64),
                                 },
-                                getHBytes: { hbytes: [head(newZeroValueTransactionBytes)] },
+                                getTransactionStrings: { txs: [head(newZeroValueTransactionBytes)] },
                             };
 
                             return resultMap[command] || {};
@@ -364,7 +364,7 @@ describe('libs: helix/extendedApi', () => {
                 });
             });
 
-            describe('when "timestamp" on bytes is within five minutes', () => {
+            describe('when "timestamp" on txBytes is within five minutes', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
                         reqheaders: {
@@ -384,14 +384,14 @@ describe('libs: helix/extendedApi', () => {
                                     latestMilestone: 'c'.repeat(64),
                                     latestSolidSubtangleMilestone: 'c'.repeat(64),
                                 },
-                                getHBytes: {
-                                    hbytes: [
+                                getTransactionStrings: {
+                                    txs: [
                                         head(
                                             map(newZeroValueTransactionBytes, (bytesString) => {
                                                 const transactionObject = asTransactionObject(bytesString);
                                                 const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-                                                return asTransactionHBytes({
+                                                return asTransactionStrings({
                                                     ...transactionObject,
                                                     timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
                                                 });

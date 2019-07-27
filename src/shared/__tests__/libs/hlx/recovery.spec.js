@@ -13,10 +13,10 @@
 //     LATEST_SOLID_SUBTANGLE_MILESTONE,
 //     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 // } from '../../__samples__/transactions';
-// import { milestoneBytes } from '../../__samples__/bytes';
+// import { milestoneBytes } from '../../__samples__/txBytes';
 // import * as transferUtils from '../../../libs/hlx/transfers';
 // import { IRI_API_VERSION } from '../../../config';
-// import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
+// import { EMPTY_HASH_TXBYTES } from '../../../libs/hlx/utils';
 
 // const validSignedBytes = [
 //     '53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974792e53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974790000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f000000000000001477616c6c65740000000000000000000000000000000000000000000000000004000000005d27016b000000000000000000000000000000021e2b52c87e6749b751716fe11d6074c90baa0ef1d89f1a3c03b12fa8de7b02700000d0f55139d66c0d5b99f02171bc30b588372d2dc5fcfa35196fc385e066d000009acb6542adcf9ea06d738548a90e8518c900cb9f4d649efc6f0ef6a3cb8077616c6c657400000000016be05df0a10000000000000000000000000000007f000000000000fae0000000000000000000000000000000000000000000000000',
@@ -34,11 +34,11 @@
 //     checkConsistency: { state: false },
 //     getBalances: { balances: ['10'] },
 //     getTransactionsToApprove: {
-//         trunkTransaction: EMPTY_HASH_BYTES,
-//         branchTransaction: EMPTY_HASH_BYTES,
+//         trunkTransaction: EMPTY_HASH_TXBYTES,
+//         branchTransaction: EMPTY_HASH_TXBYTES,
 //     },
 //     findTransactions: { hashes: ['a'.repeat(64)] },
-//     getHBytes: { hbytes: milestoneBytes },
+//     getTransactionStrings: { TxBytes: milestoneBytes },
 //     wereAddressesSpentFrom: { states: [false, false] },
 //     getNodeInfo: {
 //         appVersion: '1',
@@ -48,7 +48,7 @@
 //         latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 //     },
 //     getInclusionStates: { states: [false, false] },
-//     attachToTangle: { hbytes: attachedBytes },
+//     attachToTangle: { TxBytes: attachedBytes },
 // };
 
 // const setupNock = (resultMap = defaultResultMap) => {
@@ -97,10 +97,10 @@
 //                 offloadPow: true,
 //                 performPow: () =>
 //                     Promise.resolve({
-//                         hbytes: attachedBytes,
+//                         TxBytes: attachedBytes,
 //                         transactionObject: map(attachedBytes, asTransactionObject),
 //                     }),
-//                 getDigest: (bytes) => Promise.resolve(asTransactionObject(bytes).hash),
+//                 getDigest: (txBytes) => Promise.resolve(asTransactionObject(txBytes).hash),
 //             };
 //         });
 
@@ -202,8 +202,8 @@
 
 //                                 ],
 //                             },
-//                             getHBytes: {
-//                                 hbytes: 
+//                             getTransactionStrings: {
+//                                 TxBytes: 
 //                                 [
 //                                 '00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005e4d98d49f63da581da73e0ba6d620a8139ed9a06dea03b40e5ddcf0563f8194000000000000000a0900000000000000000000000000000000000000000000000000000000000000000000005d35bccd000000000000000000000000000000027c5613e95135f0394352a49a61b22bbccc3a78a73c5d6504dca7cf1772bde2a9000086ba91b9b6cb85142cd1178ba878f112a2d0fee28de16ccf1d82a1705803004edd97769ac6f70d7c3e0ccbbe1dcf4911f95475579f417493049983ff599309000000000000000000016c19e9a0b00000000000000000000000000000007f000000000000953c000000000000000000000000000000000000000000000000',
 //                                 '72c2a1805a2e941c4a4dd87763b4834c51befde9739b0edf13f9debc2a66e87fe1fe32553b19abefc008512075c12c31d757a1a43e378b5cdb6ec00ab008556179031796fc00982b6a12d14335d063457bbf245baad7dab000d975665e94194c42499271e64add40b239709e032bb2edcdaa1e813580de61e32bd9c8f1ca7bac98d15b0719d901cc4dae37a0fee9a0ce81c26f7a5c4ee801ce2a6a031c4719aa9c35e58c63261dca6d921f437e4beebe40bcdb2b687f7c9e9dd7a0005761ca00935f6a6299acc5aa93d418dae9632de60620928e5594a4c5c31c3c9f2b43a2520a024e4c1686f737ea8f04f79bb55027e523c3aad795c90b831425f96a7b0bb6cbd3892a808eb49df675496969c846877ca6a05afd4c73106ecb81a6d9e357376f9667b95bad42f448a67738ae36bddd6a90c68e389283f89d38f5275938f49e5bcd1792042adb9cf9bd4bce0ea620df317b0d8f6fce60da90b01694a0261755f93e65cad1a26cb6aa17bcdd0ca14f90f3c182b022303e4d79876f93b1f78c0437ae47766a8de9d427451f9498b1eb380adc3fba5bbdc763e066211feeca083466db2ae82325cb36d4d52a1b33cbf862c430161227cef1afc65676816c7f5551e388e38f264567240ddf50f11eeb48bae99e439a34167804c8fc519d36e4750fbdb8ad326ec360ffb22f31209f41fa997170870c464c3ee55bb13a8fc3931117a803c12e6c6818758909c1fa115ee08f9c715bb0fe7d4cc343186ca4c27603fafffe18000000000a0000000000000000000000000000000000000000000000000000000000000000000000005d35bccd000000000000000100000000000000027c5613e95135f0394352a49a61b22bbccc3a78a73c5d6504dca7cf1772bde2a90000b36639f9e84bbb715b3f197a2691c3404a6f55be6a0ca9183ee44c260487004edd97769ac6f70d7c3e0ccbbe1dcf4911f95475579f417493049983ff599300000000000000000000016c19e99fba0000000000000000000000000000007f0000000000008178000000000000000000000000000000000000000000000000',
@@ -225,14 +225,14 @@
 //                             .post('/', '*')
 //                             .reply(200, (_, body) => {
 //                                 if (
-//                                     body.command === 'getHBytes' &&
+//                                     body.command === 'getTransactionStrings' &&
 //                                     includes(
 //                                         body.hashes,
-//                                         // Return milestone bytes to mimic the scenario of checking if a node is healthy.
+//                                         // Return milestone txBytes to mimic the scenario of checking if a node is healthy.
 //                                         LATEST_MILESTONE,
 //                                     )
 //                                 ) {
-//                                     return { hbytes: milestoneBytes };
+//                                     return { TxBytes: milestoneBytes };
 //                                 } else if (body.command === 'getInclusionStates') {
 //                                     return { states: [false] };
 //                                 }
@@ -274,8 +274,8 @@
 //                                     '0000e377fad9120fec394d1ac53fc696ec749123ee025df1b91bf0b9fdbda619',
 //                                     '00009acb6542adcf9ea06d738548a90e8518c900cb9f4d649efc6f0ef6a3cb80',       ],
 //                             },
-//                             getHBytes: {
-//                                 hbytes: [
+//                             getTransactionStrings: {
+//                                 TxBytes: [
 //                                     '53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974792e53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974790000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f000000000000000077616c6c65740000000000000000000000000000000000000000000000000000000000005d26fba60000000000000000000000000000000071955f6d5ac68afa7e8af2b59e5f61cc71dff265c8f654d4d65184b77ba5200d000091a3d5cbbb3ffae5e4db68ad70b85ca70a7edde9e71930366b808373c90e000091a3d5cbbb3ffae5e4db68ad70b85ca70a7edde9e71930366b808373c90e77616c6c657400000000016be0470b0a0000000000000000000000000000007f0000000000023069000000000000000000000000000000000000000000000000',
 //                                     '53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974792e53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974790000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f000000000000000077616c6c65740000000000000000000000000000000000000000000000000000000000005d26fc1c00000000000000000000000000000000b14f4f5dbf5c36930c9a110e658dcf92156d2565098a05545a1a929604e7c7170000cc63ebd028013d752ba8bf4a033ecab34bfa6869a93e2e3d4518a2a015be0000cc63ebd028013d752ba8bf4a033ecab34bfa6869a93e2e3d4518a2a015be77616c6c657400000000016be048d9710000000000000000000000000000007f000000000000c22a000000000000000000000000000000000000000000000000',
 //                                     '53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974792e53616d706c65207472616e73616374696f6e20666f7220636865636b696e672066756e6374696f6e616e6c6974790000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e4fcd0a8c5971994263664e30f20b34878024d578ae8872bc746dd9230fc232f000000000000000077616c6c65740000000000000000000000000000000000000000000000000006000000005d26fc2100000000000000000000000000000000bea70fbb5b5a5ac0176b0bae3282604d50ef70b8bc14e5fd708b7a0a08386ccd0000e377fad9120fec394d1ac53fc696ec749123ee025df1b91bf0b9fdbda6190000e377fad9120fec394d1ac53fc696ec749123ee025df1b91bf0b9fdbda61977616c6c657400000000016be048eaa50000000000000000000000000000007f00000000000039aa000000000000000000000000000000000000000000000000'
@@ -305,14 +305,14 @@
 //                                 ) {
 //                                     return { balances: ['0'] };
 //                                 } else if (
-//                                     body.command === 'getHBytes' &&
+//                                     body.command === 'getTransactionStrings' &&
 //                                     includes(
 //                                         body.hashes,
-//                                         // Return milestone bytes to mimic the scenario of checking if a node is healthy.
+//                                         // Return milestone txBytes to mimic the scenario of checking if a node is healthy.
 //                                         LATEST_MILESTONE,
 //                                     )
 //                                 ) {
-//                                     return { hbytes: milestoneBytes };
+//                                     return { TxBytes: milestoneBytes };
 //                                 } else if (body.command === 'getTransactionsToApprove') {
 //                                     return {
 //                                         // Extracted from attachedBytes
@@ -352,8 +352,8 @@
 //                     //         'aa99a9a9aa999aaaa999a999a9aaaaa999a9a999aaa9999aa99aaa9aaaa9a9aa',
 //                     //         validInput,
 //                     //         validTransfer,
-//                     //     ).then(({ bytes }) => {
-//                     //         expect(bytes).to.eql(attachedBytes);
+//                     //     ).then(({ txBytes }) => {
+//                     //         expect(txBytes).to.eql(attachedBytes);
 //                     //     });
 //                     // });
 //                 });
@@ -377,8 +377,8 @@
 //                                 '0000e377fad9120fec394d1ac53fc696ec749123ee025df1b91bf0b9fdbda619',
 //                                 '00009acb6542adcf9ea06d738548a90e8518c900cb9f4d649efc6f0ef6a3cb80',      ],
 //                         },
-//                         getHBytes: {
-//                             hbytes: invalidBytes,
+//                         getTransactionStrings: {
+//                             TxBytes: invalidBytes,
 //                         },
 //                         getTransactionsToApprove: {
 //                             // Extracted from attachedBytes
@@ -401,14 +401,14 @@
 //                         .post('/', '*')
 //                         .reply(200, (_, body) => {
 //                             if (
-//                                 body.command === 'getHBytes' &&
+//                                 body.command === 'getTransactionStrings' &&
 //                                 includes(
 //                                     body.hashes,
-//                                     // Return milestone bytes to mimic the scenario of checking if a node is healthy.
+//                                     // Return milestone txBytes to mimic the scenario of checking if a node is healthy.
 //                                     LATEST_MILESTONE,
 //                                 )
 //                             ) {
-//                                 return { hbytes: milestoneBytes };
+//                                 return { TxBytes: milestoneBytes };
 //                             }
 
 //                             return resultMap[body.command] || {};
@@ -425,8 +425,8 @@
 //                 //         'aa99a9a9aa999aaaa999a999a9aaaaa999a9a999aaa9999aa99aaa9aaaa9a9aa',
 //                 //         validInput,
 //                 //         validTransfer,
-//                 //     ).then(({ hbytes }) => {
-//                 //         expect(hbytes).to.eql(attachedBytes);
+//                 //     ).then(({ TxBytes }) => {
+//                 //         expect(TxBytes).to.eql(attachedBytes);
 //                 //     });
 //                 // });
 //             });
@@ -438,7 +438,7 @@
 //                     const resultMap = merge({}, defaultResultMap, {
 //                         // Return the attached signed Bytes as a result
 //                         // To mimic the scenario of an outgoing transaction from input address
-//                         getHBytes: { hbytes: attachedBytes },
+//                         getTransactionStrings: { TxBytes: attachedBytes },
 //                     });
 
 //                     nock('http://localhost:14265', {
@@ -453,14 +453,14 @@
 //                         .post('/', '*')
 //                         .reply(200, (_, body) => {
 //                             if (
-//                                 body.command === 'getHBytes' &&
+//                                 body.command === 'getTransactionStrings' &&
 //                                 includes(
 //                                     body.hashes,
 //                                     // Return milestone Bytes to mimic the scenario of checking if a node is healthy.
 //                                     LATEST_MILESTONE,
 //                                 )
 //                             ) {
-//                                 return { hbytes: milestoneBytes };
+//                                 return { TxBytes: milestoneBytes };
 //                             }
 
 //                             return resultMap[body.command] || {};
@@ -485,7 +485,7 @@
 //                         // To mimic the scenario of an outgoing transaction from input address
 //                         // signedBytes do not have the valid hash, so the bundle should be invalid
 //                         // and input addresses should not be blocked from spending
-//                         getHBytes: { hbytes: validSignedBytes },
+//                         getTransactionStrings: { TxBytes: validSignedBytes },
 //                         getTransactionsToApprove: {
 //                             // Extracted from attachedBytes
 //                             trunkTransaction:
@@ -507,14 +507,14 @@
 //                         .post('/', '*')
 //                         .reply(200, (_, body) => {
 //                             if (
-//                                 body.command === 'getHBytes' &&
+//                                 body.command === 'getTransactionStrings' &&
 //                                 includes(
 //                                     body.hashes,
-//                                     // Return milestone bytes to mimic the scenario of checking if a node is healthy.
+//                                     // Return milestone txBytes to mimic the scenario of checking if a node is healthy.
 //                                     LATEST_MILESTONE,
 //                                 )
 //                             ) {
-//                                 return { hbytes: milestoneBytes };
+//                                 return { TxBytes: milestoneBytes };
 //                             }
 
 //                             return resultMap[body.command] || {};
@@ -532,8 +532,8 @@
 //                 //         'aa99a9a9aa999aaaa999a999a9aaaaa999a9a999aaa9999aa99aaa9aaaa9a9aa',
 //                 //         validInput,
 //                 //         validTransfer,
-//                 //     ).then(({ bytes }) => {
-//                 //         expect(bytes).to.eql(attachedBytes);
+//                 //     ).then(({ txBytes }) => {
+//                 //         expect(txBytes).to.eql(attachedBytes);
 //                 //     });
 //                 // });
 //             });
@@ -607,15 +607,15 @@
 //                 destroyNock();
 //             });
 
-//             // it('should return correct transaction bytes', () => {
+//             // it('should return correct transaction txBytes', () => {
 //             //     return sweep(null)(
 //             //         seedStore,
 //             //         // Pass in correct seed
 //             //         'aa99a9a9aa999aaaa999a999a9aaaaa999a9a999aaa9999aa99aaa9aaaa9a9aa',
 //             //         validInput,
 //             //         validTransfer,
-//             //     ).then(({ bytes }) => {
-//             //         expect(bytes).to.eql(attachedBytes);
+//             //     ).then(({ txBytes }) => {
+//             //         expect(txBytes).to.eql(attachedBytes);
 //             //     });
 //             // });
 //         });

@@ -16,12 +16,12 @@ import { hexToBits , bitsToChars } from '../../../libs/hlx/converter';
 
 describe('libs: helix/utils', () => {
     describe('#isLastBitZero', () => {
-        describe('when the last bit is 0', () => {
+        describe('when the last txBit is 0', () => {
             it('should return true', () => {
                 expect(isLastBitZero('b'.repeat(64))).to.equal(true);
             });
         });
-        describe('when the last bit is not 0', () => {
+        describe('when the last txBit is not 0', () => {
             it('should return false', () => {
                 expect(isLastBitZero('a'.repeat(64))).to.equal(false);
             });
@@ -29,14 +29,14 @@ describe('libs: helix/utils', () => {
     });
 
     describe('#convertFromBytes', () => {
-        describe('when bytes passed as an argument contains all zeroes', () => {
+        describe('when txBytes passed as an argument contains all zeroes', () => {
             it('should return a string "Empty"', () => {
                 const messageFragment = '0'.repeat(1024);
                 expect(convertFromBytes(messageFragment)).to.equal('Empty');
             });
         });
 
-        describe('when conversion from bytes returns null', () => {
+        describe('when conversion from txBytes returns null', () => {
             // TODO Recheck 
               it('should return a string "Empty"', () => {
                 // It would return null if the message length is odd
@@ -45,7 +45,7 @@ describe('libs: helix/utils', () => {
             });
         });
 
-        describe('when conversion from bytes returns a string with non-ascii characters', () => {
+        describe('when conversion from txBytes returns a string with non-ascii characters', () => {
             it('should return a string "Empty"', () => {
                 //returns non-ascii characters for these fragments
                 const messageFragment =
@@ -54,8 +54,8 @@ describe('libs: helix/utils', () => {
             });
         });
 
-        describe('when conversion from bytes does not return null', () => {
-            it('should return a string converted from bytes', () => {
+        describe('when conversion from txBytes does not return null', () => {
+            it('should return a string converted from txBytes', () => {
                 const messageFragment = `48656c697820476d6268${'0'.repeat(1004)}`;
                 expect(convertFromBytes(messageFragment)).to.equal('Helix Gmbh');
             });
@@ -184,32 +184,32 @@ describe('libs: helix/utils', () => {
     });
 
     describe('#getSeedChecksum', () => {
-        describe('when seed is in bytes', () => {
+        describe('when seed is in txBytes', () => {
             describe('when length is provided', () => {
-                it('should return checksum in bytes with provided length',async () => {
+                it('should return checksum in txBytes with provided length',async () => {
                     const checksum = await getChecksum(latestAddressWithoutChecksum, 8);
                     expect(checksum).to.equal(latestAddressChecksum);
                 });
             });
 
             describe('when length is not provided', () => {
-                it('should return checksum in bytes with default length', async () => {
+                it('should return checksum in txBytes with default length', async () => {
                     const checksum = await getChecksum(latestAddressWithoutChecksum);
                     expect(checksum).to.equal(latestAddressChecksum.slice(-8));
                 });
             });
         });
 
-        describe('when seed is in bits', () => {
+        describe('when seed is in txBits', () => {
             describe('when length is provided', () => {
-                it('should return checksum in bits with provided length',async () => {
+                it('should return checksum in txBits with provided length',async () => {
                     const checksum = await getChecksum(hexToBits(latestAddressWithoutChecksum), 64);  
                     expect(bitsToChars(checksum)).to.eql(latestAddressChecksum);
                 });
             });
 
             describe('when length is not provided', () => {
-                it('should return checksum in bits with default length',async () => {
+                it('should return checksum in txBits with default length',async () => {
                     const checksum = await getChecksum(hexToBits(latestAddressWithoutChecksum));
 
                     expect(bitsToChars(checksum)).to.equal(latestAddressChecksum.slice(-8));

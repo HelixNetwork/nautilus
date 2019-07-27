@@ -78,7 +78,7 @@ const Electron = {
 
     /**
     * Set onboarding seed variable to bypass Redux
-    * @param {array} Seed - Target seed byte array
+    * @param {array} Seed - Target seed txByte array
     * @param {boolean} isGenerated - Is the seed generated using Helix
     * @returns {undefined}
     */

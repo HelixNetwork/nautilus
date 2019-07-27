@@ -60,7 +60,7 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
 
     const cached = {
         transactionObjects: [],
-        hbytes: [],
+        TxBytes: [],
     };
 
     // Before proceeding make sure:
@@ -195,11 +195,11 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
 
             throw new Error(Errors.ALREADY_SPENT_FROM_ADDRESSES);
         })
-        .then((hbytes) => {
-            cached.hbytes = hbytes;
+        .then((TxBytes) => {
+            cached.TxBytes = TxBytes;
 
-            const convertToTransactionObjects = (hbyteString) => asTransactionObject(hbyteString);
-            cached.transactionObjects = map(cached.hbytes, convertToTransactionObjects);
+            const convertToTransactionObjects = (TxByteString) => asTransactionObject(TxByteString);
+            cached.transactionObjects = map(cached.TxBytes, convertToTransactionObjects);
 
             // Check if prepared bundle is valid, especially if its signed correctly.
             if (isBundle(cached.transactionObjects)) {
@@ -209,13 +209,13 @@ export const sweep = (settings, withQuorum) => (seedStore, seed, input, transfer
             throw new Error(Errors.INVALID_BUNDLE);
         })
         .then(({ trunkTransaction, branchTransaction }) => {
-            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.hbytes);
+            return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.TxBytes);
         })
-        .then(({ hbytes, transactionObjects }) => {
-            cached.hbytes = hbytes;
+        .then(({ TxBytes, transactionObjects }) => {
+            cached.TxBytes = TxBytes;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcast(settings)(cached.hbytes);
+            return storeAndBroadcast(settings)(cached.TxBytes);
         })
         .then(() => cached);
 };

@@ -25,9 +25,9 @@ import transform from 'lodash/transform';
 import orderBy from 'lodash/orderBy';
 import xor from 'lodash/xor';
 import bundleValidator from '@helixnetwork/bundle-validator';
-import { asciiToHBytes } from '@helixnetwork/converter';
+import { asciiToTxHex } from '@helixnetwork/converter';
 import {addChecksum, removeChecksum } from '@helixnetwork/checksum';
-import { asTransactionObject ,asTransactionHBytes} from '@helixnetwork/transaction-converter';
+import { asTransactionObject ,asTransactionStrings} from '@helixnetwork/transaction-converter';
 import { isHash } from '@helixnetwork/validators';
 import { DEFAULT_TAG, DEFAULT_MIN_WEIGHT_MAGNITUDE, BUNDLE_OUTPUTS_THRESHOLD } from '../../config';
 import { accumulateBalance } from './addresses';
@@ -46,7 +46,7 @@ import {
 import i18next from '../../libs/i18next.js';
 import {
     convertFromBytes,
-    EMPTY_HASH_BYTES,
+    EMPTY_HASH_TXBYTES,
     EMPTY_TRANSACTION_MESSAGE,
     TRANSACTION_BYTES_SIZE,
     VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX,
@@ -152,7 +152,7 @@ export const isAboveMaxDepth = (attachmentTimestamp) => {
 
 /**
  *   Returns a transfer array
- *   Converts message to hbytes. Basically preparing an array of transfer objects before making a transfer.
+ *   Converts message to TxBytes. Basically preparing an array of transfer objects before making a transfer.
  *   Since zero value transfers have no inputs, after a sync with ledger, these transfers would not be detected.
  *   To make sure zero value transfers are detected after a sync, add a second transfer to the array that has
  *   seed's own address at index 0.
@@ -172,11 +172,11 @@ export const prepareTransferArray = (address, value, message, addressData, tag =
         throw new Error(Errors.EMPTY_ADDRESS_DATA);
     }
 
-    const hbytesConvertedMessage = asciiToHBytes(message);
+    const TxBytesConvertedMessage = asciiToTxHex(message);
     const transfer = {
         address,
         value,
-        message: hbytesConvertedMessage,
+        message: TxBytesConvertedMessage,
         tag,
     };
 
@@ -437,7 +437,7 @@ export const syncTransactions = (settings) => (diff, existingTransactions) => {
         return getTransactionsObjects(settings)(diff)
             .then((transactionObjects) => {
                 each(transactionObjects, (transactionObject) => {
-                    if (transactionObject.bundle !== EMPTY_HASH_BYTES) {
+                    if (transactionObject.bundle !== EMPTY_HASH_TXBYTES) {
                         bundleHashes.add(transactionObject.bundle);
                     }
                 });
@@ -520,13 +520,13 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 };
 
 /**
- *   Performs proof of work and updates hbytes and transaction objects with nonce.
+ *   Performs proof of work and updates TxBytes and transaction objects with nonce.
  *
  *   @method performPow
  *
  *   @param {function} powFn
  *   @param {function} digestFn
- *   @param {array} hbytes
+ *   @param {array} TxBytes
  *   @param {string} trunkTransaction
  *   @param {string} branchTransaction
  *   @param {number} [minWeightMagnitude = 14]
@@ -537,7 +537,7 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 export const performPow = (
     powFn,
     digestFn,
-    hbytes,
+    TxBytes,
     trunkTransaction,
     branchTransaction,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -552,8 +552,8 @@ export const performPow = (
     }
 
     return batchedPow
-        ? powFn(hbytes, trunkTransaction, branchTransaction, minWeightMagnitude)
-        : performSequentialPow(powFn, digestFn, hbytes, branchTransaction, trunkTransaction, minWeightMagnitude);
+        ? powFn(TxBytes, trunkTransaction, branchTransaction, minWeightMagnitude)
+        : performSequentialPow(powFn, digestFn, TxBytes, branchTransaction, trunkTransaction, minWeightMagnitude);
 };
 
 /**
@@ -564,7 +564,7 @@ export const performPow = (
  *
  * @param {function} powFn
  * @param {function} digestFn
- * @param {array} hbytes
+ * @param {array} TxBytes
  * @param {string} trunkTransaction
  * @param {string} branchTransaction
  * @param {number} minWeightMagnitude
@@ -574,13 +574,13 @@ export const performPow = (
 export const performSequentialPow = (
     powFn,
     digestFn,
-    hbytes,
+    TxBytes,
     trunkTransaction,
     branchTransaction,
     minWeightMagnitude,
 ) => {
-    const transactionObjects = map(hbytes, (transactionHBytes) =>
-        assign({}, asTransactionObject(transactionHBytes), {
+    const transactionObjects = map(TxBytes, (transactionTxBytes) =>
+        assign({}, asTransactionObject(transactionTxBytes), {
             attachmentTimestamp: Date.now(),
             attachmentTimestampLowerBound: 0,
             attachmentTimestampUpperBound: (Math.pow(3, 27) - 1) / 2,
@@ -607,17 +607,17 @@ export const performSequentialPow = (
                     branchTransaction: index ? trunkTransaction : branchTransaction,
                 });
 
-                const transactionHByteString = asTransactionHBytes(withParentTransactions);
+                const transactionTxByteString = asTransactionStrings(withParentTransactions);
 
-                return powFn(transactionHByteString, minWeightMagnitude)
+                return powFn(transactionTxByteString, minWeightMagnitude)
                     .then((nonce) => {
                         // TODO recheck
-                        const hbytesWithNonce = transactionHByteString.substr(0, TRANSACTION_BYTES_SIZE - nonce.length).concat(nonce);
+                        const TxBytesWithNonce = transactionTxByteString.substr(0, TRANSACTION_BYTES_SIZE - nonce.length).concat(nonce);
 
-                        result.hbytes.unshift(hbytesWithNonce);
+                        result.TxBytes.unshift(TxBytesWithNonce);
 
-                        return digestFn(hbytesWithNonce).then((digest) =>
-                            asTransactionObject(hbytesWithNonce, digest),
+                        return digestFn(TxBytesWithNonce).then((digest) =>
+                            asTransactionObject(TxBytesWithNonce, digest),
                         );
                     })
                     .then((transactionObject) => {
@@ -627,7 +627,7 @@ export const performSequentialPow = (
                     });
             });
         },
-        Promise.resolve({ hbytes: [], transactionObjects: [] }),
+        Promise.resolve({ TxBytes: [], transactionObjects: [] }),
     );
 };
 
@@ -641,15 +641,15 @@ export const performSequentialPow = (
  * @returns {function(array, object): Promise<object>}
  **/
 export const retryFailedTransaction = (settings) => (transactionObjects, seedStore) => {
-    const convertToHBytes = (tx) => asTransactionHBytes(tx);
+    const convertToTxBytes = (tx) => asTransactionStrings(tx);
 
     const cached = {
         transactionObjects: cloneDeep(transactionObjects),
-        hbytes: map(transactionObjects, convertToHBytes),
+        TxBytes: map(transactionObjects, convertToTxBytes),
     };
 
     const isInvalidTransactionHash = ({ hash }) =>
-        hash === EMPTY_HASH_BYTES || !isHash(hash);
+        hash === EMPTY_HASH_TXBYTES || !isHash(hash);
         // TODO recheck
 
     // Verify if all transaction objects have valid hash
@@ -658,17 +658,17 @@ export const retryFailedTransaction = (settings) => (transactionObjects, seedSto
         // If proof of work failed, select new tips and retry
         return getTransactionsToApprove(settings)()
             .then(({ trunkTransaction, branchTransaction }) => {
-                return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.hbytes);
+                return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.TxBytes);
             })
-            .then(({ hbytes, transactionObjects }) => {
-                cached.hbytes = hbytes;
+            .then(({ TxBytes, transactionObjects }) => {
+                cached.TxBytes = TxBytes;
                 cached.transactionObjects = transactionObjects;
 
-                return storeAndBroadcast(settings)(cached.hbytes).then(() => cached);
+                return storeAndBroadcast(settings)(cached.TxBytes).then(() => cached);
             });
     }
 
-    return storeAndBroadcast(settings)(cached.hbytes).then(() => cached);
+    return storeAndBroadcast(settings)(cached.TxBytes).then(() => cached);
 };
 
 /**
@@ -737,30 +737,30 @@ export const formatRelevantRecentTransactions = (transactions, addresses) => {
 };
 
 /**
- * Sort transaction hbytes array
+ * Sort transaction TxBytes array
  *
- * @method sortTransactionBytesArray
- * @param {array} hbytes
+ * @method sortTransactionTxBytesArray
+ * @param {array} TxBytes
  * @param {string} [sortBy]
  * @param {string} [order]
  *
  */
-export const sortTransactionBytesArray = (hbytes, sortBy = 'currentIndex', order = 'desc') => {
+export const sortTransactionTxBytesArray = (TxBytes, sortBy = 'currentIndex', order = 'desc') => {
     const sortableTransactionKeys = ['currentIndex', 'lastIndex', 'timestamp', 'attachmentTimestamp'];
 
     if (!includes(sortableTransactionKeys, sortBy) || !includes(['desc', 'asc'], order)) {
-        return hbytes;
+        return TxBytes;
     }
 
-    const transactionObjects = map(hbytes, (hbyteString) =>
+    const transactionObjects = map(TxBytes, (TxByteString) =>
         asTransactionObject(
-            hbyteString,
-            // Pass in null hash hbytes to avoid computing transaction hash.
-            EMPTY_HASH_BYTES,
+            TxByteString,
+            // Pass in null hash TxBytes to avoid computing transaction hash.
+            EMPTY_HASH_TXBYTES,
         ),
     );
 
-    return map(orderBy(transactionObjects, [sortBy], [order]), asTransactionHBytes);
+    return map(orderBy(transactionObjects, [sortBy], [order]), asTransactionStrings);
 };
 
 /**
@@ -1020,22 +1020,22 @@ export const mapNormalisedTransactions = (transactions, addressData) => {
 };
 
 /**
- * Computes and assign transaction hash to transactions from attached hbytes (Forms a bundle).
+ * Computes and assign transaction hash to transactions from attached TxBytes (Forms a bundle).
  *
- * @method constructBundleFromAttachedBytes
+ * @method constructBundleFromAttachedTxBytes
  *
- * @param {array} attachedHBytes
+ * @param {array} attachedTxBytes
  * @param {object} seedStore
  *
  * @returns {Promise<array>}
  */
-export const constructBundleFromAttachedBytes = (attachedHBytes, seedStore) => {
+export const constructBundleFromAttachedTxBytes = (attachedTxBytes, seedStore) => {
     return reduce(
-        attachedHBytes,
-        (promise, hbyteString) => {
+        attachedTxBytes,
+        (promise, TxByteString) => {
             return promise.then((result) => {
-                return seedStore.getDigest(hbyteString).then((digest) => {
-                    const transactionObject = asTransactionObject(hbyteString, digest);
+                return seedStore.getDigest(TxByteString).then((digest) => {
+                    const transactionObject = asTransactionObject(TxByteString, digest);
 
                     result.unshift(transactionObject);
 

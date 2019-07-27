@@ -6,7 +6,7 @@ import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
 import isEmpty from 'lodash/isEmpty'
 import { composeAPI } from '@helixnetwork/core';
-import { asTransactionHBytes , asTransactionObject,asTransactionObjects } from "@helixnetwork/transaction-converter";
+import { asTransactionStrings , asTransactionObject,asTransactionObjects } from "@helixnetwork/transaction-converter";
 import { helix, quorum } from './index';
 import Errors from '../errors';
 import { isWithinMinutes } from '../date';
@@ -24,12 +24,12 @@ import {
     MAX_MILESTONE_FALLBEHIND,
 } from '../../config';
 import {
-    sortTransactionBytesArray,
-    constructBundleFromAttachedBytes,
+    sortTransactionTxBytesArray,
+    constructBundleFromAttachedTxBytes,
     isBundle,
     isBundleTraversable,
 } from './transfers';
-import { EMPTY_HASH_BYTES, withRequestTimeoutsHandler } from './utils';
+import { EMPTY_HASH_TXBYTES, withRequestTimeoutsHandler } from './utils';
 
 /**
  * Returns timeouts for specific quorum requests
@@ -177,14 +177,14 @@ const promoteTransaction = (settings, seedStore) => (
     transfer = { address: '0'.repeat(64), value: 0, message: '', tag: '' },
 ) => {
     const cached = {
-        bytes: [],
+        txBytes: [],
     };
 
     return (
         isPromotable(settings)(hash)
             .then(() => prepareTransfers(settings)(transfer.address, [transfer]))
-            .then((bytes) => {
-                cached.bytes = bytes;
+            .then((txBytes) => {
+                cached.txBytes = txBytes;
 
                 return getTransactionsToApprove(settings)(
                     {
@@ -198,13 +198,13 @@ const promoteTransaction = (settings, seedStore) => (
                 attachToTangle(settings, seedStore)(
                     trunkTransaction,
                     branchTransaction,
-                    cached.bytes,
+                    cached.txs,
                     minWeightMagnitude,
                 ),
             )
-            .then(({ bytes }) => {
-                cached.bytes = bytes;
-                return storeAndBroadcast(settings)(cached.bytes);
+            .then(({ txs }) => {
+                cached.txs = txs;
+                return storeAndBroadcast(settings)(cached.txs);
             })
             .then(() => hash)
     );
@@ -225,14 +225,14 @@ const replayBundle = (settings, seedStore) => (
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const cached = {
-        bytes: [],
+        txBytes: [],
         transactionObjects: [],
     };
 
     return getBundle(settings)(hash)
         .then((bundle) => {
-            const convertToBytes = (tx) => asTransactionHBytes(tx);
-            cached.bytes = map(bundle, convertToBytes);
+            const convertToTxBytes = (tx) => asTransactionStrings(tx);
+            cached.txBytes = map(bundle, convertToTxBytes);
             cached.transactionObjects = bundle;
 
             return getTransactionsToApprove(settings)({}, depth);
@@ -241,15 +241,15 @@ const replayBundle = (settings, seedStore) => (
             attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
-                cached.bytes,
+                cached.txs,
                 minWeightMagnitude,
             ),
         )
-        .then(({ hbytes, transactionObjects }) => {
-            cached.bytes = hbytes;
+        .then(({ txs, transactionObjects }) => {
+            cached.txs = txs;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcast(settings)(cached.bytes);
+            return storeAndBroadcast(settings)(cached.txs);
         })
         .then(() => cached.transactionObjects);
 };
@@ -295,14 +295,14 @@ const sendTransfer = (settings) => (
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const cached = {
-        bytes: [],
+        txBytes: [],
         transactionObjects: [],
     };
 
     return seedStore
         .prepareTransfers(settings)(transfers, options)
-        .then((bytes) => {
-            cached.bytes = bytes;
+        .then((txBytes) => {
+            cached.txBytes = txBytes;
 
             return getTransactionsToApprove(settings)({}, depth);
         })
@@ -311,14 +311,14 @@ const sendTransfer = (settings) => (
             attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
-                cached.bytes,
+                cached.txs,
                 minWeightMagnitude,
             ),
         )
-        .then(({ hbytes, transactionObjects }) => {
-            cached.bytes = hbytes;
+        .then(({ txs, transactionObjects }) => {
+            cached.txs = txs;
             cached.transactionObjects = transactionObjects;
-            return storeAndBroadcast(settings)(cached.bytes);
+            return storeAndBroadcast(settings)(cached.txs);
         })
         .then(() => cached.transactionObjects);
 };
@@ -368,8 +368,8 @@ export const prepareTransfers = (settings) => (seed, transfers, options = null, 
  *
  * @returns {function(array): Promise<any>}
  */
-const storeAndBroadcast = (settings) => (bytes) =>{
-        getHelixInstance(settings).storeAndBroadcast(bytes);
+const storeAndBroadcast = (settings) => (txBytes) =>{
+        getHelixInstance(settings).storeAndBroadcast(txBytes);
 }
 
 
@@ -437,7 +437,7 @@ const allowsRemotePow = (settings) => {
 const attachToTangle = (settings, seedStore) => (
     trunkTransaction,
     branchTransaction,
-    bytes,
+    txBytes,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
     const shouldOffloadPow = get(seedStore, 'offloadPow') === true;
@@ -447,13 +447,13 @@ const attachToTangle = (settings, seedStore) => (
                     trunkTransaction,
                     branchTransaction,
                     minWeightMagnitude,
-                    // Make sure bytes are sorted properly
-                    sortTransactionBytesArray(bytes)).then(
+                    // Make sure txBytes are sorted properly
+                    sortTransactionTxBytesArray(txBytes)).then(
                     (err, attachedBytes) => {
                         if (err) {
                             reject(err);
                         } else {
-                            constructBundleFromAttachedBytes(attachedBytes, seedStore)
+                            constructBundleFromAttachedTxBytes(attachedBytes, seedStore)
                                 .then((transactionObjects) => {
                                     if (
                                         isBundle(transactionObjects) &&
@@ -461,7 +461,7 @@ const attachToTangle = (settings, seedStore) => (
                                     ) {
                                         resolve({
                                             transactionObjects,
-                                            bytes: attachedBytes,
+                                            txs: attachedBytes,
                                         });
                                     } else {
                                         reject(new Error(Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_REMOTE_POW));
@@ -477,27 +477,27 @@ const attachToTangle = (settings, seedStore) => (
         return withRequestTimeoutsHandler(defaultRequestTimeout)(request);
     }
     return seedStore
-        .performPow(bytes, trunkTransaction, branchTransaction, minWeightMagnitude)
+        .performPow(txBytes, trunkTransaction, branchTransaction, minWeightMagnitude)
         .then((result) => {
-            if (get(result, 'hbytes') && get(result, 'transactionObjects')) {
+            if (get(result, 'txBytes') && get(result, 'transactionObjects')) {
                 return Promise.resolve(result);
             }
-            // Batched proof-of-work only returns the attached bytes
-            return constructBundleFromAttachedBytes(sortTransactionBytesArray(result), seedStore).then(
+            // Batched proof-of-work only returns the attached txBytes
+            return constructBundleFromAttachedTxBytes(sortTransactionTxBytesArray(result), seedStore).then(
                 (transactionObjects) => ({
                     transactionObjects: orderBy(transactionObjects, 'currentIndex', ['desc']),
-                    bytes: result,
+                    txBytes: result,
                 }),
             );
         })
-        .then(({ transactionObjects, hbytes }) => {
+        .then(({ transactionObjects, txBytes }) => {
             if (
                 isBundle(transactionObjects) &&
                 isBundleTraversable(transactionObjects, trunkTransaction, branchTransaction)
             ) {
                 return {
                     transactionObjects,
-                    hbytes,
+                    txBytes,
                 };
             }
 
@@ -506,15 +506,15 @@ const attachToTangle = (settings, seedStore) => (
 };
 
 /**
- * Helix getBytes
+ * Helix getTransactionStrings
  *
- * @method getBytes
+ * @method getTransactionStrings
  * @param {object} [settings]
  *
  * @returns {function(array): Promise<array>}
  */
-const getBytes = (settings) => (hashes) =>
-        getHelixInstance(settings).getBytes(hashes);
+const getTransactionStrings = (settings) => (hashes) =>
+        getHelixInstance(settings).getTransactionStrings(hashes);
 
 /**
  * Checks if a node is synced and runs a stable IRI release
@@ -526,7 +526,7 @@ const getBytes = (settings) => (hashes) =>
  */
 const isNodeHealthy = (settings) => {
     const cached = {
-        latestMilestone: EMPTY_HASH_BYTES,
+        latestMilestone: EMPTY_HASH_TXBYTES,
     };
 
     return getNodeInfo(settings)()
@@ -545,17 +545,17 @@ const isNodeHealthy = (settings) => {
                 if (
                     (cached.latestMilestone === latestSolidSubtangleMilestone ||
                         latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <= latestSolidSubtangleMilestoneIndex) &&
-                    cached.latestMilestone !== EMPTY_HASH_BYTES
+                    cached.latestMilestone !== EMPTY_HASH_TXBYTES
                 ) {
-                    return getBytes(settings)([cached.latestMilestone]);
+                    return getTransactionStrings(settings)([cached.latestMilestone]);
                 }
 
                 throw new Error(Errors.NODE_NOT_SYNCED);
             },
         )
-        .then((bytes) => {
+        .then((txBytes) => {
             // TODO
-            const { timestamp } = asTransactionObject(head(bytes), cached.latestMilestone);
+            const { timestamp } = asTransactionObject(head(txBytes), cached.latestMilestone);
 
             return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
         });

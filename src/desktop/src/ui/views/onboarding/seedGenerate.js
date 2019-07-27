@@ -10,7 +10,7 @@ import Lottie from 'react-lottie';
 import Icon from 'ui/components/icon';
 import * as animationData from 'animations/done.json';
 
-import { createRandomSeed, randomBytes } from '../../../utils/crypto';
+import { createRandomSeed, randomTxBytes } from '../../../utils/crypto';
 import { indexToChar } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 
@@ -31,7 +31,7 @@ class SeedGenerate extends React.PureComponent {
         seed2: [],
         seed3: [],
         seed4: [],
-        scramble: Electron.getOnboardingSeed() ? new Array(MAX_SEED_LENGTH).fill(0) : randomBytes(MAX_SEED_LENGTH, 27),
+        scramble: Electron.getOnboardingSeed() ? new Array(MAX_SEED_LENGTH).fill(0) : randomTxBytes(MAX_SEED_LENGTH, 27),
         existingSeed: Electron.getOnboardingSeed(),
         clicks: [],
         viewSeed: 'none',
@@ -68,7 +68,7 @@ class SeedGenerate extends React.PureComponent {
     };
 
     /**
-     * Update individual seed byte to random
+     * Update individual seed txByte to random
      * @param {event} event - Click event
      * @param {number} position - Letter seed position index
      * @returns {undefined}
@@ -186,7 +186,7 @@ class SeedGenerate extends React.PureComponent {
         this.frame = 0;
 
         this.setState({
-            scramble: randomBytes(MAX_SEED_LENGTH, 27),
+            scramble: randomTxBytes(MAX_SEED_LENGTH, 27),
         });
 
         this.unscramble();
@@ -311,10 +311,10 @@ class SeedGenerate extends React.PureComponent {
                                         </div>
                                         <div className={css.seed} style={{ display: this.state.viewSeed }}>
 
-                                            {seed1.map((byte, index) => {
+                                            {seed1.map((txByte, index) => {
                                                 const offset = scramble[index];
 
-                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(txByte);
                                                 return (
                                                     <button
                                                         onClick={this.updateLetter}
@@ -348,9 +348,9 @@ class SeedGenerate extends React.PureComponent {
                                         </div>
                                         <div className={css.seed} style={{ display: this.state.viewSeedTwo }}>
 
-                                            {seed2.map((byte, index) => {
+                                            {seed2.map((txByte, index) => {
                                                 const offset = scramble[index + 16];
-                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(txByte);
                                                 return (
                                                     <button
                                                         onClick={this.updateLetter}
@@ -384,9 +384,9 @@ class SeedGenerate extends React.PureComponent {
                                         </div>
                                         <div className={css.seed} style={{ display: this.state.viewSeedThree }}>
 
-                                            {seed3.map((byte, index) => {
+                                            {seed3.map((txByte, index) => {
                                                 const offset = scramble[index + 32];
-                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(txByte);
                                                 return (
                                                     <button
                                                         onClick={this.updateLetter}
@@ -419,9 +419,9 @@ class SeedGenerate extends React.PureComponent {
                                             />
                                         </div>
                                         <div className={css.seed} style={{ display: this.state.viewSeedFour }}>
-                                            {seed4.map((byte, index) => {
+                                            {seed4.map((txByte, index) => {
                                                 const offset = scramble[index + 48];
-                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(byte);
+                                                const letter = offset > 0 ? indexToChar(offset) : indexToChar(txByte);
                                                 return (
                                                     <button
                                                         onClick={this.updateLetter}

@@ -172,7 +172,7 @@ export const WalletSettingsSchema = {
             default: true,
         },
         /**
-         * Determines the status of byte-trit check.
+         * Determines the status of txByte-trit check.
          */
         completedByteTritSweep: {
             type: 'bool',

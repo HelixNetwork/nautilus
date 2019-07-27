@@ -16,7 +16,7 @@ import {
     performSequentialPow,
     constructBundlesFromTransactions,
     retryFailedTransaction,
-    sortTransactionBytesArray,
+    sortTransactionTxBytesArray,
     getTransferValue,
     computeTransactionMessage,
     isValidTransfer,
@@ -34,7 +34,7 @@ import {
     newValueAttachedTransactionBytes,
     failedBytesWithCorrectTransactionHashes,
     milestoneBytes,
-} from '../../__samples__/bytes';
+} from '../../__samples__/txBytes';
 import {
     newValueAttachedTransactionBaseTrunk,
     newValueAttachedTransactionBaseBranch,
@@ -48,7 +48,7 @@ import {
     LATEST_MILESTONE_INDEX,
     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 } from '../../__samples__/transactions';
-import { EMPTY_HASH_BYTES, EMPTY_TRANSACTION_BYTES, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/hlx/utils';
+import { EMPTY_HASH_TXBYTES, EMPTY_TRANSACTION_HEX, EMPTY_TRANSACTION_MESSAGE } from '../../../libs/hlx/utils';
 import { IRI_API_VERSION } from '../../../config';
 import { isBundle as bundleValidator } from '@helixnetwork/bundle-validator';
 import { asTransactionObject, asTransactionObjects } from '@helixnetwork/transaction-converter';
@@ -741,7 +741,7 @@ describe('libs: helix/transfers', () => {
 
         describe('when first (powFn) & second (digestFn) arguments are functions', () => {
             describe('when batchedPow is true', () => {
-                // it('should call proof-of-work function with bytes, trunk, branch and minWeightMagnitude', () => {
+                // it('should call proof-of-work function with txBytes, trunk, branch and minWeightMagnitude', () => {
                 //     const powFn = sinon.stub();
 
                 //     powFn.resolves([]);
@@ -777,7 +777,7 @@ describe('libs: helix/transfers', () => {
                 };
             };
 
-            digestFn = (bytes) => Promise.resolve(asTransactionObject(bytes).hash);
+            digestFn = (txBytes) => Promise.resolve(asTransactionObject(txBytes).hash);
 
             trunkTransaction = 'LLJWVVZFXF9ZGFSBSHPCD9HOIFBCLXGRV9XWSQDTGOMSRGQQIVFVZKHLKTJJVFMXQTZVPNRNAQEPA9999';
             branchTransaction = 'GSHUHUWAUUGQHHNAPRDPDJRKZFJNIAPFNTVAHZPUNDJWRHZSZASOERZURXZVEHN9OJVS9QNRGSJE99999';
@@ -860,19 +860,19 @@ describe('libs: helix/transfers', () => {
 
         before(() => {
             seedStore = {
-                performPow: (bytes) =>
+                performPow: (txBytes) =>
                     Promise.resolve({
-                        bytes,
-                        transactionObjects: map(bytes, asTransactionObject),
+                        txBytes,
+                        transactionObjects: map(txBytes, asTransactionObject),
                     }),
-                getDigest: (bytes) => Promise.resolve(asTransactionObject(bytes).hash),
+                getDigest: (txBytes) => Promise.resolve(asTransactionObject(txBytes).hash),
             };
         });
 
         describe('when all transaction objects have valid hash', () => {
             // it('should not perform proof of work', () => {
             //     sinon.stub(seedStore, 'performPow').resolves({
-            //         hbytes: failedBytesWithCorrectTransactionHashes,
+            //         TxBytes: failedBytesWithCorrectTransactionHashes,
             //         transactionObjects: failedTransactionsWithCorrectTransactionHashes,
             //     });
 
@@ -890,7 +890,7 @@ describe('libs: helix/transfers', () => {
         describe('when any transaction object has an invalid hash', () => {
             // it('should perform proof of work', () => {
             //     sinon.stub(seedStore, 'performPow').resolves({
-            //         hbytes: newValueAttachedTransactionBytes,
+            //         TxBytes: newValueAttachedTransactionBytes,
             //         transactionObjects: newValueAttachedTransaction,
             //     });
 
@@ -915,7 +915,7 @@ describe('libs: helix/transfers', () => {
         describe('when any transaction object has an empty hash', () => {
             // it('should perform proof of work', () => {
             //     sinon.stub(seedStore, 'performPow').resolves({
-            //         hbytes: newValueAttachedTransactionBytes,
+            //         TxBytes: newValueAttachedTransactionBytes,
             //         transactionObjects: newValueAttachedTransaction,
             //     });
 
@@ -927,7 +927,7 @@ describe('libs: helix/transfers', () => {
 
             //     return retryFailedTransaction()(
             //         map(failedTransactionsWithCorrectTransactionHashes, (tx, idx) =>
-            //             idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_BYTES }),
+            //             idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_TXBYTES }),
             //         ),
             //         seedStore,
             //     ).then(() => {
@@ -941,23 +941,23 @@ describe('libs: helix/transfers', () => {
         });
     });
 
-    describe('#sortTransactionBytesArray', () => {
-        // it('should sort transaction bytes in ascending order', () => {
+    describe('#sortTransactionTxBytesArray', () => {
+        // it('should sort transaction txBytes in ascending order', () => {
         //     // failedBytesWithCorrectTransactionHashes is in ascending order by default
-        //     const bytes = failedBytesWithCorrectTransactionHashes.slice().reverse();
-        //     const result = sortTransactionBytesArray(bytes, 'currentIndex', 'asc');
+        //     const txBytes = failedBytesWithCorrectTransactionHashes.slice().reverse();
+        //     const result = sortTransactionTxBytesArray(txBytes, 'currentIndex', 'asc');
 
         //     expect(result).to.eql(failedBytesWithCorrectTransactionHashes);
-        //     expect(asTransactionObjects(result[0], EMPTY_TRANSACTION_BYTES).currentIndex).to.equal(0);
+        //     expect(asTransactionObjects(result[0], EMPTY_TRANSACTION_HEX).currentIndex).to.equal(0);
         // });
 
-        // it('should sort transaction bytes in descending order', () => {
-        //     const bytes = failedBytesWithCorrectTransactionHashes.slice().reverse();
-        //     const result = sortTransactionBytesArray(bytes);
+        // it('should sort transaction txBytes in descending order', () => {
+        //     const txBytes = failedBytesWithCorrectTransactionHashes.slice().reverse();
+        //     const result = sortTransactionTxBytesArray(txBytes);
 
         //     // failedBytesWithCorrectTransactionHashes is in ascending order by default to assert with a reversed list
         //     expect(result).to.eql(failedBytesWithCorrectTransactionHashes.slice().reverse());
-        //     expect(hlx.utils.transactionObject(result[0], EMPTY_TRANSACTION_BYTES).currentIndex).to.equal(2);
+        //     expect(hlx.utils.transactionObject(result[0], EMPTY_TRANSACTION_HEX).currentIndex).to.equal(2);
         // });
     });
 
@@ -980,7 +980,7 @@ describe('libs: helix/transfers', () => {
         });
 
         describe('when input is an object', () => {
-            describe('when "address" is invalid is not valid bytes', () => {
+            describe('when "address" is invalid is not valid txBytes', () => {
                 it('should return false', () => {
                     const invalidAddress = `U${'a'.repeat(64)}`;
 
@@ -994,7 +994,7 @@ describe('libs: helix/transfers', () => {
                 });
             });
 
-            describe('when "value" is number and address is valid bytes', () => {
+            describe('when "value" is number and address is valid txBytes', () => {
                 it('should return true', () => {
                     expect(isValidTransfer(validTransfer)).to.eql(true);
                 });
@@ -1044,10 +1044,10 @@ describe('libs: helix/transfers', () => {
                                     latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                     latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                 },
-                                getHBytes: {
-                                    hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                getTransactionStrings: {
+                                    TxBytes: includes(body.hashes, LATEST_MILESTONE)
                                         ? milestoneBytes
-                                        : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                        : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                 },
                             };
 
@@ -1088,10 +1088,10 @@ describe('libs: helix/transfers', () => {
                                     latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                     latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                 },
-                                getHBytes: {
-                                    hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                getTransactionStrings: {
+                                    TxBytes: includes(body.hashes, LATEST_MILESTONE)
                                         ? milestoneBytes
-                                        : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                        : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                 },
                             };
 
@@ -1132,10 +1132,10 @@ describe('libs: helix/transfers', () => {
                                     latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                     latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                 },
-                                getHBytes: {
-                                    hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                getTransactionStrings: {
+                                    TxBytes: includes(body.hashes, LATEST_MILESTONE)
                                         ? milestoneBytes
-                                        : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                        : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                 },
                             };
 

@@ -18,7 +18,7 @@ const shorten = (input, length) => {
 };
 
 /**
- * HexaDecimal bit mapping
+ * HexaDecimal txBit mapping
  */
 
 const hexBits = [
@@ -40,54 +40,54 @@ const hexBits = [
    [0,0,1,1,1,0,0,1], // 9
 ];
 
-const bitStrings = hexBits.map((bit) => bit.toString());
+const bitStrings = hexBits.map((txBit) => txBit.toString());
 
 /**
  * Convert index of hexBits  to an ASCII character
- * @param {bit} bit - raw Bit input
+ * @param {txBit} txBit - raw Bit input
  */
-const indexToChar = (bit) => {
-    return 'abcdef0123456789'.charAt(bit % 16);
+const indexToChar = (txBit) => {
+    return 'abcdef0123456789'.charAt(txBit % 16);
 };
 
 /**
  * Convert single character hex to index
  * @param {string} char - Input character
- * @returns {array} Output bit array
+ * @returns {array} Output txBit array
  */
 const charToIndex = (char) => {
     return 'abcdef0123456789'.indexOf(char.toLowerCase());
 };
 
 /**
- * Convert single index of hexBit to bit array
- * @param {number} byte - Input byte
- * @returns {array} Output bit array
+ * Convert single index of hexBit to txBit array
+ * @param {number} txByte - Input txByte
+ * @returns {array} Output txBit array
  */
-const indexToBit = (byte) => {
-    return hexBits[byte % 16];
+const indexToBit = (txByte) => {
+    return hexBits[txByte % 16];
 };
 
 /**
- * Convert index of hexBits array to bit array
- * @param {array} bytes - Input byte array
- * @returns {array} Output bit array
+ * Convert index of hexBits array to txBit array
+ * @param {array} txBytes - Input txByte array
+ * @returns {array} Output txBit array
  */
-const indexesToBits = (bytes) => {
-    let bits = [];
-    for (let i = 0; i < bytes.length; i++) {
-        bits = bits.concat(indexToBit(bytes[i]));
+const indexesToBits = (txBytes) => {
+    let txBits = [];
+    for (let i = 0; i < txBytes.length; i++) {
+        txBits = txBits.concat(indexToBit(txBytes[i]));
     }
-    return bits;
+    return txBits;
 };
 
 /**
- * Converts hex string to bits
+ * Converts hex string to txBits
  *
  * @method hexToBits
  * @param {String} input - hex string to be converted.
  *
- * @return {Int8Array} bits
+ * @return {Int8Array} txBits
  */
 const hexToBits = (input) => {
     const result = new Int8Array(input.length * 8);
@@ -101,19 +101,19 @@ const hexToBits = (input) => {
 };
 
 /**
- * Convert bit array to string
- * @param {array} bits - Input bit array
+ * Convert txBit array to string
+ * @param {array} txBits - Input txBit array
  * @returns {string} Output string
  */
-const bitsToChars = (bits) => {
-    if (!bits || !bits.length) {
+const bitsToChars = (txBits) => {
+    if (!txBits || !txBits.length) {
         return null;
     }
     let chars = '';
-    for (let i = 0; i < bits.length; i += 8) {
-        const bit = bits.slice(i, i + 8).toString();
+    for (let i = 0; i < txBits.length; i += 8) {
+        const txBit = txBits.slice(i, i + 8).toString();
         for (let x = 0; x < bitStrings.length; x++) {
-            if  (bitStrings[x] === bit) {
+            if  (bitStrings[x] === txBit) {
                 chars += 'abcdef0123456789'.charAt(x);
             }
         }

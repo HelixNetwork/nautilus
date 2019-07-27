@@ -171,7 +171,7 @@ class Keychain extends SeedStoreCore {
         return addresses;
         // !options.total || options.total === 1
         //     ? bitsToChars(addresses)
-        //     : addresses.map((bits) => bitsToChars(bits));
+        //     : addresses.map((txBits) => bitsToChars(txBits));
     };
 
     /**
@@ -200,7 +200,7 @@ class Keychain extends SeedStoreCore {
 
     /**
      * Get seed from keychain
-     * @param {boolean} rawBits - Should return raw bits
+     * @param {boolean} rawBits - Should return raw txBits
      * @returns {array} Decrypted seed
      */
     getSeed = async (rawBits) => {
@@ -212,11 +212,11 @@ class Keychain extends SeedStoreCore {
 
         const decryptedVault = await decrypt(vault, this.key);
         if (rawBits) {
-            let bits = [];
+            let txBits = [];
             for (let i = 0; i < decryptedVault.length; i++) {
-                bits = bits.concat(indexToBit(decryptedVault[i]));
+                txBits = txBits.concat(indexToBit(decryptedVault[i]));
             }
-            return bits;
+            return txBits;
         }
         return decryptedVault;
     };

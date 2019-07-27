@@ -19,7 +19,7 @@ kdbxweb.CryptoEngine.argon2 = (password, salt, memory, iterations, length, paral
 
 /**
  * Encrypt seed to KDBX database format
- * @param {array} Seeds - Array of byte array seeds an their titles
+ * @param {array} Seeds - Array of txByte array seeds an their titles
  * @param {string} Password - Plain text password for encryption
  * @returns {arrayBuffer} Encrypted KDBX binary content
  */
@@ -33,7 +33,7 @@ const exportVault = async (seeds, password) => {
         const entry = db.createEntry(db.getDefaultGroup());
         entry.fields.Title = seeds[i].title || `HELIX Seed #${i + 1}`;
         entry.fields.Seed = kdbxweb.ProtectedValue.fromString(
-            seeds[i].seed.map((byte) => 'abcdef0123456789'.charAt(byte % 16)).join(''),
+            seeds[i].seed.map((txByte) => 'abcdef0123456789'.charAt(txByte % 16)).join(''),
         );
     }
 
@@ -46,7 +46,7 @@ const exportVault = async (seeds, password) => {
  * Get seed from encrypt KDBX database
  * @param {arrayBuffer} Db - Encrypted binary KDBX database
  * @param {string} Password - Plain text password for decryption
- * @returns {array} Array of decrypted byte array seeds
+ * @returns {array} Array of decrypted txByte array seeds
  */
 const importVault = async (buffer, password) => {
     const credentials = new kdbxweb.Credentials(kdbxweb.ProtectedValue.fromString(password));
@@ -62,7 +62,7 @@ const importVault = async (buffer, password) => {
                 seed: entries[i].fields.Seed.getText()
                     .split('')
                     .map((char) => 'abcdef0123456789'.indexOf(char.toLowerCase()))
-                    .filter((byte) => byte > -1),
+                    .filter((txByte) => txByte > -1),
             });
         }
     }

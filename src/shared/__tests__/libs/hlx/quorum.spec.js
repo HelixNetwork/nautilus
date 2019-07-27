@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { findSyncedNodes, fallbackToSafeResult, determineQuorumResult } from '../../../libs/hlx/quorum';
 import * as extendedApis from '../../../libs/hlx/extendedApi';
-import { EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
+import { EMPTY_HASH_TXBYTES } from '../../../libs/hlx/utils';
 
 describe('libs: helix/quorum', () => {
     describe('#determineQuorumResult', () => {
@@ -93,7 +93,7 @@ describe('libs: helix/quorum', () => {
             });
 
             describe('when frequency is less than 67 percent', () => {
-                it(`should return ${EMPTY_HASH_BYTES} as a fallback latestSolidSubtangleMilestone`, () => {
+                it(`should return ${EMPTY_HASH_TXBYTES} as a fallback latestSolidSubtangleMilestone`, () => {
                     const correctHash = 'e'.repeat(64);
                     const incorrectHash = 'f'.repeat(64);
 
@@ -111,7 +111,7 @@ describe('libs: helix/quorum', () => {
                         'getNodeInfo:latestSolidSubtangleMilestone',
                         67,
                     );
-                    expect(result).to.equal(EMPTY_HASH_BYTES);
+                    expect(result).to.equal(EMPTY_HASH_TXBYTES);
                 });
             });
         });
@@ -137,8 +137,8 @@ describe('libs: helix/quorum', () => {
         });
 
         describe('when method is getNodeInfo:latestSolidSubtangleMilestone', () => {
-            it(`should return ${EMPTY_HASH_BYTES}`, () => {
-                expect(fallbackToSafeResult('getNodeInfo:latestSolidSubtangleMilestone')).to.equal(EMPTY_HASH_BYTES);
+            it(`should return ${EMPTY_HASH_TXBYTES}`, () => {
+                expect(fallbackToSafeResult('getNodeInfo:latestSolidSubtangleMilestone')).to.equal(EMPTY_HASH_TXBYTES);
             });
         });
 

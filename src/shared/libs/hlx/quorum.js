@@ -15,7 +15,7 @@ import unionBy from 'lodash/unionBy';
 import uniqBy from 'lodash/uniqBy';
 import { isNodeHealthy, getHelixInstance, getApiTimeout } from './extendedApi';
 import { QUORUM_THRESHOLD, QUORUM_SIZE, QUORUM_SYNC_CHECK_INTERVAL, DEFAULT_BALANCES_THRESHOLD } from '../../config';
-import { EMPTY_HASH_BYTES } from './utils';
+import { EMPTY_HASH_TXBYTES } from './utils';
 import { findMostFrequent } from '../utils';
 import Errors from '../errors';
 
@@ -37,20 +37,20 @@ const rejectIfNotEnoughSyncedNodes = (nodes, quorumSize) => {
 };
 
 /**
- * Resolves only if provided bytes argument is not equal to empty hash bytes (000...000)
+ * Resolves only if provided txBytes argument is not equal to empty hash txBytes (000...000)
  *
- * @method rejectIfEmptyHashBytes
+ * @method rejectIfEmptyHasTxBytes
  *
- * @param {string} bytes
+ * @param {string} txBytes
  *
  * @returns {Promise<string>}
  */
-const rejectIfEmptyHashBytes = (bytes) => {
-    if (bytes === EMPTY_HASH_BYTES) {
+const rejectIfEmptyHasTxBytes = (txBytes) => {
+    if (txBytes === EMPTY_HASH_TXBYTES) {
         return Promise.reject(new Error(Errors.COULD_NOT_GET_QUORUM_FOR_LATEST_SOLID_SUBTANGLE_MILESTONE));
     }
 
-    return Promise.resolve(bytes);
+    return Promise.resolve(txBytes);
 };
 
 /**
@@ -90,7 +90,7 @@ const fallbackToSafeResult = (method) => {
         wereAddressesSpentFrom: true,
         getInclusionStates: false,
         'getBalances:balances': '0',
-        'getNodeInfo:latestSolidSubtangleMilestone': EMPTY_HASH_BYTES,
+        'getNodeInfo:latestSolidSubtangleMilestone': EMPTY_HASH_TXBYTES,
     };
 
     if (!includes(keys(allowedMethodsMap), method)) {
@@ -119,6 +119,7 @@ const findSyncedNodes = (nodes, quorumSize, selectedNodes = [], blacklistedNodes
         nodes,
         (node) => !find(blacklistedNodes, { url: node.url }) && !find(selectedNodes, { url: node.url }),
     );
+    
 
     if (
         isEmpty(whitelistedNodes) &&
@@ -393,7 +394,7 @@ export default function Quorum(config) {
                       getQuorum(quorumSize)('getNodeInfo:latestSolidSubtangleMilestone', syncedNodes)
                           // If nodes cannot agree on the latestSolidSubtangleMilestone
                           // No need to proceed further.
-                          .then(rejectIfEmptyHashBytes)
+                          .then(rejectIfEmptyHasTxBytes)
                           .then((latestSolidSubtangleMilestone) =>
                               getQuorum(quorumSize)('getInclusionStates', syncedNodes, hashes, [
                                   latestSolidSubtangleMilestone,
@@ -419,7 +420,7 @@ export default function Quorum(config) {
                       getQuorum(quorumSize)('getNodeInfo:latestSolidSubtangleMilestone', syncedNodes)
                           // If nodes cannot agree on the latestSolidSubtangleMilestone
                           // No need to proceed further.
-                          .then(rejectIfEmptyHashBytes)
+                          .then(rejectIfEmptyHasTxBytes)
                           .then((latestSolidSubtangleMilestone) =>
                               getQuorum(quorumSize)('getBalances:balances', syncedNodes, addresses, threshold, [
                                   latestSolidSubtangleMilestone,

@@ -94,8 +94,8 @@ class SeedImport extends React.PureComponent {
             }
 
             let seedSequence = "";
-            seed[0].seed.map((byte, index) => {
-                const letter = indexToChar(byte);
+            seed[0].seed.map((txByte, index) => {
+                const letter = indexToChar(txByte);
                 seedSequence += letter
             });
             Electron.setOnboardingSeed(seed[0].seed, false);

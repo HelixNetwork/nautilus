@@ -35,11 +35,11 @@ import {
     newZeroValueTransactionBytes,
     milestoneBytes,
     newZeroValueAttachedTransactionBytes,
-} from '../../__samples__/bytes';
+} from '../../__samples__/txBytes';
 import mockAccounts from '../../__samples__/accounts';
 import { helix, quorum } from '../../../libs/hlx/index';
 import { IRI_API_VERSION } from '../../../config';
-import { EMPTY_TRANSACTION_BYTES, EMPTY_HASH_BYTES } from '../../../libs/hlx/utils';
+import { EMPTY_TRANSACTION_HEX, EMPTY_HASH_TXBYTES } from '../../../libs/hlx/utils';
 
 describe('libs: helix/addresses', () => {
     describe('#preserveAddressLocalSpendStatus', () => {
@@ -590,11 +590,11 @@ describe('libs: helix/addresses', () => {
                                     latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                     latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                 };
-                            } else if (body.command === 'getHBytes') {
+                            } else if (body.command === 'getTransactionStrings') {
                                 return {
-                                    hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                    txs: includes(body.hashes, LATEST_MILESTONE)
                                         ? milestoneBytes
-                                        : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                        : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                 };
                             }
 
@@ -641,11 +641,11 @@ describe('libs: helix/addresses', () => {
                                         latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                         latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                     };
-                                } else if (body.command === 'getHBytes') {
+                                } else if (body.command === 'getTransactionStrings') {
                                     return {
-                                        hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                        txs: includes(body.hashes, LATEST_MILESTONE)
                                             ? milestoneBytes
-                                            : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                            : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                     };
                                 }
 
@@ -694,11 +694,11 @@ describe('libs: helix/addresses', () => {
                                             latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                             latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                         };
-                                    } else if (body.command === 'getHBytes') {
+                                    } else if (body.command === 'getTransactionStrings') {
                                         return {
-                                            hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                            txs: includes(body.hashes, LATEST_MILESTONE)
                                                 ? milestoneBytes
-                                                : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                                : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                         };
                                     }
 
@@ -746,11 +746,11 @@ describe('libs: helix/addresses', () => {
                                             latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                             latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                         };
-                                    } else if (body.command === 'getHBytes') {
+                                    } else if (body.command === 'getTransactionStrings') {
                                         return {
-                                            hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                            txs: includes(body.hashes, LATEST_MILESTONE)
                                                 ? milestoneBytes
-                                                : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                                : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                         };
                                     }
 
@@ -802,11 +802,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -912,11 +912,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1031,11 +1031,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1170,11 +1170,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1244,11 +1244,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1337,11 +1337,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1421,11 +1421,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1516,11 +1516,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1573,11 +1573,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -1701,11 +1701,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2096,10 +2096,10 @@ describe('libs: helix/addresses', () => {
                                     latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                     latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                                 },
-                                getHBytes: {
-                                    hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                getTransactionStrings: {
+                                    txs: includes(body.hashes, LATEST_MILESTONE)
                                         ? milestoneBytes
-                                        : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                        : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                 },
                             };
 
@@ -2271,11 +2271,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2336,10 +2336,10 @@ describe('libs: helix/addresses', () => {
             accountName = 'TEST';
             seedStore = {
                 generateAddress: () => Promise.resolve('a'.repeat(64)),
-                prepareTransfers: () => () => Promise.resolve([EMPTY_TRANSACTION_BYTES]),
+                prepareTransfers: () => () => Promise.resolve([EMPTY_TRANSACTION_HEX]),
                 performPow: () =>
                     Promise.resolve({
-                        hbytes: newZeroValueAttachedTransactionBytes,
+                        txs: newZeroValueAttachedTransactionBytes,
                         transactionObjects: newZeroValueAttachedTransaction,
                     }),
             };
@@ -2365,14 +2365,14 @@ describe('libs: helix/addresses', () => {
                         } else if (body.command === 'findTransactions') {
                             const addresses = body.addresses;
 
-                            return { hashes: map(addresses, () => EMPTY_HASH_BYTES) };
+                            return { hashes: map(addresses, () => EMPTY_HASH_TXBYTES) };
                         } else if (body.command === 'getTransactionsToApprove') {
                             return {
                                 trunkTransaction: newZeroValueAttachedTransactionBaseTrunk,
                                 branchTransaction: newZeroValueAttachedTransactionBaseBranch,
                             };
                         } else if (body.command === 'attachToTangle') {
-                            return { bytes: newZeroValueTransactionBytes };
+                            return { txBytes: newZeroValueTransactionBytes };
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
@@ -2381,11 +2381,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2443,7 +2443,7 @@ describe('libs: helix/addresses', () => {
                                 branchTransaction: newZeroValueAttachedTransactionBaseBranch,
                             };
                         } else if (body.command === 'attachToTangle') {
-                            return { bytes: newZeroValueTransactionBytes };
+                            return { txs: newZeroValueTransactionBytes };
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
@@ -2452,11 +2452,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2550,11 +2550,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2659,11 +2659,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2883,11 +2883,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (command === 'getHBytes') {
+                        } else if (command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2931,11 +2931,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (command === 'getHBytes') {
+                        } else if (command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -2979,11 +2979,11 @@ describe('libs: helix/addresses', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (command === 'getHBytes') {
+                        } else if (command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 

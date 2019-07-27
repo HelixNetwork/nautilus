@@ -22,7 +22,7 @@ import { generateAlert } from 'actions/alerts';
 import { generateNewAddress, addressValidationRequest, addressValidationSuccess } from 'actions/wallet';
 
 import SeedStore from 'libs/seed';
-import { randomBytes } from 'libs/crypto';
+import { randomTxBytes } from 'libs/crypto';
 import Errors from 'libs/errors';
 import { byteToChar } from 'libs/hlx/converter';
 import { getLatestAddressObject } from 'libs/hlx/addresses';
@@ -79,7 +79,7 @@ class Receive extends React.PureComponent {
             this.frame = 0;
 
             this.setState({
-                scramble: randomBytes(ADDRESS_LENGTH),
+                scramble: randomTxBytes(ADDRESS_LENGTH),
                 hasSyncedAddress: true,
             });
 

@@ -9,7 +9,7 @@ export default class SeedStoreCore {
      *
      * @method performPow
      *
-     * @param {array} hbytes
+     * @param {array} TxBytes
      * @param {string} trunkTransaction
      * @param {string} branchTransaction
      * @param {number} minWeightMagnitude
@@ -17,12 +17,12 @@ export default class SeedStoreCore {
      *
      * @returns {Promise<object>}
      */
-    performPow(hbytes, trunkTransaction, branchTransaction, minWeightMagnitude, batchedPow = true) {
+    performPow(TxBytes, trunkTransaction, branchTransaction, minWeightMagnitude, batchedPow = true) {
         const powFn = Electron.getPowFn(batchedPow);
         return performPow(
             powFn,
             this.getDigest,
-            hbytes,
+            TxBytes,
             trunkTransaction,
             branchTransaction,
             minWeightMagnitude,
@@ -31,15 +31,15 @@ export default class SeedStoreCore {
     }
 
     /**
-     * Gets digest for provided hbytes
+     * Gets digest for provided TxBytes
      *
      * @method getDigest
      *
-     * @param {string} hbytes
+     * @param {string} TxBytes
      *
      * @returns {Promise<string>}
      */
-    getDigest(hbytes) {
-        return Promise.resolve(astransactionObject(hbytes).hash);
+    getDigest(TxBytes) {
+        return Promise.resolve(astransactionObject(TxBytes).hash);
     }
 }

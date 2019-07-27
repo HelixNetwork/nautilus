@@ -16,9 +16,9 @@ import mockTransactions, {
     LATEST_SOLID_SUBTANGLE_MILESTONE,
     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 } from '../../__samples__/transactions';
-import { milestoneBytes } from '../../__samples__/bytes';
+import { milestoneBytes } from '../../__samples__/txBytes';
 import { IRI_API_VERSION } from '../../../config';
-import { EMPTY_TRANSACTION_BYTES } from '../../../libs/hlx/utils';
+import { EMPTY_TRANSACTION_HEX } from '../../../libs/hlx/utils';
 
 describe('libs: helix/inputs', () => {
     describe('#prepareInputs', () => {
@@ -203,11 +203,11 @@ describe('libs: helix/inputs', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                TxBytes: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -317,11 +317,11 @@ describe('libs: helix/inputs', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                TxBytes: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -448,11 +448,11 @@ describe('libs: helix/inputs', () => {
                                 latestMilestoneIndex: LATEST_MILESTONE_INDEX,
                                 latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                             };
-                        } else if (body.command === 'getHBytes') {
+                        } else if (body.command === 'getTransactionStrings') {
                             return {
-                                hbytes: includes(body.hashes, LATEST_MILESTONE)
+                                TxBytes: includes(body.hashes, LATEST_MILESTONE)
                                     ? milestoneBytes
-                                    : map(body.hashes, () => EMPTY_TRANSACTION_BYTES),
+                                    : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
                         }
 
@@ -526,7 +526,7 @@ describe('libs: helix/inputs', () => {
         });
 
         describe('when input is an object', () => {
-            describe('when "address" is invalid is not valid hbytes', () => {
+            describe('when "address" is invalid is not valid TxBytes', () => {
                 it('should return false', () => {
                     const invalidAddress = `h${'a'.repeat(63)}`;
 
