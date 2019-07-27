@@ -536,8 +536,8 @@ describe('libs: helix/recovery', () => {
                 //         'abcd',
                 //         validInput,
                 //         validTransfer,
-                //     ).then(({ txBytes }) => {
-                //         expect(txBytes).to.eql(attachedBytes);
+                //     ).then(({ txs }) => {
+                //         expect(txs).to.eql(attachedBytes);
                 //     });
                 // });
             });
