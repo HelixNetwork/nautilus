@@ -27,9 +27,10 @@ class SeedIntro extends React.PureComponent {
         Electron.setOnboardingSeed(null);
     }
 
-    stepForward(route) {
+    stepForward(route, existingSeed) {
         this.props.setAccountInfoDuringSetup({
             meta: { type: 'keychain' },
+            usedExistingSeed: existingSeed,
         });
 
         this.props.history.push(`/onboarding/${route}`);
@@ -55,8 +56,8 @@ class SeedIntro extends React.PureComponent {
                             </div>
                         </div>
                         <div className={css.onboard_btn}>
-                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-import')}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
-                            <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate')}>{t('newSeedSetup:createSeed')} <span>></span></Button>
+                            <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-import', true)}>{t('newSeedSetup:loginWithYourSeed')} <span>></span></Button>
+                            <Button className="navright" variant="backgroundNone" onClick={() => this.stepForward('seed-generate', false)}>{t('newSeedSetup:createSeed')} <span>></span></Button>
                         </div>
                     </div>
                 </section>

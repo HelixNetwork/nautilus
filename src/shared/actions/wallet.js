@@ -3,12 +3,13 @@
 // import noop from 'lodash/noop';
 // import findLastIndex from 'lodash/findLastIndex';
 // import reduce from 'lodash/reduce';
-
+import { WalletActionTypes } from './types'
 export const ActionTypes = {
     MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
     SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
     CLEAR_WALLET_DATA: 'HELIX/WALLET/CLEAR_WALLET_DATA',
 }
+
 
 /**
  * Dispatch to map storage (persisted) data to redux state

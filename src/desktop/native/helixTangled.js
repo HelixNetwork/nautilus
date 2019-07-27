@@ -1,6 +1,8 @@
 import { fork } from 'child_process';
 import path from 'path';
 // import { powTrytesFunc, powBundleFunc, genAddressTritsFunc } from 'entangled-node';
+import { generateAddress } from "@helixnetwork/core";
+import { bitsToChars, indexToBit } from 'libs/hlx/converter';
 
 let timeout = null;
 
@@ -53,8 +55,12 @@ process.on('message', async (data) => {
 
     if (payload.job === 'genAddress') {
         console.log("helix tangled", payload);
-        // const address = await genAddressTritsFunc(payload.seed, payload.index, payload.security);
-        process.send('5ce28ad49a8ca69ea17411a4de777593f7eae8cb9121b8012a65802afae3ea34');
+        let hexSeed = bitsToChars(payload.seed);
+        let addresses = []
+        for (let k =0;k<options.total;k++){
+            addresses[k] = await generateAddress(hexSeed, options.index + k, options.security);
+        }
+        process.send(addresses);
     }
 });
 

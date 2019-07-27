@@ -399,7 +399,7 @@ class Wallet {
             Wallet.latestData.onboardingComplete = true;
         });
     }
-    
+
     static updateErrorLog(payload) {
         realm.write(() => {
             if (isArray(payload)) {
@@ -407,6 +407,21 @@ class Wallet {
             } else {
                 Wallet.latestData.errorLog.push(payload);
             }
+        });
+    }
+
+    /**
+     * Adds new account and removes temporarily stored account info during setup
+     *
+     * @method addAccount
+     *
+     * @param {object} accountData
+     */
+    static addAccount(accountData) {
+        realm.write(() => {
+            const data = Wallet.latestData;
+            data.accountInfoDuringSetup = { name: '', meta: {}, usedExistingSeed: false };
+            realm.create('Account', accountData);
         });
     }
 }

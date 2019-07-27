@@ -32,12 +32,14 @@ class AccountName extends React.PureComponent {
                 ? this.props.additionalAccountName
                 : '',
     };
-    
+
     setName = async (event) => {
         event.preventDefault();
 
         const { wallet, accountNames, history, generateAlert, t } = this.props;
         const name = this.state.name.replace(/^\s+|\s+$/g, '');
+
+        console.log("Account props", this.props);
 
         console.log("Acount", Electron.getOnboardingGenerated());
         console.log("Acount Names", accountNames);
@@ -78,7 +80,7 @@ class AccountName extends React.PureComponent {
     render() {
         const { t, generateAlert } = this.props;
         const { name, isGenerated } = this.state;
-        console.log("Name->SeedIsGenerated====",isGenerated);
+        console.log("Name->SeedIsGenerated====", isGenerated);
 
         return (
 
@@ -100,7 +102,7 @@ class AccountName extends React.PureComponent {
                                 />
                             </div>
                             <div className={css.onboard_btn}>
-                                <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'generate' : 'import'}`} >{t('global:goBack')} <span>></span></Button>      
+                                <Button className="navleft" variant="backgroundNone" to={`/onboarding/seed-${isGenerated ? 'generate' : 'import'}`} >{t('global:goBack')} <span>></span></Button>
                                 <Button type="submit" className="navright" variant="backgroundNone">{t('global:confirm')} <span>></span></Button>
                             </div>
                         </form>
