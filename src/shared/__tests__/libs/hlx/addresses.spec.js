@@ -2372,7 +2372,7 @@ describe('libs: helix/addresses', () => {
                                 branchTransaction: newZeroValueAttachedTransactionBaseBranch,
                             };
                         } else if (body.command === 'attachToTangle') {
-                            return { txBytes: newZeroValueTransactionBytes };
+                            return { txs: newZeroValueTransactionBytes };
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
