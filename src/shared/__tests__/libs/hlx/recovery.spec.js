@@ -579,12 +579,12 @@ describe('libs: helix/recovery', () => {
                 destroyNock();
             });
 
-            // it('should throw with an error "Invalid bundle"', () => {
-            //     // Seed is fake, so if all checks pass and it prepares transfers the signatures will be invalid
-            //     return sweep(null)(seedStore, seed, validInput, validTransfer).catch((err) => {
-            //         expect(err.message).to.equal('Invalid bundle');
-            //     });
-            // });
+            it('should throw with an error "Invalid bundle"', () => {
+                // Seed is fake, so if all checks pass and it prepares transfers the signatures will be invalid
+                return sweep(null)(seedStore, seed, validInput, validTransfer).catch((err) => {
+                    expect(err.message).to.equal('Invalid bundle');
+                });
+            });
         });
 
         describe('when signed bundle is valid', () => {
