@@ -9,6 +9,7 @@ module.exports = {
     main: "./main.js",
     preloadDev: './native/preload/development.js',
     preloadProd: './native/preload/production.js',
+    helixTangled: './native/helixTangled.js',
   },
   node: {
     __dirname: false

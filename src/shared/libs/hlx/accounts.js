@@ -41,7 +41,6 @@ export const getAccountData = (settings, withQuorum) => (seedStore, accountName,
         balances: [],
         wereSpent: [],
     };
-
     const existingAddressData = get(existingAccountState, 'addressData') || [];
     const existingAddresses = map(existingAddressData, (addressObject) => addressObject.address);
     const existingTransactions = get(existingAccountState, 'transactions') || [];
@@ -49,12 +48,10 @@ export const getAccountData = (settings, withQuorum) => (seedStore, accountName,
         filter(existingTransactions, (transaction) => includes(existingAddresses, transaction.address)),
         (transaction) => transaction.hash,
     );
-        console.log('Hi sachu', settings);
     return throwIfNodeNotHealthy(settings)
         .then(() => getFullAddressHistory(settings, withQuorum)(seedStore, existingAccountState))
         .then((history) => {
             data = { ...data, ...history };
-            console.log('Hi sachu data', data);
             return syncTransactions(settings)(
                 getTransactionsDiff(existingTransactionsHashes, history.hashes),
                 existingTransactions,
@@ -342,15 +339,15 @@ export const syncAccountDuringSnapshotTransition = (attachedTransactions, attach
         ...accountState,
         addressData: existingAddressObject
             ? // If address is already part of existing address data, then simply replace the existing address object with the attached one
-              map(accountState.addressData, (addressObject) => {
-                  if (addressObject.address === attachedAddressObject.address) {
-                      return attachedAddressObject;
-                  }
+            map(accountState.addressData, (addressObject) => {
+                if (addressObject.address === attachedAddressObject.address) {
+                    return attachedAddressObject;
+                }
 
-                  return addressObject;
-              })
+                return addressObject;
+            })
             : // If address is not part of existing address data, then add it to address data
-              orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
+            orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
         transactions: [
             ...accountState.transactions,
             ...map(attachedTransactions, (transaction) => ({

@@ -187,11 +187,9 @@ class Login extends React.PureComponent {
             // }
 
             try {
-                console.log("here AJI");
                 await this.setupAccount();
 
             } catch (err) {
-                console.log(err);
                 generateAlert(
                     'error',
                     t('unrecognisedAccount'),

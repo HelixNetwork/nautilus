@@ -386,13 +386,11 @@ export const withRetriesOnDifferentNodes = (nodes, failureCallbacks) => {
     let attempt = 0;
     let executedCallback = false;
     const retries = size(nodes);
-
     return (promiseFunc) => {
         const execute = (...args) => {
             if (isUndefined(nodes[attempt])) {
                 return Promise.reject(new Error(Errors.NO_NODE_TO_RETRY));
             }
-
             return promiseFunc(nodes[attempt])(...args)
                 .then((result) => ({ node: nodes[attempt], result }))
                 .catch((err) => {
@@ -487,13 +485,11 @@ export const getRandomNodes = (nodes, size = 5, blacklistedNodes = [], PoW = fal
  * @returns {Promise<boolean>}
  */
 export const throwIfNodeNotHealthy = (settings) => {
-    console.log("settings data", settings)
     return isNodeHealthy(settings).then((isSynced) => {
-        console.log("is synced", isSynced)
         if (!isSynced) {
             throw new Error(Errors.NODE_NOT_SYNCED_BY_TIMESTAMP);
         }
-        
+
         return isSynced;
     });
 };

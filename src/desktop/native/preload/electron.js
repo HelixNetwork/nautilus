@@ -45,7 +45,6 @@ const Electron = {
      * @returns {promise} Promise resolves in account object
      */
     readKeychain: (accountName) => {
-        console.log("account", accountName);
         return keytar.getPassword(KEYTAR_SERVICE, accountName);
     },
 
@@ -139,7 +138,6 @@ const Electron = {
      * @returns {undefined}
      */
     exportSeeds: async (seeds, password) => {
-        console.log(seeds);
         try {
             const content = await kdbx.exportVault(seeds, password);
             const now = new Date();
@@ -159,7 +157,6 @@ const Electron = {
             fs.writeFileSync(path, new Buffer(content));
             return false;
         } catch (error) {
-            console.log("CONTENTError===", error);
             return error.message;
         }
     },
@@ -290,12 +287,10 @@ const Electron = {
         }
 
         const addresses = [];
-
         for (let i = 0; i < total; i++) {
             const address = await HelixTangled.genFn(seed, index + i, security);
-            addresses.push(address);
+            addresses[i] = address;
         }
-
         return addresses;
     },
 
@@ -306,7 +301,6 @@ const Electron = {
      * @returns {undefined}
      */
     onEvent: function (event, callback) {
-        console.log("event", event);
         let listeners = this._eventListeners[event];
         if (!listeners) {
             listeners = this._eventListeners[event] = [];

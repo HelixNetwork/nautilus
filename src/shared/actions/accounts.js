@@ -28,6 +28,7 @@ export const ActionTypes = {
     SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE',
     FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
     FULL_ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR',
+    FULL_ACCOUNT_INFO_FETCH_SUCCESS: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_SUCCESS',
 }
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
 import { setSeedIndex } from './wallet';
@@ -188,18 +189,12 @@ export const fullAccountInfoFetchSuccess = (payload) => ({
 
 
 export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
-    console.log("here -", accountName);
     return (dispatch, getState) => {
-        console.log('getstate', getState());
         dispatch(fullAccountInfoFetchRequest());
 
         const selectedNode = getSelectedNodeFromState(getState());
         const existingAccountNames = getAccountNamesFromState(getState());
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
-
-        console.log("here - nodes", selectedNode);
-        console.log("here - name", existingAccountNames);
-        console.log("here - seed", usedExistingSeed);
         withRetriesOnDifferentNodes(
             [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
             () => dispatch(generateAccountSyncRetryAlert()),
@@ -227,7 +222,6 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
                 dispatch(fullAccountInfoFetchSuccess(resultWithAccountMeta));
             })
             .catch((err) => {
-                console.log(err)
                 const dispatchErrors = () => {
                     if (err.message === Errors.NODE_NOT_SYNCED) {
                         dispatch(generateNodeOutOfSyncErrorAlert());

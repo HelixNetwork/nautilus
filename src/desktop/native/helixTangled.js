@@ -1,5 +1,6 @@
-import { fork } from 'child_process';
-import path from 'path';
+const fork = require('child_process').fork;
+const path = require('path');
+
 // import { powTrytesFunc, powBundleFunc, genAddressTritsFunc } from 'entangled-node';
 import { generateAddress } from "@helixnetwork/core";
 import { bitsToChars, indexToBit } from 'libs/hlx/converter';
@@ -12,7 +13,6 @@ let timeout = null;
  * @returns {Promise}
  */
 const exec = (payload) => {
-    console.log("helix tangled payload", payload);
     return new Promise((resolve, reject) => {
         const child = fork(path.resolve(__dirname, 'helixTangled.js'));
 
@@ -24,7 +24,7 @@ const exec = (payload) => {
         });
 
         timeout = setTimeout(() => {
-            reject('Timeout');
+            reject('Timeout here');
             child.kill();
         }, 30000);
 
@@ -37,29 +37,9 @@ const exec = (payload) => {
  */
 process.on('message', async (data) => {
     const payload = JSON.parse(data);
-
-    // if (payload.job === 'pow') {
-    //     const pow = await powTrytesFunc(payload.trytes, payload.mwm);
-    //     process.send(pow);
-    // }
-
-    // if (payload.job === 'batchedPow') {
-    //     const pow = await powBundleFunc(
-    //         payload.trytes,
-    //         payload.trunkTransaction,
-    //         payload.branchTransaction,
-    //         payload.mwm,
-    //     );
-    //     process.send(pow);
-    // }
-
     if (payload.job === 'genAddress') {
-        console.log("helix tangled", payload);
         let hexSeed = bitsToChars(payload.seed);
-        let addresses = []
-        for (let k =0;k<options.total;k++){
-            addresses[k] = await generateAddress(hexSeed, options.index + k, options.security);
-        }
+        const addresses = await generateAddress(hexSeed, payload.index, payload.security);
         process.send(addresses);
     }
 });

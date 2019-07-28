@@ -154,30 +154,8 @@ class Keychain extends SeedStoreCore {
      * @returns {promise}
      */
     generateAddress = async (options) => {
-        // const seed = await this.getSeed(true);
-        // console.log(" seed convert", bitsToChars(seed));
-        // let hexSeed = bitsToChars(seed);
-        // let addresses = []
-        // for (let k =0;k<options.total;k++){
-        //     addresses[k] = await generateAddress(hexSeed, options.index + k, options.security);
-        // }
-        // // addresses = await generateAddress(hexSeed, options.index, options.security);
-        // const addresses = await Electron.genFn(seed, options.index, options.security, options.total);
-        // for (let i = 0; i < seed.length * 8; i++) {
-        //     seed[i % seed.length] = 0;
-        // }
-
-        // Electron.garbageCollect();
-
-        // return addresses;
-        // // !options.total || options.total === 1
-        // //     ? bitsToChars(addresses)
-        // //     : addresses.map((txBits) => bitsToChars(txBits));
-
-
         const seed = await this.getSeed(true);
         const addresses = await Electron.genFn(seed, options.index, options.security, options.total);
-        console.log('Addressess')
         for (let i = 0; i < seed.length * 8; i++) {
             seed[i % seed.length] = 0;
         }
