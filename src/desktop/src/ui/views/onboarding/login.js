@@ -89,7 +89,7 @@ class Login extends React.PureComponent {
      * @param {string} password - Password value
      */
     setPassword = (password) => {
-        console.log('password', password);
+        
         this.setState({
             password: password,
         });
@@ -161,7 +161,6 @@ class Login extends React.PureComponent {
 
         let passwordHash = null;
         let authorised = false;
-        console.log("Password", password);
         try {
             passwordHash = await hash(password);
         } catch (err) {
@@ -205,8 +204,6 @@ class Login extends React.PureComponent {
     render() {
         const { forceUpdate, t, addingAdditionalAccount, ui, completedMigration, themeName } = this.props;
         const { shouldMigrate } = this.state;
-        console.log("login props", this.props);
-        console.log("login states", this.state);
         if (ui.isFetchingAccountInfo) {
             return (
                 <Loading
