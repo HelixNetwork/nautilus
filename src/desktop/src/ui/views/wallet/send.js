@@ -10,6 +10,7 @@ import { withI18n } from 'react-i18next';
 import SeedStore from 'libs/seed';
 import Modal from 'ui/components/modal/Modal';
 import {isAddress} from '@helixnetwork/validators';
+import Button from 'ui/components/button';
 class Send extends React.PureComponent {
    
     static propTypes = {
@@ -63,7 +64,8 @@ class Send extends React.PureComponent {
 
 state={
     address:'',
-    amount:0
+    amount:0,
+    openModal:false
 }
     confirmTransfer = async () => {
         const { fields, password, accountName, accountMeta, sendTransfer } = this.props;
@@ -98,7 +100,7 @@ state={
         
     }
     send(){
-        if(!isAddress('1234')){
+        if(!isAddress(this.state.address) && isNaN(this.state.amount)){
             console.log(
                 'error',
                 'Invalid address',
@@ -106,17 +108,16 @@ state={
                 1000
             ); 
         }
-        else{
             this.setState({
-                address:'1234',
-                amount:1000
+                openModal:true
             });
-        }
+        
         
     }
 
     render() {
         const { history, t } = this.props;
+        const {openModal} = this.state;
         return (
             <div>
                 <section className={css.home}>
@@ -153,11 +154,15 @@ state={
                                             <a href="#" className={css.send_bts} onClick={this.send.bind(this)}><img src={ic1} alt="" /></a>
                                             <h2 className={classNames(css.send_bts_h2)}>Send <span>></span></h2>
                                         </form>
-                                        {this.state.address!='' && this.state.amount !='' && 
+                                        {openModal && 
                                         <Modal
-                                        isOpen={true}
+                                        isOpen={openModal}
+                                        onClose={() => this.setState({ openModal: false })}
                                         >
-                                            hi
+                                           <div>
+
+                                               <Button onClick={()=>this.setState({openModal:false})}>Cancel</Button>
+                                           </div>
                                         </Modal>}
                                     </div>
                                 </div>
