@@ -524,17 +524,17 @@ describe('libs: helix/recovery', () => {
                     destroyNock();
                 });
 
-                // it('should not block input address from spending', () => {
-                //     return sweep(null)(
-                //         seedStore,
-                //         // Pass in correct seed
-                //         'abcd',
-                //         validInput,
-                //         validTransfer,
-                //     ).then(({ txs }) => {
-                //         expect(txs).to.eql(attachedBytes);
-                //     });
-                // });
+                it('should not block input address from spending', () => {
+                    return sweep(null)(
+                        seedStore,
+                        // Pass in correct seed
+                        'abcd',
+                        validInput,
+                        validTransfer,
+                    ).then(({ txs }) => {
+                        expect(txs).to.eql(attachedBytes);
+                    });
+                });
             });
         });
 
