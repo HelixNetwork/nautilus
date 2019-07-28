@@ -11,61 +11,24 @@ import SeedStore from 'libs/seed';
 import Modal from 'ui/components/modal/Modal';
 import {isAddress} from '@helixnetwork/validators';
 import Button from 'ui/components/button';
+import Lottie from 'react-lottie';
+import * as animationData from 'animations/wallet-loading.json';
 class Send extends React.PureComponent {
    
     static propTypes = {
-        /** @ignore */
-        fields: PropTypes.shape({
-            address: PropTypes.string.isRequired,
-            amount: PropTypes.string.isRequired,
-            message: PropTypes.string.isRequired,
-        }),
-        /** @ignore */
-        isSending: PropTypes.bool.isRequired,
-        /** @ignore */
-        password: PropTypes.object.isRequired,
-        /** @ignore */
-        accountMeta: PropTypes.object.isRequired,
-        /** @ignore */
-        accountName: PropTypes.string.isRequired,
-        /** @ignore */
-        availableBalance: PropTypes.number.isRequired,
-        /** @ignore */
-        settings: PropTypes.shape({
-            conversionRate: PropTypes.number.isRequired,
-            currency: PropTypes.string.isRequired,
-            usdPrice: PropTypes.number.isRequired,
-        }),
-        /** @ignore */
-        progress: PropTypes.shape({
-            progress: PropTypes.number,
-            title: PropTypes.string,
-        }),
-        /** @ignore */
-        validateInputs: PropTypes.func.isRequired,
-        /** @ignore */
-        sendTransfer: PropTypes.func.isRequired,
-        /** @ignore */
-        setSendAddressField: PropTypes.func.isRequired,
-        /** @ignore */
-        setSendAmountField: PropTypes.func.isRequired,
-        /** @ignore */
-        setSendMessageField: PropTypes.func.isRequired,
-        /** @ignore */
-        t: PropTypes.func.isRequired,
-        /** @ignore */
-        themeName: PropTypes.string.isRequired,
+        
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
-        generateAlert: PropTypes.func.isRequired,
+        // generateAlert: PropTypes.func.isRequired,
     };
 
 state={
-    address:'',
+    address:'TiEIoZLgAAg0YGWe06QLiF6nmqOyk3ebEGVvAUOv9pty7wCs6mh2zcf5wQw3FThO',
     amount:0,
-    openModal:false
+    openModal:false,
+    showAddress:[]
 }
     confirmTransfer = async () => {
         const { fields, password, accountName, accountMeta, sendTransfer } = this.props;
@@ -87,9 +50,13 @@ state={
     };
 
     addressInput(e){
+
+        let ch = e.target.value;
         this.setState({
-            address:e.target.value
+            address:e.target.value,
+            showAddress:ch.split('',64)
         })
+        
     }
     hlxInput(e){
         this.setState({
@@ -108,16 +75,38 @@ state={
                 1000
             ); 
         }
+
+            const split= this.state.address.match(/.{1,4}/g);
+            console.log(split);
+            let ch='';
+            split.map((char,index)=>{
+                ch+=char+'    ';
+                if(index!=0 && (index+1)%4==0){
+                    ch+=' ';
+                }
+            })
+            ch = ch.split('     ');
+            console.log(ch);
             this.setState({
-                openModal:true
+                openModal:true,
+                showAddress:ch
             });
         
         
     }
 
     render() {
-        const { history, t } = this.props;
-        const {openModal} = this.state;
+        const { history,loop, t } = this.props;
+        const {openModal,showAddress} = this.state;
+        const defaultOptions = {
+            loop: loop,
+            autoplay: true,
+            animationData: animationData.default,
+            rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+            }
+        };
+        
         return (
             <div>
                 <section className={css.home}>
@@ -159,9 +148,31 @@ state={
                                         isOpen={openModal}
                                         onClose={() => this.setState({ openModal: false })}
                                         >
+                                           <div style={{marginTop:'-60px'}}><br/>
+                                           <div className={css.transferLoading}><br/>
+                                           <Lottie
+                                                options={defaultOptions}
+                                                eventListeners={[
+                                                    {
+                                                        eventName: 'complete',
+                                                        callback: () => {
+                                                            if (typeof onEnd === 'function') {
+                                                                onEnd();
+                                                            }
+                                                        },
+                                                    },
+                                                ]}
+                                            />
+                                           </div><br/>
                                            <div>
-
-                                               <Button onClick={()=>this.setState({openModal:false})}>Cancel</Button>
+                                               <h3>Continue transaction with</h3><br/>
+                                               {showAddress.map((ch,index)=>{
+                                                   return(<h2 key={index} className={css.confirmAddress}>{ch}</h2>)
+                                               })}
+                                           </div><br/>
+                                               <Button variant="danger" onClick={()=>this.setState({openModal:false})}>Cancel</Button>
+                                               &nbsp;&nbsp;&nbsp;&nbsp;
+                                               <Button variant="success" onClick={()=>this.setState({openModal:false})}>Confirm</Button>
                                            </div>
                                         </Modal>}
                                     </div>
