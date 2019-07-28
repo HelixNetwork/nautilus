@@ -442,13 +442,14 @@ const attachToTangle = (settings, seedStore) => (
     const shouldOffloadPow = get(seedStore, 'offloadPow') === true;
     if (shouldOffloadPow) {
         const request = (requestTimeout) =>
-                getHelixInstance(settings, requestTimeout).attachToTangle(
+        new Promise((resolve, reject) => {
+                return getHelixInstance(settings, requestTimeout).attachToTangle(
                     trunkTransaction,
                     branchTransaction,
                     minWeightMagnitude,
                     // Make sure txs are sorted properly
                     sortTransactionTxBytesArray(txs)).then(
-                    (err, attachedBytes) => {
+                    (attachedBytes,err) => {                
                         if (err) {
                             reject(err);
                         } else {
@@ -469,6 +470,7 @@ const attachToTangle = (settings, seedStore) => (
                                 .catch(reject);
                         }
                     });
+                });
                 
 
         const defaultRequestTimeout = getApiTimeout('attachToTangle');

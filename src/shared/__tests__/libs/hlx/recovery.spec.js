@@ -606,17 +606,17 @@ describe('libs: helix/recovery', () => {
                 destroyNock();
             });
 
-            // it('should return correct transaction txBytes', () => {
-            //     return sweep(null)(
-            //         seedStore,
-            //         // Pass in correct seed
-            //         'abcd',
-            //         validInput,
-            //         validTransfer,
-            //     ).then(({ txs }) => {
-            //         expect(txs).to.eql(attachedBytes);
-            //     });
-            // });
+            it('should return correct transaction txBytes', () => {
+                return sweep(null)(
+                    seedStore,
+                    // Pass in correct seed
+                    'abcd',
+                    validInput,
+                    validTransfer,
+                ).then(({ txs }) => {
+                    expect(txs).to.eql(attachedBytes);
+                });
+            });
         });
     });
 });
