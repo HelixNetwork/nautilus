@@ -9,6 +9,7 @@ import ic1 from 'ui/images/send_bt.png';
 import { withI18n } from 'react-i18next';
 import SeedStore from 'libs/seed';
 import Modal from 'ui/components/modal/Modal';
+import {isAddress} from '@helixnetwork/validators';
 class Send extends React.PureComponent {
    
     static propTypes = {
@@ -57,10 +58,12 @@ class Send extends React.PureComponent {
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        generateAlert: PropTypes.func.isRequired,
     };
 
 state={
-    address:''
+    address:'',
+    amount:0
 }
     confirmTransfer = async () => {
         const { fields, password, accountName, accountMeta, sendTransfer } = this.props;
@@ -81,10 +84,35 @@ state={
         sendTransfer(seedStore, fields.address, parseInt(fields.amount) || 0, message);
     };
 
-    send(){
+    addressInput(e){
         this.setState({
-            address:'1234'
-        });
+            address:e.target.value
+        })
+    }
+    hlxInput(e){
+        this.setState({
+            amount:parseInt(e.target.value)
+        })
+    }
+    amountInput(e){
+        
+    }
+    send(){
+        if(!isAddress('1234')){
+            console.log(
+                'error',
+                'Invalid address',
+                'You have a entered an invalid address.',
+                1000
+            ); 
+        }
+        else{
+            this.setState({
+                address:'1234',
+                amount:1000
+            });
+        }
+        
     }
 
     render() {
@@ -94,7 +122,7 @@ state={
                 <section className={css.home}>
 
                     <Top
-                        bal={'none'}
+                        bal={'block'}
                         main={'block'}
                         user={'block'}
                         history={history}
@@ -113,19 +141,20 @@ state={
                                             <span className={classNames(css.er2)}>26,74</span>
                                             <input type="text" classNames={css.er1} placeholder="EUR"></input>
                                         </div> */}
-                                            <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="EUR"></input>
+                                            <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="EUR" onChange={this.amountInput.bind(this)}></input>
                                             <h1 className={classNames(css.eq)}>=</h1>
                                             {/* <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div> */}
-                                            <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="mHLX"></input>
+                                            <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="mHLX" onChange={this.hlxInput.bind(this)}></input>
                                             <h5>{t('send:enterReceiverAddress')}</h5>
-                                            <input type="text" name="name" className={css.reci_text} /> <br />
+                                            <input type="text" name="name" className={css.reci_text} onChange={this.addressInput.bind(this)}/> <br />
                                             <a href="#" className={css.send_bts} onClick={this.send.bind(this)}><img src={ic1} alt="" /></a>
                                             <h2 className={classNames(css.send_bts_h2)}>Send <span>></span></h2>
                                         </form>
-                                        {this.state.address!=''&&<Modal
+                                        {this.state.address!='' && this.state.amount !='' && 
+                                        <Modal
                                         isOpen={true}
                                         >
                                             hi
@@ -144,6 +173,5 @@ state={
     }
 }
 const mapDispatchToProps = {
-
 };
 export default connect(null, mapDispatchToProps)(withI18n()(Send));

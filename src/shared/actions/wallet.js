@@ -106,7 +106,8 @@ export const clearWalletData = () => ({
  *
  * @returns {{type: {string}, payload: {number} }}
  */
-export const setSeedIndex = (payload) => ({
+export const setSeedIndex = (payload) =>
+    ({
     type: WalletActionTypes.SET_SEED_INDEX,
     payload,
 });

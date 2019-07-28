@@ -41,9 +41,9 @@ class Wallet extends React.PureComponent {
             return (
                 <div>
                     <Top
-                        bal={'none'}
+                        bal={'block'}
                         main={'none'}
-                        user={'none'}
+                        user={'block'}
                         history={this.props.history}
                     />
                     <section className="spage_1">
