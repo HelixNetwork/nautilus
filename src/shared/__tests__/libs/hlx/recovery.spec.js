@@ -372,9 +372,10 @@ describe('libs: helix/recovery', () => {
                     const resultMap = merge({}, defaultResultMap, {
                         findTransactions: {
                             hashes: [
-                                '0000cc63ebd028013d752ba8bf4a033ecab34bfa6869a93e2e3d4518a2a015be',
-                                '0000e377fad9120fec394d1ac53fc696ec749123ee025df1b91bf0b9fdbda619',
-                                '00009acb6542adcf9ea06d738548a90e8518c900cb9f4d649efc6f0ef6a3cb80',      ],
+                                '0000bbea301dca1b9ccea4ff66f99e8d9503fb81046a11b28f7a5eea1d535ecc',
+                                '00003ea7f4471f18a3ef3805059f6352e34d8679dda2d604fb3da5a4a6b79ccb',
+                                '0000e7cd76c782f68fdb66d0d04d3a25ab4b7937178c7f7685f5895196acc223'
+                            ],
                         },
                         getTransactionStrings: {
                             txs: invalidBytes,
