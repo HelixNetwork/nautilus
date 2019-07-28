@@ -345,16 +345,16 @@ describe('libs: helix/recovery', () => {
                         );
                     });
 
-                    // it('should not block sweeps from input address', () => {
-                    //     return sweep(null)(
-                    //         seedStore,
-                    //         'abcd',
-                    //         validInput,
-                    //         validTransfer,
-                    //     ).then(({ txs }) => {
-                    //         expect(txs).to.eql(attachedBytes);
-                    //     });
-                    // });
+                    it('should not block sweeps from input address', () => {
+                        return sweep(null)(
+                            seedStore,
+                            'abcd',
+                            validInput,
+                            validTransfer,
+                        ).then(({ txs }) => {
+                            expect(txs).to.eql(attachedBytes);
+                        });
+                    });
                 });
             });
 
