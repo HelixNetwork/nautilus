@@ -386,8 +386,10 @@ export const withRetriesOnDifferentNodes = (nodes, failureCallbacks) => {
     let attempt = 0;
     let executedCallback = false;
     const retries = size(nodes);
+    console.log("retries", retries)
     return (promiseFunc) => {
         const execute = (...args) => {
+            console.log("args", args)
             if (isUndefined(nodes[attempt])) {
                 return Promise.reject(new Error(Errors.NO_NODE_TO_RETRY));
             }

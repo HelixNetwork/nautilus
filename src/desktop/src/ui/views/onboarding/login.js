@@ -65,6 +65,7 @@ class Login extends React.PureComponent {
 
     componentDidMount() {
         const { password, addingAdditionalAccount } = this.props;
+        console.log("login props", this.props);
         console.log(password);
         if (password.length && addingAdditionalAccount) {
             this.setupAccount();
@@ -75,6 +76,7 @@ class Login extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
+        console.log("prev props", this.prevProps);
         if (this.state.shouldMigrate && !prevProps.completedMigration && this.props.completedMigration) {
             this.setupAccount();
         }

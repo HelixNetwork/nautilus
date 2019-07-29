@@ -127,26 +127,26 @@ export const accountInfoFetchRequest = () => ({
 });
 
 
-export const getAccountInfo = (seed, accountName, notificationFn,navigator = null, genFn) => {
+export const getAccountInfo = (seed, accountName, notificationFn, navigator = null, genFn, withQuorum = false) => {
     return (dispatch, getState) => {
         dispatch(accountInfoFetchRequest());
 
         const existingAccountState = selectedAccountStateFactory(accountName)(getState());
-        console.log('exst',existingAccountState);
+        console.log('exst', existingAccountState);
         const selectedNode = getSelectedNodeFromState(getState());
-        console.log('selnode',selectedNode);
+        console.log('selnode', selectedNode);
         return withRetriesOnDifferentNodes(
             [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
             () => dispatch(generateAccountSyncRetryAlert()),
-        )(syncAccount)(existingAccountState, seed, genFn, notificationFn)
+        )((...args) => syncAccount(...[...args, withQuorum]))(existingAccountState, seed, genFn, notificationFn)
             .then(({ node, result }) => {
-                console.log('node',node);
-                console.log('res',result);
+                console.log('node', node);
+                console.log('res', result);
                 dispatch(changeNode(node));
                 dispatch(accountInfoFetchSuccess(result));
             })
             .catch((err) => {
-                console.log('err',err)
+                console.log('err', err)
                 if (navigator) {
                     navigator.pop({ animated: false });
                 }
@@ -264,7 +264,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
         dispatch(fullAccountInfoFetchRequest());
 
         const selectedNode = getSelectedNodeFromState(getState());
-        console.log('selectednode',selectedNode);
+        console.log('selectednode', selectedNode);
         const existingAccountNames = getAccountNamesFromState(getState());
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
         withRetriesOnDifferentNodes(

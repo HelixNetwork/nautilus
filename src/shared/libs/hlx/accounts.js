@@ -99,7 +99,8 @@ export const syncAccount = (settings, withQuorum) => (
 ) => {
     const thisStateCopy = cloneDeep(existingAccountState);
     const rescanAddresses = typeof seedStore === 'object';
-
+    console.log("rescan address",rescanAddresses)
+    console.log("with Qurum",withQuorum)
     return throwIfNodeNotHealthy(settings)
         .then(() =>
             rescanAddresses
