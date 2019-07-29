@@ -180,7 +180,7 @@ class Login extends React.PureComponent {
         try {
             authorised = await authorize(passwordHash);
         } catch (err) {
-            generateAlert('error', t('unrecognisedPassword'), t('unrecognisedPasswordExplanation'));
+            generateAlert('error', t('unrecognisedPassword'), t('unrecognisedPasswordExplanation'),1000);
         }
 
         if (authorised) {

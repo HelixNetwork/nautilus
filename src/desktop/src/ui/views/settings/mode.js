@@ -50,7 +50,7 @@ import Button from 'ui/components/button';
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
                                             
-                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('mode:Mode')}</h5>
+                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('settings:mode')}</h5>
                                              <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
                             
                                             <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
