@@ -109,7 +109,7 @@ class ModalPassword extends PureComponent {
         return (
             <React.Fragment>
                 {content.title ? <h1 className={category ? category : null}>{content.title}</h1> : null}
-                {content.message ? <p>{content.message}</p> : null}withi18n
+                {content.message ? <p>{content.message}</p> : null}
                 <form onSubmit={(e) => this.handleSubmit(e)}>
                     <Password
                         value={password}
@@ -117,7 +117,7 @@ class ModalPassword extends PureComponent {
                         label={isSeedVaultField ? t('seedVault:key') : t('password')}
                         onChange={(value) => this.setState({ password: value })}
                     />
-                    <footer>
+                   
                         {!isForced && (
                             <Button onClick={() => onClose()} variant="dark">
                                 {t('cancel')}
@@ -126,7 +126,7 @@ class ModalPassword extends PureComponent {
                         <Button type="submit" variant={category ? category : 'primary'}>
                             {content.confirm ? content.confirm : t('login:login')}
                         </Button>
-                    </footer>
+                    
                 </form>
             </React.Fragment>
         );

@@ -143,7 +143,7 @@ class AdvancedSettings extends React.PureComponent {
                                                             <strong>other account information</strong>
                                                             <React.Fragment> will be lost.</React.Fragment>
                                                         </React.Fragment>
-                                                        {/* <Password style={{marginLeft:'14vw',marginTop:'-2vw'}}type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br /> */}
+                                                       
 
                                                     </Trans>
                                                 ),
