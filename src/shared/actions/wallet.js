@@ -3,11 +3,15 @@
 // import noop from 'lodash/noop';
 // import findLastIndex from 'lodash/findLastIndex';
 // import reduce from 'lodash/reduce';
-import { WalletActionTypes } from './types'
+import { WalletActionTypes } from './types';
+import { accumulateBalance, attachAndFormatAddress, syncAddresses } from '../libs/hlx/addresses';
+
 export const ActionTypes = {
     MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
     SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
     CLEAR_WALLET_DATA: 'HELIX/WALLET/CLEAR_WALLET_DATA',
+    GENERATE_NEW_ADDRESS_ERROR: 'HELIX/WALLET/GENERATE_NEW_ADDRESS_ERROR',
+
 }
 
 
@@ -47,47 +51,65 @@ export const addressValidationSuccess = () => ({
 });
 
 /**
+ * Dispatch when new addresses are about to be generated
+ *
+ * @method generateNewAddressRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const generateNewAddressRequest = () => ({
+    type: WalletActionTypes.GENERATE_NEW_ADDRESS_REQUEST,
+});
+
+/**
  * Generate new receive address for wallet
  *
  * @method generateNewAddress
  *
- * @param {object} seedStore - SeedStore class object
+ * @param {string} seed
  * @param {string} accountName
  * @param {object} existingAccountData
+ * @param {function} genFn
  *
  * @returns {function(*): Promise<any>}
  */
-export const generateNewAddress = (seedStore, accountName, existingAccountData) => {
-    return (dispatch, getState) => {
+export const generateNewAddress = (seed, accountName, existingAccountData, genFn) => {
+    return (dispatch) => {
         dispatch(generateNewAddressRequest());
-
-        return new NodesManager(nodesConfigurationFactory()(getState()))
-            .withRetries(() => dispatch(generateAddressesSyncRetryAlert()))(syncAddresses)(
-                seedStore,
-                existingAccountData.addressData,
-                existingAccountData.transactions,
-            )
-            .then((result) => {
-                // Update address data in storage (realm)
-                Account.update(accountName, { addressData: result });
-
-                dispatch(updateAddressData(accountName, result));
+        return syncAddresses()(seed, existingAccountData.addresses, genFn)
+            .then((latestAddressData) => {
+                console.log("ADDRESS===",latestAddressData);                
+                dispatch(updateAddresses(accountName, latestAddressData));
                 dispatch(generateNewAddressSuccess());
             })
-            .catch((err) => {
-                dispatch(
-                    generateAlert(
-                        'error',
-                        i18next.t('global:somethingWentWrong'),
-                        i18next.t('global:somethingWentWrongTryAgain'),
-                        10000,
-                        err,
-                    ),
-                );
-                dispatch(generateNewAddressError());
-            });
+            .catch(() => {
+                console.log("ERRORRR...");
+                
+                dispatch(generateNewAddressError())});
     };
 };
+
+/**
+ * Dispatch in case an error occurs during new addresses generation
+ *
+ * @method generateNewAddressError
+ *
+ * @returns {{type: {string} }}
+ */
+export const generateNewAddressError = () => ({
+    type: ActionTypes.GENERATE_NEW_ADDRESS_ERROR,
+});
+
+/**
+ * Dispatch when new addresses are successfully generated
+ *
+ * @method generateNewAddressSuccess
+ *
+ * @returns {{type: {string} }}
+ */
+export const generateNewAddressSuccess = () => ({
+    type: ActionTypes.GENERATE_NEW_ADDRESS_SUCCESS,
+});
 
 export const setPassword = (payload) => ({
     type: ActionTypes.SET_PASSWORD,

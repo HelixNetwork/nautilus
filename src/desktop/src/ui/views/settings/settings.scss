@@ -121,3 +121,16 @@ p {
 .active {
   color: #e8b349;
 }
+
+.scroll {
+  height: 100vh;
+  margin: 0 auto;
+
+  article,
+  ul {
+      margin: 0 auto;
+      max-width: 560px;
+      padding: 120px 20px;
+  }
+}
+
