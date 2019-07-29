@@ -67,7 +67,7 @@ class Login extends React.PureComponent {
         const { password, addingAdditionalAccount } = this.props;
         console.log(password);
         if (password.length && addingAdditionalAccount) {
-            // this.setupAccount();
+            this.setupAccount();
         } else {
             this.props.clearWalletData();
             this.props.setPassword({});
@@ -112,6 +112,7 @@ class Login extends React.PureComponent {
             currency,
             currentAccountName,
             currentAccountMeta,
+            generateAlert
         } = this.props;
 
         console.log("props", this.props)
@@ -137,11 +138,18 @@ class Login extends React.PureComponent {
         // this.props.getChartData();
         // this.props.getMarketData();
         // this.props.getCurrencyData(currency);
-
+        let account;
         if (addingAdditionalAccount) {
-            this.props.getFullAccountInfo(seedStore, accountName);
+            account = this.props.getFullAccountInfo(seedStore, accountName);
         } else {
-            this.props.getAccountInfo(seedStore, accountName, Electron.notify);
+            account = this.props.getAccountInfo(seedStore, accountName, Electron.notify);
+        }
+        console.log('acccount',account);
+        if(account){
+            this.props.history.push('/wallet/');
+        }
+        else{
+            generateAlert('error', 'Account fetch failed', 'Unable to fetch account info at the moment. Please try again',1000);
         }
     };
 

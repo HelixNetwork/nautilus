@@ -29,6 +29,8 @@ export const ActionTypes = {
     FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
     FULL_ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR',
     FULL_ACCOUNT_INFO_FETCH_SUCCESS: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_SUCCESS',
+    ACCOUNT_INFO_FETCH_SUCCESS: 'HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_SUCCESS',
+    ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_ERROR',
 }
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
 import { setSeedIndex } from './wallet';
@@ -37,6 +39,30 @@ import { withRetriesOnDifferentNodes, getRandomNodes } from '../libs/hlx/utils';
 import { DEFAULT_RETRIES } from '../config';
 import { AccountsActionTypes } from './types';
 
+
+/**
+ * Dispatch when account information is successfully synced on login
+ *
+ * @method accountInfoFetchSuccess
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const accountInfoFetchSuccess = (payload) => ({
+    type: ActionTypes.ACCOUNT_INFO_FETCH_SUCCESS,
+    payload,
+});
+
+/**
+ * Dispatch when an error occurs during account sync on login
+ *
+ * @method accountInfoFetchError
+ *
+ * @returns {{type: {string} }}
+ */
+export const accountInfoFetchError = () => ({
+    type: ActionTypes.ACCOUNT_INFO_FETCH_ERROR,
+});
 
 /**
  * Dispatch to store account information during setup
@@ -100,34 +126,66 @@ export const accountInfoFetchRequest = () => ({
     type: AccountsActionTypes.ACCOUNT_INFO_FETCH_REQUEST,
 });
 
-export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = false) => {
 
+export const getAccountInfo = (seed, accountName, notificationFn,navigator = null, genFn) => {
     return (dispatch, getState) => {
         dispatch(accountInfoFetchRequest());
 
         const existingAccountState = selectedAccountStateFactory(accountName)(getState());
-        const settings = getState().settings;
-
-        return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
-            .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(syncAccount)(
-                existingAccountState,
-                seedStore,
-                notificationFn,
-                settings,
-            )
-            .then((result) => {
-                // Update account in storage (realm)
-                Account.update(accountName, result);
-
+        console.log('exst',existingAccountState);
+        const selectedNode = getSelectedNodeFromState(getState());
+        console.log('selnode',selectedNode);
+        return withRetriesOnDifferentNodes(
+            [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
+            () => dispatch(generateAccountSyncRetryAlert()),
+        )(syncAccount)(existingAccountState, seed, genFn, notificationFn)
+            .then(({ node, result }) => {
+                console.log('node',node);
+                console.log('res',result);
+                dispatch(changeNode(node));
                 dispatch(accountInfoFetchSuccess(result));
             })
             .catch((err) => {
-                console.log('err', err);
-                setTimeout(() => dispatch(generateAlert(generateAccountInfoErrorAlert, err)), 500);
+                console.log('err',err)
+                if (navigator) {
+                    navigator.pop({ animated: false });
+                }
+
                 dispatch(accountInfoFetchError());
+                dispatch(generateAccountInfoErrorAlert(err));
             });
     };
 };
+
+// export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = false) => {
+
+//     return (dispatch, getState) => {
+//         dispatch(accountInfoFetchRequest());
+
+//         const existingAccountState = selectedAccountStateFactory(accountName)(getState());
+//         console.log(existingAccountState);
+//         const settings = getState().settings;
+//         console.log('set',settings)
+//         return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
+//             .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(syncAccount)(
+//                 existingAccountState,
+//                 seedStore,
+//                 notificationFn,
+//                 settings,
+//             )
+//             .then((result) => {
+//                 // Update account in storage (realm)
+//                 Account.update(accountName, result);
+//                 console.log('re',result);
+//                 dispatch(accountInfoFetchSuccess(result));
+//             })
+//             .catch((err) => {
+//                 console.log('err', err);
+//                 setTimeout(() => dispatch(generateAlert(generateAccountInfoErrorAlert, err)), 500);
+//                 dispatch(accountInfoFetchError());
+//             });
+//     };
+// };
 
 export const fullAccountInfoFetchError = () => ({
     type: ActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
@@ -206,6 +264,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
         dispatch(fullAccountInfoFetchRequest());
 
         const selectedNode = getSelectedNodeFromState(getState());
+        console.log('selectednode',selectedNode);
         const existingAccountNames = getAccountNamesFromState(getState());
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
         withRetriesOnDifferentNodes(

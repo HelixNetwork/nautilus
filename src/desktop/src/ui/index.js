@@ -66,7 +66,7 @@ class App extends React.Component {
         const accountIndex = this.props.accountNames.indexOf(accountName);
         if (accountIndex > -1 && !this.props.isBusy) {
             this.props.setSeedIndex(accountIndex);
-            this.props.history.push('/wallet');
+            // this.props.history.push('/wallet');
         }
     }
 
@@ -97,7 +97,7 @@ class App extends React.Component {
             if (!this.props.onboardingComplete) {
                 this.props.setOnboardingComplete(true);
             }
-            this.props.history.push('/wallet/');
+            // this.props.history.push('/wallet/');
         }
     }
 
