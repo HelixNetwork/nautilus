@@ -89,7 +89,19 @@ export const setOnboardingComplete = (payload) => {
     };
 };
 
+/**
+ * Dispatch when account information is about to be fetched on login
+ *
+ * @method accountInfoFetchRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const accountInfoFetchRequest = () => ({
+    type: AccountsActionTypes.ACCOUNT_INFO_FETCH_REQUEST,
+});
+
 export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = false) => {
+
     return (dispatch, getState) => {
         dispatch(accountInfoFetchRequest());
 
@@ -110,6 +122,7 @@ export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = 
                 dispatch(accountInfoFetchSuccess(result));
             })
             .catch((err) => {
+                console.log('err', err);
                 setTimeout(() => dispatch(generateAlert(generateAccountInfoErrorAlert, err)), 500);
                 dispatch(accountInfoFetchError());
             });
