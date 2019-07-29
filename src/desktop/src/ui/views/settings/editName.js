@@ -62,7 +62,7 @@ import Button from 'ui/components/button';
                                                <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('accountManagement:editAccountName')}</h5>
                                              <input type="text" className={classNames(css.ssetting_textline)} style={{width:'18vw'}}></input><br /><br />
                             
-                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}> </Button>
+                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
                                                {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                <hr className={classNames(css.ser_bts)}/>
