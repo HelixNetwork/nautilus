@@ -65,6 +65,10 @@ const initialState = {
      * Determines the status of AsyncStorage to realm migration
      */
     completedMigration: false,
+    /**
+     * Determines the time for locking user out of dashboard screens to lock/login screen
+     */
+    lockScreenTimeout: 3,
 };
 const settingsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -83,7 +87,7 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 language: action.payload,
             };
-            case ActionTypes.UPDATE_QUORUM_CONFIG:
+        case ActionTypes.UPDATE_QUORUM_CONFIG:
             return {
                 ...state,
                 quorum: { ...state.quorum, ...action.payload },

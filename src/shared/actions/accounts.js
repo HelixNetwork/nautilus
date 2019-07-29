@@ -132,9 +132,7 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
         dispatch(accountInfoFetchRequest());
 
         const existingAccountState = selectedAccountStateFactory(accountName)(getState());
-        console.log('exst', existingAccountState);
         const selectedNode = getSelectedNodeFromState(getState());
-        console.log('selnode', selectedNode);
         return withRetriesOnDifferentNodes(
             [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
             () => dispatch(generateAccountSyncRetryAlert()),

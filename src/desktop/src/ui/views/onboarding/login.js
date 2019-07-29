@@ -142,17 +142,11 @@ class Login extends React.PureComponent {
         // this.props.getCurrencyData(currency);
         let account;
         if (addingAdditionalAccount) {
-            account = this.props.getFullAccountInfo(seedStore, accountName);
+            this.props.getFullAccountInfo(seedStore, accountName);
         } else {
-            account = this.props.getAccountInfo(seedStore, accountName, Electron.notify);
+            this.props.getAccountInfo(seedStore, accountName, Electron.notify);
         }
-        console.log('acccount',account);
-        if(account){
-            this.props.history.push('/wallet/');
-        }
-        else{
-            generateAlert('error', 'Account fetch failed', 'Unable to fetch account info at the moment. Please try again',1000);
-        }
+        
     };
 
     /**

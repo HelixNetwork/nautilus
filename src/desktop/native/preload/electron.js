@@ -345,6 +345,27 @@ const Electron = {
     reload: () => {
         remote.getCurrentWindow().webContents.goToIndex(0);
     },
+
+    /**
+     * Proxy native menu attribute settings
+     * @param {string} Attribute - Target attribute
+     * @param {any} Value - Target attribute value
+     * @returns {undefined}
+     */
+    updateMenu: (attribute, value) => {
+        ipc.send('menu.update', {
+            attribute: attribute,
+            value: value,
+        });
+    },
+
+    /**
+     * Trigger auto update
+     * @returns {undefined}
+     */
+    autoUpdate: () => {
+        ipc.send('updates.check');
+    },
 };
 
 export default Electron;
