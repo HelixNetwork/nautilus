@@ -29,7 +29,7 @@ const FatalError = ({ error, history }) => {
                 <form>
                     <h1>Cannot connect to Secret Service API</h1>
                     <p>
-                        Please check that you are not running Trinity as <strong>root</strong> user
+                        Please check that you are not running Helix as <strong>root</strong> user
                         <br /> and the <strong>gnome-keyring-daemon</strong> process is running.
                     </p>
                 </form>
@@ -47,7 +47,7 @@ const FatalError = ({ error, history }) => {
                 <form>
                     <h1>Cannot start wallet</h1>
                     <p>
-                        The database Trinity uses (Realm) is currently incompatible with Windows OS usernames that
+                        The database Helix uses (Realm) is currently incompatible with Windows OS usernames that
                         contain non-Latin characters. We are working on a fix.
                     </p>
                 </form>
@@ -66,7 +66,7 @@ const FatalError = ({ error, history }) => {
                 <form className={css.tutorial}>
                     <h1>Missing security dependencies</h1>
                     <p>
-                        Your Linux distribution is missing libsecret library that is required for Trinity to securely
+                        Your Linux distribution is missing libsecret library that is required for Helix to securely
                         store and retrieve sensitive information.
                     </p>
                     <p>Depending on your distribution, you will need to run the following command:</p>
@@ -101,15 +101,15 @@ const FatalError = ({ error, history }) => {
         ) {
             return (
                 <form className={css.tutorial}>
-                    <h1>Newer Trinity version data found</h1>
+                    <h1>Newer Helix version data found</h1>
                     <p>
-                        Trinity found data installed by a newer version of Trinity which is incompatible with version{' '}
+                        Helix found data installed by a newer version of Helix which is incompatible with version{' '}
                         <strong>{settings.version}</strong>.{' '}
-                        <a href="https://trinity.iota.org/#download">Download the latest version</a> or update Trinity
+                        <a href="#">Download the latest version</a> or update Helix
                         now.
                     </p>
                     <Button type="button" variant="primary" onClick={() => Electron.autoUpdate()}>
-                        Update Trinity now
+                        Update Helix now
                     </Button>
                 </form>
             );
@@ -118,7 +118,7 @@ const FatalError = ({ error, history }) => {
         if (error === 'Found old data') {
             return (
                 <form className={css.tutorial}>
-                    <h1>Windows 7 incompatible Trinity data found</h1>
+                    <h1>Windows 7 incompatible Helix data found</h1>
                     <p>
                         Incompatible wallet data was found used by the wallet version <strong>0.4.6</strong> or older.
                     </p>

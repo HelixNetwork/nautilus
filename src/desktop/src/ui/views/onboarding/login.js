@@ -65,9 +65,9 @@ class Login extends React.PureComponent {
 
     componentDidMount() {
         const { password, addingAdditionalAccount } = this.props;
-
+        console.log(password);
         if (password.length && addingAdditionalAccount) {
-            this.setupAccount();
+            // this.setupAccount();
         } else {
             this.props.clearWalletData();
             this.props.setPassword({});

@@ -80,13 +80,13 @@ state={
             console.log(split);
             let ch='';
             split.map((char,index)=>{
-                ch+=char+'    ';
+                ch+=char+' ';
                 if(index!=0 && (index+1)%4==0){
                     ch+=' ';
                 }
             })
-            ch = ch.split('     ');
-            console.log(ch);
+            ch = ch.split('  ');
+            
             this.setState({
                 openModal:true,
                 showAddress:ch
@@ -173,7 +173,7 @@ state={
                                                <Button variant="danger" onClick={()=>this.setState({openModal:false})}>Cancel</Button>
                                                &nbsp;&nbsp;&nbsp;&nbsp;
                                                <Button variant="success" onClick={()=>this.setState({openModal:false})}>Confirm</Button>
-                                           </div>
+                                     </div>
                                         </Modal>}
                                     </div>
                                 </div>
