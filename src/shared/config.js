@@ -71,7 +71,7 @@ export const IRI_API_VERSION = '1';
 
 // TODO Recheck Quorum size
 
-export const QUORUM_THRESHOLD = 20; //66
+export const QUORUM_THRESHOLD = 66; //66
 export const QUORUM_SIZE = 3; //3
 export const QUORUM_SYNC_CHECK_INTERVAL = 120;
 export const MINIMUM_QUORUM_SIZE = 2; // 2

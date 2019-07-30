@@ -13,7 +13,7 @@ import PasswordInput from 'ui/components/input/password';
 import { indexToChar, charToIndex } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 import Modal from 'ui/components/modal/Modal';
-
+import SeedStore from 'libs/seed';
 
 class SeedImport extends React.PureComponent {
 
@@ -21,6 +21,7 @@ class SeedImport extends React.PureComponent {
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
         wallet: PropTypes.object.isRequired,
         additionalAccountName: PropTypes.string.isRequired,
+        additionalAccountMeta: PropTypes.object.isRequired,
         generateAlert: PropTypes.func.isRequired,
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
@@ -99,6 +100,7 @@ class SeedImport extends React.PureComponent {
                 seedSequence += letter
             });
             Electron.setOnboardingSeed(seed[0].seed, false);
+            console.log('name',seed[0].title);
             Electron.setOnboardingName(seed[0].title)
             this.setState({
                 seed: seed[0].seed,
@@ -130,7 +132,7 @@ class SeedImport extends React.PureComponent {
         if (e) {
             e.preventDefault();
         }
-        const { setAccountInfoDuringSetup, wallet, additionalAccountName, history, t, generateAlert } = this.props;
+        const { setAccountInfoDuringSetup, wallet, additionalAccountName, additionalAccountMeta, history, t, generateAlert } = this.props;
         const { seed, isGenerated , seedPhrase} = this.state;
 
         console.log('verify props', this.props);
@@ -151,7 +153,7 @@ class SeedImport extends React.PureComponent {
         }
 
         if (wallet.password.length) {
-            const seedStore = await new SeedStore.keychain(wallet.password);
+            const seedStore = await new SeedStore[additionalAccountMeta.type](wallet.password);
             const isUniqueSeed = await seedStore.isUniqueSeed(seed);
             if (!isUniqueSeed) {
                 generateAlert('error', t('addAdditionalSeed:seedInUse'), t('addAdditionalSeed:seedInUseExplanation'));
@@ -177,7 +179,7 @@ class SeedImport extends React.PureComponent {
                     completed: true,
                 });
 
-                const seedStore = await new SeedStore.keychain(wallet.password);
+                const seedStore = await new SeedStore[additionalAccountMeta.type](wallet.password);
                 await seedStore.addAccount(additionalAccountName, Electron.getOnboardingSeed());
 
                 Electron.setOnboardingSeed(null);
@@ -242,6 +244,7 @@ class SeedImport extends React.PureComponent {
 const mapStateToProps = (state) => ({
     wallet: state.wallet,
     additionalAccountName: state.accounts.accountInfoDuringSetup.name,
+    additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta,
 });
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,

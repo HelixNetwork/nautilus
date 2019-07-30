@@ -15,18 +15,24 @@ import Button from '../../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faChartLine, faHistory, faExchange} from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import {getAccountNamesFromState} from 'selectors/accounts';
 /**
  * Wallet functionallity router wrapper component
  */
 class Wallet extends React.PureComponent {
     static propTypes = {
+        accountInfo:PropTypes.object.isRequired,
+        accounts:PropTypes.array.isRequired,
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
     }
-
+componentDidMount(){
+    console.log('indash',this.props.accountInfo);
+    console.log('accounts',this.props.getAccounts);
+}
 
     render() {
         let styles = {
@@ -35,7 +41,7 @@ class Wallet extends React.PureComponent {
 
         };
 
-        const { location, history, t } = this.props;
+        const { location, history, accounts,t } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
         if (currentKey == '/') {
             return (
@@ -80,10 +86,11 @@ class Wallet extends React.PureComponent {
                     </section>
                     <footer className={classNames(css.footer)}>
                         <div className={classNames(css.box)}>
-                            <div className={(classNames(css.marc_bx))}>Marcel - Private<br /><span>Account1</span></div>
-                                    <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Business<br /><span>Account2</span></div>
-                                    <div className={(classNames(css.marc_bx,css.cc_clr))}>Marcel - Family<br /><span>Account3</span></div>
-                            <div className={(classNames(css.marc_bx, css.cc_clrs))}>+Add Account</div>
+                            {accounts.map((account,index)=>{
+                                return(<div className={(classNames(css.marc_bx))} key={index}>&nbsp;&nbsp;{account}<br /><span>Account{index+1}</span></div>)
+                            })}
+                            
+                            <div className={(classNames(css.marc_bx, css.cc_clrs))}><a onClick={()=>history.push('/onboarding/seed-intro')}>+Add Account</a></div>
                         </div>
                     </footer>
                 </div>
@@ -97,6 +104,9 @@ class Wallet extends React.PureComponent {
     }
 }
 const mapStateToProps = (state) => ({
+        accountInfo:state.accounts.accountInfo,
+        accounts:getAccountNamesFromState(state)
+
 });
 
 const mapDispatchToProps = {

@@ -269,6 +269,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
         const selectedNode = getSelectedNodeFromState(getState());
         console.log('selectednode', selectedNode);
         const existingAccountNames = getAccountNamesFromState(getState());
+        console.log('exst1',existingAccountNames)
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
         withRetriesOnDifferentNodes(
             [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],

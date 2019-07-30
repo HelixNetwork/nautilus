@@ -8,14 +8,15 @@ import Top from '../../components/topbar';
 import Icon from 'ui/components/icon';
 import Sidebar from '../../components/sidebar';
 import Button from 'ui/components/button';
+import {generateAlert} from 'actions/alerts';
 /**
  * Change account name component
  */
 
 class AccountName extends React.PureComponent {
     static propTypes = {
-       
-        
+
+
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
@@ -25,15 +26,15 @@ class AccountName extends React.PureComponent {
 
 
     state = {
-      
+
     };
 
-   
 
-    
+
+
     render() {
         const { account, t } = this.props;
-        
+
 
         return (
             <div>
@@ -51,12 +52,12 @@ class AccountName extends React.PureComponent {
                                         <div className={classNames(css.set_bxac)}>
                                         <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
                               <Icon icon="cross" size={14} />
-                            </span></Button> 
-                                            
-                                        
+                            </span></Button>
+
+
                                                <h5 style={{marginLeft:'14vw',marginTop:'2vw'}}>{t('accountManagement:editAccountName')}</h5>
                                              <input type="text" className={classNames(css.ssetting_textline)} style={{width:'18vw'}}></input><br /><br />
-                            
+
                                             <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                             <div  className={classNames(css.spe_bx)}>
                                                {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
@@ -77,13 +78,11 @@ class AccountName extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  
+
     password: state.wallet.password,
 });
 
 const mapDispatchToProps = {
-   
-    
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AccountName));

@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
-    "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/recovery.spec.js\"",
+    "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/inputs.spec.js\"",
     "apitest": "NODE_ENV=test  --require @babel/register \"__tests__/dev-sample/api.js\""
  
   },

@@ -141,7 +141,7 @@ class Login extends React.PureComponent {
         // this.props.getChartData();
         // this.props.getMarketData();
         // this.props.getCurrencyData(currency);
-        let account;
+        
         if (addingAdditionalAccount) {
             this.props.getFullAccountInfo(seedStore, accountName);
         } else {
