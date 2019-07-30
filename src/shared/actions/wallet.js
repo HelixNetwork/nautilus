@@ -1,5 +1,6 @@
 import { WalletActionTypes } from './types';
 import { accumulateBalance, attachAndFormatAddress, syncAddresses } from '../libs/hlx/addresses';
+import { updateAddresses, updateAccountAfterTransition } from '../actions/accounts';
 
 /**
  * Dispatch to map storage (persisted) data to redux state
@@ -60,16 +61,18 @@ export const generateNewAddressRequest = () => ({
  * @returns {function(*): Promise<any>}
  */
 export const generateNewAddress = (seed, accountName, existingAccountData, genFn) => {
+    console.log("ExistingAccount===",existingAccountData);
+    
     return (dispatch) => {
         dispatch(generateNewAddressRequest());
-        return syncAddresses()(seed, existingAccountData.addresses, genFn)
+        return syncAddresses()(seed, existingAccountData.addressData, genFn)
             .then((latestAddressData) => {
                 console.log("ADDRESS===", latestAddressData);
                 dispatch(updateAddresses(accountName, latestAddressData));
                 dispatch(generateNewAddressSuccess());
             })
-            .catch(() => {
-                console.log("ERRORRR...");
+            .catch((err) => {
+                console.log("ERRORRR...",err);
 
                 dispatch(generateNewAddressError())
             });

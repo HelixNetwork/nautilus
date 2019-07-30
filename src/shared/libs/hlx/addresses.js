@@ -684,7 +684,7 @@ export const getAddressDataUptoRemainder = (provider, withQuorum) => (
  *
  * @returns {function(string, array, array): Promise<object>}
  **/
-export const syncAddresses = (settings, withQuorum) => (seedStore, addressData, transactions) => {
+export const syncAddresses = (settings, withQuorum=false) => (seedStore, addressData, transactions) => {
     // Find the address object with highest index from existing address data
     const latestAddressObject = getLatestAddressObject(addressData);
 

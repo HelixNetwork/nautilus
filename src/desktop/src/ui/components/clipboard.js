@@ -36,7 +36,7 @@ export class ClipboardComponent extends React.PureComponent {
         const { text, generateAlert, title, success, timeout } = this.props;
 
         Electron.clipboard(text);
-        generateAlert('success', title, success);
+        generateAlert('success', title, success, 1000);
 
         if (timeout > 0) {
             if (this.timeout) {

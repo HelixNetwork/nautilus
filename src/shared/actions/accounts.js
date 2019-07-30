@@ -72,6 +72,20 @@ export const setAccountInfoDuringSetup = (payload) => {
 };
 
 /**
+ * Dispatch to update address data for provided account
+ *
+ * @method updateAddresses
+ * @param {string} accountName
+ * @param {object} addresses
+ * @returns {{type: string, accountName: string, addresses: object }}
+ */
+export const updateAddresses = (accountName, addresses) => ({
+    type: AccountsActionTypes.UPDATE_ADDRESSES,
+    accountName,
+    addresses,
+});
+
+/**
  * Dispatch when information for an additional account is about to be fetched
  *
  * @method fullAccountInfoFetchRequest

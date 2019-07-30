@@ -1,4 +1,6 @@
 import { ipcRenderer as ipc, clipboard, remote } from 'electron';
+import { indexToChar } from 'libs/hlx/converter';
+
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
 import Realm from '../realm';
@@ -37,6 +39,28 @@ const Electron = {
 
     getUserDataPath: () => {
         return remote.app.getPath('userData');
+    },
+
+    /**
+     * Set clipboard value, in case of Seed array, trigger Garbage Collector
+     * @param {string|array} Content - Target content
+     * @returns {undefined}
+     */
+    clipboard: (content) => {
+        if (content) {
+            const clip =
+                typeof content === 'string'
+                    ? content
+                    : Array.from(content)
+                          .map((byte) => indexToChar(byte))
+                          .join('');
+            clipboard.writeText(clip);
+            if (typeof content !== 'string') {
+                global.gc();
+            }
+        } else {
+            clipboard.clear();
+        }
     },
 
     /**

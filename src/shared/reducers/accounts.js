@@ -211,6 +211,17 @@ const account = (
                     },
                 },
             };
+            case AccountsActionTypes.UPDATE_ADDRESSES:
+                return {
+                    ...state,
+                    accountInfo: {
+                        ...state.accountInfo,
+                        [action.accountName]: {
+                            ...state.accountInfo[action.accountName],
+                            addresses: action.addresses,
+                        },
+                    },
+                };
         case AccountsActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION:
         case AccountsActionTypes.SYNC_ACCOUNT_BEFORE_MANUAL_PROMOTION:
         case AccountsActionTypes.UPDATE_ACCOUNT_AFTER_REATTACHMENT:
