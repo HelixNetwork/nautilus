@@ -55,6 +55,7 @@ class Login extends React.PureComponent {
         t: PropTypes.func.isRequired,
         /** @ignore */
         themeName: PropTypes.string.isRequired,
+        complete: PropTypes.bool,
     };
 
 
@@ -91,7 +92,7 @@ class Login extends React.PureComponent {
      * @param {string} password - Password value
      */
     setPassword = (password) => {
-        
+
         this.setState({
             password: password,
         });
@@ -146,7 +147,7 @@ class Login extends React.PureComponent {
         } else {
             this.props.getAccountInfo(seedStore, accountName, Electron.notify);
         }
-        
+
     };
 
     /**
@@ -174,7 +175,7 @@ class Login extends React.PureComponent {
         try {
             authorised = await authorize(passwordHash);
         } catch (err) {
-            generateAlert('error', t('unrecognisedPassword'), t('unrecognisedPasswordExplanation'),1000);
+            generateAlert('error', t('unrecognisedPassword'), t('unrecognisedPasswordExplanation'), 1000);
         }
 
         if (authorised) {
@@ -204,7 +205,7 @@ class Login extends React.PureComponent {
     };
 
     render() {
-        const { forceUpdate, t, addingAdditionalAccount, ui, completedMigration, themeName } = this.props;
+        const { forceUpdate, t, addingAdditionalAccount, ui, completedMigration, themeName, complete } = this.props;
         const { shouldMigrate } = this.state;
         if (ui.isFetchingAccountInfo) {
             return (
@@ -233,9 +234,17 @@ class Login extends React.PureComponent {
                                 <Button type="submit" >{t('login:login')}</Button>
                             </form>
                         </div>
-                        {/* <div className={css.onboard_nav}> */}
-                        <Button style={{ top: '440px', left: '550px' }} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')} >{t('global:goBack')} <span>></span></Button>                            </div>
-                    {/* </div> */}
+                        {complete ? (
+                            <React.Fragment>
+                            </React.Fragment>
+                        ) : (
+                                <React.Fragment>
+                                    <Button style={{ top: '440px', left: '550px' }} className="navleft" variant="backgroundNone" onClick={() => this.stepForward('seed-verify')} >{t('global:goBack')} <span>></span></Button>
+                                </React.Fragment>
+                            )
+                        }
+
+                    </div>
                 </div>
             </section>
         );
@@ -254,6 +263,7 @@ const mapStateToProps = (state) => ({
     forceUpdate: state.wallet.forceUpdate,
     completedMigration: state.settings.completedMigration,
     themeName: state.settings.themeName,
+    complete: state.accounts.onboardingComplete,
 });
 
 const mapDispatchToProps = {
