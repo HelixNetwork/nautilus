@@ -121,24 +121,6 @@ p {
 .active {
   color: #e8b349;
 }
-<<<<<<< HEAD
-switch {
-  overflow: hidden;
-
-  &.closed {
-      max-height: 0px;
-      background: var(--bar-bg);
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  &.open {
-      max-height: 600px;
-      background: var(--bar-hover);
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-=======
-
 .scroll {
   height: 100vh;
   margin: 0 auto;
@@ -151,4 +133,3 @@ switch {
   }
 }
 
->>>>>>> ad54d532ff7ab017ccd268cab801debc72d3bf31

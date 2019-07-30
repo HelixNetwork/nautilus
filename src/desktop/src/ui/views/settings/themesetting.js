@@ -67,7 +67,7 @@ import {updateTheme} from 'actions/settings';
                                                                 updateTheme(themeName);
                                                               }
                                          }}>
-                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('themeCustomisation:theme')}</h5>
+                                            <h5 style={{marginLeft:'14vw',marginTop:'0vw'}}>{t('themeCustomisation:theme')}</h5>
                                             <Select
                                                  label={t('settings:theme')}
                                                  value={themeName || this.props.themeName}

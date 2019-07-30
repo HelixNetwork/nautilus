@@ -55,7 +55,7 @@ import Select from 'ui/components/input/select';
                                         <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
                               <Icon icon="cross" size={14} />
                             </span></Button> 
-                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('advancedSettings:selectNode')}</h5>
+                                            <h5 style={{marginLeft:'14vw',marginTop:'0vw'}}>{t('advancedSettings:selectNode')}</h5>
                                            
                                             <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('advancedSettings:addCustomNode')}</h5>
                                              <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
