@@ -2,13 +2,7 @@ import i18next from '../libs/i18next';
 import { Wallet } from '../database';
 import { getSelectedNodeFromState } from '../selectors/global';
 import { changeHelixNode } from '../libs/hlx'
-export const ActionTypes = {
-    SET_LOCALE: 'HELIX/SETTINGS/LOCALE',
-    UPDATE_THEME: 'HELIX/SETTINGS/UPDATE_THEME',
-    SET_LANGUAGE: 'HELIX/SETTINGS/SET_LANGUAGE',
-    ACCEPT_TERMS: 'HELIX/SETTINGS/ACCEPT_TERMS',
-    ACCEPT_PRIVACY: 'HELIX/SETTINGS/ACCEPT_PRIVACY',
-}
+import { SettingsActionTypes } from '../actions/types';
 
 /**
  * Change wallet's active language
@@ -23,7 +17,7 @@ export function setLocale(locale) {
         i18next.changeLanguage(locale);
         Wallet.updateLocale(locale);
         return dispatch({
-            type: ActionTypes.SET_LOCALE,
+            type: SettingsActionTypes.SET_LOCALE,
             payload: locale,
         });
     };
@@ -41,7 +35,7 @@ export function setLocale(locale) {
 export function updateTheme(payload) {
     return (dispatch) => {
         dispatch({
-            type: ActionTypes.UPDATE_THEME,
+            type: SettingsActionTypes.UPDATE_THEME,
             payload,
         });
     };
@@ -57,7 +51,7 @@ export function updateTheme(payload) {
 export const acceptTerms = () => {
     Wallet.acceptTerms();
     return {
-        type: ActionTypes.ACCEPT_TERMS,
+        type: SettingsActionTypes.ACCEPT_TERMS,
     };
 };
 
@@ -71,7 +65,7 @@ export const acceptTerms = () => {
 export const acceptPrivacy = () => {
     Wallet.acceptPrivacyPolicy();
     return {
-        type: ActionTypes.ACCEPT_PRIVACY,
+        type: SettingsActionTypes.ACCEPT_PRIVACY,
     };
 };
 

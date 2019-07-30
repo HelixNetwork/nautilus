@@ -1,19 +1,5 @@
-// import extend from 'lodash/extend';
-// import map from 'lodash/map';
-// import noop from 'lodash/noop';
-// import findLastIndex from 'lodash/findLastIndex';
-// import reduce from 'lodash/reduce';
 import { WalletActionTypes } from './types';
 import { accumulateBalance, attachAndFormatAddress, syncAddresses } from '../libs/hlx/addresses';
-
-export const ActionTypes = {
-    MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
-    SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
-    CLEAR_WALLET_DATA: 'HELIX/WALLET/CLEAR_WALLET_DATA',
-    GENERATE_NEW_ADDRESS_ERROR: 'HELIX/WALLET/GENERATE_NEW_ADDRESS_ERROR',
-
-}
-
 
 /**
  * Dispatch to map storage (persisted) data to redux state
@@ -24,7 +10,7 @@ export const ActionTypes = {
  * @returns {{type: {string}, payload: {object} }}
  */
 export const mapStorageToState = (payload) => ({
-    type: ActionTypes.MAP_STORAGE_TO_STATE,
+    type: WalletActionTypes.MAP_STORAGE_TO_STATE,
     payload,
 });
 
@@ -78,14 +64,15 @@ export const generateNewAddress = (seed, accountName, existingAccountData, genFn
         dispatch(generateNewAddressRequest());
         return syncAddresses()(seed, existingAccountData.addresses, genFn)
             .then((latestAddressData) => {
-                console.log("ADDRESS===",latestAddressData);                
+                console.log("ADDRESS===", latestAddressData);
                 dispatch(updateAddresses(accountName, latestAddressData));
                 dispatch(generateNewAddressSuccess());
             })
             .catch(() => {
                 console.log("ERRORRR...");
-                
-                dispatch(generateNewAddressError())});
+
+                dispatch(generateNewAddressError())
+            });
     };
 };
 
@@ -97,7 +84,7 @@ export const generateNewAddress = (seed, accountName, existingAccountData, genFn
  * @returns {{type: {string} }}
  */
 export const generateNewAddressError = () => ({
-    type: ActionTypes.GENERATE_NEW_ADDRESS_ERROR,
+    type: WalletActionTypes.GENERATE_NEW_ADDRESS_ERROR,
 });
 
 /**
@@ -108,16 +95,16 @@ export const generateNewAddressError = () => ({
  * @returns {{type: {string} }}
  */
 export const generateNewAddressSuccess = () => ({
-    type: ActionTypes.GENERATE_NEW_ADDRESS_SUCCESS,
+    type: WalletActionTypes.GENERATE_NEW_ADDRESS_SUCCESS,
 });
 
 export const setPassword = (payload) => ({
-    type: ActionTypes.SET_PASSWORD,
+    type: WalletActionTypes.SET_PASSWORD,
     payload,
 });
 
 export const clearWalletData = () => ({
-    type: ActionTypes.CLEAR_WALLET_DATA,
+    type: WalletActionTypes.CLEAR_WALLET_DATA,
 });
 
 /**
@@ -130,6 +117,6 @@ export const clearWalletData = () => ({
  */
 export const setSeedIndex = (payload) =>
     ({
-    type: WalletActionTypes.SET_SEED_INDEX,
-    payload,
-});
+        type: WalletActionTypes.SET_SEED_INDEX,
+        payload,
+    });

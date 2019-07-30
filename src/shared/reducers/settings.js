@@ -1,4 +1,4 @@
-import { ActionTypes } from '../actions/settings';
+import { SettingsActionTypes } from '../actions/types';
 import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from '../config';
 const initialState = {
     /**
@@ -72,32 +72,32 @@ const initialState = {
 };
 const settingsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ActionTypes.SET_LOCALE:
+        case SettingsActionTypes.SET_LOCALE:
             return {
                 ...state,
                 locale: action.payload,
             };
-        case ActionTypes.UPDATE_THEME:
+        case SettingsActionTypes.UPDATE_THEME:
             return {
                 ...state,
                 themeName: action.payload,
             };
-        case ActionTypes.SET_LANGUAGE:
+        case SettingsActionTypes.SET_LANGUAGE:
             return {
                 ...state,
                 language: action.payload,
             };
-        case ActionTypes.UPDATE_QUORUM_CONFIG:
+        case SettingsActionTypes.UPDATE_QUORUM_CONFIG:
             return {
                 ...state,
                 quorum: { ...state.quorum, ...action.payload },
             };
-        case ActionTypes.UPDATE_NODE_AUTO_SWITCH_SETTING:
+        case SettingsActionTypes.UPDATE_NODE_AUTO_SWITCH_SETTING:
             return {
                 ...state,
                 nodeAutoSwitch: action.payload,
             };
-        case ActionTypes.UPDATE_AUTO_NODE_LIST_SETTING:
+        case SettingsActionTypes.UPDATE_AUTO_NODE_LIST_SETTING:
             return {
                 ...state,
                 autoNodeList: action.payload,

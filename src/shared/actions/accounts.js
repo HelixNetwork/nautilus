@@ -23,15 +23,6 @@ import {
 } from '../actions/alerts';
 
 import { nodesConfigurationFactory, getNodesFromState, getSelectedNodeFromState } from '../selectors/global';
-export const ActionTypes = {
-    SET_ACCOUNT_INFO_DURING_SETUP: 'HELIX/ACCOUNTS/SET_ACCOUNT_INFO_DURING_SETUP',
-    SET_ONBOARDING_COMPLETE: 'HELIX/ACCOUNTS/SET_ONBOARDING_COMPLETE',
-    FULL_ACCOUNT_INFO_FETCH_REQUEST: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
-    FULL_ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR',
-    FULL_ACCOUNT_INFO_FETCH_SUCCESS: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_SUCCESS',
-    ACCOUNT_INFO_FETCH_SUCCESS: 'HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_SUCCESS',
-    ACCOUNT_INFO_FETCH_ERROR: 'HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_ERROR',
-}
 import { syncAccount, getAccountData } from '../libs/hlx/accounts';
 import { setSeedIndex } from './wallet';
 import { changeNode } from './settings';
@@ -49,7 +40,7 @@ import { AccountsActionTypes } from './types';
  * @returns {{type: {string}, payload: {object} }}
  */
 export const accountInfoFetchSuccess = (payload) => ({
-    type: ActionTypes.ACCOUNT_INFO_FETCH_SUCCESS,
+    type: AccountsActionTypes.ACCOUNT_INFO_FETCH_SUCCESS,
     payload,
 });
 
@@ -61,7 +52,7 @@ export const accountInfoFetchSuccess = (payload) => ({
  * @returns {{type: {string} }}
  */
 export const accountInfoFetchError = () => ({
-    type: ActionTypes.ACCOUNT_INFO_FETCH_ERROR,
+    type: AccountsActionTypes.ACCOUNT_INFO_FETCH_ERROR,
 });
 
 /**
@@ -75,7 +66,7 @@ export const accountInfoFetchError = () => ({
 export const setAccountInfoDuringSetup = (payload) => {
     Wallet.updateAccountInfoDuringSetup(payload);
     return {
-        type: ActionTypes.SET_ACCOUNT_INFO_DURING_SETUP,
+        type: AccountsActionTypes.SET_ACCOUNT_INFO_DURING_SETUP,
         payload,
     };
 };
@@ -88,7 +79,7 @@ export const setAccountInfoDuringSetup = (payload) => {
  * @returns {{type: {string} }}
  */
 export const fullAccountInfoFetchRequest = () => ({
-    type: ActionTypes.FULL_ACCOUNT_INFO_FETCH_REQUEST,
+    type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_REQUEST,
 });
 
 
@@ -110,7 +101,7 @@ export const setOnboardingComplete = (payload) => {
     Wallet.setOnboardingComplete();
 
     return {
-        type: ActionTypes.SET_ONBOARDING_COMPLETE,
+        type: AccountsActionTypes.SET_ONBOARDING_COMPLETE,
         payload,
     };
 };
@@ -186,7 +177,7 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
 // };
 
 export const fullAccountInfoFetchError = () => ({
-    type: ActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
+    type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
 });
 
 /**
