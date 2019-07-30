@@ -1,9 +1,6 @@
 import React from 'react';
-import css from './settings.scss';
-import classNames from  'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
-import { Switch, Route ,withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import Top from '../../components/topbar';
 import Icon from 'ui/components/icon';
@@ -13,37 +10,90 @@ import Button from 'ui/components/button';
  * Change account name component
  */
 
- class AccountName extends React.PureComponent{
-     static propTypes= {
-
+class AccountName extends React.PureComponent {
+    static propTypes = {
+        /** @ignore */
+        accountNames: PropTypes.array.isRequired,
+        /** @ignore */
+        account: PropTypes.object.isRequired,
+        /** @ignore */
+        password: PropTypes.object.isRequired,
+        /** @ignore */
+        changeAccountName: PropTypes.func.isRequired,
+        /** @ignore */
+        generateAlert: PropTypes.func.isRequired,
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+    }
 
-        
-     }
-     state = {
-        step: 'language',
-        scrollEnd: false,
+
+    state = {
+        newAccountName: this.props.account.accountName,
     };
 
-    
-     render(){
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.account.accountName !== this.state.newAccountName) {
+            this.setState({
+                newAccountName: nextProps.account.accountName,
+            });
+        }
+    }
 
-        const { location, history, t } = this.props;
+    /**
+     * Check for unique account name and change account name in wallet state and in Seedstore object
+     * @returns {undefined}
+     **/
+    async setAccountName() {
+        const { account, accountNames, password, changeAccountName, generateAlert, t } = this.props;
+        console.log("SETACCOUNT===",accountname);
         
-         return(
+
+        const newAccountName = this.state.newAccountName.replace(/^\s+|\s+$/g, '');
+
+        if (newAccountName.length < 1) {
+            generateAlert('error', t('addAdditionalSeed:noNickname'), t('addAdditionalSeed:noNicknameExplanation'));
+            return;
+        }
+
+        if (newAccountName.length > MAX_ACC_LENGTH) {
+            generateAlert(
+                'error',
+                t('addAdditionalSeed:accountNameTooLong'),
+                t('addAdditionalSeed:accountNameTooLongExplanation', { maxLength: MAX_ACC_LENGTH }),
+            );
+            return;
+        }
+
+        if (accountNames.map((name) => name.toLowerCase()).indexOf(newAccountName.toLowerCase()) > -1) {
+            generateAlert('error', t('addAdditionalSeed:nameInUse'), t('addAdditionalSeed:nameInUseExplanation'));
+            return;
+        }
+
+        generateAlert('success', t('settings:nicknameChanged'), t('settings:nicknameChangedExplanation'));
+
+        changeAccountName({
+            oldAccountName: account.accountName,
+            newAccountName,
+        });
+
+        const seedStore = await new SeedStore[account.meta.type](password, account.accountName, account.meta);
+        await seedStore.renameAccount(newAccountName);
+    }
+    render() {
+        const { account, t } = this.props;
+        const { newAccountName } = this.state;
+
+        return (
             <div>
-                    
-                    <section className="spage_1">
-                        <div className="container">
+
+                <section className="spage_1">
+                    <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_bx)}>
-                                
-                              
-                            </div>
+
 
                             </div>
                             <div className="col-lg-8">
@@ -76,13 +126,23 @@ import Button from 'ui/components/button';
                                     </div>
                                 {/* </div> */}
                             </div>
+                            {/* </div> */}
                         </div>
-                    </section>
+                    </div>
+                </section>
             </div>
-         );
-     }
- }
- const mapDispatchToProps = {
+        );
+    }
+}
 
+const mapStateToProps = (state) => ({
+    accountNames: getAccountNamesFromState(state),
+    password: state.wallet.password,
+});
+
+const mapDispatchToProps = {
+    changeAccountName,
+    generateAlert,
 };
-export default connect(null, mapDispatchToProps)(withI18n()(AccountName));
+
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AccountName));

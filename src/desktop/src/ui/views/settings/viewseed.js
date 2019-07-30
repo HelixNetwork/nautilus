@@ -1,9 +1,9 @@
 import React from 'react';
 import css from './settings.scss';
-import classNames from  'classnames';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
-import { Switch, Route ,withRouter} from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Icon from 'ui/components/icon';
 import Top from '../../components/topbar';
@@ -13,37 +13,35 @@ import Button from 'ui/components/button';
  * View seed component
  */
 
- class Viewseed extends React.PureComponent{
-     static propTypes= {
+class Viewseed extends React.PureComponent {
+    static propTypes = {
 
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
-        seed: PropTypes.array.isRequired,
-        
-     }
-     state = {
+
+
+    }
+    state = {
         step: 'language',
         scrollEnd: false,
     };
 
-    
-     render(){
+
+    render() {
 
         const { location, history, t } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
-         return(
+        return (
             <div>
-                    
-                    <section className="spage_1">
-                        <div className="container">
+
+                <section className="spage_1">
+                    <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_bx)}>
-                                
-                              
-                            </div>
+
 
                             </div>
                             <div className="col-lg-8">
@@ -64,15 +62,17 @@ import Button from 'ui/components/button';
                                             </div>
                                         </div>
                                     </div>
-                                {/* </div> */}
+                    
+                                </div>
                             </div>
                         </div>
-                    </section>
+                  
+                </section>
             </div>
-         );
-     }
- }
- const mapDispatchToProps = {
+        );
+    }
+}
+const mapDispatchToProps = {
 
 };
 export default connect(null, mapDispatchToProps)(withI18n()(Viewseed));

@@ -1,10 +1,4 @@
-export const ActionTypes = {
-    SET_NEXT_STEP_AS_ACTIVE: 'HELIX/PROGRESS/SET_NEXT_STEP_AS_ACTIVE',
-    SET_ACTIVE_STEP_INDEX: 'HELIX/PROGRESS/SET_ACTIVE_STEP_INDEX',
-    RESET: 'HELIX/PROGRESS/RESET',
-    START_TRACKING_PROGRESS: 'HELIX/PROGRESS/START_TRACKING_PROGRESS',
-};
-
+import { ProgressActionTypes } from '../actions/types';
 /**
  * Dispatch to set active progress bar step as completed
  *
@@ -13,7 +7,7 @@ export const ActionTypes = {
  * @returns {{type: {string} }}
  */
 export const setNextStepAsActive = () => ({
-    type: ActionTypes.SET_NEXT_STEP_AS_ACTIVE,
+    type: ProgressActionTypes.SET_NEXT_STEP_AS_ACTIVE,
 });
 
 /**
@@ -25,7 +19,7 @@ export const setNextStepAsActive = () => ({
  * @returns {{type: {string}, payload: {number} }}
  */
 export const setActiveStepIndex = (payload) => ({
-    type: ActionTypes.SET_ACTIVE_STEP_INDEX,
+    type: ProgressActionTypes.SET_ACTIVE_STEP_INDEX,
     payload,
 });
 
@@ -37,7 +31,7 @@ export const setActiveStepIndex = (payload) => ({
  * @returns {{type: {string} }}
  */
 export const reset = () => ({
-    type: ActionTypes.RESET,
+    type: ProgressActionTypes.RESET,
 });
 
 /**
@@ -49,6 +43,6 @@ export const reset = () => ({
  * @returns {{type: {string}, payload: {object} }}
  */
 export const startTrackingProgress = (payload) => ({
-    type: ActionTypes.START_TRACKING_PROGRESS,
+    type: ProgressActionTypes.START_TRACKING_PROGRESS,
     payload,
 });

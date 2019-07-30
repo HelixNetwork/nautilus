@@ -108,7 +108,7 @@ class Receive extends React.PureComponent {
         } = this.props;
 
         if (isSyncing || isTransitioning) {
-            return generateAlert('error', t('global:pleaseWait'), t('global:pleaseWaitExplanation'));
+            return generateAlert('error', t('global:pleaseWait'), t('global:pleaseWaitExplanation'), 1000);
         }
 
         this.setState({
@@ -126,7 +126,7 @@ class Receive extends React.PureComponent {
 
         try {
             if (accountMeta.type === 'ledger') {
-                generateAlert('info', t('ledger:checkAddress'), t('ledger:checkAddressExplanation'), 20000);
+                generateAlert('info', t('ledger:checkAddress'), t('ledger:checkAddressExplanation'), 2000);
             }
             this.props.addressValidationRequest();
             const { index } = getLatestAddressObject(account.addressData);
@@ -181,6 +181,8 @@ class Receive extends React.PureComponent {
     render() {
         const { t, receiveAddress, isGeneratingReceiveAddress, hadErrorGeneratingNewAddress } = this.props;
         const { message, scramble, hasSyncedAddress } = this.state;
+        console.log("ReceiveAddress==",receiveAddress );
+        
         return (
             <div>
                 <section className={css.home}>
@@ -250,7 +252,7 @@ class Receive extends React.PureComponent {
                                             </div>
                                             {/* Refresh and Receive Buttons... */}
                                             <div>
-                                                <button type="submit" style={{ marginLeft: "40%" }}>Generate Address</button>                                            </div>
+                                                <button type="submit" style={{ marginLeft: "40%" }} onClick={this.onGeneratePress}>Generate Address</button>                                            </div>
 
                                         </div>
 

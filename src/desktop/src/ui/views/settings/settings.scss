@@ -121,6 +121,7 @@ p {
 .active {
   color: #e8b349;
 }
+<<<<<<< HEAD
 switch {
   overflow: hidden;
 
@@ -136,3 +137,18 @@ switch {
       transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
+=======
+
+.scroll {
+  height: 100vh;
+  margin: 0 auto;
+
+  article,
+  ul {
+      margin: 0 auto;
+      max-width: 560px;
+      padding: 120px 20px;
+  }
+}
+
+>>>>>>> ad54d532ff7ab017ccd268cab801debc72d3bf31
