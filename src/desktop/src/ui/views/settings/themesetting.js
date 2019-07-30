@@ -7,6 +7,7 @@ import { Switch, Route ,withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import Top from '../../components/topbar';
 import themes from 'themes/themes';
+import Icon from 'ui/components/icon';
 import Button from 'ui/components/button';
 import Select from 'ui/components/input/select';
 import {updateTheme} from 'actions/settings';
@@ -57,6 +58,9 @@ import {updateTheme} from 'actions/settings';
                                 {/* <div className={classNames(css.set_bx)}> */}
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div className={classNames(css.set_bxac)}>
+                                        <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
+                              <Icon icon="cross" size={14} />
+                            </span></Button> 
                                         <form  onSubmit={(e) => {
                                                e.preventDefault();
                                                if (themeName) {document.body.style.background = themes[themeName].body.bg;

@@ -17,6 +17,7 @@ import Viewaddress from 'ui/views/settings/viewaddress';
 import Changepassword from 'ui/views/settings/changepassword';
 import SettingsMode from 'ui/views/settings/mode';
 import AdvancedSettings from 'ui/views/settings/advancedSettings';
+
 import Button from 'ui/components/button';
 
 /**
@@ -36,7 +37,7 @@ class Settings extends React.PureComponent {
 
         const { history, t, location } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
-
+       
         return (
             <div>
                 <Top
@@ -48,12 +49,15 @@ class Settings extends React.PureComponent {
                 <div className="container">
                     <div className="col-lg-4">
                         <div className={classNames(css.menu_box)}>
+                       
                             <Sidebar
                                 disp={'none'}
                                 history={history}
                                 active={currentKey}
+
                             />
-                            <Switch>
+                            
+                            <Switch >
                                 <Route path="/settings/editname" component={AccountName} />
                                 <Route path="/settings/language" component={SettingsLanguage} />
                                 <Route path="/settings/node" component={SettingsNode} />

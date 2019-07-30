@@ -10,6 +10,7 @@ import { clearVault } from 'libs/crypto';
 import { generateAlert } from 'actions/alerts';
 import Button from 'ui/components/button';
 import Confirm from 'ui/components/modal/Confirm';
+import Icon from 'ui/components/icon';
 import ModalPassword from 'ui/components/modal/Password';
 import { reinitialise as reinitialiseStorage } from 'database';
 import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
@@ -110,7 +111,9 @@ class AdvancedSettings extends React.PureComponent {
                             {/* <div className={classNames(css.set_bx)}> */}
                             <div className={classNames(css.foo_bxx12)}>
                                 <div cllassname={classNames(css.set_bxac)}>
-
+                                <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
+                              <Icon icon="cross" size={14} />
+                            </span></Button> 
                                     <h3 style={{ marginLeft: '21vw', marginTop: '5vw' }}>{t('settings:reset')}</h3>
                                     <Trans i18nKey="walletResetConfirmation:warning">
                                         <p>
