@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
 import { connect } from 'react-redux';
-import { getAccountNamesFromState } from 'selectors/accounts';
 
 import { MAX_ACC_LENGTH } from 'libs/crypto';
 import SeedStore from 'libs/seed';
 
-import { changeAccountName } from 'actions/accounts';
 
 import css from './settings.scss';
 import classNames from 'classnames';
