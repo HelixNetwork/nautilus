@@ -63,7 +63,7 @@ class AccountName extends React.PureComponent {
     async setAccountName() {
         const { account, accountNames, password, changeAccountName, generateAlert, t } = this.props;
         console.log("SETACCOUNT===",accountname);
-        
+
 
         const newAccountName = this.state.newAccountName.replace(/^\s+|\s+$/g, '');
 
@@ -130,7 +130,7 @@ class AccountName extends React.PureComponent {
 
                                         <Button style={{ marginLeft: '14vw', marginTop: '4vw' }} disabled={newAccountName && newAccountName.replace(/^\s+|\s+$/g, '') === account.accountName} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
                                     </form>
-                                   
+
                                 </div>
                             </div>
                             {/* </div> */}

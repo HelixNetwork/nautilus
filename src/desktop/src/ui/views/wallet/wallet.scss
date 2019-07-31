@@ -855,3 +855,24 @@ margin-right: 16px;
   .confirmAddress{
     color:'#e8b349';
   }
+
+  .hlx_iconHolder{
+    overflow: auto;
+    width: 80%;
+    margin-left: 11%;
+  }
+
+  .hlx_iconLeft{
+    width: 40%;
+    height: 70%;
+    margin: 5px;
+    padding: 1em;
+    float: left;
+  }
+
+  .hlx_iconRight{
+    width: 40%;
+    margin: 5px;
+    padding: 1em;
+    float: right;
+  }
