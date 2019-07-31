@@ -9,16 +9,18 @@ import Button from 'ui/components/button';
 import Top from '../../components/topbar';
 import Logos from 'ui/components/logos';
 import Lottie from 'react-lottie';
+import { setPassword } from 'actions/wallet';
 import * as animationData from 'animations/done.json';
 
 class Done extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
-          /** On animation end event callback */
-          onEnd: PropTypes.func,
-          /** Should animation loop */
-          loop: PropTypes.bool,
+        /** On animation end event callback */
+        onEnd: PropTypes.func,
+        /** Should animation loop */
+        loop: PropTypes.bool,
+        setPassword: PropTypes.func.isRequired,
     };
 
     /**
@@ -87,7 +89,7 @@ class Done extends React.PureComponent {
                             </div>
                             <div className={css.onboard_nav}>
                                 <Button className="navleft" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/seed-verify')} >{t('global:goBack')} <span>></span></Button>
-                                <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/onboarding/login')} >{t('login:login')} <span>></span></Button>
+                                <Button className="navright" variant="backgroundNone" onClick={() =>{ setPassword({}); this.props.history.push('/onboarding/login')} }>{t('login:login')} <span>></span></Button>
                                 {/* <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >{t('login:login')} <span>></span></Button> */}
                             </div>
                         </div>
@@ -99,7 +101,7 @@ class Done extends React.PureComponent {
 }
 
 const mapDispatchToProps = {
-
+    setPassword
 };
 
 export default connect(null, mapDispatchToProps)(withI18n()(Done));

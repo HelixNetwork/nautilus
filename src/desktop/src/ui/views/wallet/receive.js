@@ -24,7 +24,7 @@ import { generateNewAddress, addressValidationRequest, addressValidationSuccess 
 import SeedStore from 'libs/seed';
 import { randomTxBytes } from 'libs/crypto';
 import Errors from 'libs/errors';
-import { byteToChar } from 'libs/hlx/converter';
+import { indexToChar } from 'libs/hlx/converter';
 import { getLatestAddressObject } from 'libs/hlx/addresses';
 import { ADDRESS_LENGTH } from 'libs/hlx/utils';
 
@@ -108,7 +108,7 @@ class Receive extends React.PureComponent {
         } = this.props;
 
         if (isSyncing || isTransitioning) {
-            return generateAlert('error', t('global:pleaseWait'), t('global:pleaseWaitExplanation'));
+            return generateAlert('error', t('global:pleaseWait'), t('global:pleaseWaitExplanation'), 1000);
         }
 
         this.setState({
@@ -117,7 +117,7 @@ class Receive extends React.PureComponent {
 
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
 
-        this.props.generateNewAddress(seedStore, accountName, account);
+        this.props.generateNewAddress(seedStore, accountName, account,Electron.genFn);
     };
 
     validateAdress = async () => {
@@ -126,7 +126,7 @@ class Receive extends React.PureComponent {
 
         try {
             if (accountMeta.type === 'ledger') {
-                generateAlert('info', t('ledger:checkAddress'), t('ledger:checkAddressExplanation'), 20000);
+                generateAlert('info', t('ledger:checkAddress'), t('ledger:checkAddressExplanation'), 2000);
             }
             this.props.addressValidationRequest();
             const { index } = getLatestAddressObject(account.addressData);
@@ -181,6 +181,8 @@ class Receive extends React.PureComponent {
     render() {
         const { t, receiveAddress, isGeneratingReceiveAddress, hadErrorGeneratingNewAddress } = this.props;
         const { message, scramble, hasSyncedAddress } = this.state;
+        console.log("ReceiveAddress==",receiveAddress );
+        
         return (
             <div>
                 <section className={css.home}>
@@ -212,26 +214,26 @@ class Receive extends React.PureComponent {
                                                                 title={t('receive:addressCopied')}
                                                                 success={t('receive:addressCopiedExplanation')}
                                                             >
-                                                                <p id="receive-address">
+                                                                <div className={css.address_div}>
                                                                     {receiveAddress
-                                                                        .substring(0, 81)
+                                                                        .substring(0, 63)
                                                                         .split('')
                                                                         .map((char, index) => {
                                                                             const scrambleChar =
-                                                                                scramble[index] > 0 ? byteToChar(scramble[index]) : null;
+                                                                                scramble[index] > 0 ? indexToChar(scramble[index]) : null;
                                                                             return (
                                                                                 <React.Fragment key={`char-${index}`}>
                                                                                     {scrambleChar || char}
                                                                                 </React.Fragment>
                                                                             );
                                                                         })}
-                                                                    <span>
+                                                                    <span style={{color:"#eaac32"}}>
                                                                         {receiveAddress
-                                                                            .substring(81, 90)
+                                                                            .substring(63, 72)
                                                                             .split('')
                                                                             .map((char, index) => {
                                                                                 const scrambleChar =
-                                                                                    scramble[index + 81] > 0 ? byteToChar(scramble[index + 81]) : null;
+                                                                                    scramble[index + 64] > 0 ? indexToChar(scramble[index + 64]) : null;
                                                                                 return (
                                                                                     <React.Fragment key={`char-${index}`}>
                                                                                         {scrambleChar || char}
@@ -239,7 +241,7 @@ class Receive extends React.PureComponent {
                                                                                 );
                                                                             })}
                                                                     </span>
-                                                                </p>
+                                                                </div>
                                                             </Clipboard>
                                                         )}
                                                     </div>
@@ -250,7 +252,7 @@ class Receive extends React.PureComponent {
                                             </div>
                                             {/* Refresh and Receive Buttons... */}
                                             <div>
-                                                <button type="submit" style={{ marginLeft: "40%" }}>Generate Address</button>                                            </div>
+                                                <button type="submit" style={{ marginLeft: "40%" }} onClick={this.onGeneratePress}>Generate Address</button>                                            </div>
 
                                         </div>
 

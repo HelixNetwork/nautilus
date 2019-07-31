@@ -28,10 +28,11 @@ class AccountName extends React.PureComponent {
         isGenerated: Electron.getOnboardingGenerated(),
 
         name:
-            this.props.additionalAccountName && this.props.additionalAccountName.length
-                ? this.props.additionalAccountName
+            Electron.getOnboardingName() && Electron.getOnboardingName().length ? 
+                Electron.getOnboardingName()
                 : '',
     };
+
 
     setName = async (event) => {
         event.preventDefault();
@@ -39,10 +40,6 @@ class AccountName extends React.PureComponent {
         const { wallet, accountNames, history, generateAlert, t } = this.props;
         const name = this.state.name.replace(/^\s+|\s+$/g, '');
 
-        console.log("Account props", this.props);
-
-        console.log("Acount", Electron.getOnboardingGenerated());
-        console.log("Acount Names", accountNames);
         Electron.setOnboardingName(name);
         if (!name.length) {
             generateAlert('error', t('addAdditionalSeed:noNickname'), t('addAdditionalSeed:noNicknameExplanation'), 1000);
@@ -54,6 +51,7 @@ class AccountName extends React.PureComponent {
                 'error',
                 t('addAdditionalSeed:accountNameTooLong'),
                 t('addAdditionalSeed:accountNameTooLongExplanation', { maxLength: MAX_ACC_LENGTH }),
+                1000
             );
             return;
         }
@@ -80,7 +78,7 @@ class AccountName extends React.PureComponent {
     render() {
         const { t, generateAlert } = this.props;
         const { name, isGenerated } = this.state;
-        console.log("Name->SeedIsGenerated====", isGenerated);
+        console.log("Name->SeedIsGenerated====", isGenerated,name);
 
         return (
 
@@ -116,8 +114,8 @@ class AccountName extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
     accountNames: getAccountNamesFromState(state),
-    additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta,
-    additionalAccountName: state.accounts.accountInfoDuringSetup.name,
+    additionalAccountMeta: (state.accounts.accountInfoDuringSetup.meta?state.accounts.accountInfoDuringSetup.meta:{type:'Keychain'}),
+    additionalAccountName: (state.accounts.accountInfoDuringSetup.name?state.accounts.accountInfoDuringSetup.name:Electron.getOnboardingName()),
     wallet: state.wallet,
 });
 

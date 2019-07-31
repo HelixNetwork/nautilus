@@ -7,6 +7,7 @@ import { Switch, Route ,withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import Top from '../../components/topbar';
 import Button from 'ui/components/button';
+import Icon from 'ui/components/icon';
 import Select from 'ui/components/input/select';
 // import withCurrencyData from 'containers/settings/Currency';
 
@@ -47,6 +48,9 @@ import Select from 'ui/components/input/select';
                                
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
+                                        <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
+                              <Icon icon="cross" size={14} />
+                            </span></Button> 
                                             <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('settings:currency')}</h5>
                                             <form>
                                                 <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />

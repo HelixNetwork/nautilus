@@ -87,7 +87,9 @@ class AccountPassword extends React.PureComponent {
         });
 
         const seedStore = await new SeedStore[additionalAccountMeta.type](passwordHash);
-        await seedStore.addAccount(additionalAccountName, Electron.getOnboardingSeed());
+        console.log('ssseedstore',seedStore);
+        console.log('aan',Electron.getOnboardingSeed());
+        console.log('addaccount',await seedStore.addAccount(additionalAccountName, Electron.getOnboardingSeed()));
         Electron.setOnboardingSeed(null);
 
         history.push('/onboarding/done');

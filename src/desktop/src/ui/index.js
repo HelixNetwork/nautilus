@@ -17,6 +17,8 @@ import Onboarding from 'ui/views/onboarding/index';
 import Wallet from 'ui/views/wallet/index';
 import Loading from 'ui/components/loading';
 import Settings from 'ui/views/settings/index';
+import UpdateWallet from 'ui/global/updateWallet';
+import LockWallet from 'ui/global/lockWallet';
 
 import css from './index.scss';
 
@@ -161,6 +163,8 @@ class App extends React.Component {
         }
         return (
             <div>
+                <LockWallet></LockWallet>
+                <UpdateWallet />
                 <Theme history={history} />
                 <Switch>
                     <Route path="/wallet" component={Wallet} />

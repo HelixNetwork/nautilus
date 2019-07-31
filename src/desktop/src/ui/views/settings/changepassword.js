@@ -9,6 +9,7 @@ import { zxcvbn } from 'libs/exports';
 import {generateAlert} from 'actions/alerts';
 import { setPassword } from 'actions/wallet';
 import Button from 'ui/components/button';
+import Icon from 'ui/components/icon';
 import { passwordReasons } from 'libs/password';
 import SeedStore from 'libs/seed';
 import { hash } from 'libs/crypto';
@@ -118,6 +119,9 @@ import Password from 'ui/components/input/password';
                                 {/* <div className={classNames(css.set_bx)}> */}
                                     <div className={classNames(css.foo_bxx12)}>
                                         <div cllassname={classNames(css.set_bxac)}>
+                                        <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
+                              <Icon icon="cross" size={14} />
+                            </span></Button> 
                                             <form onSubmit={(e) => this.changePassword(e)}>
                                                   <h5 style={{marginLeft:'14vw',marginTop:'3vw '}}>{t('changePassword:currentPassword')}</h5>
                                                   <Password style={{marginTop:'-2vw'}} type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br />

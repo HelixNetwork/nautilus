@@ -507,6 +507,17 @@ background: #fff;
 box-shadow: -5px 5px 8px 0px grey;
 }
 
+div .address_div{
+    width: 100%;
+    overflow-wrap: break-word;
+    letter-spacing: 1em;
+    line-height: 2.88em;
+    padding-left: 4%;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: 700;
+}
+
 footer,
 footer > div {
   background-color: #dee1e3;
