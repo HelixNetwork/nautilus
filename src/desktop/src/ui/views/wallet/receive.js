@@ -4,7 +4,8 @@ import css from './wallet.scss';
 import classNames from 'classnames';
 import Top from 'ui/components/topbar';
 import Clipboard from 'ui/components/clipboard';
-
+import Button from 'ui/components/button';
+import Icon from 'ui/components/icon';
 import PropTypes from 'prop-types';
 import reload from 'ui/images/refresh.svg';
 import { withI18n } from 'react-i18next';
@@ -117,7 +118,7 @@ class Receive extends React.PureComponent {
 
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
 
-        this.props.generateNewAddress(seedStore, accountName, account,Electron.genFn);
+        this.props.generateNewAddress(seedStore, accountName, account, Electron.genFn);
     };
 
     validateAdress = async () => {
@@ -181,8 +182,8 @@ class Receive extends React.PureComponent {
     render() {
         const { t, receiveAddress, isGeneratingReceiveAddress, hadErrorGeneratingNewAddress } = this.props;
         const { message, scramble, hasSyncedAddress } = this.state;
-        console.log("ReceiveAddress==",receiveAddress );
-        
+        console.log("ReceiveAddress==", receiveAddress);
+
         return (
             <div>
                 <section className={css.home}>
@@ -227,7 +228,7 @@ class Receive extends React.PureComponent {
                                                                                 </React.Fragment>
                                                                             );
                                                                         })}
-                                                                    <span style={{color:"#eaac32"}}>
+                                                                    <span style={{ color: "#eaac32" }}>
                                                                         {receiveAddress
                                                                             .substring(63, 72)
                                                                             .split('')
@@ -251,29 +252,38 @@ class Receive extends React.PureComponent {
 
                                             </div>
                                             {/* Refresh and Receive Buttons... */}
-                                            <div>
-                                                <button type="submit" style={{ marginLeft: "40%" }} onClick={this.onGeneratePress}>Generate Address</button>                                            </div>
+                                            <div className={css.hlx_iconHolder}>
+                                                <div className={css.hlx_iconLeft}> 
+                                                    <Button
+                                                     style={{"height": "100%", "lineHeight":"100%" }}
+                                                        className="icon"
+                                                        variant="backgroundNone"
+                                                        loading={isGeneratingReceiveAddress}
+                                                        onClick={this.onGeneratePress}
+                                                    >
+                                                     <Icon icon="sync" size={55} /><br/>
+                                                     {t('receive:generateNewAddress')} <span> > </span>
+                                                    </Button>
+                                                    </div>
+                                                    <div className={css.hlx_iconRight}>
+                                                    <Button
+                                                     style={{"height": "100%", "lineHeight":"100%" }}
+                                                        className="icon"
+                                                         variant="backgroundNone"
+                                                        // loading={isGeneratingReceiveAddress}
+                                                        // onClick={this.onGeneratePress}
+                                                    >
+                                                     <Icon icon="receive" size={55} /><br/>
+                                                        {t('receive:copyAddress')} <span> > </span>
+                                                    </Button>
+                                                </div>
+
+
+                                            </div>
 
                                         </div>
 
                                     </div>
-                                    {/* <div className={classNames(css.sseed_box_wallet_wrap, css.hlx_wallet_box)}>
-
-                                
-                            </div> */}
-
-                                    {/* <div className={classNames(css.foo_bxx1)}>
-                                        <h3>{t('receive:receiveCoins')}<span>.</span></h3>
-                                        <h6>{t('receive:irrevocableTransactionWarning')}</h6>
-                                        <div className={classNames(css.sseed_box2, css.sec_bxc)}>
-                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F </div>
-                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F </div>
-                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F </div>
-                                            <div className={classNames(css.text_ff1)}><span>A</span> A F E 1 B 0 9 C A 0 7 D 2 B 4 F </div><br />
-
-                                        </div>
-                                        <div><a className={css.reload}><img src={reload} alt="" /></a></div>
-                                    </div> */}
                                 </div>
                             </div>
 
@@ -283,8 +293,7 @@ class Receive extends React.PureComponent {
 
 
                 </section>
-                <footer className={classNames(css.footer_bx)}>
-                </footer>
+
             </div>
         )
     }
