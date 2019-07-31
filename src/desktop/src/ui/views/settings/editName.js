@@ -7,10 +7,7 @@ import { MAX_ACC_LENGTH } from 'libs/crypto';
 import SeedStore from 'libs/seed';
 
 import {
-    selectLatestAddressFromAccountFactory,
     selectAccountInfo,
-    getSelectedAccountName,
-    getSelectedAccountMeta,
 } from 'selectors/accounts';
 
 
