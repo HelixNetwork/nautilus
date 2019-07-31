@@ -6,6 +6,13 @@ import { connect } from 'react-redux';
 import { MAX_ACC_LENGTH } from 'libs/crypto';
 import SeedStore from 'libs/seed';
 
+import {
+    selectLatestAddressFromAccountFactory,
+    selectAccountInfo,
+    getSelectedAccountName,
+    getSelectedAccountMeta,
+} from 'selectors/accounts';
+
 
 import css from './settings.scss';
 import classNames from 'classnames';
@@ -141,6 +148,7 @@ class AccountName extends React.PureComponent {
 const mapStateToProps = (state) => ({
     accountNames: getAccountNamesFromState(state),
     password: state.wallet.password,
+    account: selectAccountInfo(state),
 });
 
 const mapDispatchToProps = {
