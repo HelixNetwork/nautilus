@@ -6,7 +6,6 @@
   padding: 25px 0 30px;
   transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
-
   fieldset {
     border: none;
     position: relative;
@@ -36,6 +35,7 @@
         pointer-events: none;
         opacity: 0.5;
       }
+      min-height: 40px;
     }
 
     input[type="number"] {

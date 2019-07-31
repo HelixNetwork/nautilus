@@ -1,80 +1,114 @@
 import React from 'react';
 import css from './settings.scss';
-import classNames from  'classnames';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
-import { Switch, Route ,withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import Top from '../../components/topbar';
 import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
 import Select from 'ui/components/input/select';
-// import withCurrencyData from 'containers/settings/Currency';
 
+
+import { getCurrencyData } from 'actions/settings';
+import { getThemeFromState } from 'selectors/global';
 
 /**
  * currency settings component
  */
 
- class Currency extends React.PureComponent{
-     static propTypes= {
+class Currency extends React.PureComponent {
+    static propTypes = {
+        isFetchingCurrencyData: PropTypes.bool.isRequired,
+        hasErrorFetchingCurrencyData: PropTypes.bool.isRequired,
+        currency: PropTypes.string.isRequired,
+        currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+        getCurrencyData: PropTypes.func.isRequired,
+        backPress: PropTypes.func,
+        t: PropTypes.func.isRequired
+    }
 
-    
-   
-       
-        t: PropTypes.func.isRequired,
-     }
-     render(){
+    state = {
+        selection: null,
+    };
 
-        const {  t } = this.props;
-      
-         return(
+
+    setCurrency = (currency) => {
+        this.props.getCurrencyData(currency, true);
+    };
+
+    render() {
+
+        const { currency, currencies, isFetchingCurrencyData, t } = this.props;
+        const { selection } = this.state;
+
+        return (
+
             <div>
-                    <Top
-                        bal={'none'}
-                        main={'block'}
-                        user={'none'}
-                        history={this.props.history}
-                    />
-                    <section className="spage_1">
-                        <div className="container">
+                <Top
+                    bal={'none'}
+                    main={'block'}
+                    user={'none'}
+                    history={this.props.history}
+                />
+                <section className="spage_1">
+                    <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_box)}>
 
                             </div>
-                           
-                            </div>
-                            <div className="col-lg-8">
-                               
-                                    <div className={classNames(css.foo_bxx12)}>
-                                        <div cllassname={classNames(css.set_bxac)}>
-                                        <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                              <Icon icon="cross" size={14} />
-                            </span></Button> 
-                                            <h5 style={{marginLeft:'14vw',marginTop:'11vw'}}>{t('settings:currency')}</h5>
-                                            <form>
-                                                <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
-                                            </form>
-                                       
-                                           
-                                            
-                                            <Button style={{marginLeft:'14vw',marginTop:'4vw'}} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>
-                                            <div  className={classNames(css.spe_bx)}>
-                                               {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
-                                               <hr className={classNames(css.ser_bts)}/>
-                                         		<a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
-                                            </div>
-                                        </div>
-                                    </div>
-                               
+
+                        </div>
+                        <div className="col-lg-8">
+                            <div className={classNames(css.foo_bxx12)}>
+                                <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >
+                                    <span >
+                                        <Icon icon="cross" size={14} />
+                                    </span>
+                                </Button>
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        this.setCurrency(this.state.selection);
+                                    }}
+                                >
+                                    <Select
+                                        value={selection || currency}
+                                        label={t('currencySelection:currency')}
+                                        onChange={(value) => this.setState({ selection: value })}
+                                        options={currencies
+                                            .slice()
+                                            .sort()
+                                            .map((item) => {
+                                                return { value: item, label: item };
+                                            })}
+                                    />
+                                </form>
+                                <Button
+                                    style={{ marginLeft: '14vw', marginTop: '4vw' }}
+                                    loading={isFetchingCurrencyData}
+                                    type="submit">
+                                    {t('global:save')}
+                                </Button>
+                                <div className={classNames(css.spe_bx)}></div>
                             </div>
                         </div>
-                    </section>
+                    </div>
+                </section>
             </div>
-         );
-     }
- }
- const mapDispatchToProps = {
+        );
+    }
+}
+const mapStateToProps = (state) => ({
+    isFetchingCurrencyData: state.ui.isFetchingCurrencyData,
+    hasErrorFetchingCurrencyData: state.ui.hasErrorFetchingCurrencyData,
+    currency: state.settings.currency,
+    currencies: state.settings.availableCurrencies,
+    theme: getThemeFromState(state)
+});
 
+const mapDispatchToProps = {
+    getCurrencyData,
 };
-export default connect(null, mapDispatchToProps)(withI18n()(Currency));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(Currency));

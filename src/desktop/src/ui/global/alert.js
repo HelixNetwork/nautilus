@@ -72,9 +72,6 @@ class Alerts extends React.PureComponent {
                         css[`${alerts.category}`],
                     )}
                 >
-                    <span>
-                        <Icon icon="cross" size={14} />
-                    </span>
                     {alerts.title && <h2>{alerts.title}</h2>}
                     {message && <p>{message}</p>}
                 </div>

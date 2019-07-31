@@ -1,5 +1,7 @@
 import { SettingsActionTypes } from '../actions/types';
 import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from '../config';
+import { availableCurrencies } from '../libs/currency';
+
 const initialState = {
     /**
      * Selected locale for wallet
@@ -41,6 +43,7 @@ const initialState = {
      * Selected currency for conversions in wallet
      */
     currency: 'USD',
+    availableCurrencies,
     /**
      * Active theme name
      */

@@ -58,9 +58,7 @@ class Settings extends React.PureComponent {
                                 disp={'none'}
                                 history={history}
                                 active={currentKey}
-
                             />
-                            
                             <Switch >
                                 <Route path="/settings/editname" component={AccountName} />
                                 <Route path="/settings/language" component={SettingsLanguage} />

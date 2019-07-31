@@ -19,7 +19,7 @@ class SettingsLanguage extends React.PureComponent {
     static propTypes = {
         t: PropTypes.func.isRequired,
         setLocale: PropTypes.func.isRequired,
-       
+
     }
     state = {
         step: 'language',
@@ -37,45 +37,34 @@ class SettingsLanguage extends React.PureComponent {
             selection: null,
         });
     };
-   
+
 
 
     render() {
-        const { t, locale,dismissAlert } = this.props;
+        const { t, locale, dismissAlert } = this.props;
         const { selection } = this.state;
         return (
 
             <div className="col-lg-8">
                 <div className={classNames(css.foo_bxx12)}>
-                
-                    <div cllassname={classNames(css.set_bxac)}>
-                            <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                              <Icon icon="cross" size={14} />
-                            </span></Button> 
-                        <form onSubmit={(e) => this.changeLocale(e)}>
-
-                            <div style={{ marginLeft: '-9vw', marginTop: '11vw' }}>
-                                {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
-                                <Select
-                                    label={t('languageSetup:language')}
-                                    value={I18N_LOCALE_LABELS[I18N_LOCALES.indexOf(selection || locale)]}
-                                    onChange={(value) => this.setState({ selection: value })}
-                                    options={I18N_LOCALES.map((item, index) => {
-                                        return { value: item, label: I18N_LOCALE_LABELS[index] };
-                                    })}
-                                />
-                                <Button style={{ marginLeft: '19vw', marginTop: '4vw' }} type="submit" >{t('global:save')}</Button>
-                 
-                            </div>
-                            <div className={classNames(css.spe_bx)}>
-                                {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt="" /><br />Lorem Ipsum  -></a>
-                                        <hr className={classNames(css.ser_bts)} />
-                                        <a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt="" /></a> */}
-                            </div>
-                        </form>
-                    </div>
+                    <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >
+                        <span >
+                            <Icon icon="cross" size={14} />
+                        </span>
+                    </Button>
+                    <form onSubmit={(e) => this.changeLocale(e)}>
+                        <Select
+                            label={t('languageSetup:language')}
+                            value={I18N_LOCALE_LABELS[I18N_LOCALES.indexOf(selection || locale)]}
+                            onChange={(value) => this.setState({ selection: value })}
+                            options={I18N_LOCALES.map((item, index) => {
+                                return { value: item, label: I18N_LOCALE_LABELS[index] };
+                            })}
+                        />
+                        <Button style={{ marginLeft: '19vw', marginTop: '4vw' }} type="submit" >{t('global:save')}</Button>
+                        <div className={classNames(css.spe_bx)}></div>
+                    </form>
                 </div>
-
             </div>
 
         );

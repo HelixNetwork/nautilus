@@ -46,7 +46,7 @@ const dismiss = () => ({ type: AlertsActionTypes.HIDE });
  *
  * @returns {function} dispatch
  */
-export const generateAlert = (category, title, message, closeInterval, err) => (dispatch) => {
+export const generateAlert = (category, title, message, closeInterval = 5500, err) => (dispatch) => {
     dispatch(generate(category, title, message, closeInterval));
     if (err) {
         dispatch(prepareLogUpdate(err));

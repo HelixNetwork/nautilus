@@ -1,12 +1,12 @@
 import React from 'react';
 import css from './settings.scss';
-import classNames from  'classnames';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from 'react-i18next';
-import { Switch, Route ,withRouter} from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { zxcvbn } from 'libs/exports';
-import {generateAlert} from 'actions/alerts';
+import { generateAlert } from 'actions/alerts';
 import { setPassword } from 'actions/wallet';
 import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
@@ -19,8 +19,8 @@ import Password from 'ui/components/input/password';
  * change password component
  */
 
- class Changepassword extends React.PureComponent{
-     static propTypes= {
+class Changepassword extends React.PureComponent {
+    static propTypes = {
 
         setPassword: PropTypes.func.isRequired,
         accounts: PropTypes.object.isRequired,
@@ -29,12 +29,12 @@ import Password from 'ui/components/input/password';
         }).isRequired,
         t: PropTypes.func.isRequired,
         generateAlert: PropTypes.func.isRequired,
-        
-     }
-     state = {
-       passwordCurrent:'',
-       passwordNew:'',
-       passwordConfirm:'',
+
+    }
+    state = {
+        passwordCurrent: '',
+        passwordNew: '',
+        passwordConfirm: '',
     };
 
     changePassword = async (event) => {
@@ -98,54 +98,54 @@ import Password from 'ui/components/input/password';
         }
     };
 
-     render(){
+    render() {
 
-        const {  t } = this.props;
-        const {passwordCurrent,passwordNew,passwordConfirm}=this.state;
-     
-         return(
+        const { t } = this.props;
+        const { passwordCurrent, passwordNew, passwordConfirm } = this.state;
+
+        return (
             <div>
-                    
-                    <section className="spage_1">
-                        <div className="container">
+
+                <section className="spage_1">
+                    <div className="container">
                         <div className="col-lg-4">
                             <div className={classNames(css.menu_bx)}>
-                                
-                              
-                            </div>
+
 
                             </div>
-                            <div className="col-lg-8">
-                                {/* <div className={classNames(css.set_bx)}> */}
-                                    <div className={classNames(css.foo_bxx12)}>
-                                        <div cllassname={classNames(css.set_bxac)}>
-                                        <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                              <Icon icon="cross" size={14} />
-                            </span></Button> 
-                                            <form onSubmit={(e) => this.changePassword(e)}>
-                                                  <h5 style={{marginLeft:'14vw',marginTop:'3vw '}}>{t('changePassword:currentPassword')}</h5>
-                                                  <Password style={{marginTop:'-2vw'}} type="text" value={passwordCurrent}  onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)}/><br /><br />
-                                                  <h5 style={{marginLeft:'14vw',marginTop:'-6vw'}}>{t('changePassword:newPassword')}</h5>
-                                                  <Password style={{marginTop:'-2vw'}} type="text"   showScore value={passwordNew}  onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)}/><br /><br />
-                                                  <h5 style={{marginLeft:'14vw',marginTop:'-6vw'}}>{t('changePassword:confirmPassword')}</h5>
-                                                  <Password style={{marginTop:'-2vw'}} type="text" value={passwordConfirm}   onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)}/><br /><br />
-                                                  <Button  style={{marginLeft:'18vw',marginTop:'-2vw'}} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
-                                                  <div  className={classNames(css.spe_bx)}>
-                                                  {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
+
+                        </div>
+                        <div className="col-lg-8">
+                            {/* <div className={classNames(css.set_bx)}> */}
+                            <div className={classNames(css.foo_bxx12)}>
+                                <div cllassname={classNames(css.set_bxac)}>
+                                    <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
+                                        <Icon icon="cross" size={14} />
+                                    </span></Button>
+                                    <form onSubmit={(e) => this.changePassword(e)}>
+                                        <h5 style={{ marginLeft: '14vw', marginTop: '3vw ' }}>{t('changePassword:currentPassword')}</h5>
+                                        <Password style={{ marginTop: '-2vw' }} type="text" value={passwordCurrent} onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)} /><br /><br />
+                                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:newPassword')}</h5>
+                                        <Password style={{ marginTop: '-2vw' }} type="text" showScore value={passwordNew} onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)} /><br /><br />
+                                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:confirmPassword')}</h5>
+                                        <Password style={{ marginTop: '-2vw' }} type="text" value={passwordConfirm} onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)} /><br /><br />
+                                        <Button style={{ marginLeft: '18vw', marginTop: '-2vw' }} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
+                                        <div className={classNames(css.spe_bx)}>
+                                            {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
                                                       <hr className={classNames(css.ser_bts)}/>
                                          		      <a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
-                                                  </div>
-                                            </form>
                                         </div>
-                                    </div>
-                                {/* </div> */}
+                                    </form>
+                                </div>
                             </div>
+                            {/* </div> */}
                         </div>
-                    </section>
+                    </div>
+                </section>
             </div>
-         );
-     }
- }
+        );
+    }
+}
 const mapStateToProps = (state) => ({
     accounts: state.accounts.accountInfo,
 });

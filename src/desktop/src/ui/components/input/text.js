@@ -29,19 +29,24 @@ export default class Text extends React.PureComponent {
     }
 
     render() {
-        const { value, onChange, disabled, maxLength } = this.props;
+        const { value, onChange, disabled, maxLength, label } = this.props;
 
         return (
-            <input
-                ref={(input) => {
-                    this.input = input;
-                }}
-                type="text"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                maxLength={maxLength}
-                className={classNames(css.sseed_textline)}
-            />
+            <div className={classNames(css.input, disabled ? css.disabled : null)}>
+                <fieldset>
+                    <input
+                        ref={(input) => {
+                            this.input = input;
+                        }}
+                        type="text"
+                        value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        maxLength={maxLength}
+                        className={classNames(css.sseed_textline)}
+                    />
+                    <small>{label}</small>
+                </fieldset>
+            </div>
         );
     }
 }
