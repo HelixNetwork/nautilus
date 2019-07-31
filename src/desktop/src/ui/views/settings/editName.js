@@ -8,7 +8,6 @@ import { MAX_ACC_LENGTH } from 'libs/crypto';
 import SeedStore from 'libs/seed';
 
 import { changeAccountName } from 'actions/accounts';
-import { generateAlert } from 'actions/alerts';
 
 import css from './settings.scss';
 import classNames from 'classnames';
