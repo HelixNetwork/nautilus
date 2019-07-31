@@ -2,7 +2,7 @@ import assign from 'lodash/assign';
 import some from 'lodash/some';
 import isEmpty from 'lodash/isEmpty';
 import isNumber from 'lodash/isNumber';
-import { Wallet } from '../database';
+import { Account, Wallet } from '../database';
 import {
     selectedAccountTasksFactory,
     selectedAccountSetupInfoFactory,
@@ -315,5 +315,23 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
                     seedStore.removeAccount(accountName);
                 }
             });
+    };
+};
+
+/**
+ * Dispatch to update account name in state
+ *
+ * @method changeAccountName
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const changeAccountName = (payload) => {
+    const { oldAccountName, newAccountName } = payload;
+    Account.migrate(oldAccountName, newAccountName);
+
+    return {
+        type: AccountsActionTypes.CHANGE_ACCOUNT_NAME,
+        payload,
     };
 };

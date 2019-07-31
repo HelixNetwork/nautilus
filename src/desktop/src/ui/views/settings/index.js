@@ -17,7 +17,7 @@ import Viewaddress from 'ui/views/settings/viewaddress';
 import Changepassword from 'ui/views/settings/changepassword';
 import SettingsMode from 'ui/views/settings/mode';
 import AdvancedSettings from 'ui/views/settings/advancedSettings';
-
+import { getAccountNamesFromState } from 'selectors/accounts';
 import Button from 'ui/components/button';
 
 /**
@@ -26,12 +26,16 @@ import Button from 'ui/components/button';
 
 class Settings extends React.PureComponent {
     static propTypes = {
-
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+        accounts: PropTypes.object,
+        /** Wallet account names */
+        accountNames: PropTypes.array.isRequired,
+        /** @ignore */
+        wallet: PropTypes.object,
     }
     render() {
 
@@ -79,7 +83,9 @@ class Settings extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-
+    accounts: state.accounts.accountInfo,
+    accountNames: getAccountNamesFromState(state),
+    wallet: state.wallet,
 });
 
 const mapDispatchToProps = {
