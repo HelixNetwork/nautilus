@@ -16,7 +16,7 @@ export const DEFAULT_NODE = __TEST__
     };
 
 export const NODES_WITH_POW_DISABLED = [
-    'https://hlxtest.net:8087', 
+    'https://hlxtest.net:8088', 
 ].map((url) => ({
     url,
     pow: false,

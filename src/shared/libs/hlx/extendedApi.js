@@ -96,8 +96,8 @@ const getHelixInstance = (settings, requestTimeout = DEFAULT_NODE_REQUEST_TIMEOU
  */
 const getBalances = (settings, withQuorum = true) => (addresses, threshold = DEFAULT_BALANCES_THRESHOLD) =>
     withQuorum
-        ? quorum.getBalances(addresses, threshold)
-        : getHelixInstance(settings, getApiTimeout('getBalances')).getBalances(addresses, threshold);
+        ? quorum.getBalances(addresses, threshold).catch(err => err)
+        : getHelixInstance(settings, getApiTimeout('getBalances')).getBalances(addresses, threshold).catch(err => err);
 
 /**
  * helix getNodeInfoApi
@@ -108,7 +108,7 @@ const getBalances = (settings, withQuorum = true) => (addresses, threshold = DEF
  * @returns {function(): Promise<object>}
  */
 const getNodeInfo = (settings) => () =>
-        getHelixInstance(settings, getApiTimeout('getNodeInfo')).getNodeInfo();
+        getHelixInstance(settings, getApiTimeout('getNodeInfo')).getNodeInfo().catch(err => err);
 
 
 /**
@@ -119,7 +119,7 @@ const getNodeInfo = (settings) => () =>
  * @returns {function(array): Promise<any>}
  */
 const getTransactionsObjects = (settings) => (hashes) =>
-      getHelixInstance(settings).getTransactionObjects(hashes);
+      getHelixInstance(settings).getTransactionObjects(hashes).catch(err => err);
 
 // TODO : Check if fintransaction objects to be used the new dedicated helix method
 /**
@@ -132,7 +132,7 @@ const getTransactionsObjects = (settings) => (hashes) =>
  */
 const findTransactionObjects = (settings) => (args) =>
     findTransactions(settings)(args).then((hashes) => 
-         getTransactionsObjects(settings)(hashes));
+         getTransactionsObjects(settings)(hashes)).catch(err => err);
 
 /**
  * Helix findTransactions
@@ -143,7 +143,7 @@ const findTransactionObjects = (settings) => (args) =>
  * @returns {function(object): Promise<array>}
  */
 const findTransactions = (settings) => (args) =>
-        getHelixInstance(settings).findTransactions(args);
+        getHelixInstance(settings).findTransactions(args).catch(err => err);
 
 
 /**
@@ -157,8 +157,8 @@ const findTransactions = (settings) => (args) =>
  */
 const getLatestInclusion = (settings, withQuorum = false) => (hashes) =>
     withQuorum
-        ? quorum.getLatestInclusion(hashes)
-        : getHelixInstance(settings, getApiTimeout('getInclusionStates')).getLatestInclusion(hashes);
+        ? quorum.getLatestInclusion(hashes).catch(err => err)
+        : getHelixInstance(settings, getApiTimeout('getInclusionStates')).getLatestInclusion(hashes).catch(err => err);
 
 
 /**
@@ -206,7 +206,7 @@ const promoteTransaction = (settings, seedStore) => (
                 cached.txs = txs;
                 return storeAndBroadcast(settings)(cached.txs);
             })
-            .then(() => hash)
+            .then(() => hash).catch(err => err)
     );
 };
 
@@ -243,15 +243,15 @@ const replayBundle = (settings, seedStore) => (
                 branchTransaction,
                 cached.txs,
                 minWeightMagnitude,
-            ),
+            )
         )
         .then(({ txs, transactionObjects }) => {
             cached.txs = txs;
             cached.transactionObjects = transactionObjects;
 
-            return storeAndBroadcast(settings)(cached.txs);
+            return storeAndBroadcast(settings)(cached.txs)
         })
-        .then(() => cached.transactionObjects);
+        .then(() => cached.transactionObjects).catch(err => err);
 };
 
 /**
@@ -263,7 +263,7 @@ const replayBundle = (settings, seedStore) => (
  * @returns {function(string): Promise<array>}
  */
 const getBundle = (settings) => (tailTransactionHash) =>
-        getHelixInstance(settings).getBundle(tailTransactionHash);
+        getHelixInstance(settings).getBundle(tailTransactionHash).catch(err => err);
 
 /**
  * Helix wereAddressesSpentFrom
@@ -276,8 +276,8 @@ const getBundle = (settings) => (tailTransactionHash) =>
  */
 const wereAddressesSpentFrom = (settings, withQuorum = true) => (addresses) =>
  withQuorum
-        ? quorum.wereAddressesSpentFrom(addresses)
-        :    getHelixInstance(settings, getApiTimeout('wereAddressesSpentFrom')).wereAddressesSpentFrom(addresses);
+        ? quorum.wereAddressesSpentFrom(addresses).catch(err => err)
+        :    getHelixInstance(settings, getApiTimeout('wereAddressesSpentFrom')).wereAddressesSpentFrom(addresses).catch(err => err);
 
 /**
  * Helix sendTransfer
@@ -303,7 +303,7 @@ const sendTransfer = (settings) => (
         .prepareTransfers(settings)(transfers, options)
         .then((txs) => {
             cached.txs = txs;     
-            return getTransactionsToApprove(settings)({}, depth);
+            return getTransactionsToApprove(settings)({}, depth)
         })
         .then(({ trunkTransaction, branchTransaction }) =>
         
@@ -312,14 +312,14 @@ const sendTransfer = (settings) => (
                 branchTransaction,
                 cached.txs,
                 minWeightMagnitude,
-            ),
+            )
         )
         .then(({ txs, transactionObjects }) => {
             cached.txs = txs;
             cached.transactionObjects = transactionObjects;
-            return storeAndBroadcast(settings)(cached.txs);
+            return storeAndBroadcast(settings)(cached.txs)
         })
-        .then(() => cached.transactionObjects);
+        .then(() => cached.transactionObjects).catch(err => err);
 };
 
 /**
@@ -333,11 +333,11 @@ const sendTransfer = (settings) => (
 const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>{
     if(isEmpty(reference))
         return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
-            depth);    
+            depth).catch(err => err);    
     else
         return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
                 depth,
-                reference);
+                reference).catch(err => err);
         
     }
 
@@ -356,7 +356,7 @@ export const prepareTransfers = (settings) => (seed, transfers, options = null, 
         args = [...args, { ...options, nativeGenerateSignatureFunction: signatureFn }];
     }
 
-   return getHelixInstance(settings).prepareTransfers(...args);
+   return getHelixInstance(settings).prepareTransfers(...args).catch(err => err);
 };
 
 /**
@@ -368,7 +368,7 @@ export const prepareTransfers = (settings) => (seed, transfers, options = null, 
  * @returns {function(array): Promise<any>}
  */
 const storeAndBroadcast = (settings) => (txs) =>{
-        getHelixInstance(settings).storeAndBroadcast(txs);
+        getHelixInstance(settings).storeAndBroadcast(txs).catch(err => err);
 }
 
 
@@ -421,7 +421,7 @@ const allowsRemotePow = (settings) => {
         return checkAttachToTangle(settings.url).then((response) =>
             includes(response.error, Errors.INVALID_PARAMETERS),
         );
-    });
+    }).catch(err => err);
 };
 
 /**
@@ -467,15 +467,15 @@ const attachToTangle = (settings, seedStore) => (
                                         reject(new Error(Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_REMOTE_POW));
                                     }
                                 })
-                                .catch(reject);
+                                
                         }
-                    });
-                });
+                    })
+                }).catch(err => err);
                 
 
         const defaultRequestTimeout = getApiTimeout('attachToTangle');
 
-        return withRequestTimeoutsHandler(defaultRequestTimeout)(request);
+        return withRequestTimeoutsHandler(defaultRequestTimeout)(request).catch(err => err);
     }
     return seedStore
         .performPow(txs, trunkTransaction, branchTransaction, minWeightMagnitude)
@@ -489,7 +489,7 @@ const attachToTangle = (settings, seedStore) => (
                     transactionObjects: orderBy(transactionObjects, 'currentIndex', ['desc']),
                     txs: result,
                 }),
-            );
+            )
         })
         .then(({ transactionObjects, txs }) => {
             if (
@@ -503,7 +503,7 @@ const attachToTangle = (settings, seedStore) => (
             }
 
             throw new Error(Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW);
-        });
+        }).catch(err => err);
 };
 
 /**
@@ -515,7 +515,7 @@ const attachToTangle = (settings, seedStore) => (
  * @returns {function(array): Promise<array>}
  */
 const getTransactionStrings = (settings) => (hashes) =>
-        getHelixInstance(settings).getTransactionStrings(hashes);
+        getHelixInstance(settings).getTransactionStrings(hashes).catch(err => err);
 
 /**
  * Checks if a node is synced and runs a stable IRI release
@@ -548,7 +548,7 @@ const isNodeHealthy = (settings) => {
                         latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <= latestSolidSubtangleMilestoneIndex) &&
                     cached.latestMilestone !== EMPTY_HASH_TXBYTES
                 ) {
-                    return getTransactionStrings(settings)([cached.latestMilestone]);
+                    return getTransactionStrings(settings)([cached.latestMilestone]).catch(err => err);
                 }
 
                 throw new Error(Errors.NODE_NOT_SYNCED);
@@ -571,7 +571,7 @@ const isNodeHealthy = (settings) => {
  * @returns {function(string): (Promise<boolean>)}
  */
 const isPromotable = (settings) => (tailTransactionHash) =>
-    getHelixInstance(settings).isPromotable(tailTransactionHash);
+    getHelixInstance(settings).isPromotable(tailTransactionHash).catch(err => err);
 
 export {
     getHelixInstance,

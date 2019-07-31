@@ -4,9 +4,8 @@
   "description": "",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
-    "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/quorum.spec.js\"",
+    "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/recovery.spec.js\"",
     "apitest": "NODE_ENV=test  --require @babel/register \"__tests__/dev-sample/api.js\""
- 
   },
   "author": "",
   "contributors": [
@@ -42,7 +41,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
@@ -54,9 +53,10 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.5.2",
     "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.4.4",
+    "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
     "figma-parser": "^0.0.2",
     "mocha": "^6.1.4",
