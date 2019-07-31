@@ -60,7 +60,8 @@ export const setAddressData = (existingAddressData, newAddressData) => {
  * @param payload - New account information
  * @returns {{accountInfo: {}}}
  */
-const updateAccountInfo = (state, payload) => ({
+const updateAccountInfo = (state, payload) =>
+  ({
     accountInfo: {
         ...state.accountInfo,
         [payload.accountName]: {

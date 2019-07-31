@@ -13,10 +13,11 @@ import {isAddress} from '@helixnetwork/validators';
 import Button from 'ui/components/button';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/wallet-loading.json';
+import {getSelectedAccountName,getSelectedAccountMeta,getAccountNamesFromState, selectAccountInfo} from 'selectors/accounts';
+
 class Send extends React.PureComponent {
-   
+
     static propTypes = {
-        
         location: PropTypes.object,
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
@@ -44,8 +45,8 @@ state={
                 ? fields.message
                 : '';
 
-            
-        
+
+
         sendTransfer(seedStore, fields.address, parseInt(fields.amount) || 0, message);
     };
 
@@ -56,7 +57,7 @@ state={
             address:e.target.value,
             showAddress:ch.split('',64)
         })
-        
+
     }
     hlxInput(e){
         this.setState({
@@ -64,7 +65,7 @@ state={
         })
     }
     amountInput(e){
-        
+
     }
     send(){
         if(!isAddress(this.state.address) && isNaN(this.state.amount)){
@@ -73,7 +74,7 @@ state={
                 'Invalid address',
                 'You have a entered an invalid address.',
                 1000
-            ); 
+            );
         }
 
             const split= this.state.address.match(/.{1,4}/g);
@@ -86,13 +87,13 @@ state={
                 }
             })
             ch = ch.split('  ');
-            
+
             this.setState({
                 openModal:true,
                 showAddress:ch
             });
-        
-        
+
+
     }
 
     render() {
@@ -106,7 +107,7 @@ state={
                 preserveAspectRatio: 'xMidYMid slice'
             }
         };
-        
+
         return (
             <div>
                 <section className={css.home}>
@@ -143,7 +144,7 @@ state={
                                             <a href="#" className={css.send_bts} onClick={this.send.bind(this)}><img src={ic1} alt="" /></a>
                                             <h2 className={classNames(css.send_bts_h2)}>Send <span>></span></h2>
                                         </form>
-                                        {openModal && 
+                                        {openModal &&
                                         <Modal
                                         isOpen={openModal}
                                         onClose={() => this.setState({ openModal: false })}
@@ -188,6 +189,7 @@ state={
         )
     }
 }
+
 const mapDispatchToProps = {
 };
 export default connect(null, mapDispatchToProps)(withI18n()(Send));
