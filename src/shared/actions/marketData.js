@@ -2,14 +2,7 @@ import get from 'lodash/get';
 import each from 'lodash/each';
 import map from 'lodash/map';
 import { formatChartData, getUrlTimeFormat, getUrlNumberFormat } from '../libs/utils';
-
-export const ActionTypes = {
-    SET_TIMEFRAME: 'HELIX/MARKET_DATA/SET_TIMEFRAME',
-    SET_CHART_DATA: 'HELIX/MARKET_DATA/SET_CHART_DATA',
-    SET_STATISTICS: 'HELIX/MARKET_DATA/SET_STATISTICS',
-    SET_CURRENCY: 'HELIX/MARKET_DATA/SET_CURRENCY',
-    SET_PRICE: 'HELIX/MARKET_DATA/SET_PRICE',
-};
+import { MarketDataActionTypes } from '../actions/types';
 
 /**
  * Dispatch to set timeframe for HELIX time series price information
@@ -176,7 +169,7 @@ export function getChartData() {
  */
 export function setChartData(chartData) {
     return {
-        type: ActionTypes.SET_CHART_DATA,
+        type: MarketDataActionTypes.SET_CHART_DATA,
         chartData,
     };
 }

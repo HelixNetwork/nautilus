@@ -91,7 +91,7 @@ export const getAccountData = (settings, withQuorum) => (seedStore, accountName,
  *
  *   @returns {function(object, object, function, object): Promise<object>}
  **/
-export const syncAccount = (settings, withQuorum) => (
+export const syncAccount = (settings, withQuorum=false) => (
     existingAccountState,
     seedStore,
     notificationFn,
@@ -99,7 +99,8 @@ export const syncAccount = (settings, withQuorum) => (
 ) => {
     const thisStateCopy = cloneDeep(existingAccountState);
     const rescanAddresses = typeof seedStore === 'object';
-
+    console.log("rescan address",rescanAddresses)
+    console.log("with Qurum",withQuorum)
     return throwIfNodeNotHealthy(settings)
         .then(() =>
             rescanAddresses

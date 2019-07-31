@@ -18,6 +18,7 @@ class Keychain extends SeedStoreCore {
      */
     constructor(key, accountId) {
         console.log("key", key)
+        console.log('acid1',accountId);
         super();
 
         return (async () => {
@@ -61,6 +62,7 @@ class Keychain extends SeedStoreCore {
      * @returns {promise} - Resolves to a success boolean
      */
     addAccount = async (accountId, seed) => {
+        console.log('acid',accountId);
         this.accountId = await sha256(`${ACC_PREFIX}-${accountId}`);
 
         const vault = await encrypt(seed, this.key);

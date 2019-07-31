@@ -1,15 +1,6 @@
-// import extend from 'lodash/extend';
-// import map from 'lodash/map';
-// import noop from 'lodash/noop';
-// import findLastIndex from 'lodash/findLastIndex';
-// import reduce from 'lodash/reduce';
-import { WalletActionTypes } from './types'
-export const ActionTypes = {
-    MAP_STORAGE_TO_STATE: 'HELIX/SETTINGS/MAP_STORAGE_TO_STATE',
-    SET_PASSWORD: 'HELIX/WALLET/SET_PASSWORD',
-    CLEAR_WALLET_DATA: 'HELIX/WALLET/CLEAR_WALLET_DATA',
-}
-
+import { WalletActionTypes } from './types';
+import { accumulateBalance, attachAndFormatAddress, syncAddresses } from '../libs/hlx/addresses';
+import { updateAddresses, updateAccountAfterTransition } from '../actions/accounts';
 
 /**
  * Dispatch to map storage (persisted) data to redux state
@@ -20,7 +11,7 @@ export const ActionTypes = {
  * @returns {{type: {string}, payload: {object} }}
  */
 export const mapStorageToState = (payload) => ({
-    type: ActionTypes.MAP_STORAGE_TO_STATE,
+    type: WalletActionTypes.MAP_STORAGE_TO_STATE,
     payload,
 });
 
@@ -47,55 +38,76 @@ export const addressValidationSuccess = () => ({
 });
 
 /**
+ * Dispatch when new addresses are about to be generated
+ *
+ * @method generateNewAddressRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const generateNewAddressRequest = () => ({
+    type: WalletActionTypes.GENERATE_NEW_ADDRESS_REQUEST,
+});
+
+/**
  * Generate new receive address for wallet
  *
  * @method generateNewAddress
  *
- * @param {object} seedStore - SeedStore class object
+ * @param {string} seed
  * @param {string} accountName
  * @param {object} existingAccountData
+ * @param {function} genFn
  *
  * @returns {function(*): Promise<any>}
  */
-export const generateNewAddress = (seedStore, accountName, existingAccountData) => {
-    return (dispatch, getState) => {
+export const generateNewAddress = (seed, accountName, existingAccountData, genFn) => {
+    console.log("ExistingAccount===",existingAccountData);
+    
+    return (dispatch) => {
         dispatch(generateNewAddressRequest());
-
-        return new NodesManager(nodesConfigurationFactory()(getState()))
-            .withRetries(() => dispatch(generateAddressesSyncRetryAlert()))(syncAddresses)(
-                seedStore,
-                existingAccountData.addressData,
-                existingAccountData.transactions,
-            )
-            .then((result) => {
-                // Update address data in storage (realm)
-                Account.update(accountName, { addressData: result });
-
-                dispatch(updateAddressData(accountName, result));
+        return syncAddresses()(seed, existingAccountData.addressData, genFn)
+            .then((latestAddressData) => {
+                console.log("ADDRESS===", latestAddressData);
+                dispatch(updateAddresses(accountName, latestAddressData));
                 dispatch(generateNewAddressSuccess());
             })
             .catch((err) => {
-                dispatch(
-                    generateAlert(
-                        'error',
-                        i18next.t('global:somethingWentWrong'),
-                        i18next.t('global:somethingWentWrongTryAgain'),
-                        10000,
-                        err,
-                    ),
-                );
-                dispatch(generateNewAddressError());
+                console.log("ERRORRR...",err);
+
+                dispatch(generateNewAddressError())
             });
     };
 };
 
+/**
+ * Dispatch in case an error occurs during new addresses generation
+ *
+ * @method generateNewAddressError
+ *
+ * @returns {{type: {string} }}
+ */
+export const generateNewAddressError = () => ({
+    type: WalletActionTypes.GENERATE_NEW_ADDRESS_ERROR,
+});
+
+/**
+ * Dispatch when new addresses are successfully generated
+ *
+ * @method generateNewAddressSuccess
+ *
+ * @returns {{type: {string} }}
+ */
+export const generateNewAddressSuccess = () => ({
+    type: WalletActionTypes.GENERATE_NEW_ADDRESS_SUCCESS,
+});
+
 export const setPassword = (payload) => ({
-    type: ActionTypes.SET_PASSWORD,
+    type: WalletActionTypes.SET_PASSWORD,
     payload,
 });
 
 export const clearWalletData = () => ({
-    type: ActionTypes.CLEAR_WALLET_DATA,
+    type: WalletActionTypes.CLEAR_WALLET_DATA,
 });
 
 /**
@@ -108,6 +120,6 @@ export const clearWalletData = () => ({
  */
 export const setSeedIndex = (payload) =>
     ({
-    type: WalletActionTypes.SET_SEED_INDEX,
-    payload,
-});
+        type: WalletActionTypes.SET_SEED_INDEX,
+        payload,
+    });
