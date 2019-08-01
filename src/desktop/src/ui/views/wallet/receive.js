@@ -183,7 +183,7 @@ class Receive extends React.PureComponent {
         const { t, receiveAddress, isGeneratingReceiveAddress, hadErrorGeneratingNewAddress } = this.props;
         const { message, scramble, hasSyncedAddress } = this.state;
         console.log("ReceiveAddress==", receiveAddress);
-
+        
         return (
             <div>
                 <section className={css.home}>
@@ -253,27 +253,48 @@ class Receive extends React.PureComponent {
                                             </div>
                                             {/* Refresh and Receive Buttons... */}
                                             <div className={css.hlx_iconHolder}>
-                                                <div className={css.hlx_iconLeft}> 
+                                                <div className={css.hlx_iconLeft}>
                                                     <Button
                                                         className="icon_hover"
                                                         variant="backgroundNone"
                                                         loading={isGeneratingReceiveAddress}
                                                         onClick={this.onGeneratePress}
                                                     >
-                                                     <Icon icon="sync" size={55} /><br/>
-                                                     {t('receive:generateNewAddress')} <span> > </span>
+                                                        <Icon icon="sync" size={55} /><br />
+                                                        {t('receive:generateNewAddress')} <span> > </span>
                                                     </Button>
-                                                    </div>
-                                                    <div className={css.hlx_iconRight}>
-                                                    <Button
-                                                     className="icon_hover"
-                                                         variant="backgroundNone"
+                                                </div>
+                                                <div className={css.hlx_iconRight}>
+                                                {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
+                                                    <Clipboard
+                                                        text={receiveAddress}
+                                                        title={t('receive:addressCopied')}
+                                                        success={t('receive:addressCopiedExplanation')}
+                                                    >
+                                                        <Button
+                                                            className="icon_hover"
+                                                            variant="backgroundNone"
                                                         // loading={isGeneratingReceiveAddress}
                                                         // onClick={this.onGeneratePress}
+                                                        >
+                                                            <Icon icon="receive" size={55} /><br />
+                                                            {t('receive:copyAddress')} <span> > </span>
+                                                        </Button>
+                                                    </Clipboard>
+                                                ) : (
+                                                    
+                                                    <Button
+                                                        className="icon_hover"
+                                                        variant="backgroundNone"
+                                                    // loading={isGeneratingReceiveAddress}
                                                     >
-                                                     <Icon icon="receive" size={55} /><br/>
+                                                        <Icon icon="receive" size={55} /><br />
                                                         {t('receive:copyAddress')} <span> > </span>
                                                     </Button>
+                                                )}
+                                                
+                                                
+                                                
                                                 </div>
 
 
