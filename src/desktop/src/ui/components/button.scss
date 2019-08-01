@@ -158,3 +158,12 @@
 .danger{
   background: red;
 }
+
+.icon_hover {
+  height: 100%;
+  line-height: 100%;
+  &:hover{
+    color: var(--input-bg);
+    transform: scale(1.3);
+  }
+}

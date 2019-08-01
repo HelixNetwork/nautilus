@@ -255,8 +255,7 @@ class Receive extends React.PureComponent {
                                             <div className={css.hlx_iconHolder}>
                                                 <div className={css.hlx_iconLeft}> 
                                                     <Button
-                                                     style={{"height": "100%", "lineHeight":"100%" }}
-                                                        className="icon"
+                                                        className="icon_hover"
                                                         variant="backgroundNone"
                                                         loading={isGeneratingReceiveAddress}
                                                         onClick={this.onGeneratePress}
@@ -267,8 +266,7 @@ class Receive extends React.PureComponent {
                                                     </div>
                                                     <div className={css.hlx_iconRight}>
                                                     <Button
-                                                     style={{"height": "100%", "lineHeight":"100%" }}
-                                                        className="icon"
+                                                     className="icon_hover"
                                                          variant="backgroundNone"
                                                         // loading={isGeneratingReceiveAddress}
                                                         // onClick={this.onGeneratePress}
