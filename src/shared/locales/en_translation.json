@@ -396,6 +396,7 @@
         "transferSendingExplanation": "Please wait until your transfer has been sent.",
         "mode": "Mode",
         "theme": "Theme",
+        "snap":"Snapshot",
         "currency": "Currency",
         "cannotChangeNode": "Cannot change node",
         "cannotChangeNodeWhileSending": "Cannot change node while sending.",

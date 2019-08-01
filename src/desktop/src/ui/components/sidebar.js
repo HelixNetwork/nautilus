@@ -37,6 +37,7 @@ class Sidebar extends React.PureComponent {
                         <li className={active == 'address' ? css.active : ''}><a onClick={() => this.props.history.push('/settings/address')}>{t('accountManagement:viewAddresses')}</a></li>
                         <li className={active == 'password' ? css.active : ''}><a onClick={() => this.props.history.push('/settings/password')}>{t('settings:changePassword')}</a></li>
                         <li className={active == 'mode' ? css.active : ''}><a onClick={() => this.props.history.push('/settings/mode')}>{t('settings:mode')}</a></li>
+                        <li className={active == 'snapshot' ? css.active : ''}><a onClick={() => this.props.history.push('/settings/snapshot')}>{t('settings:snap')}</a></li>
                     </React.Fragment>
                 )}
                 <li className={active == 'accountsetting' ? css.active : ''}><a onClick={() => this.props.history.push('/settings/accountsetting')}>{t('settings:account')} </a></li>

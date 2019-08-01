@@ -93,6 +93,7 @@ class Currency extends React.PureComponent {
                                 </Button>
                                 <div className={classNames(css.spe_bx)}></div>
                             </div>
+
                         </div>
                     </div>
                 </section>

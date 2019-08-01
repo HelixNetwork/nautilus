@@ -179,3 +179,7 @@ export const getTasksFromAccounts = createSelector(
     getAccountsFromState,
     (state) => state.tasks || {},
 );
+export const getAddressesForSelectedAccount = createSelector(
+    selectAccountInfo,
+    (account) => map(account.addressData, (addressObject) => addressObject.address),
+);
