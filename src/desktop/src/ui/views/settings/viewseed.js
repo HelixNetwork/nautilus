@@ -32,31 +32,18 @@ class Viewseed extends React.PureComponent {
 
     render() {
 
-        const { location, history, t } = this.props;
-        const currentKey = location.pathname.split('/')[2] || '/';
+        const { t } = this.props;
         return (
-            <div>
-
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-8">
-                            <div className={classNames(css.foo_bxx12)}>
-                                <div cllassname={classNames(css.set_bxac)}>
-                                <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                                            <Icon icon="cross" size={14} />
-                                        </span></Button>
-                                    <h5 style={{ marginLeft: '3vw'}}>{t('accountManagement:viewSeed')}</h5>
-                                    <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
-                                    <div style={{ marginLeft: "8%" }}>
-                                        <Button className="modal_navLeft" style={{ margin: '10vw 0vw 1vw' }}>{t('viewSeed:viewSeed')}</Button>
-                                        <Button className="modal_navRight" style={{ margin: '10vw 1vw 0vw' }} onClick={() => this.stepForward('done')}>{t('export')}</Button>
-                                    </div>
-                    
-                                </div>
-                            </div>
-                        </div>
+            <div className={classNames(css.foo_bxx12)}>
+                <div cllassname={classNames(css.set_bxac)}>
+                    <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewSeed')}</h5>
+                    <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
+                    <div style={{ marginLeft: "8%" }}>
+                        <Button className="modal_navLeft" style={{ margin: '10vw 0vw 1vw' }}>{t('viewSeed:viewSeed')}</Button>
+                        <Button className="modal_navRight" style={{ margin: '10vw 1vw 0vw' }} onClick={() => this.stepForward('done')}>{t('export')}</Button>
                     </div>
-                </section>
+
+                </div>
             </div>
         );
     }

@@ -89,46 +89,25 @@ class AccountName extends React.PureComponent {
         await seedStore.renameAccount(newAccountName);
     }
     render() {
-        const { account, t, accountName } = this.props;
+        const { t, accountName } = this.props;
         const { newAccountName } = this.state;
         return (
-            <div>
-
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-4">
-                            <div className={classNames(css.menu_bx)}>
-
-
-                            </div>
-
-                        </div>
-                        <div className="col-lg-8">
-                            <div className={classNames(css.foo_bxx12)}>
-                                <div cllassname={classNames(css.set_bxac)}>
-                                    <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                                        <Icon icon="cross" size={14} />
-                                    </span>
-                                    </Button>
-                                    <form
-                                        onSubmit={(e) => {
-                                            e.preventDefault();
-                                            this.setAccountName();
-                                        }}
-                                    >
-                                        <Text
-                                            value={newAccountName}
-                                            label={t('accountManagement:editAccountName')}
-                                            onChange={(value) => this.setState({ newAccountName: value })}
-                                        />
-                                        <Button type="submit" style={{ marginLeft: '14vw', marginTop: '4vw' }} disabled={newAccountName.replace(/^\s+|\s+$/g, '') === accountName}>{t('global:save')}</Button>
-                                    </form>
-                                </div>
-                            </div>
-                            {/* </div> */}
-                        </div>
-                    </div>
-                </section>
+            <div className={classNames(css.foo_bxx12)}>
+                <div cllassname={classNames(css.set_bxac)}>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            this.setAccountName();
+                        }}
+                    >
+                        <Text
+                            value={newAccountName}
+                            label={t('accountManagement:editAccountName')}
+                            onChange={(value) => this.setState({ newAccountName: value })}
+                        />
+                        <Button type="submit" style={{ marginLeft: '14vw', marginTop: '4vw' }} disabled={newAccountName.replace(/^\s+|\s+$/g, '') === accountName}>{t('global:save')}</Button>
+                    </form>
+                </div>
             </div>
         );
     }

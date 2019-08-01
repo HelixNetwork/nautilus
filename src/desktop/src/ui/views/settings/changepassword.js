@@ -104,44 +104,19 @@ class Changepassword extends React.PureComponent {
         const { passwordCurrent, passwordNew, passwordConfirm } = this.state;
 
         return (
-            <div>
-
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-4">
-                            <div className={classNames(css.menu_bx)}>
-
-
-                            </div>
-
-                        </div>
-                        <div className="col-lg-8">
-                            {/* <div className={classNames(css.set_bx)}> */}
-                            <div className={classNames(css.foo_bxx12)}>
-                                <div cllassname={classNames(css.set_bxac)}>
-                                    <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                                        <Icon icon="cross" size={14} />
-                                    </span></Button>
-                                    <form onSubmit={(e) => this.changePassword(e)}>
-                                        <h5 style={{ marginLeft: '14vw', marginTop: '3vw ' }}>{t('changePassword:currentPassword')}</h5>
-                                        <Password style={{ marginTop: '-2vw' }} type="text" value={passwordCurrent} onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)} /><br /><br />
-                                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:newPassword')}</h5>
-                                        <Password style={{ marginTop: '-2vw' }} type="text" showScore value={passwordNew} onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)} /><br /><br />
-                                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:confirmPassword')}</h5>
-                                        <Password style={{ marginTop: '-2vw' }} type="text" value={passwordConfirm} onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)} /><br /><br />
-                                        <Button style={{ marginLeft: '18vw', marginTop: '-2vw' }} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
-                                        <div className={classNames(css.spe_bx)}>
-                                            {/* <a href="#" className={classNames(css.spe_boxs)}><img src="images/lock.png" alt=""/><br/>Lorem Ipsum  -></a>
-                                                      <hr className={classNames(css.ser_bts)}/>
-                                         		      <a href="#" className={classNames(css.ar_btns)}><img src="images/down_ar.png" alt=""/></a> */}
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            {/* </div> */}
-                        </div>
-                    </div>
-                </section>
+            <div className={classNames(css.foo_bxx12)}>
+                <div cllassname={classNames(css.set_bxac)}>
+                    <form onSubmit={(e) => this.changePassword(e)}>
+                        <h5 style={{ marginLeft: '14vw', marginTop: '3vw ' }}>{t('changePassword:currentPassword')}</h5>
+                        <Password style={{ marginTop: '-2vw' }} type="text" value={passwordCurrent} onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)} /><br /><br />
+                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:newPassword')}</h5>
+                        <Password style={{ marginTop: '-2vw' }} type="text" showScore value={passwordNew} onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)} /><br /><br />
+                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:confirmPassword')}</h5>
+                        <Password style={{ marginTop: '-2vw' }} type="text" value={passwordConfirm} onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)} /><br /><br />
+                        <Button style={{ marginLeft: '18vw', marginTop: '-2vw' }} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
+                        <div className={classNames(css.spe_bx)}></div>
+                    </form>
+                </div>
             </div>
         );
     }

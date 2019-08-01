@@ -36,57 +36,31 @@ class SettingsTheme extends React.PureComponent {
         const { themeName } = this.state;
 
         return (
-            <div>
-                <Top
-                    bal={'none'}
-                    main={'block'}
-                    user={'none'}
-                    history={this.props.history}
-                />
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-4">
-                            <div className={classNames(css.menu_box)}>
-
-
-                                {/* <hr className={classNames(css.ser_bts)}/> */}
-                                <a ></a>
-                            </div>
-
-                        </div>
-                        <div className="col-lg-8">
-                            <div className={classNames(css.foo_bxx12)}>
-                                <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                                    <Icon icon="cross" size={14} />
-                                </span></Button>
-                                <form onSubmit={(e) => {
-                                    e.preventDefault();
-                                    if (themeName) {
-                                        document.body.style.background = themes[themeName].body.bg;
-                                        updateTheme(themeName);
-                                    }
-                                }}>
-                                    <Select
-                                        label={t('settings:theme')}
-                                        value={themeName || this.props.themeName}
-                                        valueLabel={t(`themes:${themeName ? themeName.toLowerCase() : this.props.themeName.toLowerCase()}`,
-                                        )}
-                                        onChange={(value) => this.setState({ themeName: value })}
-                                        options={Object.keys(themes).map((item) => {
-                                            return {
-                                                value: item,
-                                                label: t(`themes:${item.toLowerCase()}`),
-                                            };
-                                        })}
-                                    />
-                                    <Button style={{ marginLeft: '14vw', marginTop: '4vw' }} type="submit" disabled={!themeName || themeName === this.props.themeName}>{t('global:save')}</Button>
-                                    <div className={classNames(css.spe_bx)}>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+            <div className={classNames(css.foo_bxx12)}>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (themeName) {
+                        document.body.style.background = themes[themeName].body.bg;
+                        updateTheme(themeName);
+                    }
+                }}>
+                    <Select
+                        label={t('settings:theme')}
+                        value={themeName || this.props.themeName}
+                        valueLabel={t(`themes:${themeName ? themeName.toLowerCase() : this.props.themeName.toLowerCase()}`,
+                        )}
+                        onChange={(value) => this.setState({ themeName: value })}
+                        options={Object.keys(themes).map((item) => {
+                            return {
+                                value: item,
+                                label: t(`themes:${item.toLowerCase()}`),
+                            };
+                        })}
+                    />
+                    <Button style={{ marginLeft: '14vw', marginTop: '4vw' }} type="submit" disabled={!themeName || themeName === this.props.themeName}>{t('global:save')}</Button>
+                    <div className={classNames(css.spe_bx)}>
                     </div>
-                </section>
+                </form>
             </div>
         );
     }

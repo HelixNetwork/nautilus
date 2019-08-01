@@ -42,7 +42,7 @@ class Settings extends React.PureComponent {
 
         const { history, t, location } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
-       
+
         return (
             <div>
                 <Top
@@ -54,25 +54,35 @@ class Settings extends React.PureComponent {
                 <div className="container">
                     <div className="col-lg-4">
                         <div className={classNames(css.menu_box)}>
-                       
+
                             <Sidebar
                                 disp={'none'}
                                 history={history}
                                 active={currentKey}
                             />
-                            <Switch >
-                                <Route path="/settings/editname" component={AccountName} />
-                                <Route path="/settings/language" component={SettingsLanguage} />
-                                <Route path="/settings/node" component={SettingsNode} />
-                                <Route path="/settings/currency" component={Currency} />
-                                <Route path="/settings/theme" component={SettingsTheme} />
-                                <Route path="/settings/viewseed" component={Viewseed} />
-                                <Route path="/settings/address" component={Viewaddress} />
-                                <Route path="/settings/password" component={Changepassword} />
-                                <Route path="/settings/mode" component={SettingsMode} />
-                                <Route path="/settings/snapshot" component={Snapshot} />
-                                <Route path="/settings/accountsetting" component={AdvancedSettings} />
-                            </Switch>
+                            <section className="spage_1">
+                                <div className="container">
+                                    <div className="col-lg-4">
+                                        <div className={classNames(css.menu_bx)}>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-8">
+                                        <Switch >
+                                            <Route path="/settings/editname" component={AccountName} />
+                                            <Route path="/settings/language" component={SettingsLanguage} />
+                                            <Route path="/settings/node" component={SettingsNode} />
+                                            <Route path="/settings/currency" component={Currency} />
+                                            <Route path="/settings/theme" component={SettingsTheme} />
+                                            <Route path="/settings/viewseed" component={Viewseed} />
+                                            <Route path="/settings/address" component={Viewaddress} />
+                                            <Route path="/settings/password" component={Changepassword} />
+                                            <Route path="/settings/mode" component={SettingsMode} />
+                                            <Route path="/settings/snapshot" component={Snapshot} />
+                                            <Route path="/settings/accountsetting" component={AdvancedSettings} />
+                                        </Switch>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
                 </div>

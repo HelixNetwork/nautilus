@@ -35,8 +35,6 @@ class Snapshot extends PureComponent {
         wallet: PropTypes.object.isRequired,
         /** @ignore */
         ui: PropTypes.object.isRequired,
-        account: PropTypes.object.isRequired,
-        accountNames: PropTypes.string.isRequired,
         /** Addresses for selected account */
         addresses: PropTypes.array.isRequired,
         /** @ignore */
@@ -45,7 +43,6 @@ class Snapshot extends PureComponent {
         setBalanceCheckFlag: PropTypes.func.isRequired,
         /** @ignore */
         generateAddressesAndGetBalance: PropTypes.func.isRequired,
-        // setWalletBusy: PropTypes.func.isRequired,
         /** @ignore */
         transitionForSnapshot: PropTypes.func.isRequired,
         /** @ignore */
@@ -104,10 +101,16 @@ class Snapshot extends PureComponent {
      * @returns {Promise}
      */
     startSnapshotTransition = async () => {
-        const { wallet, addresses, account, accountNames } = this.props;
-        console.log('Accountname', accountNames);
-        const seedStore = await new SeedStore[account.meta.type](wallet.password, accountNames, account.meta);
-        this.props.transitionForSnapshot(seedStore, addresses, account.meta.type);
+        const { wallet, addresses } = this.props;
+        console.log('wallet:=', wallet);
+        console.log('addressess:=', addresses);
+        const { accountName, meta } = this.props.account;
+        console.log('accoundname:=', accountName);
+        console.log('meta:=', meta);
+
+        const seedStore = await new SeedStore[meta.type](wallet.password, accountName, meta);
+
+        this.props.transitionForSnapshot(seedStore, addresses, meta.type);
     };
 
     /**

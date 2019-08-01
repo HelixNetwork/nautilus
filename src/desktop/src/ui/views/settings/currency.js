@@ -44,59 +44,32 @@ class Currency extends React.PureComponent {
         const { selection } = this.state;
 
         return (
-
-            <div>
-                <Top
-                    bal={'none'}
-                    main={'block'}
-                    user={'none'}
-                    history={this.props.history}
-                />
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-4">
-                            <div className={classNames(css.menu_box)}>
-
-                            </div>
-
-                        </div>
-                        <div className="col-lg-8">
-                            <div className={classNames(css.foo_bxx12)}>
-                                <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >
-                                    <span >
-                                        <Icon icon="cross" size={14} />
-                                    </span>
-                                </Button>
-                                <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        this.setCurrency(this.state.selection);
-                                    }}
-                                >
-                                    <Select
-                                        value={selection || currency}
-                                        label={t('currencySelection:currency')}
-                                        onChange={(value) => this.setState({ selection: value })}
-                                        options={currencies
-                                            .slice()
-                                            .sort()
-                                            .map((item) => {
-                                                return { value: item, label: item };
-                                            })}
-                                    />
-                                </form>
-                                <Button
-                                    style={{ marginLeft: '14vw', marginTop: '4vw' }}
-                                    loading={isFetchingCurrencyData}
-                                    type="submit">
-                                    {t('global:save')}
-                                </Button>
-                                <div className={classNames(css.spe_bx)}></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
+            <div className={classNames(css.foo_bxx12)}>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        this.setCurrency(this.state.selection);
+                    }}
+                >
+                    <Select
+                        value={selection || currency}
+                        label={t('currencySelection:currency')}
+                        onChange={(value) => this.setState({ selection: value })}
+                        options={currencies
+                            .slice()
+                            .sort()
+                            .map((item) => {
+                                return { value: item, label: item };
+                            })}
+                    />
+                </form>
+                <Button
+                    style={{ marginLeft: '14vw', marginTop: '4vw' }}
+                    loading={isFetchingCurrencyData}
+                    type="submit">
+                    {t('global:save')}
+                </Button>
+                <div className={classNames(css.spe_bx)}></div>
             </div>
         );
     }

@@ -90,115 +90,76 @@ class AdvancedSettings extends React.PureComponent {
         const { resetConfirm, resetCountdown } = this.state;
 
         return (
-            <div>
-                <Top
-                    bal={'none'}
-                    main={'block'}
-                    user={'none'}
-                    history={this.props.history}
-                />
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-4">
-                            <div className={classNames(css.menu_box)}>
 
-                                {/* <hr className={classNames(css.ser_bts)}/> */}
-                                <a ></a>
-                            </div>
+            <div className={classNames(css.set_bx)}>
+                <h3 style={{ marginLeft: '21vw', marginTop: '5vw' }}>{t('settings:reset')}</h3>
+                <Trans i18nKey="walletResetConfirmation:warning">
+                    <p>
+                        <React.Fragment>All of your wallet data including your </React.Fragment>
+                        <strong>seeds, password,</strong><br />
+                        <React.Fragment>and </React.Fragment>
+                        <strong>other account information</strong>
+                        <React.Fragment> will be lost.</React.Fragment>
+                    </p>
+                </Trans>
+                <Button variant="negative" className="small" style={{ marginLeft: '20vw', marginTop: '7vw' }} onClick={this.confirmReset}>
+                    {t('settings:reset')}
+                </Button>
 
-                        </div>
-                        <div className="col-lg-8">
-                            {/* <div className={classNames(css.set_bx)}> */}
-                            <div className={classNames(css.foo_bxx12)}>
-                                <div cllassname={classNames(css.set_bxac)}>
-                                <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                              <Icon icon="cross" size={14} />
-                            </span></Button> 
-                             <h3 style={{ marginLeft: '21vw', marginTop: '5vw' }}>{t('pow:powUpdated')}</h3>
-                                <Toggle
-                                    checked={settings.remotePoW}
-                                    onChange={() => changePowSettings()}
-                                    on={t('pow:remote')}
-                                    off={t('pow:local')}
-                                />
-                                <p style={{ marginLeft: '1vw', marginTop: '2vw' }}>
-                                    {t('pow:feeless')} {t('pow:localOrRemote')}
-                                </p>
-                                <hr />
-                                    <h3 style={{ marginLeft: '21vw', marginTop: '2vw' }}>{t('settings:reset')}</h3>
+                {wallet && wallet.ready ? (
+
+                    <ModalPassword
+                        isOpen={resetConfirm}
+                        category="negative"
+                        onSuccess={() => this.resetWallet()}
+                        onClose={() => this.setState({ resetConfirm: false })}
+                        content={{
+                            title: t('walletResetConfirmation:cannotUndo'),
+                            message: (
+                                <Trans i18nKey="walletResetConfirmation:warning">
+                                    <React.Fragment>
+                                        <React.Fragment>All of your wallet data including your </React.Fragment>
+                                        <strong>seeds, password,</strong>
+                                        <React.Fragment>and </React.Fragment>
+                                        <strong>other account information</strong>
+                                        <React.Fragment> will be lost.</React.Fragment>
+                                    </React.Fragment>
+
+
+                                </Trans>
+                            ),
+
+                            confirm: t('settings:reset'),
+                        }}
+                    />
+                ) : (
+                        <Confirm
+                            isOpen={resetConfirm}
+                            category="negative"
+                            content={{
+                                title: t('walletResetConfirmation:cannotUndo'),
+                                message: (
                                     <Trans i18nKey="walletResetConfirmation:warning">
-                                        <p>
+                                        <React.Fragment>
                                             <React.Fragment>All of your wallet data including your </React.Fragment>
-                                            <strong>seeds, password,</strong><br />
+                                            <strong>seeds, password,</strong>
                                             <React.Fragment>and </React.Fragment>
                                             <strong>other account information</strong>
                                             <React.Fragment> will be lost.</React.Fragment>
-                                        </p>
+                                        </React.Fragment>
                                     </Trans>
-                                    <Button variant="negative" className="small" style={{ marginLeft: '20vw', marginTop: '7vw' }} onClick={this.confirmReset}>
-                                        {t('settings:reset')}
-                                    </Button>
+                                ),
+                                cancel: t('cancel'),
+                                confirm: t('settings:reset'),
+                            }}
+                            onCancel={() => this.setState({ resetConfirm: false })}
+                            countdown={resetCountdown}
+                            onConfirm={() => this.resetWallet()}
+                        />
+                    )}
+                <div className={classNames(css.spe_bx)}>
 
-                                    {wallet && wallet.ready ? (
-
-                                        <ModalPassword
-                                            isOpen={resetConfirm}
-                                            category="negative"
-                                            onSuccess={() => this.resetWallet()}
-                                            onClose={() => this.setState({ resetConfirm: false })}
-                                            content={{
-                                                title: t('walletResetConfirmation:cannotUndo'),
-                                                message: (
-                                                    <Trans i18nKey="walletResetConfirmation:warning">
-                                                        <React.Fragment>
-                                                            <React.Fragment>All of your wallet data including your </React.Fragment>
-                                                            <strong>seeds, password,</strong>
-                                                            <React.Fragment>and </React.Fragment>
-                                                            <strong>other account information</strong>
-                                                            <React.Fragment> will be lost.</React.Fragment>
-                                                        </React.Fragment>
-                                                       
-
-                                                    </Trans>
-                                                ),
-
-                                                confirm: t('settings:reset'),
-                                            }}
-                                        />
-                                    ) : (
-                                            <Confirm
-                                                isOpen={resetConfirm}
-                                                category="negative"
-                                                content={{
-                                                    title: t('walletResetConfirmation:cannotUndo'),
-                                                    message: (
-                                                        <Trans i18nKey="walletResetConfirmation:warning">
-                                                            <React.Fragment>
-                                                                <React.Fragment>All of your wallet data including your </React.Fragment>
-                                                                <strong>seeds, password,</strong>
-                                                                <React.Fragment>and </React.Fragment>
-                                                                <strong>other account information</strong>
-                                                                <React.Fragment> will be lost.</React.Fragment>
-                                                            </React.Fragment>
-                                                        </Trans>
-                                                    ),
-                                                    cancel: t('cancel'),
-                                                    confirm: t('settings:reset'),
-                                                }}
-                                                onCancel={() => this.setState({ resetConfirm: false })}
-                                                countdown={resetCountdown}
-                                                onConfirm={() => this.resetWallet()}
-                                            />
-                                        )}
-                                    <div className={classNames(css.spe_bx)}>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
         );
     }

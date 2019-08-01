@@ -269,7 +269,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
         const selectedNode = getSelectedNodeFromState(getState());
         console.log('selectednode', selectedNode);
         const existingAccountNames = getAccountNamesFromState(getState());
-        console.log('exst1',existingAccountNames)
+        console.log('exst1', existingAccountNames)
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
         withRetriesOnDifferentNodes(
             [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
@@ -335,3 +335,16 @@ export const changeAccountName = (payload) => {
         payload,
     };
 };
+
+/**
+ * Dispatch to update account state after snapshot transition
+ *
+ * @method updateAccountAfterTransition
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const updateAccountAfterTransition = (payload) => ({
+    type: ActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION,
+    payload,
+});

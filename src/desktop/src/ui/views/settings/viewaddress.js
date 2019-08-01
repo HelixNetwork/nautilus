@@ -37,60 +37,48 @@ class Viewaddress extends React.PureComponent {
     render() {
 
         const { account, location, t } = this.props;
-        console.log("ViewACCOUNT===",account);
-        
-        const isSpent = ({ spent: { local, remote } }) => local || remote;        
+        console.log("ViewACCOUNT===", account);
+
+        const isSpent = ({ spent: { local, remote } }) => local || remote;
         const addressData = account.addressData.slice().sort((a, b) => b.index - a.index);
-        
+
         const currentKey = location.pathname.split('/')[2] || '/';
 
         return (
-            <div>
+            <div className={classNames(css.foo_bxx12)}>
+                <div cllassname={classNames(css.set_bxac)}>
+                    <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewAddresses')}</h5>
+                    <div className={css.scroll}>
+                        <Scrollbar>
+                            <ul className={css.addresses}>
+                                <Scrollbar className={css.scroll_address}>
+                                    {addressData.map((addressObject) => {
+                                        const address = addressObject.address + addressObject.checksum;
 
-                <section className="spage_1">
-                    <div className="container">
-                        <div className="col-lg-8">
-                            <div className={classNames(css.foo_bxx12)}>
-                                <div cllassname={classNames(css.set_bxac)}>
-                                <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
-                                            <Icon icon="cross" size={14} />
-                                        </span></Button>
-                                    <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewAddresses')}</h5>
-                                    <div className={css.scroll}>
-                                        <Scrollbar>
-                                            <ul className={css.addresses}>
-                                                <Scrollbar className={css.scroll_address}>
-                                                    {addressData.map((addressObject) => {
-                                                        const address = addressObject.address + addressObject.checksum;
-
-                                                        return (
-                                                            <li key={address}>
-                                                                <p className={isSpent(addressObject) ? css.spent : null}>
-                                                                    <Clipboard
-                                                                        text={address}
-                                                                        title={t('receive:addressCopied')}
-                                                                        success={t('receive:addressCopiedExplanation')}
-                                                                    >
-                                                                        {addressObject.address.match(/.{1,2}/g).join(' ')}{' '}
-                                                                        <span className={css.active}>{addressObject.checksum.match(/.{1,2}/g).join(' ')}</span>
-                                                                    </Clipboard>
-                                                                </p>
-                                                                <strong>
-                                                                    {formatValue(addressObject.balance)}
-                                                                    {formatUnit(addressObject.balance)}
-                                                                </strong>
-                                                            </li>
-                                                        );
-                                                    })}
-                                                </Scrollbar>
-                                            </ul>
-                                        </Scrollbar>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                        return (
+                                            <li key={address}>
+                                                <p className={isSpent(addressObject) ? css.spent : null}>
+                                                    <Clipboard
+                                                        text={address}
+                                                        title={t('receive:addressCopied')}
+                                                        success={t('receive:addressCopiedExplanation')}
+                                                    >
+                                                        {addressObject.address.match(/.{1,2}/g).join(' ')}{' '}
+                                                        <span className={css.active}>{addressObject.checksum.match(/.{1,2}/g).join(' ')}</span>
+                                                    </Clipboard>
+                                                </p>
+                                                <strong>
+                                                    {formatValue(addressObject.balance)}
+                                                    {formatUnit(addressObject.balance)}
+                                                </strong>
+                                            </li>
+                                        );
+                                    })}
+                                </Scrollbar>
+                            </ul>
+                        </Scrollbar>
                     </div>
-                </section>
+                </div>
             </div>
         );
     }

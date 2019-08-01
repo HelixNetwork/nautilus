@@ -41,32 +41,23 @@ class SettingsLanguage extends React.PureComponent {
 
 
     render() {
-        const { t, locale, dismissAlert } = this.props;
+        const { t, locale } = this.props;
         const { selection } = this.state;
         return (
-
-            <div className="col-lg-8">
-                <div className={classNames(css.foo_bxx12)}>
-                    <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >
-                        <span >
-                            <Icon icon="cross" size={14} />
-                        </span>
-                    </Button>
-                    <form onSubmit={(e) => this.changeLocale(e)}>
-                        <Select
-                            label={t('languageSetup:language')}
-                            value={I18N_LOCALE_LABELS[I18N_LOCALES.indexOf(selection || locale)]}
-                            onChange={(value) => this.setState({ selection: value })}
-                            options={I18N_LOCALES.map((item, index) => {
-                                return { value: item, label: I18N_LOCALE_LABELS[index] };
-                            })}
-                        />
-                        <Button style={{ marginLeft: '19vw', marginTop: '4vw' }} type="submit" >{t('global:save')}</Button>
-                        <div className={classNames(css.spe_bx)}></div>
-                    </form>
-                </div>
+            <div className={classNames(css.foo_bxx12)}>
+                <form onSubmit={(e) => this.changeLocale(e)}>
+                    <Select
+                        label={t('languageSetup:language')}
+                        value={I18N_LOCALE_LABELS[I18N_LOCALES.indexOf(selection || locale)]}
+                        onChange={(value) => this.setState({ selection: value })}
+                        options={I18N_LOCALES.map((item, index) => {
+                            return { value: item, label: I18N_LOCALE_LABELS[index] };
+                        })}
+                    />
+                    <Button style={{ marginLeft: '19vw', marginTop: '4vw' }} type="submit" >{t('global:save')}</Button>
+                    <div className={classNames(css.spe_bx)}></div>
+                </form>
             </div>
-
         );
     }
 }
