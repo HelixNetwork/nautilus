@@ -313,6 +313,18 @@ export const generateAddressesAndGetBalance = (seedStore, index, accountName, se
 };
 
 /**
+ * Dispatch when snapshot transition is about to be performed
+ *
+ * @method snapshotTransitionRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const snapshotTransitionRequest = () => ({
+    type: WalletActionTypes.SNAPSHOT_TRANSITION_REQUEST,
+});
+
+
+/**
  * Checks for balance against generated addresses for transition
  * In case there are no addresses generated yet, it will generate a batch of addresses
  * and will fetch balance against those

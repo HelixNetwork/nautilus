@@ -14,8 +14,8 @@ import Icon from 'ui/components/icon';
 import ModalPassword from 'ui/components/modal/Password';
 import { reinitialise as reinitialiseStorage } from 'database';
 import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
-
-
+import  changePowSettings from 'actions/settings';
+import Toggle from 'ui/components/toggle';
 
 /**
  * Advanced settings component
@@ -28,7 +28,7 @@ class AdvancedSettings extends React.PureComponent {
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
-
+        changePowSettings: PropTypes.func.isRequired,
         generateAlert: PropTypes.func.isRequired,
         wallet: PropTypes.object,
         settings: PropTypes.object.isRequired,
@@ -86,7 +86,7 @@ class AdvancedSettings extends React.PureComponent {
 
     render() {
 
-        const { t, settings, wallet } = this.props;
+        const { t, settings, wallet , changePowSettings} = this.props;
         const { resetConfirm, resetCountdown } = this.state;
 
         return (
@@ -114,7 +114,18 @@ class AdvancedSettings extends React.PureComponent {
                                 <Button type="submit"style={{marginLeft:'39vw'}}  variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} ><span >
                               <Icon icon="cross" size={14} />
                             </span></Button> 
-                                    <h3 style={{ marginLeft: '21vw', marginTop: '5vw' }}>{t('settings:reset')}</h3>
+                             <h3 style={{ marginLeft: '21vw', marginTop: '5vw' }}>{t('pow:powUpdated')}</h3>
+                                <Toggle
+                                    checked={settings.remotePoW}
+                                    onChange={() => changePowSettings()}
+                                    on={t('pow:remote')}
+                                    off={t('pow:local')}
+                                />
+                                <p style={{ marginLeft: '1vw', marginTop: '2vw' }}>
+                                    {t('pow:feeless')} {t('pow:localOrRemote')}
+                                </p>
+                                <hr />
+                                    <h3 style={{ marginLeft: '21vw', marginTop: '2vw' }}>{t('settings:reset')}</h3>
                                     <Trans i18nKey="walletResetConfirmation:warning">
                                         <p>
                                             <React.Fragment>All of your wallet data including your </React.Fragment>
@@ -200,6 +211,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     generateAlert,
-
+    changePowSettings
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AdvancedSettings));

@@ -1,4 +1,4 @@
-import React,{ PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import css from './settings.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -11,14 +11,18 @@ import {
 } from 'actions/wallet';
 import SeedStore from 'libs/seed';
 import { connect } from 'react-redux';
-import { getAddressesForSelectedAccount } from 'selectors/accounts';
+import {
+    getAddressesForSelectedAccount,
+    selectAccountInfo,
+    getSelectedAccountName
+} from 'selectors/accounts';
 import ModalConfirm from 'ui/components/modal/Confirm';
 import Button from 'ui/components/button';
 import Loading from 'ui/components/loading';
 import { formatValue, formatUnit } from 'libs/hlx/utils';
 import { round } from 'libs/utils';
 import size from 'lodash/size';
-import Scrollbar  from 'ui/components/scrollbar';
+import Scrollbar from 'ui/components/scrollbar';
 import Top from 'ui/components/topbar';
 
 /**
@@ -31,7 +35,8 @@ class Snapshot extends PureComponent {
         wallet: PropTypes.object.isRequired,
         /** @ignore */
         ui: PropTypes.object.isRequired,
-    
+        account: PropTypes.object.isRequired,
+        accountNames: PropTypes.string.isRequired,
         /** Addresses for selected account */
         addresses: PropTypes.array.isRequired,
         /** @ignore */
@@ -40,7 +45,7 @@ class Snapshot extends PureComponent {
         setBalanceCheckFlag: PropTypes.func.isRequired,
         /** @ignore */
         generateAddressesAndGetBalance: PropTypes.func.isRequired,
-    
+        // setWalletBusy: PropTypes.func.isRequired,
         /** @ignore */
         transitionForSnapshot: PropTypes.func.isRequired,
         /** @ignore */
@@ -75,9 +80,9 @@ class Snapshot extends PureComponent {
 
         if (ui.isSyncing || ui.isTransitioning || ui.isAttachingToTangle || wallet.balanceCheckFlag) {
             Electron.updateMenu('enabled', false);
-            this.props.setWalletBusy(true);
+            // this.props.setWalletBusy(true);
         } else {
-            this.props.setWalletBusy(false);
+            // this.props.setWalletBusy(false);
             Electron.updateMenu('enabled', true);
             Electron.garbageCollect();
         }
@@ -87,12 +92,11 @@ class Snapshot extends PureComponent {
     * @returns {Promise}
     */
     syncAccount = async () => {
-        const { wallet } = this.props;
-        const { accountName, meta } = this.props.account;
+        const { account, wallet, accountNames } = this.props;
 
-        const seedStore = await new SeedStore[meta.type](wallet.password, accountName, meta);
+        const seedStore = await new SeedStore[account.meta.type](wallet.password, accountNames, account.meta);
 
-        this.props.manuallySyncAccount(seedStore, accountName);
+        this.props.manuallySyncAccount(seedStore, accountNames);
     };
 
     /**
@@ -100,16 +104,10 @@ class Snapshot extends PureComponent {
      * @returns {Promise}
      */
     startSnapshotTransition = async () => {
-        const { wallet, addresses } = this.props;
-        console.log('wallet:=',wallet);
-        console.log('addressess:=',addresses);
-        const { accountName, meta } = this.props.account;
-        console.log('accoundname:=',accountName);
-        console.log('meta:=',meta);
-
-        const seedStore = await new SeedStore[meta.type](wallet.password, accountName, meta);
-
-        this.props.transitionForSnapshot(seedStore, addresses, meta.type);
+        const { wallet, addresses, account, accountNames } = this.props;
+        console.log('Accountname', accountNames);
+        const seedStore = await new SeedStore[account.meta.type](wallet.password, accountNames, account.meta);
+        this.props.transitionForSnapshot(seedStore, addresses, account.meta.type);
     };
 
     /**
@@ -118,12 +116,11 @@ class Snapshot extends PureComponent {
      */
     transitionBalanceOk = async () => {
         this.props.setBalanceCheckFlag(false);
-        const { wallet } = this.props;
-        const { accountName, meta } = this.props.account;
+        const { account, wallet, accountNames } = this.props;
 
-        const seedStore = await new SeedStore[meta.type](wallet.password, accountName, meta);
+        const seedStore = await new SeedStore[account.meta.type](wallet.password, accountNames, account.meta);
 
-        this.props.completeSnapshotTransition(seedStore, accountName, wallet.transitionAddresses);
+        this.props.completeSnapshotTransition(seedStore, accountNames, wallet.transitionAddresses);
     };
 
     /**
@@ -132,14 +129,12 @@ class Snapshot extends PureComponent {
      */
     transitionBalanceWrong = async () => {
         this.props.setBalanceCheckFlag(false);
-        const { wallet } = this.props;
-        const { accountName, meta } = this.props.account;
-
-        const seedStore = await new SeedStore[meta.type](wallet.password, accountName, meta);
+        const { account, wallet, accountNames } = this.props;
+        const seedStore = await new SeedStore[account.meta.type](wallet.password, accountNames, account.meta);
 
         const currentIndex = wallet.transitionAddresses.length;
 
-        this.props.generateAddressesAndGetBalance(seedStore, currentIndex, accountName);
+        this.props.generateAddressesAndGetBalance(seedStore, currentIndex, accountNames);
     };
     render() {
         const { ui, wallet, t, activeStepIndex, activeSteps } = this.props;
@@ -169,68 +164,70 @@ class Snapshot extends PureComponent {
                     }
                 />
             );
-                }
-            return (
-                <div>
-                     <Top
+        }
+        return (
+            <div>
+                <Top
                     bal={'none'}
                     main={'block'}
                     user={'none'}
                     history={this.props.history}
                 />
-                 <section className="spage_1">
-             <div className={classNames(css.foo_bxx12)}>
-                <div className={css.scroll}>
-                    <Scrollbar>
-                        <article>
-                            <h3>{t('advancedSettings:snapshotTransition')}</h3>
-                            <p>
-                                {t('snapshotTransition:snapshotExplanation')} <br />
-                                {t('snapshotTransition:hasSnapshotTakenPlace')}
-                            </p>
-                            <Button
-                                className="small"
-                                onClick={this.startSnapshotTransition}
-                                loading={ui.isTransitioning || ui.isAttachingToTangle}
-                            >
-                                {t('snapshotTransition:transition')}
-                            </Button>
-                            <ModalConfirm
-                                isOpen={wallet.balanceCheckFlag}
-                                category="primary"
-                                onConfirm={this.transitionBalanceOk}
-                                onCancel={this.transitionBalanceWrong}
-                                content={{
-                                    title: t('snapshotTransition:detectedBalance', {
-                                        amount: round(formatValue(wallet.transitionBalance), 1),
-                                        unit: formatUnit(wallet.transitionBalance),
-                                    }),
-                                    message: t('snapshotTransition:isThisCorrect'),
-                                    confirm: t('global:yes'),
-                                    cancel: t('global:no'),
-                                }}
-                            />
-                            
+                <section className="spage_1">
+                    <div className={classNames(css.foo_bxx12)}>
+                        <div className={css.scroll}>
+                            <Scrollbar>
+                                <article>
+                                    <h3>{t('advancedSettings:snapshotTransition')}</h3>
+                                    <p>
+                                        {t('snapshotTransition:snapshotExplanation')} <br />
+                                        {t('snapshotTransition:hasSnapshotTakenPlace')}
+                                    </p>
+                                    <Button
+                                        className="small"
+                                        onClick={this.startSnapshotTransition}
+                                        loading={ui.isTransitioning || ui.isAttachingToTangle}
+                                    >
+                                        {t('snapshotTransition:transition')}
+                                    </Button>
+                                    <ModalConfirm
+                                        isOpen={wallet.balanceCheckFlag}
+                                        category="primary"
+                                        onConfirm={this.transitionBalanceOk}
+                                        onCancel={this.transitionBalanceWrong}
+                                        content={{
+                                            title: t('snapshotTransition:detectedBalance', {
+                                                amount: round(formatValue(wallet.transitionBalance), 1),
+                                                unit: formatUnit(wallet.transitionBalance),
+                                            }),
+                                            message: t('snapshotTransition:isThisCorrect'),
+                                            confirm: t('global:yes'),
+                                            cancel: t('global:no'),
+                                        }}
+                                    />
 
-                          
-                        </article>
-                    </Scrollbar>
-                </div>
-                  
 
-                </div>
+
+                                </article>
+                            </Scrollbar>
+                        </div>
+
+
+                    </div>
                 </section>
-                </div>
-            );
+            </div>
+        );
 
-        }
     }
+}
 
 const mapStateToProps = (state) => ({
     ui: state.ui,
     wallet: state.wallet,
     settings: state.settings,
     addresses: getAddressesForSelectedAccount(state),
+    accountNames: getSelectedAccountName(state),
+    account: selectAccountInfo(state),
     activeStepIndex: state.progress.activeStepIndex,
     activeSteps: state.progress.activeSteps,
 });
