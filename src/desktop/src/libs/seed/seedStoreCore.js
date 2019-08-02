@@ -1,7 +1,7 @@
 /* global Electron */
 import { performPow } from 'libs/hlx/transfers';
 import {
-    astransactionObject
+    asTransactionObject
 } from "@helixnetwork/transaction-converter"
 export default class SeedStoreCore {
     /**
@@ -39,7 +39,15 @@ export default class SeedStoreCore {
      *
      * @returns {Promise<string>}
      */
-    getDigest(TxBytes) {
-        return Promise.resolve(astransactionObject(TxBytes).hash);
+    getDigest=async(TxBytes)=> {
+        console.log("here sa =", TxBytes);
+        try{
+          let result =  await asTransactionObject(TxBytes);
+          console.log("result",result);
+        return await asTransactionObject(TxBytes).hash;
+      }
+      catch(err){
+        console.log('eerererere',err);
+      }
     }
 }

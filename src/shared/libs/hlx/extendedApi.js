@@ -331,8 +331,6 @@ const sendTransfer = (settings) => (
  * @returns {function(*, number): Promise<object>}
  */
 const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>{
-    console.log('sett',settings);
-    console.log('ref',reference);
     if(isEmpty(reference))
         return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
             depth).catch(err => err);
@@ -441,7 +439,7 @@ const attachToTangle = (settings, seedStore) => (
     txs,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
-    const shouldOffloadPow = get(seedStore, 'offloadPow') === true;
+    let shouldOffloadPow = get(seedStore, 'offloadPow') === true;
     if (shouldOffloadPow) {
         const request = (requestTimeout) =>
         new Promise((resolve, reject) => {

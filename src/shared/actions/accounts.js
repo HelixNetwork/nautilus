@@ -143,8 +143,6 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
             () => dispatch(generateAccountSyncRetryAlert()),
         )((...args) => syncAccount(...[...args, withQuorum]))(existingAccountState, seed, genFn, notificationFn)
             .then(({ node, result }) => {
-                console.log('node', node);
-                console.log('res', result);
                 dispatch(changeNode(node));
                 dispatch(accountInfoFetchSuccess(result));
             })
