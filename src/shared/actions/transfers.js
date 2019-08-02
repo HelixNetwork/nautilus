@@ -676,7 +676,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     const isZeroValue = value === 0;
 
     const cached = {
-        hex: [],
+        txs: [],
         transactionObjects: [],
     };
 
@@ -697,15 +697,15 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 console.log('afterdispatch',seedStore);
                 return seedStore.prepareTransfers(transfer, options);
             })
-            .then((hex) => {
+            .then((txs) => {
                 if (!isZeroValue) {
                     hasSignedInputs = true;
                 }
 
-                cached.hex = hex;
+                cached.txs = txs;
 
                 const convertToTransactionObjects = (hexString) => asTransactionObject(hexString);
-                cached.transactionObjects = map(cached.hex, convertToTransactionObjects);
+                cached.transactionObjects = map(cached.txs, convertToTransactionObjects);
 
                 if (isBundle(cached.transactionObjects)) {
                     isValidBundle = true;
@@ -724,7 +724,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 dispatch(setNextStepAsActive());
 
                 const performLocalPow = () =>
-                    attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.hex);
+                    attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.txs);
 
                 if (!shouldOffloadPow) {
                     return performLocalPow();
@@ -746,7 +746,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                         seedStore,
                         { offloadPow: true },
                     ),
-                )(trunkTransaction, branchTransaction, cached.hex).catch(() => {
+                )(trunkTransaction, branchTransaction, cached.txs).catch(() => {
                     dispatch(
                         generateAlert(
                             'info',
@@ -781,7 +781,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                                         { offloadPow: true },
                                     ),
                                 ),
-                            )(trunkTransaction, branchTransaction, cached.hex);
+                            )(trunkTransaction, branchTransaction, cached.txs);
                         })
                         .then(({ result }) => result)
                         .catch(() => {
@@ -801,10 +801,10 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 });
             })
             // Re-check spend statuses of all addresses in bundle
-            .then(({ hex, transactionObjects }) => {
+            .then(({ txs, transactionObjects }) => {
                 // Skip this check if it's a zero value transaction
                 if (isZeroValue) {
-                    return Promise.resolve({ hex, transactionObjects });
+                    return Promise.resolve({ txs, transactionObjects });
                 }
 
                 // Progressbar step => (Validating transaction addresses)
@@ -817,11 +817,11 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                         throw new Error(Errors.KEY_REUSE);
                     }
 
-                    return { hex, transactionObjects };
+                    return { txs, transactionObjects };
                 });
             })
-            .then(({ hex, transactionObjects }) => {
-                cached.hex = hex;
+            .then(({ txs, transactionObjects }) => {
+                cached.txs = txs;
                 cached.transactionObjects = transactionObjects;
 
                 // Progressbar step => (Broadcasting)
@@ -850,7 +850,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                                 20000,
                             ),
                         ),
-                )(storeAndBroadcast)(cached.hex);
+                )(storeAndBroadcast)(cached.txs);
             })
             .then(() => {
                 return syncAccountAfterSpending(undefined, withQuorum)(
