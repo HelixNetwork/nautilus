@@ -9,6 +9,7 @@ import logo from 'ui/images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faPowerOff, faTh } from '@fortawesome/free-solid-svg-icons';
 import Button from 'ui/components/button';
+import Icon from 'ui/components/icon';
 
 class Top extends React.PureComponent {
 
@@ -32,11 +33,9 @@ class Top extends React.PureComponent {
                         </React.Fragment>
                     ) : (
                             <React.Fragment>
-                                <Button type="submit" style={{ marginLeft: '39vw' }} variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >
-                                    <span >
-                                        <Icon icon="cross" size={14} />
-                                    </span>
-                                </Button>
+                                <span style={{ float: "right", cursor: 'pointer'}} onClick={() => this.props.history.push('/onboarding/login')} >
+                                    <Icon icon="cross" size={18} />
+                                </span>
                             </React.Fragment>
                         )}
                 </div>

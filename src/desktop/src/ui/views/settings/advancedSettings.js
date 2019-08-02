@@ -3,19 +3,17 @@ import css from './settings.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n, Trans, } from 'react-i18next';
-import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Top from '../../components/topbar';
+
 import { clearVault } from 'libs/crypto';
-import { generateAlert } from 'actions/alerts';
-import Button from 'ui/components/button';
-import Confirm from 'ui/components/modal/Confirm';
-import Icon from 'ui/components/icon';
-import ModalPassword from 'ui/components/modal/Password';
 import { reinitialise as reinitialiseStorage } from 'database';
 import { getEncryptionKey, ALIAS_REALM } from 'utils/realm';
 import  changePowSettings from 'actions/settings';
-import Toggle from 'ui/components/toggle';
+import { generateAlert } from 'actions/alerts';
+
+import Button from 'ui/components/button';
+import Confirm from 'ui/components/modal/Confirm';
+import ModalPassword from 'ui/components/modal/Password';
 
 /**
  * Advanced settings component
