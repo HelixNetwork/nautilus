@@ -45,7 +45,7 @@ class SettingsLanguage extends React.PureComponent {
         const { selection } = this.state;
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <form onSubmit={(e) => this.changeLocale(e)}>
+                <form  style={{marginTop:'7vw'}} onSubmit={(e) => this.changeLocale(e)} >
                     <Select
                         label={t('languageSetup:language')}
                         value={I18N_LOCALE_LABELS[I18N_LOCALES.indexOf(selection || locale)]}
@@ -54,7 +54,7 @@ class SettingsLanguage extends React.PureComponent {
                             return { value: item, label: I18N_LOCALE_LABELS[index] };
                         })}
                     />
-                    <Button style={{ marginLeft: '19vw', marginTop: '4vw' }} type="submit" >{t('global:save')}</Button>
+                    <Button style={{ marginLeft: '26vw', marginTop: '4vw' }} type="submit" >{t('global:save')}</Button>
                     <div className={classNames(css.spe_bx)}></div>
                 </form>
             </div>

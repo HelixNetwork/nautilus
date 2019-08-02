@@ -94,7 +94,7 @@ class AccountName extends React.PureComponent {
         return (
             <div className={classNames(css.foo_bxx12)}>
                 <div cllassname={classNames(css.set_bxac)}>
-                    <form
+                    <form style={{marginTop:'7vw'}}
                         onSubmit={(e) => {
                             e.preventDefault();
                             this.setAccountName();
@@ -105,7 +105,7 @@ class AccountName extends React.PureComponent {
                             label={t('accountManagement:editAccountName')}
                             onChange={(value) => this.setState({ newAccountName: value })}
                         />
-                        <Button type="submit" style={{ marginLeft: '14vw', marginTop: '4vw' }} disabled={newAccountName.replace(/^\s+|\s+$/g, '') === accountName}>{t('global:save')}</Button>
+                        <Button type="submit" style={{ marginLeft: '26vw', marginTop: '4vw' }} disabled={newAccountName.replace(/^\s+|\s+$/g, '') === accountName}>{t('global:save')}</Button>
                     </form>
                 </div>
             </div>

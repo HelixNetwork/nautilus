@@ -181,12 +181,13 @@ class Snapshot extends PureComponent {
                         <div className={css.scroll}>
                             <Scrollbar>
                                 <article>
-                                    <h3>{t('advancedSettings:snapshotTransition')}</h3>
+                                    <h3 style={{marginLeft:'14vw'}}>{t('advancedSettings:snapshotTransition')}</h3>
                                     <p>
                                         {t('snapshotTransition:snapshotExplanation')} <br />
                                         {t('snapshotTransition:hasSnapshotTakenPlace')}
                                     </p>
                                     <Button
+                                         style={{marginLeft:'16vw'}}
                                         className="small"
                                         onClick={this.startSnapshotTransition}
                                         loading={ui.isTransitioning || ui.isAttachingToTangle}

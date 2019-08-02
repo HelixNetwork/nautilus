@@ -424,6 +424,18 @@ class Wallet {
             realm.create('Account', accountData);
         });
     }
+    /**
+     * Updates remote proof of work setting.
+     *
+     * @method updateRemotePoWSetting
+     * @param {boolean} payload
+     */
+    static updateRemotePowSetting(payload) {
+        realm.write(() => {
+            console.log("state",payload);
+            Wallet.latestSettings.remotePoW = payload;
+        });
+    }
 }
 
 /**

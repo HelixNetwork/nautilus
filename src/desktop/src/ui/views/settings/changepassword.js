@@ -107,13 +107,13 @@ class Changepassword extends React.PureComponent {
             <div className={classNames(css.foo_bxx12)}>
                 <div cllassname={classNames(css.set_bxac)}>
                     <form onSubmit={(e) => this.changePassword(e)}>
-                        <h5 style={{ marginLeft: '14vw', marginTop: '3vw ' }}>{t('changePassword:currentPassword')}</h5>
+                        <h5 style={{ marginLeft: '22vw', marginTop: '3vw ' }}>{t('changePassword:currentPassword')}</h5>
                         <Password style={{ marginTop: '-2vw' }} type="text" value={passwordCurrent} onChange={(value) => this.setState({ passwordCurrent: value })} className={classNames(css.ssetting_textline)} /><br /><br />
-                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:newPassword')}</h5>
+                        <h5 style={{ marginLeft: '22vw', marginTop: '-6vw' }}>{t('changePassword:newPassword')}</h5>
                         <Password style={{ marginTop: '-2vw' }} type="text" showScore value={passwordNew} onChange={(value) => this.setState({ passwordNew: value })} className={classNames(css.ssetting_textline)} /><br /><br />
-                        <h5 style={{ marginLeft: '14vw', marginTop: '-6vw' }}>{t('changePassword:confirmPassword')}</h5>
+                        <h5 style={{ marginLeft: '22vw', marginTop: '-6vw' }}>{t('changePassword:confirmPassword')}</h5>
                         <Password style={{ marginTop: '-2vw' }} type="text" value={passwordConfirm} onChange={(value) => this.setState({ passwordConfirm: value })} className={classNames(css.ssetting_textline)} /><br /><br />
-                        <Button style={{ marginLeft: '18vw', marginTop: '-2vw' }} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
+                        <Button style={{ marginLeft: '26vw', marginTop: '-2vw' }} type="submit" disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}>{t('global:save')}</Button>
                         <div className={classNames(css.spe_bx)}></div>
                     </form>
                 </div>
