@@ -4,7 +4,7 @@ import { getSelectedNodeFromState } from '../selectors/global';
 import { changeHelixNode } from '../libs/hlx'
 import { SettingsActionTypes } from '../actions/types';
 import { generateAlert, generateNodeOutOfSyncErrorAlert, generateUnsupportedNodeErrorAlert } from '../actions/alerts';
-
+import { allowsRemotePow } from '../libs/hlx/extendedApi';
 /**
  * Change wallet's active language
  *
@@ -84,6 +84,56 @@ export const changeNode = (payload) => (dispatch, getState) => {
         // Change provider on global helix instance
         changeHelixNode(payload);
     }
+};
+/**
+ * Makes an API call for checking if attachToTangle is enabled on the selected IRI node
+ * and changes proof of work configuration for wallet
+ *
+ * @method changePowSettings
+ *
+ * @returns {function}
+ */
+export function changePowSettings() {
+    return (dispatch, getState) => {
+        const settings = getState().settings;
+        if (!settings.remotePoW) {
+            allowsRemotePow(settings.node).then((hasRemotePow) => {
+                if (!hasRemotePow) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:attachToTangleUnavailable'),
+                            i18next.t('global:attachToTangleUnavailableExplanationShort'),
+                            10000,
+                        ),
+                    );
+                }
+                dispatch(setRemotePoW(!settings.remotePoW));
+                dispatch(generateAlert('success', i18next.t('pow:powUpdated'), i18next.t('pow:powUpdatedExplanation')));
+            });
+        } else {
+            dispatch(setRemotePoW(!settings.remotePoW));
+            dispatch(generateAlert('success', i18next.t('pow:powUpdated'), i18next.t('pow:powUpdatedExplanation')));
+        }
+    };
+}
+/**
+ * Dispatch to update proof of work configuration for wallet
+ *
+ * @method setRemotePoW
+ * @param {boolean} payload
+ *
+ * @returns {{type: {string}, payload: {boolean} }}
+ */
+export const setRemotePoW = (payload) => {
+    console.log("payload",payload);
+    Wallet.updateRemotePowSetting(payload);
+    console.log("payload",payload);
+    return {
+        
+        type: SettingsActionTypes.SET_REMOTE_POW,
+        payload,
+    };
 };
 
 /**

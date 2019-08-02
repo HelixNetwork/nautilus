@@ -14,6 +14,10 @@ const initialState = {
 
     node: DEFAULT_NODE,
     /**
+     * Sets the remote POW
+     */
+    remotePoW:false,
+    /**
      * List of IRI nodes
      */
     nodes: DEFAULT_NODES,
@@ -80,6 +84,11 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 locale: action.payload,
             };
+        case SettingsActionTypes.SET_REMOTE_POW:
+                return{
+                    ...state,
+                    remotePoW:action.payload
+                };
         case SettingsActionTypes.UPDATE_THEME:
             return {
                 ...state,
