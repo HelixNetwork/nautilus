@@ -33,7 +33,7 @@ class SettingsNode extends React.PureComponent {
         return (
             <div className={classNames(css.foo_bxx12)}>
                 <div cllassname={classNames(css.set_bxac)}>
-                    <h5 style={{ marginLeft: '14vw', marginTop: '0vw' }}>{t('advancedSettings:selectNode')}</h5>
+                    <h5 style={{ marginLeft: '14vw', marginTop: '4vw' }}>{t('advancedSettings:selectNode')}</h5>
                     <h5 style={{ marginLeft: '14vw', marginTop: '11vw' }}>{t('advancedSettings:addCustomNode')}</h5>
                     <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br />
                     <Button style={{ marginLeft: '14vw', marginTop: '4vw' }} onClick={() => this.stepForward('done')}>{t('global:save')}</Button>

@@ -94,18 +94,18 @@ class AdvancedSettings extends React.PureComponent {
                 <div className={classNames(css.set_bxac)}>
                                 
                                 
-                             <h3 style={{ marginLeft: '21vw', marginTop: '0vw' }}>{t('pow:powUpdated')}</h3>
+                             <h3 style={{ marginLeft: '25vw', marginTop: '0vw' }}>{t('pow:powUpdated')}</h3>
                                 <Toggle
                                     checked={settings.remotePoW}
                                     onChange={() => changePowSettings()}
                                     on={t('pow:remote')}
                                     off={t('pow:local')}
                                 />
-                                <p style={{ marginLeft: '1vw', marginTop: '2vw' }}>
+                                <p style={{ marginLeft: '5vw', marginTop: '2vw' }}>
                                     {t('pow:feeless')} {t('pow:localOrRemote')}
                                 </p>
                                 <hr />
-                                    <h3 style={{ marginLeft: '21vw', marginTop: '2vw' }}>{t('settings:reset')}</h3>
+                                    <h3 style={{ marginLeft: '29vw', marginTop: '2vw' }}>{t('settings:reset')}</h3>
                                     <Trans i18nKey="walletResetConfirmation:warning">
                                         <React.Fragment>
                                             <React.Fragment>All of your wallet data including your </React.Fragment>
@@ -115,7 +115,7 @@ class AdvancedSettings extends React.PureComponent {
                                             <React.Fragment> will be lost.</React.Fragment>
                                         </React.Fragment>
                                     </Trans>
-                                    <Button variant="negative" className="small" style={{ marginLeft: '20vw', marginTop: '7vw' }} onClick={this.confirmReset}>
+                                    <Button variant="negative" className="small" style={{ marginLeft: '28vw', marginTop: '7vw' }} onClick={this.confirmReset}>
                                         {t('settings:reset')}
                                     </Button>
 

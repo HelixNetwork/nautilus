@@ -45,7 +45,7 @@ class Currency extends React.PureComponent {
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <form
+                <form style={{marginTop:'7vw'}}
                     onSubmit={(e) => {
                         e.preventDefault();
                         this.setCurrency(this.state.selection);
@@ -64,7 +64,7 @@ class Currency extends React.PureComponent {
                     />
                 </form>
                 <Button
-                    style={{ marginLeft: '14vw', marginTop: '4vw' }}
+                    style={{ marginLeft: '26vw', marginTop: '4vw' }}
                     loading={isFetchingCurrencyData}
                     type="submit">
                     {t('global:save')}

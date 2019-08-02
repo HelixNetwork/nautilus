@@ -37,7 +37,7 @@ class SettingsTheme extends React.PureComponent {
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <form onSubmit={(e) => {
+                <form  style={{marginTop:'7vw'}} onSubmit={(e) => {
                     e.preventDefault();
                     if (themeName) {
                         document.body.style.background = themes[themeName].body.bg;
@@ -57,7 +57,7 @@ class SettingsTheme extends React.PureComponent {
                             };
                         })}
                     />
-                    <Button style={{ marginLeft: '14vw', marginTop: '4vw' }} type="submit" disabled={!themeName || themeName === this.props.themeName}>{t('global:save')}</Button>
+                    <Button style={{ marginLeft: '26vw', marginTop: '4vw' }} type="submit" disabled={!themeName || themeName === this.props.themeName}>{t('global:save')}</Button>
                     <div className={classNames(css.spe_bx)}>
                     </div>
                 </form>
