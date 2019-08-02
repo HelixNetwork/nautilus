@@ -1,5 +1,6 @@
 import { ipcRenderer as ipc, clipboard, remote } from 'electron';
 import { indexToChar } from 'libs/hlx/converter';
+import {getChecksum as checksum} from 'libs/hlx/utils';
 
 import electronSettings from 'electron-settings';
 import keytar from 'keytar';
@@ -368,6 +369,20 @@ const Electron = {
      */
     reload: () => {
         remote.getCurrentWindow().webContents.goToIndex(0);
+    },
+
+       /**
+     * Calculate seed checksum
+     * @param {array} bytes - Target seed byte array
+     * @returns {string | array} Seed checksum
+     */
+    getChecksum: async (bytes) => {
+        let txBytes = '';
+        for (let i = 0; i < bytes.length; i++) {
+            txBytes = txBytes.concat(indexToChar(bytes[i]));
+        }
+        const final_checksum = await checksum(txBytes);        
+        return final_checksum;
     },
 
     /**

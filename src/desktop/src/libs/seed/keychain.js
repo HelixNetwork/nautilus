@@ -197,6 +197,7 @@ class Keychain extends SeedStoreCore {
      * @returns {array} Decrypted seed
      */
     getSeed = async (rawBits) => {
+        
         const vault = await Electron.readKeychain(this.accountId);
 
         if (!vault) {
