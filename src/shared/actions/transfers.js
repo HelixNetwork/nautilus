@@ -66,7 +66,9 @@ import { Account } from '../database';
 
 import {
     getChecksum,
-    noChecksum
+    noChecksum,
+    ADDRESS_LENGTH,
+    addChecksum
 } from '../libs/hlx/utils';
 
 import {
@@ -403,7 +405,7 @@ export const forceTransactionPromotion = (
             Account.update(accountName, newState);
 
             // Update redux store
-            dispatch(updateAccountAfterReattachment(newState));
+            dispatch(updateAccountAfterReattachment(newStagetChecksumte));
             const tailTransaction = find(reattachment, { currentIndex: 0 });
 
             return promote(tailTransaction);
@@ -429,13 +431,120 @@ export const forceTransactionPromotion = (
  *
  * @returns {function} dispatch
  */
-export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true) => async (
+// export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true) => async (
+//     dispatch,
+//     getState,
+// ) => {
+//     dispatch(sendTransferRequest());
+//
+//     const address = size(receiveAddress) === ADDRESS_LENGTH ? receiveAddress : await getChecksum(receiveAddress);
+//     console.log('intradd',address);
+//     // Keep track if the inputs are signed
+//     let hasSignedInputs = false;
+//
+//     // Keep track if the created bundle is valid after inputs are signed
+//     let isValidBundle = false;
+//
+//     let maxInputs = 0;
+//
+//     // Initialize account state
+//     // Reassign with latest state when account is synced
+//     let accountState = selectedAccountStateFactory(accountName)(getState());
+//     console.log('intrst',accountState);
+//     const withPreTransactionSecurityChecks = () => {
+//         // Progressbar step => (Validating receive address)
+//         dispatch(setNextStepAsActive());
+//         console.log(isLastBitZero(address));
+//         // Check the last bit for validity
+//         return Promise.resolve(isLastBitZero(address))
+//             .then((lastBitZero) => {
+//                 console.log('intrlbz',lastBitZero);
+//                 if (!lastBitZero) {
+//                     throw new Error(Errors.INVALID_LAST_BIT);
+//                 }
+//
+//                 return typeof seedStore.getMaxInputs === 'function' ? seedStore.getMaxInputs() : Promise.resolve(0);
+//             })
+//             .then((maxInputResponse) => {
+//                 maxInputs = maxInputResponse;
+//
+//                 // Make sure that the address a user is about to send to is not already used.
+//                 return isAnyAddressSpent(undefined, withQuorum)([address]).then((isSpent) => {
+//                     if (isSpent) {
+//                         throw new Error(Errors.KEY_REUSE);
+//                     }
+//
+//                     // Progressbar step => (Syncing account)
+//                     dispatch(setNextStepAsActive());
+//
+//                     return syncAccount(undefined, withQuorum)(accountState, seedStore);
+//                 });
+//             })
+//             .then((newState) => {
+//                 // Assign latest account but do not update the local store yet.
+//                 // Only update the local store with updated account information after this transaction is successfully completed.
+//                 accountState = newState;
+//
+//                 // Progressbar step => (Preparing inputs)
+//                 dispatch(setNextStepAsActive());
+//
+//                 return getInputs(undefined, withQuorum)(
+//                     accountState.addressData,
+//                     accountState.transactions,
+//                     value,
+//                     maxInputs,
+//                 );
+//             })
+//             .then(({ inputs }) => {
+//                 // Do not allow receiving address to be one of the user's own input addresses.
+//                 const isSendingToAnyInputAddress = some(
+//                     inputs,
+//                     (input) => input.address === noChecksum(address),
+//                 );
+//
+//                 if (isSendingToAnyInputAddress) {
+//                     throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
+//                 }
+//
+//                 if (isSendingToAnyInputAddress) {
+//                     throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
+//                 }
+//
+//                 return getAddressDataUptoRemainder(undefined, withQuorum)(
+//                     accountState.addressData,
+//                     accountState.transactions,
+//                     seedStore,
+//                     [
+//                         // Make sure inputs are blacklisted
+//                         ...map(inputs, (input) => input.address),
+//                         // Make sure receive address is blacklisted
+//                         noChecksum(receiveAddress),
+//                     ],
+//                 ).then(({ remainderAddress, remainderIndex, addressDataUptoRemainder }) => {
+//                     // getAddressesUptoRemainder returns the latest unused address as the remainder address
+//                     // Also returns updated address data including new address data for the intermediate addresses.
+//                     // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
+//                     // at index 53 it would include address data for 51, 52 and 53.
+//                     accountState.addressData = addressDataUptoRemainder;
+//
+//                     return {
+//                         inputs,
+//                         address: remainderAddress,
+//                         keyIndex: remainderIndex,
+//                     };
+//                 });
+//             });
+//     };
+
+
+export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, powFn, genFn) => (
     dispatch,
     getState,
 ) => {
     dispatch(sendTransferRequest());
 
-    const address = size(receiveAddress) === 90 ? receiveAddress : await getChecksum(receiveAddress);
+    const address = size(receiveAddress) === ADDRESS_LENGTH ? receiveAddress : addChecksum(receiveAddress);
+
 
     // Keep track if the inputs are signed
     let hasSignedInputs = false;
@@ -443,59 +552,97 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     // Keep track if the created bundle is valid after inputs are signed
     let isValidBundle = false;
 
-    let maxInputs = 0;
-
     // Initialize account state
     // Reassign with latest state when account is synced
     let accountState = selectedAccountStateFactory(accountName)(getState());
+    console.log('',accountState);
+    let transferInputs = [];
 
     const withPreTransactionSecurityChecks = () => {
-        // Progressbar step => (Validating receive address)
+        // Progressbar step => (Checking node's health)
+        console.log('intr123');
         dispatch(setNextStepAsActive());
 
-        // Check the last trit for validity
-        return Promise.resolve(isLastBitZero(address))
-            .then((lastBitZero) => {
-                if (!lastBitZero) {
-                    throw new Error(Errors.INVALID_LAST_TRIT);
+        return isNodeSynced()
+            .then((isSynced) => {
+              console.log('intrissync',isSynced);
+                if (isSynced) {
+                    // Progressbar step => (Validating receive address)
+                    dispatch(setNextStepAsActive());
+
+                    // Make sure that the address a user is about to send to is not already used.
+                    return shouldAllowSendingToAddress()([address]);
                 }
 
-                return typeof seedStore.getMaxInputs === 'function' ? seedStore.getMaxInputs() : Promise.resolve(0);
+                throw new Error(Errors.NODE_NOT_SYNCED);
             })
-            .then((maxInputResponse) => {
-                maxInputs = maxInputResponse;
-
-                // Make sure that the address a user is about to send to is not already used.
-                return isAnyAddressSpent(undefined, withQuorum)([address]).then((isSpent) => {
-                    if (isSpent) {
-                        throw new Error(Errors.KEY_REUSE);
-                    }
-
+            .then((shouldAllowSending) => {
+                if (shouldAllowSending) {
                     // Progressbar step => (Syncing account)
                     dispatch(setNextStepAsActive());
 
-                    return syncAccount(undefined, withQuorum)(accountState, seedStore);
-                });
+                    return syncAccount()(accountState, seed, genFn);
+                }
+
+                throw new Error(Errors.KEY_REUSE);
             })
             .then((newState) => {
                 // Assign latest account but do not update the local store yet.
                 // Only update the local store with updated account information after this transaction is successfully completed.
                 accountState = newState;
 
+                const valueTransfers = filter(map(accountState.transfers, (tx) => tx), (tx) => tx.transferValue !== 0);
+
+                return filterInvalidPendingTransactions()(valueTransfers, accountState.addresses);
+            })
+            .then((filteredTransfers) => {
+                const { addresses, transfers } = accountState;
+                const startIndex = getStartingSearchIndexToPrepareInputs(addresses);
+                const spentAddressesFromTransactions = getSpentAddressesFromTransactions(transfers);
+
                 // Progressbar step => (Preparing inputs)
                 dispatch(setNextStepAsActive());
 
-                return getInputs(undefined, withQuorum)(
-                    accountState.addressData,
-                    accountState.transactions,
+                // Prepare inputs.
+                return getUnspentInputs()(
+                    addresses,
+                    spentAddressesFromTransactions,
+                    filteredTransfers,
+                    startIndex,
                     value,
-                    maxInputs,
+                    null,
                 );
             })
-            .then(({ inputs }) => {
+            .then((inputs) => {
+                // Input selection prepares inputs sequentially starting from the first address with balance
+                // If total balance is less than transfer value, do not allow transaction.
+                if (get(inputs, 'totalBalance') < value) {
+                    throw new Error(Errors.NOT_ENOUGH_BALANCE);
+
+                    // availableBalance: balance after filtering out addresses that are spent and also addresses with incoming transfers..
+                    // Contains only spendable balance
+                    // Note: At this point, we could leverage the change addresses and allow user making a transfer on top from those.
+                } else if (get(inputs, 'availableBalance') < value) {
+                    const addresses = accountState.addresses;
+                    const transfers = accountState.transfers;
+                    const pendingOutgoingTransfers = getPendingOutgoingTransfersForAddresses(addresses, transfers);
+
+                    if (size(pendingOutgoingTransfers)) {
+                        throw new Error(Errors.ADDRESS_HAS_PENDING_TRANSFERS);
+                    } else {
+                        if (size(get(inputs, 'spentAddresses'))) {
+                            throw new Error(Errors.FUNDS_AT_SPENT_ADDRESSES);
+                        } else if (size(get(inputs, 'addressesWithIncomingTransfers'))) {
+                            throw new Error(Errors.INCOMING_TRANSFERS);
+                        }
+
+                        throw new Error(Errors.SOMETHING_WENT_WRONG_DURING_INPUT_SELECTION);
+                    }
+                }
+
                 // Do not allow receiving address to be one of the user's own input addresses.
                 const isSendingToAnyInputAddress = some(
-                    inputs,
+                    get(inputs, 'inputs'),
                     (input) => input.address === noChecksum(address),
                 );
 
@@ -503,33 +650,26 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
                 }
 
-                if (isSendingToAnyInputAddress) {
-                    throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
-                }
+                transferInputs = get(inputs, 'inputs');
 
-                return getAddressDataUptoRemainder(undefined, withQuorum)(
-                    accountState.addressData,
-                    accountState.transactions,
-                    seedStore,
-                    [
-                        // Make sure inputs are blacklisted
-                        ...map(inputs, (input) => input.address),
-                        // Make sure receive address is blacklisted
-                        noChecksum(receiveAddress),
-                    ],
-                ).then(({ remainderAddress, remainderIndex, addressDataUptoRemainder }) => {
-                    // getAddressesUptoRemainder returns the latest unused address as the remainder address
-                    // Also returns updated address data including new address data for the intermediate addresses.
-                    // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
-                    // at index 53 it would include address data for 51, 52 and 53.
-                    accountState.addressData = addressDataUptoRemainder;
+                return getAddressesUptoRemainder()(accountState.addresses, seed, genFn, [
+                    // Make sure inputs are blacklisted
+                    ...map(transferInputs, (input) => input.address),
+                    // Make sure receive address is blacklisted
+                    noChecksum(receiveAddress),
+                ]);
+            })
+            .then(({ remainderAddress, addressDataUptoRemainder }) => {
+                // getAddressesUptoRemainder returns the latest unused address as the remainder address
+                // Also returns updated address data including new address data for the intermediate addresses.
+                // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
+                // at index 53 it would include address data for 51, 52 and 53.
+                accountState.addresses = addressDataUptoRemainder;
 
-                    return {
-                        inputs,
-                        address: remainderAddress,
-                        keyIndex: remainderIndex,
-                    };
-                });
+                return {
+                    inputs: transferInputs,
+                    address: remainderAddress,
+                };
             });
     };
 
@@ -541,18 +681,20 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     };
 
     const withInputs = isZeroValue ? () => Promise.resolve(null) : withPreTransactionSecurityChecks;
-
+    console.log('123',withInputs);
     return (
         withInputs()
             // If we are making a zero value transaction, options would be null
             // Otherwise, it would be a dictionary with inputs and remainder address
             // Forward options to prepareTransfersAsync as is, because it contains a null check
             .then((options) => {
+              console.log('opt',options);
                 const transfer = prepareTransferArray(address, value, message, accountState.addressData);
-
+                console.log('tr',transfer);
                 // Progressbar step => (Preparing transfers)
                 dispatch(setNextStepAsActive());
-
+                console.log("Here after disptachss");
+                console.log('afterdispatch',seedStore);
                 return seedStore.prepareTransfers(transfer, options);
             })
             .then((hex) => {

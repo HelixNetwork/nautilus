@@ -19,7 +19,7 @@ import Errors from '../errors';
 import { bitsToChars, hexToBits } from './converter';
 import { roundDown } from '../utils';
 
-export const MAX_SEED_LENGTH = 64; // should be 64 
+export const MAX_SEED_LENGTH = 64; // should be 64
 
 export const MAX_SEED_BITS = MAX_SEED_LENGTH * 4;
 

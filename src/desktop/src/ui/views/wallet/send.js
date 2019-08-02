@@ -13,92 +13,142 @@ import {isAddress} from '@helixnetwork/validators';
 import Button from 'ui/components/button';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/wallet-loading.json';
-import {getSelectedAccountName,getSelectedAccountMeta,getAccountNamesFromState, selectAccountInfo} from 'selectors/accounts';
-
+import {getSelectedAccountName,getSelectedAccountMeta,getAccountNamesFromState, selectAccountInfo, getBalanceForSelectedAccount} from 'selectors/accounts';
+import {generateAlert} from 'actions/alerts';
+import Checksum from 'ui/components/checksum';
+import { makeTransaction } from 'actions/transfers';
+import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from 'libs/hlx/utils';
 class Send extends React.PureComponent {
 
-    static propTypes = {
-        location: PropTypes.object,
-        history: PropTypes.shape({
-            push: PropTypes.func.isRequired,
-        }).isRequired,
-        // generateAlert: PropTypes.func.isRequired,
-    };
+  static propTypes = {
+      /** @ignore */
+      balance: PropTypes.number.isRequired,
+      /** @ignore */
+      // settings: PropTypes.shape({
+      //     conversionRate: PropTypes.number.isRequired,
+      //     currency: PropTypes.string.isRequired,
+      //     usdPrice: PropTypes.number.isRequired,
+      // }),
+      makeTransaction:PropTypes.func.isRequired,
+      /** @ignore */
+      t: PropTypes.func.isRequired,
+  };
+    state={
+        address:'',
+        amount:'',
+        hlxamount:'',
+        message:'Test',
+        openModal:false,
+    }
 
-state={
-    address:'TiEIoZLgAAg0YGWe06QLiF6nmqOyk3ebEGVvAUOv9pty7wCs6mh2zcf5wQw3FThO',
-    amount:0,
-    openModal:false,
-    showAddress:[]
-}
-    confirmTransfer = async () => {
-        const { fields, password, accountName, accountMeta, sendTransfer } = this.props;
+    add
+
+    validateInputs = (e) => {
+        e.preventDefault();
 
         this.setState({
-            isTransferModalVisible: false,
+            openModal: validateInputs(),
+        });
+    };
+
+    confirmTransfer = async () => {
+        const { password, accountName, accountMeta, sendTransfer } = this.props;
+        const { address, amount } = this.state;
+        this.setState({
+            openModal: false,
         });
 
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
 
         const message =
-            SeedStore[accountMeta.type].isMessageAvailable || parseInt(fields.amount || '0') === 0
-                ? fields.message
+            SeedStore[accountMeta.type].isMessageAvailable || parseInt(amount || '0') === 0
+                ? this.state.message
                 : '';
 
+        this.setState({
+          message:message
+        })
 
-
-        sendTransfer(seedStore, fields.address, parseInt(fields.amount) || 0, message);
+        this.sendTransfer(seedStore, address, parseInt(amount) || 0, message);
     };
 
-    addressInput(e){
+    sendTransfer = (seedStore, address, value, message) => {
+        const { ui, accountName, generateAlert, t } = this.props;
 
-        let ch = e.target.value;
-        this.setState({
-            address:e.target.value,
-            showAddress:ch.split('',64)
-        })
-
-    }
-    hlxInput(e){
-        this.setState({
-            amount:parseInt(e.target.value)
-        })
-    }
-    amountInput(e){
-
-    }
-    send(){
-        if(!isAddress(this.state.address) && isNaN(this.state.amount)){
-            console.log(
-                'error',
-                'Invalid address',
-                'You have a entered an invalid address.',
-                1000
-            );
+        if (ui.isSyncing) {
+            generateAlert('error', t('global:syncInProgress'), t('global:syncInProgressExplanation'));
+            return;
         }
 
-            const split= this.state.address.match(/.{1,4}/g);
-            console.log(split);
-            let ch='';
-            split.map((char,index)=>{
-                ch+=char+' ';
-                if(index!=0 && (index+1)%4==0){
-                    ch+=' ';
-                }
-            })
-            ch = ch.split('  ');
+        if (ui.isTransitioning) {
+            generateAlert('error', t('snapshotTransitionInProgress'), t('snapshotTransitionInProgressExplanation'));
+            return;
+        }
 
-            this.setState({
-                openModal:true,
-                showAddress:ch
-            });
+        this.props.makeTransaction(seedStore, address, value, message, accountName, null, Electron.genFn);
+    };
 
 
-    }
+
+  validateInputs = () => {
+      const { generateAlert, balance, t } = this.props;
+      const { address, hlxamount, message } = this.state;
+
+      // Validate address length
+      if (address.length !== ADDRESS_LENGTH) {
+          generateAlert(
+              'error',
+              t('send:invalidAddress'),
+              t('send:invalidAddressExplanation1', { maxLength: ADDRESS_LENGTH }),
+          );
+          return false;
+      }
+
+      // Validate address checksum
+      if (!isValidAddress(address)) {
+          generateAlert('error', t('send:invalidAddress'), t('send:invalidAddressExplanation3'));
+          return false;
+      }
+
+      // Validate enought balance
+      if (parseFloat(hlxamount) > balance) {
+          generateAlert('error', t('send:notEnoughFunds'), t('send:notEnoughFundsExplanation'));
+          return false;
+      }
+
+      // Validate whether message only contains ASCII letters
+      // as anything else is lost up on conversion to trytes
+      if (!isValidMessage(message)) {
+          generateAlert('error', t('send:invalidMessage'), t('send:invalidMessageExplanation'));
+          return false;
+      }
+
+      this.setState({
+        openModal:true
+      })
+  };
+
+  addressInput(e){
+    this.setState({
+      address:e.target.value
+    })
+  }
+
+  hlxInput(e){
+    this.setState({
+      hlxamount:e.target.value
+    })
+  }
+
+  amountInput(e){
+    this.setState({
+      amount:e.target.value
+    })
+  }
 
     render() {
-        const { history,loop, t } = this.props;
-        const {openModal,showAddress} = this.state;
+        const { accountMeta, balance , loop, history, t } = this.props;
+        const { openModal, address, amount, hlxamount } = this.state;
         const defaultOptions = {
             loop: loop,
             autoplay: true,
@@ -126,22 +176,26 @@ state={
                                     <div className={classNames(css.foo_bxx1)}>
                                         <h3 >{t('send:sendCoins')}<span>.</span></h3>
                                         <h6 >{t('send:irrevocableTransactionWarning')}</h6>
-                                        <form >
+                                        <form>
                                             {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
                                             <input type="text" classNames={css.er1} placeholder="EUR"></input>
                                         </div> */}
-                                            <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="EUR" onChange={this.amountInput.bind(this)}></input>
+                                            <input type="text" value={amount} className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="EUR" onChange={this.amountInput.bind(this)}></input>
                                             <h1 className={classNames(css.eq)}>=</h1>
                                             {/* <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div> */}
-                                            <input type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="mHLX" onChange={this.hlxInput.bind(this)}></input>
+                                            <input value={hlxamount} type="text" className={classNames(css.bbx_box1, css.tr_box)} style={{ marginLeft: '335px', background: '#081726', color: '#eaac32' }} placeholder="mHLX" onChange={this.hlxInput.bind(this)}></input>
                                             <h5>{t('send:enterReceiverAddress')}</h5>
-                                            <input type="text" name="name" className={css.reci_text} onChange={this.addressInput.bind(this)}/> <br />
-                                            <a href="#" className={css.send_bts} onClick={this.send.bind(this)}><img src={ic1} alt="" /></a>
+
+                                            <input id="recipient-address" type="text" name="name" className={css.reci_text}
+                                            value={address}
+                                            onChange={this.addressInput.bind(this)}/>
+                                            <br/>
+                                            <a className={css.send_bts} onClick={this.validateInputs.bind(this)}><img src={ic1} alt="" /></a>
                                             <h2 className={classNames(css.send_bts_h2)}>Send <span>></span></h2>
                                         </form>
                                         {openModal &&
@@ -167,13 +221,11 @@ state={
                                            </div><br/>
                                            <div>
                                                <h3>Continue transaction with</h3><br/>
-                                               {showAddress.map((ch,index)=>{
-                                                   return(<h2 key={index} className={css.confirmAddress}>{ch}</h2>)
-                                               })}
+                                                 <Checksum address={address} />
                                            </div><br/>
                                                <Button variant="danger" onClick={()=>this.setState({openModal:false})}>Cancel</Button>
                                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                               <Button variant="success" onClick={()=>this.setState({openModal:false})}>Confirm</Button>
+                                               <Button variant="success" onClick={this.confirmTransfer.bind(this)}>Confirm</Button>
                                      </div>
                                         </Modal>}
                                     </div>
@@ -190,6 +242,16 @@ state={
     }
 }
 
+const mapStateToProps= (state)=>({
+  accountName:getSelectedAccountName(state),
+  accountMeta:getSelectedAccountMeta(state),
+  password:state.wallet.password,
+  balance: getBalanceForSelectedAccount(state),
+  ui:state.ui
+})
+
 const mapDispatchToProps = {
+  generateAlert,
+  makeTransaction
 };
-export default connect(null, mapDispatchToProps)(withI18n()(Send));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(Send));

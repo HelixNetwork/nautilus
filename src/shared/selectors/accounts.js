@@ -183,3 +183,8 @@ export const getAddressesForSelectedAccount = createSelector(
     selectAccountInfo,
     (account) => map(account.addressData, (addressObject) => addressObject.address),
 );
+
+export const getBalanceForSelectedAccount = createSelector(
+    selectAccountInfo,
+    (account) => accumulateBalance(map(account.addressData, (addressObject) => addressObject.balance)),
+);

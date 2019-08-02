@@ -3,7 +3,7 @@ export const __TEST__ = process.env.NODE_ENV === 'test';
 /** Default IRI node object */
 export const DEFAULT_NODE = __TEST__
     ? {
-        url: 'http://localhost:14265', 
+        url: 'http://localhost:14265',
         pow: false,
         token: '',
         password: '',
@@ -16,7 +16,7 @@ export const DEFAULT_NODE = __TEST__
     };
 
 export const NODES_WITH_POW_DISABLED = [
-    'https://hlxtest.net:8088', 
+    'https://hlxtest.net:8088',
 ].map((url) => ({
     url,
     pow: false,
@@ -31,7 +31,7 @@ export const NODES_WITH_POW_ENABLED = [
     'https://node2.hlxtest.net:8087',
     'https://node3.hlxtest.net:8087',
     'https://node4.hlxtest.net:8087',
-    
+
 ].map((url) => ({
     url,
     pow: true,
@@ -50,7 +50,7 @@ export const VERSIONS_URL =
 
 export const DEFAULT_DEPTH = 2; // 4
 export const DEFAULT_MIN_WEIGHT_MAGNITUDE = 2; // 14
-export const DEFAULT_TAG = 'HELIX'; 
+export const DEFAULT_TAG = '48454c4958'; // HELIX
 export const DEFAULT_SECURITY = 2;
 export const DEFAULT_BALANCES_THRESHOLD = 100;
 

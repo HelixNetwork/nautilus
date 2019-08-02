@@ -15,7 +15,7 @@ import Button from '../../components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faChartLine, faHistory, faExchange} from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import {getSelectedAccountName,getSelectedAccountMeta,getAccountNamesFromState, selectAccountInfo} from 'selectors/accounts';
+import {getSelectedAccountName,getSelectedAccountMeta,getAccountNamesFromState, selectAccountInfo, getBalanceForSelectedAccount} from 'selectors/accounts';
 import {getSeedIndexFromState} from 'selectors/global'
 import {getAccountInfo} from 'actions/accounts';
 import SeedStore from 'libs/seed';
@@ -34,6 +34,7 @@ class Wallet extends React.PureComponent {
         accountInfo:PropTypes.object.isRequired,
         getAccountInfo:PropTypes.func.isRequired,
         setSeedIndex:PropTypes.func.isRequired,
+        balance:PropTypes.number.isRequired,
         seedIndex:PropTypes.number,
         location: PropTypes.object,
         history: PropTypes.shape({
@@ -69,6 +70,7 @@ class Wallet extends React.PureComponent {
                         bal={'block'}
                         main={'none'}
                         user={'block'}
+                        balance={accumulateBalance(accountInfo.addressData.map((addressdata)=>addressdata.balance))}
                         history={this.props.history}
                     />
                     <section className="spage_1">
@@ -131,7 +133,8 @@ const mapStateToProps = (state) => ({
         password: state.wallet.password,
         accountName:getSelectedAccountName(state),
         accountInfo:selectAccountInfo(state),
-        seedIndex:getSeedIndexFromState(state)
+        seedIndex:getSeedIndexFromState(state),
+        balance:getBalanceForSelectedAccount(state)
 
 });
 
