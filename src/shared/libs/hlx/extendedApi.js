@@ -131,7 +131,7 @@ const getTransactionsObjects = (settings) => (hashes) =>
  * @returns {function(object): Promise<any>}
  */
 const findTransactionObjects = (settings) => (args) =>
-    findTransactions(settings)(args).then((hashes) => 
+    findTransactions(settings)(args).then((hashes) =>
          getTransactionsObjects(settings)(hashes)).catch(err => err);
 
 /**
@@ -302,11 +302,11 @@ const sendTransfer = (settings) => (
     return seedStore
         .prepareTransfers(settings)(transfers, options)
         .then((txs) => {
-            cached.txs = txs;     
+            cached.txs = txs;
             return getTransactionsToApprove(settings)({}, depth)
         })
         .then(({ trunkTransaction, branchTransaction }) =>
-        
+
             attachToTangle(settings, seedStore)(
                 trunkTransaction,
                 branchTransaction,
@@ -331,14 +331,16 @@ const sendTransfer = (settings) => (
  * @returns {function(*, number): Promise<object>}
  */
 const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_DEPTH) =>{
+    console.log('sett',settings);
+    console.log('ref',reference);
     if(isEmpty(reference))
         return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
-            depth).catch(err => err);    
+            depth).catch(err => err);
     else
         return getHelixInstance(settings, getApiTimeout('getTransactionsToApprove')).getTransactionsToApprove(
                 depth,
                 reference).catch(err => err);
-        
+
     }
 
 /**
@@ -410,7 +412,7 @@ const checkAttachToTangle = (node) => {
  *
  * @returns {Promise<Boolean>}
  */
-const allowsRemotePow = (settings) => {  
+const allowsRemotePow = (settings) => {
 
     return getNodeInfo(settings)().then((info) => {
         // Check if provided node has upgraded to IRI to a version, where it adds "features" prop in node info
@@ -449,7 +451,7 @@ const attachToTangle = (settings, seedStore) => (
                     minWeightMagnitude,
                     // Make sure txs are sorted properly
                     sortTransactionTxBytesArray(txs)).then(
-                    (attachedBytes,err) => {                
+                    (attachedBytes,err) => {
                         if (err) {
                             reject(err);
                         } else {
@@ -458,7 +460,7 @@ const attachToTangle = (settings, seedStore) => (
                                     if (
                                         isBundle(transactionObjects) &&
                                         isBundleTraversable(transactionObjects, trunkTransaction, branchTransaction)
-                                    ) {                                        
+                                    ) {
                                         resolve({
                                             transactionObjects,
                                             txs: attachedBytes,
@@ -467,11 +469,11 @@ const attachToTangle = (settings, seedStore) => (
                                         reject(new Error(Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_REMOTE_POW));
                                     }
                                 })
-                                
+
                         }
                     })
                 }).catch(err => err);
-                
+
 
         const defaultRequestTimeout = getApiTimeout('attachToTangle');
 
