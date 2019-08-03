@@ -76,10 +76,10 @@ class Viewseed extends React.PureComponent {
     render() {
 
         const { location, history, t } = this.props;
-        const { meta, accountName } = this.props.account;
+        const { accountMeta, accountName } = this.props;
         const { seed, action } = this.state;
         const currentKey = location.pathname.split('/')[2] || '/';
-        if (meta && !SeedStore[meta.type].isSeedAvailable) {
+        if (accountMeta && !SeedStore[accountMeta.type].isSeedAvailable) {
             return (
 
 
@@ -95,23 +95,23 @@ class Viewseed extends React.PureComponent {
 
 
 
-                        {typeof meta.index === 'number' && (
-                            <Fragment>
-                                <hr />
-                                <p>
-                                    {t('viewSeed:accountIndex')}: <strong>{meta.index}</strong>
-                                </p>
-                            </Fragment>
-                        )}
-                        {typeof meta.page === 'number' && meta.page > 0 && (
-                            <Fragment>
-                                <hr />
-                                <p>
-                                    <hr />
-                                    {t('viewSeed:accountPage')}: <strong>{meta.page}</strong>
-                                </p>
-                            </Fragment>
-                        )}
+                        {typeof accountMeta.index === 'number' && (
+                                            <Fragment>
+                                                <hr />
+                                                <p>
+                                                    {t('viewSeed:accountIndex')}: <strong>{accountMeta.index}</strong>
+                                                </p>
+                                            </Fragment>
+                                        )}
+                                        {typeof accountMeta.page === 'number' && accountMeta.page > 0 && (
+                                            <Fragment>
+                                                <hr />
+                                                <p>
+                                                    <hr />
+                                                    {t('viewSeed:accountPage')}: <strong>{accountMeta.page}</strong>
+                                                </p>
+                                            </Fragment>
+                                        )}
 
 
 
