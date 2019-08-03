@@ -43,13 +43,14 @@ class Viewseed extends React.PureComponent {
     state = {
         action: null,
         seed: false,
+        checksum: ''
     };
     componentDidMount() {
         this.seed = [];
     }
 
     componentWillUnmount() {
-        for (let i = 0; i < this.seed.length * 3; i++) {
+        for (let i = 0; i < this.seed.length * 8; i++) {
             this.seed[i % this.seed.length] = 0;
         }
 
@@ -68,8 +69,10 @@ class Viewseed extends React.PureComponent {
         console.log('sseedd', seedStore);
         console.log(await seedStore.getSeed());
         this.seed = await seedStore.getSeed();
+        const checksum = this.seed ? await Electron.getChecksum(this.seed) : '';
         this.setState({
             seed: true,
+            checksum: checksum
         });
     };
 
@@ -78,12 +81,11 @@ class Viewseed extends React.PureComponent {
         const { location, history, t } = this.props;
         const { accountMeta, accountName } = this.props;
         const { seed, action } = this.state;
+
         const currentKey = location.pathname.split('/')[2] || '/';
+
         if (accountMeta && !SeedStore[accountMeta.type].isSeedAvailable) {
             return (
-
-
-
 
                 <div className={classNames(css.foo_bxx12)}>
                     <div className={classNames(css.set_bxac)}>
@@ -96,30 +98,22 @@ class Viewseed extends React.PureComponent {
 
 
                         {typeof accountMeta.index === 'number' && (
-                                            <Fragment>
-                                                <hr />
-                                                <p>
-                                                    {t('viewSeed:accountIndex')}: <strong>{accountMeta.index}</strong>
-                                                </p>
-                                            </Fragment>
-                                        )}
-                                        {typeof accountMeta.page === 'number' && accountMeta.page > 0 && (
-                                            <Fragment>
-                                                <hr />
-                                                <p>
-                                                    <hr />
-                                                    {t('viewSeed:accountPage')}: <strong>{accountMeta.page}</strong>
-                                                </p>
-                                            </Fragment>
-                                        )}
-
-
-
-
-                        {/* <div style={{ marginLeft: "8%" }}>
-                                        <Button className="modal_navLeft" style={{ margin: '10vw 0vw 1vw' }}>{t('viewSeed:viewSeed')}</Button>
-                                        <Button className="modal_navRight" style={{ margin: '10vw 1vw 0vw' }} onClick={() => this.stepForward('done')}>{t('export')}</Button>
-                                    </div> */}
+                            <Fragment>
+                                <hr />
+                                <p>
+                                    {t('viewSeed:accountIndex')}: <strong>{accountMeta.index = null ? ' ' : accountMeta}</strong>
+                                </p>
+                            </Fragment>
+                        )}
+                        {typeof accountMeta.page === 'number' && accountMeta.page > 0 && (
+                            <Fragment>
+                                <hr />
+                                <p>
+                                    <hr />
+                                    {t('viewSeed:accountPage')}: <strong>{accountMeta.page}</strong>
+                                </p>
+                            </Fragment>
+                        )}
 
                     </div>
                 </div>
@@ -128,6 +122,7 @@ class Viewseed extends React.PureComponent {
 
             );
         }
+
 
         if (action && !seed) {
             return (
@@ -148,59 +143,61 @@ class Viewseed extends React.PureComponent {
             );
 
         }
-        console.log("CHECKSUMSEED===", this.seed);
 
-        const checksum = seed ? Electron.getChecksum(this.seed) : '';
+        const checksum = this.state.checksum;
+        console.log(checksum);
         return (
             <React.Fragment>
-                <form>
-                    <div>
-                        <p className={css.seed}>
-                            <span>
-                                {seed && action === 'view'
-                                    ? this.seed.map((byte, index) => {
-                                        if (index % 3 !== 0) {
-                                            return null;
-                                        }
-                                        const letter = indexToChar(byte);
-                                        return (
-                                            <React.Fragment key={`${index}${letter}`}>
-                                                {letter}
-                                                {indexToChar(this.seed[index + 1])}
-                                                {indexToChar(this.seed[index + 2])}{' '}
-                                            </React.Fragment>
-                                        );
-                                    })
-                                    : new Array(MAX_SEED_LENGTH / 2).join('.. ')}
-                            </span>
-                            {seed && action === 'view' && (
-                                <small>
-                                    {t('checksum')}: <strong>{checksum}</strong>
-                                </small>
-                            )}
-                        </p>
-                    </div>
-                    <fieldset>
-                        <Button
-                            className="small"
-                            onClick={() => this.setState({ action: action !== 'view' ? 'view' : null })}
-                        >
-                            {action === 'view' ? t('settings:hide') : t('settings:show')}
-                        </Button>
-                        {/* <Button
+                <div className={classNames(css.foo_bxx12)}>
+                        <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewSeed')}</h5>
+                    <form>
+                        <div>
+                            <p className={css.seed}>
+                                <span>
+                                    {seed && action === 'view'
+                                        ? this.seed.map((byte, index) => {
+                                            if (index % 2 !== 0) {
+                                                return null;
+                                            }
+                                            const letter = indexToChar(byte);
+                                            return (
+                                                <React.Fragment key={`${index}${letter}`}>
+                                                    {letter}
+                                                    {indexToChar(this.seed[index + 1])}{' '}
+                                                </React.Fragment>
+                                            );
+                                        })
+                                        : new Array(MAX_SEED_LENGTH / 2).join('.. ')}
+                                </span>
+                                {seed && action === 'view' && (
+                                    <small>
+                                        {t('checksum')}: <strong>{checksum}</strong>
+                                    </small>
+                                )}
+                            </p>
+                        </div>
+                        <div style={{ "marginTop": "12vw" }}>
+                            <Button
+                                className="navleft"
+                                onClick={() => this.setState({ action: action !== 'view' ? 'view' : null })}
+                            >
+                                {action === 'view' ? t('settings:hide') : t('settings:show')}
+                            </Button>
+                            {/* <Button
                             className="small"
                             onClick={() => (!seed ? this.setState({ action: 'print' }) : window.print())}
                         >
                             {t('paperWallet')}
                         </Button> */}
-                        <Button className="small" onClick={() => this.setState({ action: 'export' })}>
-                            {t('seedVault:exportSeedVault')}
-                        </Button>
-                    </fieldset>
+                            <Button className="navright" onClick={() => this.setState({ action: 'export' })}>
+                                {t('seedVault:exportSeedVault')}
+                            </Button>
+                        </div>
 
-                </form>
+                    </form>
+                </div>
                 <Modal
-                    variant="fullscreen"
+                    variant="confirm"
                     isOpen={seed && action === 'export'}
                     onClose={() => this.setState({ action: null })}
                 >
