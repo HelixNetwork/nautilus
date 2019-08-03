@@ -9,12 +9,12 @@ export const DEFAULT_NODE = __TEST__
         password: '',
     }
     : {
-        url: 'https://hlxtest.net:8087',
+        url:'http://13.234.122.84:8087',
         pow: false,
         token: '',
         password: '',
     };
-
+// url: 'https://hlxtest.net:8087',
 export const NODES_WITH_POW_DISABLED = [
     'https://hlxtest.net:8088',
 ].map((url) => ({

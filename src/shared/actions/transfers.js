@@ -1093,21 +1093,21 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
               console.log("Trunk tx");
               console.log(trunkTransaction );
               console.log(branchTransaction );
-                // const shouldOffloadPow = getRemotePoWFromState(getState());
+                const shouldOffloadPow = getRemotePoWFromState(getState());
 
-                const shouldOffloadPow = true;
+                // const shouldOffloadPow = true;
                 console.log("Pow here");
                 console.log(shouldOffloadPow);
                 // Progressbar step => (Proof of work)
                 dispatch(setNextStepAsActive());
 
-                // const performLocalPow = () =>
-                //     attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.txs);
+                const performLocalPow = () =>
+                    attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.txs);
 
-                // if (!shouldOffloadPow) {
-                //   console.log("Entering local pow");
-                //     return performLocalPow();
-                // }
+                if (!shouldOffloadPow) {
+                  console.log("Entering local pow");
+                    return performLocalPow();
+                }
                 console.log("offloading");
                 // If proof of work configuration is set to remote PoW
                 // Make an attempt to offload proof of work to remote
@@ -1187,6 +1187,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
               console.log(txs);
                 // Skip this check if it's a zero value transaction
                 if (isZeroValue) {
+                    
                     return Promise.resolve({ txs, transactionObjects });
                 }
 
