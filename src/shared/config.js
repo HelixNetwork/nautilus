@@ -10,7 +10,7 @@ export const DEFAULT_NODE = __TEST__
     }
     : {
         url:'http://13.234.122.84:8087',
-        pow: false,
+        pow: true,
         token: '',
         password: '',
     };
