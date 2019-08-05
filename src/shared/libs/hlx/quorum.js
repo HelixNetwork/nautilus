@@ -315,9 +315,11 @@ export default function Quorum(config) {
 
     let selectedNodes = [];
     let lastSyncedAt = new Date();
+    // console.log("Quorum size",quorumSize)
 
     const findSyncedNodesIfNecessary = () => {
-        const timeElapsed = (new Date() - lastSyncedAt) / 1000;        
+        const timeElapsed = (new Date() - lastSyncedAt) / 1000;  
+        // console.log("Quorum size",quorumSize,selectedNodes)      
         if (isEmpty(selectedNodes) || timeElapsed >= QUORUM_SYNC_CHECK_INTERVAL) {
             return findSyncedNodes(nodes, quorumSize, selectedNodes).then((syncedNodes) => {     
                 selectedNodes = syncedNodes;

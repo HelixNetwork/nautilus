@@ -435,6 +435,8 @@ export const createAddressData = (addresses, balances, addressesSpendStatuses, k
     const sizeOfBalances = size(balances);
     const sizeOfSpendStatuses = size(addressesSpendStatuses);
     const sizeOfKeyIndexes = size(keyIndexes);
+    console.log(`1 `,sizeOfAddresses);
+    
 
     if (
         sizeOfAddresses !== sizeOfBalances ||

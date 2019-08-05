@@ -12,6 +12,7 @@ import size from 'lodash/size';
 import some from 'lodash/some';
 import { serialise, parse } from '../libs/utils';
 import schemas, { getDeprecatedStoragePath, STORAGE_PATH as latestStoragePath, v_0Schema } from './schemas';
+import {preserveAddressLocalSpendStatus} from 'libs/hlx/addresses';
 // Initialise realm instance
 let realm = {}; // eslint-disable-line import/no-mutable-exports
 
@@ -120,6 +121,10 @@ class Account {
      * @param {object} data
      */
     static update(name, data) {
+        console.log("entering ralm",name);
+        console.log(data);
+        
+        
         realm.write(() => {
             const existingData = Account.getObjectForId(name);
             const updatedData = assign({}, existingData, {

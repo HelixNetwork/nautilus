@@ -367,9 +367,10 @@ export const prepareTransfers = (settings) => (seed, transfers, options = null, 
  *
  * @returns {function(array): Promise<any>}
  */
-const storeAndBroadcast = (settings) => (txs) =>{
+const storeAndBroadcast = (settings) => (txs) =>
         getHelixInstance(settings).storeAndBroadcast(txs).catch(err => err);
-}
+
+
 
 
 /**
