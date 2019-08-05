@@ -217,7 +217,7 @@ class Receive extends React.PureComponent {
                                                             >
                                                                 <div className={css.address_div}>
                                                                     {receiveAddress
-                                                                        .substring(0, 63)
+                                                                        .substring(0, 64)
                                                                         .split('')
                                                                         .map((char, index) => {
                                                                             const scrambleChar =
@@ -230,7 +230,7 @@ class Receive extends React.PureComponent {
                                                                         })}
                                                                     <span style={{ color: "#eaac32" }}>
                                                                         {receiveAddress
-                                                                            .substring(63, 72)
+                                                                            .substring(64, 72)
                                                                             .split('')
                                                                             .map((char, index) => {
                                                                                 const scrambleChar =
