@@ -431,483 +431,7 @@ export const forceTransactionPromotion = (
  *
  * @returns {function} dispatch
  */
-// export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true) => async (
-//     dispatch,
-//     getState,
-// ) => {
-//     dispatch(sendTransferRequest());
-//
-//     const address = size(receiveAddress) === ADDRESS_LENGTH ? receiveAddress : await getChecksum(receiveAddress);
-//     console.log('intradd',address);
-//     // Keep track if the inputs are signed
-//     let hasSignedInputs = false;
-//
-//     // Keep track if the created bundle is valid after inputs are signed
-//     let isValidBundle = false;
-//
-//     let maxInputs = 0;
-//
-//     // Initialize account state
-//     // Reassign with latest state when account is synced
-//     let accountState = selectedAccountStateFactory(accountName)(getState());
-//     console.log('intrst',accountState);
-//     const withPreTransactionSecurityChecks = () => {
-//         // Progressbar step => (Validating receive address)
-//         dispatch(setNextStepAsActive());
-//         console.log(isLastBitZero(address));
-//         // Check the last bit for validity
-//         return Promise.resolve(isLastBitZero(address))
-//             .then((lastBitZero) => {
-//                 console.log('intrlbz',lastBitZero);
-//                 if (!lastBitZero) {
-//                     throw new Error(Errors.INVALID_LAST_BIT);
-//                 }
-//
-//                 return typeof seedStore.getMaxInputs === 'function' ? seedStore.getMaxInputs() : Promise.resolve(0);
-//             })
-//             .then((maxInputResponse) => {
-//                 maxInputs = maxInputResponse;
-//
-//                 // Make sure that the address a user is about to send to is not already used.
-//                 return isAnyAddressSpent(undefined, withQuorum)([address]).then((isSpent) => {
-//                     if (isSpent) {
-//                         throw new Error(Errors.KEY_REUSE);
-//                     }
-//
-//                     // Progressbar step => (Syncing account)
-//                     dispatch(setNextStepAsActive());
-//
-//                     return syncAccount(undefined, withQuorum)(accountState, seedStore);
-//                 });
-//             })
-//             .then((newState) => {
-//                 // Assign latest account but do not update the local store yet.
-//                 // Only update the local store with updated account information after this transaction is successfully completed.
-//                 accountState = newState;
-//
-//                 // Progressbar step => (Preparing inputs)
-//                 dispatch(setNextStepAsActive());
-//
-//                 return getInputs(undefined, withQuorum)(
-//                     accountState.addressData,
-//                     accountState.transactions,
-//                     value,
-//                     maxInputs,
-//                 );
-//             })
-//             .then(({ inputs }) => {
-//                 // Do not allow receiving address to be one of the user's own input addresses.
-//                 const isSendingToAnyInputAddress = some(
-//                     inputs,
-//                     (input) => input.address === noChecksum(address),
-//                 );
-//
-//                 if (isSendingToAnyInputAddress) {
-//                     throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
-//                 }
-//
-//                 if (isSendingToAnyInputAddress) {
-//                     throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
-//                 }
-//
-//                 return getAddressDataUptoRemainder(undefined, withQuorum)(
-//                     accountState.addressData,
-//                     accountState.transactions,
-//                     seedStore,
-//                     [
-//                         // Make sure inputs are blacklisted
-//                         ...map(inputs, (input) => input.address),
-//                         // Make sure receive address is blacklisted
-//                         noChecksum(receiveAddress),
-//                     ],
-//                 ).then(({ remainderAddress, remainderIndex, addressDataUptoRemainder }) => {
-//                     // getAddressesUptoRemainder returns the latest unused address as the remainder address
-//                     // Also returns updated address data including new address data for the intermediate addresses.
-//                     // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
-//                     // at index 53 it would include address data for 51, 52 and 53.
-//                     accountState.addressData = addressDataUptoRemainder;
-//
-//                     return {
-//                         inputs,
-//                         address: remainderAddress,
-//                         keyIndex: remainderIndex,
-//                     };
-//                 });
-//             });
-//     };
-//
-//     const isZeroValue = value === 0;
-//
-//         const cached = {
-//             trytes: [],
-//             transactionObjects: [],
-//         };
-//
-//         return (
-//             (isZeroValue
-//                 ? Promise.resolve(null)
-//                 : new NodesManager(nodesConfigurationFactory({ quorum })(getState())).withRetries()(
-//                       withPreTransactionSecurityChecks,
-//                   )()
-//             )
-//                 // If we are making a zero value transaction, options would be null
-//                 // Otherwise, it would be a dictionary with inputs and remainder address
-//                 // Forward options to prepareTransfersAsync as is, because it contains a null check
-//                 .then((options) => {
-//                     const transfer = prepareTransferArray(address, value, message, accountState.addressData);
-//
-//                     // Progressbar step => (Preparing transfers)
-//                     dispatch(setNextStepAsActive());
-//
-//                     return new NodesManager(nodesConfigurationFactory({ quorum })(getState())).withRetries()(
-//                         (settings) => () => {
-//                             return seedStore
-//                                 .prepareTransfers(settings)(transfer, options)
-//                                 .then((trytes) => {
-//                                     if (!isZeroValue) {
-//                                         hasSignedInputs = true;
-//                                     }
-//
-//                                     cached.trytes = trytes;
-//
-//                                     const convertToTransactionObjects = (tryteString) =>
-//                                         iota.utils.transactionObject(tryteString);
-//                                     cached.transactionObjects = map(cached.trytes, convertToTransactionObjects);
-//
-//                                     if (isBundle(cached.transactionObjects)) {
-//                                         isValidBundle = true;
-//                                         // Progressbar step => (Getting transactions to approve)
-//                                         dispatch(setNextStepAsActive());
-//
-//                                         return getTransactionsToApprove(settings)();
-//                                     }
-//
-//                                     throw new Error(Errors.INVALID_BUNDLE);
-//                                 });
-//                         },
-//                     )();
-//                 })
-//                 .then(({ trunkTransaction, branchTransaction }) => {
-//                     const shouldOffloadPow = getRemotePoWFromState(getState());
-//
-//                     // Progressbar step => (Proof of work)
-//                     dispatch(setNextStepAsActive());
-//
-//                     const performLocalPow = () =>
-//                         attachToTangleAsync(null, seedStore)(trunkTransaction, branchTransaction, cached.trytes);
-//
-//                     if (!shouldOffloadPow) {
-//                         return performLocalPow();
-//                     }
-//
-//                     // If proof of work configuration is set to remote PoW
-//                     // Make an attempt to offload proof of work to remote
-//                     // If network call fails:
-//                     // 1) Find nodes with PoW enabled
-//                     // 2) Auto retry offloading PoW
-//                     // 3) If auto retry fails, perform proof of work locally
-//                     return attachToTangleAsync(
-//                         null,
-//                         // See: extendedApi#attachToTangle
-//                         extend(
-//                             {
-//                                 __proto__: seedStore.__proto__,
-//                             },
-//                             seedStore,
-//                             { offloadPow: true },
-//                         ),
-//                     )(trunkTransaction, branchTransaction, cached.trytes).catch(() => {
-//                         dispatch(
-//                             generateAlert(
-//                                 'info',
-//                                 i18next.t('global:pleaseWait'),
-//                                 `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
-//                                     'global:tryingAgainWithDifferentNode',
-//                                 )}`,
-//                                 20000,
-//                             ),
-//                         );
-//
-//                         // Find nodes with proof of work enabled
-//                         return new NodesManager(
-//                             nodesConfigurationFactory({
-//                                 quorum,
-//                                 useOnlyPowNodes: true,
-//                             })(getState()),
-//                         )
-//                             .withRetries((settings) =>
-//                                 attachToTangleAsync(
-//                                     settings,
-//                                     extend(
-//                                         {
-//                                             __proto__: seedStore.__proto__,
-//                                         },
-//                                         seedStore,
-//                                         { offloadPow: true },
-//                                     ),
-//                                 ),
-//                             )(trunkTransaction, branchTransaction, cached.trytes)
-//                             .catch(() => {
-//                                 // If outsourced proof of work fails on all nodes, fallback to local proof of work.
-//                                 dispatch(
-//                                     generateAlert(
-//                                         'info',
-//                                         i18next.t('global:pleaseWait'),
-//                                         `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
-//                                             'global:tryingAgainWithLocalPoW',
-//                                         )}`,
-//                                     ),
-//                                 );
-//
-//                                 return performLocalPow();
-//                             });
-//                     });
-//                 })
-//                 // Re-check spend statuses of all addresses in bundle
-//                 .then(({ trytes, transactionObjects }) => {
-//                     // Skip this check if it's a zero value transaction
-//                     if (isZeroValue) {
-//                         return Promise.resolve({ trytes, transactionObjects });
-//                     }
-//
-//                     // Progressbar step => (Validating transaction addresses)
-//                     dispatch(setNextStepAsActive());
-//
-//                     const addresses = uniq(map(transactionObjects, (transaction) => transaction.address));
-//
-//                     return new NodesManager(
-//                         nodesConfigurationFactory({
-//                             quorum,
-//                         })(getState()),
-//                     )
-//                         .withRetries()(isAnyAddressSpent)(addresses)
-//                         .then((isSpent) => {
-//                             if (isSpent) {
-//                                 throw new Error(Errors.KEY_REUSE);
-//                             }
-//
-//                             return { trytes, transactionObjects };
-//                         });
-//                 })
-//                 .then(({ trytes, transactionObjects }) => {
-//                     cached.trytes = trytes;
-//                     cached.transactionObjects = transactionObjects;
-//
-//                     // Progressbar step => (Broadcasting)
-//                     dispatch(setNextStepAsActive());
-//
-//                     // Make an attempt to broadcast transaction on selected node
-//                     // If it fails, auto retry broadcast on random nodes
-//                     return new NodesManager(nodesConfigurationFactory({ quorum })(getState())).withRetries(
-//                         // Failure callbacks.
-//                         // Only pass one, as we just want an alert on first broadcast failure
-//                         () =>
-//                             dispatch(
-//                                 generateAlert(
-//                                     'info',
-//                                     i18next.t('global:pleaseWait'),
-//                                     `${i18next.t('global:problemSendingYourTransaction')} ${i18next.t(
-//                                         'global:tryingAgainWithDifferentNode',
-//                                     )}`,
-//                                     20000,
-//                                 ),
-//                             ),
-//                     )(storeAndBroadcastAsync)(cached.trytes);
-//                 })
-//                 .then(() => {
-//                     hasBroadcast = true;
-//                     return new NodesManager(
-//                         nodesConfigurationFactory({
-//                             quorum,
-//                         })(getState()),
-//                     )
-//                         .withRetries()(syncAccountAfterSpending)(seedStore, cached.transactionObjects, accountState)
-//                         .catch((error) => {
-//                             dispatch(prepareLogUpdate(error));
-//                             return syncAccountOnErrorAfterSigning(
-//                                 // Sort in ascending order
-//                                 orderBy(cached.transactionObjects, ['currentIndex']),
-//                                 accountState,
-//                                 hasBroadcast,
-//                             );
-//                         });
-//                 })
-//                 .then((newState) => {
-//                     // Update account in (Realm) storage
-//                     Account.update(accountName, newState);
-//
-//                     dispatch(updateAccountInfoAfterSpending(assign({}, newState, { accountName })));
-//
-//                     // Progressbar => (Progress complete)
-//                     dispatch(setNextStepAsActive());
-//                     dispatch(generateTransactionSuccessAlert(isZeroValue));
-//
-//                     setTimeout(() => {
-//                         dispatch(completeTransfer());
-//                         dispatch(resetProgress());
-//                     }, 3500);
-//                 })
-//                 .catch((error) => {
-//                     dispatch(sendTransferError());
-//                     dispatch(resetProgress());
-//                     // If local PoW produces an invalid bundle we do not need to store it or mark the address as spent because the signature has not been broadcast.
-//                     const message = error.message;
-//
-//                     if (message === Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW) {
-//                         isValidBundle = false;
-//                     }
-//                     // Only keep the failed trytes locally if the bundle was valid
-//                     // In case the bundle is invalid, discard the signing as it was never broadcast
-//                     if (hasSignedInputs && isValidBundle) {
-//                         const newState = syncAccountOnErrorAfterSigning(
-//                             // Sort in ascending order
-//                             orderBy(cached.transactionObjects, ['currentIndex']),
-//                             accountState,
-//                             hasBroadcast,
-//                         );
-//
-//                         // Update account in (Realm) storage
-//                         Account.update(accountName, newState);
-//
-//                         dispatch(updateAccountInfoAfterSpending(newState));
-//                         // Clear send screen text fields
-//                         dispatch(clearSendFields());
-//
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:rebroadcastError'),
-//                                 i18next.t('global:signedTrytesBroadcastErrorExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     }
-//
-//                     if (message === Errors.NODE_NOT_SYNCED) {
-//                         return dispatch(generateNodeOutOfSyncErrorAlert(error));
-//                     } else if (message === Errors.UNSUPPORTED_NODE) {
-//                         return dispatch(generateUnsupportedNodeErrorAlert(error));
-//                     } else if (message === Errors.INVALID_LAST_TRIT) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('send:invalidAddress'),
-//                                 i18next.t('send:invalidAddressExplanation4'),
-//                             ),
-//                             undefined,
-//                             error,
-//                         );
-//                     } else if (message === Errors.KEY_REUSE) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:keyReuse'),
-//                                 i18next.t('global:keyReuseError'),
-//                                 undefined,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.INSUFFICIENT_BALANCE) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:balanceError'),
-//                                 i18next.t('global:balanceErrorMessage'),
-//                                 undefined,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.ADDRESS_HAS_PENDING_TRANSFERS) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:pleaseWait'),
-//                                 i18next.t('global:pleaseWaitTransferExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.FUNDS_AT_SPENT_ADDRESSES) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:spentAddressExplanation'),
-//                                 i18next.t('global:discordInformation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.INCOMING_TRANSFERS) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:pleaseWait'),
-//                                 i18next.t('global:pleaseWaitIncomingTransferExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.CANNOT_SEND_TO_OWN_ADDRESS) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('global:cannotSendToOwn'),
-//                                 i18next.t('global:cannotSendToOwnExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.LEDGER_ZERO_VALUE) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('ledger:cannotSendZeroValueTitle'),
-//                                 i18next.t('ledger:cannotSendZeroValueExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.LEDGER_DISCONNECTED) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('ledger:ledgerDisconnectedTitle'),
-//                                 i18next.t('ledger:ledgerDisconnectedExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.LEDGER_DENIED) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('ledger:ledgerDeniedTitle'),
-//                                 i18next.t('ledger:ledgerDeniedExplanation'),
-//                                 20000,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.LEDGER_INVALID_INDEX) {
-//                         return dispatch(
-//                             generateAlert(
-//                                 'error',
-//                                 i18next.t('ledger:ledgerIncorrectIndex'),
-//                                 i18next.t('ledger:ledgerIncorrectIndexExplanation'),
-//                                 undefined,
-//                                 error,
-//                             ),
-//                         );
-//                     } else if (message === Errors.LEDGER_CANCELLED) {
-//                         return;
-//                     }
-//                     return dispatch(generateTransferErrorAlert(error));
-//                 })
-//         );
-//     };
-
-
-export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, powFn, genFn) => (
+export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum=true) => (
     dispatch,
     getState,
 ) => {
@@ -1182,11 +706,12 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
             // Re-check spend statuses of all addresses in bundle
             .then(({ txs, transactionObjects }) => {
 
-              console.log("Entering here");
+              console.log("Entering here 123");
 
               console.log(txs);
                 // Skip this check if it's a zero value transaction
                 if (isZeroValue) {
+                    console.log("Its zero value");
                     
                     return Promise.resolve({ txs, transactionObjects });
                 }
@@ -1218,6 +743,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     selectedNode,
                     ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode]),
                 ];
+                console.log("Random nodes",randomNodes);
+                
 
                 return withRetriesOnDifferentNodes(
                     randomNodes,
@@ -1237,6 +764,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 )(storeAndBroadcast)(cached.txs);
             })
             .then(() => {
+                console.log("before sync");
+                
                 return syncAccountAfterSpending(undefined, withQuorum)(
                     seedStore,
                     cached.transactionObjects,
@@ -1244,14 +773,20 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 );
             })
             .then((newState) => {
+                console.log("after sync",newState);
+                // newState.addressData[0].balance = 0;
+                // newState.addressData[1].balance = 0;
                 // Update account in (Realm) storage
                 Account.update(accountName, newState);
-
+                console.log("entering here");
+                
                 dispatch(updateAccountInfoAfterSpending(assign({}, newState, { accountName })));
-
+                console.log("entering here 2");
                 // Progressbar => (Progress complete)
                 dispatch(setNextStepAsActive());
+                console.log("entering here 3");
                 dispatch(generateTransactionSuccessAlert(isZeroValue));
+                console.log("entering here 4");
 
                 setTimeout(() => {
                     dispatch(completeTransfer());
@@ -1259,6 +794,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 }, 3500);
             })
             .catch((error) => {
+                console.log('error is=',error);
+                
                 dispatch(sendTransferError());
                 dispatch(resetProgress());
                 // If local PoW produces an invalid bundle we do not need to store it or mark the address as spent because the signature has not been broadcast.

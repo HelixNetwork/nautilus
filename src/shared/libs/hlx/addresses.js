@@ -61,10 +61,12 @@ export const isValidAddressObject = (addressObject) => {
  * @returns {array}
  */
 export const preserveAddressLocalSpendStatus = (existingAddressData, newAddressData) =>
+
     map(newAddressData, (addressObject) => {
+        console.log(';;;;;',existingAddressData,newAddressData);
+        
         const seenAddress = find(existingAddressData, { address: addressObject.address });
         const existingLocalSpendStatus = get(seenAddress, 'spent.local');
-
         if (seenAddress && isBoolean(existingLocalSpendStatus)) {
             const newLocalSpendStatus = addressObject.spent.local;
 
@@ -192,7 +194,8 @@ export const getAddressDataUptoLatestUnusedAddress = (settings, withQuorum) => (
         return seedStore
             .generateAddress({ index: currentKeyIndex, security })
             .then((address) => findAddressesData(settings, withQuorum)([address], transactions))
-            .then(({ hashes, balances, wereSpent, addresses }) => {
+            .then((m) => {
+                const { hashes, balances, wereSpent, addresses } = m;                
                 const updatedAddressData = [
                     ...generatedAddressData,
                     ...createAddressData(addresses, balances, wereSpent, [currentKeyIndex]),
@@ -360,6 +363,7 @@ const findAddressesData = (settings, withQuorum) => (addresses, transactions = [
         getBalances(settings, withQuorum)(addresses),
         wereAddressesSpentFrom(settings, withQuorum)(addresses),
     ]).then((data) => {
+        console.log('findall',data);
         const [hashes, balances, wereSpent] = data;
         const spendStatusesFromTransactions = findSpendStatusesFromTransactions(addresses, transactions);
 
@@ -430,12 +434,11 @@ export const removeUnusedAddresses = (settings, withQuorum) => (
  *
  * @returns {array}
  */
-export const createAddressData = (addresses, balances, addressesSpendStatuses, keyIndexes = []) => {
+export const createAddressData = (addresses, balances, addressesSpendStatuses, keyIndexes = []) => {    
     const sizeOfAddresses = size(addresses);
     const sizeOfBalances = size(balances);
     const sizeOfSpendStatuses = size(addressesSpendStatuses);
-    const sizeOfKeyIndexes = size(keyIndexes);
-
+    const sizeOfKeyIndexes = size(keyIndexes);    
     if (
         sizeOfAddresses !== sizeOfBalances ||
         sizeOfAddresses !== sizeOfSpendStatuses ||

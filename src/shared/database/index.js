@@ -12,6 +12,7 @@ import size from 'lodash/size';
 import some from 'lodash/some';
 import { serialise, parse } from '../libs/utils';
 import schemas, { getDeprecatedStoragePath, STORAGE_PATH as latestStoragePath, v_0Schema } from './schemas';
+import {preserveAddressLocalSpendStatus} from 'libs/hlx/addresses';
 // Initialise realm instance
 let realm = {}; // eslint-disable-line import/no-mutable-exports
 
@@ -105,6 +106,7 @@ class Account {
      * @param {object} data
      */
     static createIfNotExists(name, data) {
+        console.log('cine',data);
         const shouldCreate = isEmpty(Account.getObjectForId(name));
 
         if (shouldCreate) {
@@ -120,6 +122,10 @@ class Account {
      * @param {object} data
      */
     static update(name, data) {
+        console.log("entering ralm",name);
+        console.log(data);
+        
+        
         realm.write(() => {
             const existingData = Account.getObjectForId(name);
             const updatedData = assign({}, existingData, {
@@ -316,7 +322,7 @@ class Wallet {
      */
     static get latestDataAsPlainObject() {
         const data = Wallet.latestData;
-
+        console.log('daaaataaa',data)
         return parse(serialise(data));
     }
 
@@ -366,7 +372,7 @@ class Wallet {
             realm.write(() =>
                 realm.create('Wallet', {
                     version: Wallet.version,
-                    settings: { notifications: {} },
+                    settings: { notifications: {}, quorum: {} },
                     accountInfoDuringSetup: { meta: {} },
                 }),
             );
@@ -434,6 +440,14 @@ class Wallet {
         realm.write(() => {
             console.log("state",payload);
             Wallet.latestSettings.remotePoW = payload;
+        });
+    }
+
+  
+    static updateQuorumConfig(payload) {
+        const existingConfig = Wallet.latestData.quorum;
+        realm.write(() => {
+            Wallet.latestData.quorum = assign({}, existingConfig, payload);
         });
     }
 }
@@ -527,7 +541,9 @@ const initialise = (getEncryptionKeyPromise) => {
         } catch (error) { }
 
         const schemasSize = size(schemas);
+        console.log('schema0',schemas[0])
         realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
+        console.log('realme', realm);
         initialiseSync();
     });
 };

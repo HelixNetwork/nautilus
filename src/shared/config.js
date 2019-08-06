@@ -26,6 +26,7 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
+    // 'http://13.234.122.84:8087',
     'https://hlxtest.net:8087',
     'https://node1.hlxtest.net:8087',
     'https://node2.hlxtest.net:8087',
@@ -39,7 +40,7 @@ export const NODES_WITH_POW_ENABLED = [
     password: '',
 }));
 
-export const DEFAULT_NODES = [...NODES_WITH_POW_DISABLED, ...NODES_WITH_POW_ENABLED];
+export const DEFAULT_NODES = [...NODES_WITH_POW_ENABLED, ...NODES_WITH_POW_DISABLED ];
 // TODO
 export const NODELIST_URL = '';
 // export const NODELIST_URL = '';
