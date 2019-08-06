@@ -41,7 +41,6 @@ class Send extends React.PureComponent {
         openModal:false,
     }
 
-    add
 
     validateInputs = (e) => {
         e.preventDefault();
@@ -53,7 +52,7 @@ class Send extends React.PureComponent {
 
     confirmTransfer = async () => {
         const { password, accountName, accountMeta, sendTransfer } = this.props;
-        const { address, amount } = this.state;
+        const { address, hlxamount } = this.state;
         this.setState({
             openModal: false,
         });
@@ -61,7 +60,7 @@ class Send extends React.PureComponent {
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
 
         const message =
-            SeedStore[accountMeta.type].isMessageAvailable || parseInt(amount || '0') === 0
+            SeedStore[accountMeta.type].isMessageAvailable || parseInt(hlxamount || '0') === 0
                 ? this.state.message
                 : '';
 
@@ -69,7 +68,7 @@ class Send extends React.PureComponent {
           message:message
         })
 
-        this.sendTransfer(seedStore, address, parseInt(amount) || 0, message);
+        this.sendTransfer(seedStore, address, parseInt(hlxamount) || 0, message);
     };
 
     sendTransfer = (seedStore, address, value, message) => {
