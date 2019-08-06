@@ -234,10 +234,10 @@ export class ListComponent extends React.PureComponent {
             <React.Fragment>
                 <nav className={css.nav}>
                     <ul>
-                        <a key="active" onClick={() => this.switchFilter(filter)}>
+                        {/* <a key="active" onClick={() => this.switchFilter(filter)}>
                             {t(filter.toLowerCase())} <small>({filteredTransactions.length})</small>
                             <Icon icon="chevronDown" size={8} />
-                        </a>
+                        </a> */}
                         {loaded ? (
                             <li>
                                 {filters.map((item) => {
@@ -254,18 +254,18 @@ export class ListComponent extends React.PureComponent {
                                     );
                                 })}
 
-                                <div>
+                                {/* <div>
                                     <a
                                         className={classNames(css.checkbox, hideEmptyTransactions ? css.on : css.off)}
                                         onClick={() => toggleEmptyTransactions()}
                                     >
                                         {t('history:hideZeroBalance')}
                                     </a>
-                                </div>
+                                </div> */}
                             </li>
                         ) : null}
                     </ul>
-                    <div className={css.search}>
+                    {/* <div className={css.search}>
                         <input
                             className={search.length > 0 ? css.filled : null}
                             value={search}
@@ -294,7 +294,7 @@ export class ListComponent extends React.PureComponent {
                                 </ul>
                             )}
                         </div>
-                    </div>
+                    </div> */}
                     <a
                         onClick={() => updateAccount()}
                         className={classNames(css.refresh, isBusy ? css.busy : null, isLoading ? css.loading : null)}

@@ -54,9 +54,8 @@ class WalletHistory extends React.PureComponent {
                                             <div className={classNames(css.Left_div)}>
                                                 <ul>
                                                     <li className={classNames(css.list, (this.state.active == 'li0' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li0')}>ALL</li>
-                                                    <li className={classNames(css.list, (this.state.active == 'li1' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li1')}><a className={classNames(css.list_anchor)} href="#">SEND</a></li>
+                                                    <li className={classNames(css.list, (this.state.active == 'li1' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li1')}><a className={classNames(css.list_anchor)} href="#">SENT</a></li>
                                                     <li className={classNames(css.list, (this.state.active == 'li2' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li2')}><a className={classNames(css.list_anchor)} href="#">RECEIVED</a></li>
-                                                    <li className={classNames(css.list, (this.state.active == 'li3' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li3')}><a className={classNames(css.list_anchor)} href="#">TRANSFERRED</a></li>
                                                 </ul>
                                             </div>
                                             <div className={classNames(css.right_div)}>
