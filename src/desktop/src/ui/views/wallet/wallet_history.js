@@ -32,6 +32,8 @@ class WalletHistory extends React.PureComponent {
     }
     render() {
         const { t } = this.props;
+        const subroute = location.pathname.split('/')[3] || null;
+
         return (
             <div>
                 <section className={css.home}>
