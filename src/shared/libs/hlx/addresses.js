@@ -867,3 +867,126 @@ export const filterAddressDataWithPendingOutgoingTransactions = (addressData, tr
 
     return filter(addressData, (addressObject) => !includes(inputAddressesFromTransactions, addressObject.address));
 };
+
+
+export const shouldAllowSendingToAddress = (provider) => (addresses) => {
+    return wereAddressesSpentFrom(provider)(addresses).then((wereSpent) => {
+        const spentAddresses = filter(addresses, (address, idx) => wereSpent[idx]);
+
+        return !spentAddresses.length;
+    });
+};
+
+/**
+ *   Communicates with ledger and checks if the addresses are spent from.
+ *
+ *   @method filterSpentAddresses
+ *   @param {string} provider
+ *
+ *   @returns {function(array, array): Promise<object>}
+ **/
+export const filterSpentAddresses = (provider) => (inputs, spentAddresses) => {
+    const addresses = map(inputs, (input) => input.address);
+
+    return wereAddressesSpentFrom(provider)(addresses).then((wereSpent) =>
+        filter(inputs, (input, idx) => !wereSpent[idx] && !includes(spentAddresses, input.address)),
+    );
+};
+
+
+/**
+ *   Filters inputs with addresses that have pending incoming transfers or
+ *   are change addresses.
+ *
+ *   @method filterAddressesWithIncomingTransfers
+ *   @param {array} inputs
+ *   @param {array} pendingValueTransfers
+ *   @returns {array}
+ **/
+export const filterAddressesWithIncomingTransfers = (inputs, pendingValueTransfers) => {
+    if (isEmpty(pendingValueTransfers) || isEmpty(inputs)) {
+        return inputs;
+    }
+
+    const inputsByAddress = transform(
+        inputs,
+        (acc, input) => {
+            acc[input.address] = input;
+        },
+        {},
+    );
+
+    const addressesWithIncomingTransfers = new Set();
+
+    // Check outputs of incoming transfers i.e. If there is an incoming value transfer
+    // Checks outputs of sent transfers to check if there is an incoming transfer (change address)
+
+    // Note: Inputs for outgoing transfers should not be checked since filterSpentAddresses already removes spent inputs
+    const outputsToCheck = flatMap(pendingValueTransfers, (transfer) => transfer.outputs);
+
+    each(outputsToCheck, (output) => {
+        if (output.address in inputsByAddress && output.value > 0) {
+            addressesWithIncomingTransfers.add(output.address);
+        }
+    });
+
+    return map(
+        omitBy(inputsByAddress, (input, address) => addressesWithIncomingTransfers.has(address)),
+        (input) => input,
+    );
+};
+
+/**
+ *   Generate addresses till remainder (unused and also not blacklisted for being a remainder address)
+ *
+ *   @method getAddressesUptoRemainder
+ *   @param {string} [provider]
+ *
+ *   @returns {function(object, string, function, array): Promise<object>}
+ **/
+export const getAddressesUptoRemainder = (provider) => (
+    addressData,
+    seed,
+    genFn,
+    blacklistedRemainderAddresses = [],
+) => {
+    const latestAddress = getLatestAddress(addressData);
+
+    const isBlacklisted = (address) => includes(blacklistedRemainderAddresses, address);
+
+    if (isBlacklisted(latestAddress)) {
+        const latestAddressData = find(addressData, (data, address) => address === latestAddress);
+        const startIndex = latestAddressData.index + 1;
+
+        return getAddressesDataUptoLatestUnusedAddress(provider)(
+            seed,
+            { index: startIndex, security: DEFAULT_SECURITY },
+            genFn,
+        ).then((newAddressData) => {
+            const addressObjectWithHighestIndex = maxBy(map(newAddressData, (data) => data), 'index');
+
+            const remainderAddress = findKey(
+                newAddressData,
+                (data) => data.index === addressObjectWithHighestIndex.index,
+            );
+
+            const addressDataUptoRemainder = { ...addressData, ...newAddressData };
+
+            if (isBlacklisted(remainderAddress)) {
+                return getAddressesUptoRemainder(provider)(
+                    addressDataUptoRemainder,
+                    seed,
+                    genFn,
+                    blacklistedRemainderAddresses,
+                );
+            }
+
+            return {
+                remainderAddress,
+                addressDataUptoRemainder,
+            };
+        });
+    }
+
+    return Promise.resolve({ remainderAddress: latestAddress, addressDataUptoRemainder: addressData });
+};

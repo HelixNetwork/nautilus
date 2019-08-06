@@ -8,11 +8,17 @@ import isNumber from 'lodash/isNumber';
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
 import size from 'lodash/size';
+import keys from 'lodash/keys';
+import isNull from 'lodash/isNull';
+import get from 'lodash/get';
+import map from 'lodash/map'
 import {
     filterSpentAddressData,
     filterAddressDataWithPendingIncomingTransactions,
     transformAddressDataToInputs,
     filterAddressDataWithPendingOutgoingTransactions,
+    filterSpentAddresses,
+    filterAddressesWithIncomingTransfers
 } from './addresses';
 import { VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX } from './utils';
 import { DEFAULT_SECURITY } from '../../config';
@@ -35,7 +41,9 @@ export const prepareInputs = (addressData, threshold, maxInputs = 2, security = 
     const _throw = (error) => {
         throw new Error(error);
     };
-
+    console.log("addressData",addressData);
+    console.log("thresh",threshold);
+    
     if (reduce(addressData, (acc, addressObject) => acc + addressObject.balance, 0) < threshold) {
         _throw(Errors.INSUFFICIENT_BALANCE);
     }
@@ -248,4 +256,92 @@ export const isValidInput = (input) => {
         isNumber(input.keyIndex) &&
         input.keyIndex >= 0
     );
+};
+
+// from master
+
+export const getStartingSearchIndexToPrepareInputs = (addressData) => {
+    const byIndex = (a, b) => get(addressData, `${a}.index`) - get(addressData, `${b}.index`);
+    const address = keys(addressData)
+        .sort(byIndex)
+        .find((address) => addressData[address].balance > 0);
+
+    return address ? addressData[address].index : 0;
+};
+
+export const getSpentAddressesFromTransactions = (normalizedTransactions) => {
+    return reduce(
+        normalizedTransactions,
+        (acc, transaction) => {
+            acc.push(...map(transaction.inputs, (input) => input.address));
+
+            return acc;
+        },
+        [],
+    );
+};
+
+
+export const getUnspentInputs = (provider) => (
+    addressData,
+    spentAddresses,
+    pendingValueTransfers,
+    start,
+    threshold,
+    inputs,
+) => {
+    if (isNull(inputs)) {
+        inputs = {
+            inputs: [],
+            availableBalance: 0,
+            totalBalance: 0,
+            spentAddresses: [],
+            addressesWithIncomingTransfers: [],
+        };
+    }
+
+    const preparedInputs = prepareInputs(addressData, threshold);
+    inputs.totalBalance += preparedInputs.inputs.reduce((sum, input) => sum + input.balance, 0);
+
+    return filterSpentAddresses(provider)(preparedInputs.inputs, spentAddresses).then((unspentInputs) => {
+        // Keep track of all spent addresses that are filtered
+        inputs.spentAddresses = [
+            ...inputs.spentAddresses,
+            ...map(differenceBy(preparedInputs.inputs, unspentInputs, 'address'), (input) => input.address),
+        ];
+
+        const filtered = filterAddressesWithIncomingTransfers(unspentInputs, pendingValueTransfers);
+
+        // Keep track of all addresses with incoming transfers
+        inputs.addressesWithIncomingTransfers = [
+            ...inputs.addressesWithIncomingTransfers,
+            ...map(differenceBy(unspentInputs, filtered, 'address'), (input) => input.address),
+        ];
+
+        const collected = filtered.reduce((sum, input) => sum + input.balance, 0);
+
+        const diff = threshold - collected;
+        const hasInputs = size(preparedInputs.inputs);
+
+        if (hasInputs && diff > 0) {
+            const ordered = preparedInputs.inputs.sort((a, b) => a.keyIndex - b.keyIndex).reverse();
+            const end = ordered[0].keyIndex;
+
+            return getUnspentInputs(provider)(addressData, spentAddresses, pendingValueTransfers, end + 1, diff, {
+                inputs: inputs.inputs.concat(filtered),
+                availableBalance: inputs.availableBalance + collected,
+                totalBalance: inputs.totalBalance,
+                spentAddresses: inputs.spentAddresses,
+                addressesWithIncomingTransfers: inputs.addressesWithIncomingTransfers,
+            });
+        }
+
+        return {
+            inputs: inputs.inputs.concat(filtered),
+            availableBalance: inputs.availableBalance + collected,
+            totalBalance: inputs.totalBalance,
+            spentAddresses: inputs.spentAddresses,
+            addressesWithIncomingTransfers: inputs.addressesWithIncomingTransfers,
+        };
+    });
 };
