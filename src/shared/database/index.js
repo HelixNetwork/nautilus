@@ -106,6 +106,7 @@ class Account {
      * @param {object} data
      */
     static createIfNotExists(name, data) {
+        console.log('cine',data);
         const shouldCreate = isEmpty(Account.getObjectForId(name));
 
         if (shouldCreate) {
@@ -321,7 +322,7 @@ class Wallet {
      */
     static get latestDataAsPlainObject() {
         const data = Wallet.latestData;
-
+        console.log('daaaataaa',data)
         return parse(serialise(data));
     }
 
@@ -371,7 +372,7 @@ class Wallet {
             realm.write(() =>
                 realm.create('Wallet', {
                     version: Wallet.version,
-                    settings: { notifications: {} },
+                    settings: { notifications: {}, quorum: {} },
                     accountInfoDuringSetup: { meta: {} },
                 }),
             );
@@ -439,6 +440,14 @@ class Wallet {
         realm.write(() => {
             console.log("state",payload);
             Wallet.latestSettings.remotePoW = payload;
+        });
+    }
+
+  
+    static updateQuorumConfig(payload) {
+        const existingConfig = Wallet.latestData.quorum;
+        realm.write(() => {
+            Wallet.latestData.quorum = assign({}, existingConfig, payload);
         });
     }
 }
@@ -532,7 +541,9 @@ const initialise = (getEncryptionKeyPromise) => {
         } catch (error) { }
 
         const schemasSize = size(schemas);
+        console.log('schema0',schemas[0])
         realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
+        console.log('realme', realm);
         initialiseSync();
     });
 };

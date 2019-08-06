@@ -38,6 +38,7 @@ const init = () => {
 
         // Get persisted data from Realm storage
         const persistedDataFromRealm = mapStorageToState();
+        console.log('pdata',persistedDataFromRealm,'oldata',oldPersistedData)
         const data = hasDataToMigrate ? oldPersistedData : persistedDataFromRealm;
         const node = get(data, 'settings.node');
         console.log("realm data",data);

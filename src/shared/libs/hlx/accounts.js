@@ -191,6 +191,7 @@ export const syncAccount = (settings, withQuorum=false) => (
  *   @returns {function(string, string, array, object, boolean, function): Promise<object>}
  **/
 export const syncAccountAfterSpending = (settings, withQuorum) => (seedStore, newTransactions, accountState) => {
+    console.log(settings);
     // Update transactions
     const updatedTransactions = [
         ...accountState.transactions,

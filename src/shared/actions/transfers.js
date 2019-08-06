@@ -774,7 +774,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
             })
             .then((newState) => {
                 console.log("after sync",newState);
-                
+                // newState.addressData[0].balance = 0;
+                // newState.addressData[1].balance = 0;
                 // Update account in (Realm) storage
                 Account.update(accountName, newState);
                 console.log("entering here");

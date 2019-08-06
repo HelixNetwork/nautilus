@@ -27,3 +27,5 @@ export default [
 ];
 
 export { v_0Schema, STORAGE_PATH, getDeprecatedStoragePath };
+
+// export { v_0Schema, STORAGE_PATH};

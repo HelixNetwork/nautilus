@@ -9,7 +9,7 @@ export const DEFAULT_NODE = __TEST__
         password: '',
     }
     : {
-        url:'http://13.234.122.84:8087',
+        url:'https://hlxtest.net:8087',
         pow: true,
         token: '',
         password: '',
@@ -26,7 +26,7 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-    'http://13.234.122.84:8087',
+    // 'http://13.234.122.84:8087',
     'https://hlxtest.net:8087',
     'https://node1.hlxtest.net:8087',
     'https://node2.hlxtest.net:8087',
@@ -40,7 +40,7 @@ export const NODES_WITH_POW_ENABLED = [
     password: '',
 }));
 
-export const DEFAULT_NODES = [...NODES_WITH_POW_DISABLED, ...NODES_WITH_POW_ENABLED];
+export const DEFAULT_NODES = [...NODES_WITH_POW_ENABLED, ...NODES_WITH_POW_DISABLED ];
 // TODO
 export const NODELIST_URL = '';
 // export const NODELIST_URL = '';
@@ -73,10 +73,10 @@ export const IRI_API_VERSION = '1';
 // TODO Recheck Quorum size
 
 export const QUORUM_THRESHOLD = 66; //66
-export const QUORUM_SIZE = 1; //3
+export const QUORUM_SIZE = 3; //3
 export const QUORUM_SYNC_CHECK_INTERVAL = 120;
-export const MINIMUM_QUORUM_SIZE = 1; // 2
-export const MAXIMUM_QUORUM_SIZE = 1; // 7
+export const MINIMUM_QUORUM_SIZE = 2; // 2
+export const MAXIMUM_QUORUM_SIZE = 7; // 7
 
 /** Maximum milestone fallbehind threshold for node sync checks */
 export const MAX_MILESTONE_FALLBEHIND = 2;

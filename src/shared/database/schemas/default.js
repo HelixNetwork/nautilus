@@ -1,37 +1,75 @@
 import { availableCurrencies } from '../../libs/currency';
-import { DEFAULT_NODE } from '../../config';
+import { DEFAULT_NODE, QUORUM_SIZE } from '../../config';
 
-export const WalletSchema = {
-    name: 'Wallet',
+
+
+export const ErrorLogSchema = {
+    name: 'ErrorLog',
+    properties: {
+        error: 'string',
+        time: 'int',
+    },
+};
+
+/**
+ * Notifications settings schema
+ */
+export const NotificationsSettingsSchema = {
+    name: 'NotificationsSettings',
+    properties: {
+        general: {
+            type: 'bool',
+            default: true,
+        },
+        confirmations: {
+            type: 'bool',
+            default: true,
+        },
+        messages: {
+            type: 'bool',
+            default: true,
+        },
+    },
+};
+
+export const QuorumConfigSchema = {
+    name: 'QuorumConfig',
+    properties: {
+        size: {
+            type: 'int',
+            default: 1,
+        },
+        enabled: {
+            type: 'bool',
+            default: true,
+        },
+    },
+};
+
+/**
+ * Schema for Wallet versions.
+ */
+export const WalletVersionsSchema = {
+    name: 'WalletVersions',
     primaryKey: 'version',
     properties: {
         /**
-         * Wallet's schema version
+         * Current wallet's version.
          */
         version: {
+            type: 'string',
+            default: '',
+        },
+        /**
+         * Current wallet's build number (mobile).
+         */
+        buildNumber: {
             type: 'int',
+            optional: true,
         },
-        /**
-         * Determines if wallet has completed onboarding.
-         */
-        onboardingComplete: {
-            type: 'bool',
-            default: false,
-        },
-        /**
-         * Error notifications log.
-         */
-        errorLog: 'ErrorLog[]',
-        /**
-         * Wallet settings.
-         */
-        settings: 'WalletSettings',
-        /**
-         * Temporarily stored account information while the account is being setup
-         */
-        accountInfoDuringSetup: 'AccountInfoDuringSetup',
     },
 };
+
 
 /**
  * Schema for wallet settings.
@@ -189,82 +227,35 @@ export const WalletSettingsSchema = {
             type: 'string',
             default: DEFAULT_NODE.url,
         },
-        /**
-         * Determines the status of AsyncStorage to realm migration
-         */
+        
         completedMigration: {
             type: 'bool',
             default: false,
         },
-    },
-};
-/**
- * Notifications settings schema
- */
-export const NotificationsSettingsSchema = {
-    name: 'NotificationsSettings',
-    properties: {
-        general: {
-            type: 'bool',
-            default: true,
-        },
-        confirmations: {
-            type: 'bool',
-            default: true,
-        },
-        messages: {
-            type: 'bool',
-            default: true,
-        },
-    },
-};
 
-/**
- * Schema for Wallet versions.
- */
-export const WalletVersionsSchema = {
-    name: 'WalletVersions',
-    primaryKey: 'version',
-    properties: {
-        /**
-         * Current wallet's version.
-         */
-        version: {
-            type: 'string',
-            default: '',
-        },
-        /**
-         * Current wallet's build number (mobile).
-         */
-        buildNumber: {
-            type: 'int',
-            optional: true,
-        },
-    },
-};
-
-export const ErrorLogSchema = {
-    name: 'ErrorLog',
-    properties: {
-        error: 'string',
-        time: 'int',
-    },
-};
-
-export const AccountInfoDuringSetupSchema = {
-    name: 'AccountInfoDuringSetup',
-    properties: {
-        name: {
-            type: 'string',
-            default: '',
-        },
-        usedExistingSeed: {
+        deepLinking: {
             type: 'bool',
             default: false,
         },
-        meta: 'AccountMeta',
+        quorum: 'QuorumConfig',
+
+        autoNodeList: {
+            type: 'bool',
+            default: true,
+        },
+        
+        nodeAutoSwitch: {
+            type: 'bool',
+            default: true,
+        },
+
+        ignoreProxy: {
+            type: 'bool',
+            default: false,
+        },
     },
 };
+
 
 /**
  * Schema for account meta
@@ -291,6 +282,60 @@ export const AccountMetaSchema = {
     },
 };
 
+export const AccountInfoDuringSetupSchema = {
+    name: 'AccountInfoDuringSetup',
+    properties: {
+        name: {
+            type: 'string',
+            default: '',
+        },
+        usedExistingSeed: {
+            type: 'bool',
+            default: false,
+        },
+        meta: 'AccountMeta',
+        completed: {
+            type: 'bool',
+            default: false,
+        },
+    },
+};
+
+export const WalletSchema = {
+    name: 'Wallet',
+    primaryKey: 'version',
+    properties: {
+        /**
+         * Wallet's schema version
+         */
+        version: {
+            type: 'int',
+        },
+        /**
+         * Determines if wallet has completed onboarding.
+         */
+        onboardingComplete: {
+            type: 'bool',
+            default: false,
+        },
+        /**
+         * Error notifications log.
+         */
+        errorLog: 'ErrorLog[]',
+        /**
+         * Wallet settings.
+         */
+        settings: 'WalletSettings',
+        /**
+         * Temporarily stored account information while the account is being setup
+         */
+        accountInfoDuringSetup: 'AccountInfoDuringSetup',
+    },
+};
+
+
+
+
 export const AddressSchema = {
     name: 'Address',
     properties: {
@@ -310,19 +355,6 @@ export const AddressSpendStatusSchema = {
     },
 };
 
-export const AccountSchema = {
-    name: 'Account',
-    primaryKey: 'name',
-    properties: {
-        meta: 'AccountMeta',
-        index: 'int',
-        name: 'string',
-        addressData: 'Address[]',
-        transactions: 'Transaction[]',
-        usedExistingSeed: { type: 'bool', default: false },
-        displayedSnapshotTransitionGuide: { type: 'bool', default: false },
-    },
-};
 
 export const TransactionSchema = {
     name: 'Transaction',
@@ -345,8 +377,27 @@ export const TransactionSchema = {
         nonce: 'string',
         persistence: 'bool',
         broadcasted: { type: 'bool', default: true },
+        fatalErrorOnRetry: {
+            type: 'bool',
+            default: false,
+        },
     },
 };
+
+export const AccountSchema = {
+    name: 'Account',
+    primaryKey: 'name',
+    properties: {
+        meta: 'AccountMeta',
+        index: 'int',
+        name: 'string',
+        addressData: 'Address[]',
+        transactions: 'Transaction[]',
+        usedExistingSeed: { type: 'bool', default: false },
+        displayedSnapshotTransitionGuide: { type: 'bool', default: false },
+    },
+};
+
 
 export const NodeSchema = {
     name: 'Node',
@@ -358,14 +409,32 @@ export const NodeSchema = {
             type: 'bool',
             default: false,
         },
-        pow: { type: 'bool', default: false }, // Whether the node supports remote PoW
+        pow: { type: 'bool', default: true }, // Whether the node supports remote PoW. //TODO rechange to flase upon implementation of local pow
+        /**
+         * (Optional) authentication token (username) for node
+         */
+        token: {
+            type: 'string',
+            default: '',
+        },
+        /**
+         * (Optional) password for node
+         */
+        password: {
+            type: 'string',
+            default: '',
+        },
     },
 };
+
+
+
 
 export default [
     WalletSchema,
     WalletSettingsSchema,
     NotificationsSettingsSchema,
+    QuorumConfigSchema,
     WalletVersionsSchema,
     ErrorLogSchema,
     AccountInfoDuringSetupSchema,
