@@ -1,56 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
+import map from 'lodash/map'
 import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
+import { connect } from 'react-redux';
 
+import { generateAlert } from 'actions/alerts';
+import { promoteTransaction, retryFailedTransaction } from 'actions/transfers';
+import { toggleEmptyTransactions } from 'actions/settings';
+import { getSelectedAccountName, getSelectedAccountMeta, getAccountNamesFromState, selectAccountInfo} from 'selectors/accounts';
+import { getThemeFromState } from 'selectors/global';
 import { formatHlx, unitStringToValue } from 'libs/hlx/utils';
 import { formatTime, formatModalTime, convertUnixTimeToJSDate, detectedTimezone } from 'libs/date';
 import SeedStore from 'libs/seed';
-
+import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
 import Clipboard from 'ui/components/clipboard';
 import Icon from 'ui/components/icon';
 import Scrollbar from 'ui/components/scrollbar';
 import Button from 'ui/components/button';
-
-import withListData from 'containers/components/list';
-
-import map from 'lodash/map';
-import { connect } from 'react-redux';
-import { getSelectedAccountName, getSelectedAccountMeta, getAccountNamesFromState, selectAccountInfo } from '../../selectors/accounts';
-
-import { generateAlert } from '../../actions/alerts';
-import { toggleEmptyTransactions } from '../../actions/settings';
-import { promoteTransaction, retryFailedTransaction } from '../../actions/transfers';
-
-import { getThemeFromState } from '../../selectors/global';
-
-import { mapNormalisedTransactions, formatRelevantTransactions } from '../../libs/hlx/transfers';
-import { selectAccountInfo } from '../../../../shared/selectors/accounts';
-
+import css from '../views/wallet/wallet.scss'
 /**
  * Transaction history list component
  */
 export class ListComponent extends React.PureComponent {
     static propTypes = {
-        /** Can history be updated */
-        isBusy: PropTypes.bool.isRequired,
+        
         /** Wallet mode */
         mode: PropTypes.string.isRequired,
-        /** Is history updating */
-        isLoading: PropTypes.bool.isRequired,
-        /** Bundle hash for the transaction that is currently being promoted */
-        currentlyPromotingBundleHash: PropTypes.string.isRequired,
-        /** Current transaction retry state */
-        isRetryingFailedTransaction: PropTypes.bool.isRequired,
         /** Hide empty transactions flag */
         hideEmptyTransactions: PropTypes.bool.isRequired,
         /** Should update history */
         updateAccount: PropTypes.func,
         /** Toggle hide empty transactions */
         toggleEmptyTransactions: PropTypes.func.isRequired,
-        /** Transaction history */
-        transactions: PropTypes.array.isRequired,
+
+        accountInfo:PropTypes.object.isRequired,
         /** Promotes bundle
          * @param {string} bundle - bundle hash
          * @param {object} seedStore
@@ -60,13 +45,13 @@ export class ListComponent extends React.PureComponent {
          * @param {string} bundle - bundle hash
          * @param {object} seedStore
          */
-        retryFailedTransaction: PropTypes.func.isRequired,transactions
+        retryFailedTransaction: PropTypes.func.isRequired,
         /** Set active history item
          * @param {number} index - Current item index
          */
         setItem: PropTypes.func.isRequired,
         /** Current active history item */
-        currentItem: PropTypes.any,
+        currentItem: PropTypes.string,
         /** Translation helper
          * @param {string} translationString - locale string identifier to be translated
          * @ignore
@@ -76,25 +61,17 @@ export class ListComponent extends React.PureComponent {
         accountMeta: PropTypes.object.isRequired,
         /** @ignore */
         password: PropTypes.object.isRequired,
-        /** Current account index, where -1 is total balance */
-        index: PropTypes.number,
-        seedIndex: PropTypes.number.isRequired,
-        ui: PropTypes.object.isRequired,
-        accounts: PropTypes.object.isRequired,
-        accountName: PropTypes.string,
-        limit: PropTypes.number,
-        filter: PropTypes.string,
-        compact: PropTypes.bool,
-        theme: PropTypes.object.isRequired, 
-        generateAlert: PropTypes.func.isRequired, 
-        /** Wallet account names */
-        accountNames: PropTypes.array.isRequired
     };
 
     state = {
         filter: 'All',
         search: '',
         loaded: true,
+        isBusy:false,
+        isLoading:false,
+        currentlyPromotingBundleHash:false,
+        isRetryingFailedTransaction:false,
+        transactions:[]
     };
 
     switchFilter(filter) {
@@ -148,8 +125,10 @@ export class ListComponent extends React.PureComponent {
 
         const { accountMeta, password } = this.props;
         const seedStore = await new SeedStore[accountMeta.type](password);
-        this.props.promoteTransaction(bundle, this.props.accountName, seedStore);
+
         // this.props.promoteTransaction(bundle, seedStore);
+        this.props.promoteTransaction(bundle, this.props.accountName, seedStore);
+
     }
 
     async retryFailedTransaction(e, bundle) {
@@ -157,8 +136,10 @@ export class ListComponent extends React.PureComponent {
 
         const { accountMeta, password } = this.props;
         const seedStore = await new SeedStore[accountMeta.type](password);
-        this.props.retryFailedTransaction(bundle, this.props.accountName, seedStore);
+
         // this.props.retryFailedTransaction(bundle, seedStore);
+        this.props.retryFailedTransaction(this.props.accountName, bundle, seedStore);
+
     }
 
     getAccountTransactions = (accountData) => {
@@ -167,37 +148,34 @@ export class ListComponent extends React.PureComponent {
         return formatRelevantTransactions(transactions, addresses);
     };
 
-    componentDidMount(){
-        this.props.transactions = this.getAccountTransactions(this.props.accountInfo);
-        console.log(this.props.transactions);
+    componentDidMount() {
+        const {ui, accountInfo} = this.props;
+        const isBusy = ui.isSyncing || ui.isSendingTransfer || ui.isAttachingToTangle || ui.isTransitioning;
+        const isLoading = ui.isFetchingAccountInfo;
+        const currentlyPromotingBundleHash = ui.currentlyPromotingBundleHash;
+        const isRetryingFailedTransaction = ui.isRetryingFailedTransaction;
+        const tx= this.getAccountTransactions(accountInfo);
+        this.setState({
+            isBusy:isBusy,
+            isLoading:isLoading,
+            currentlyPromotingBundleHash:currentlyPromotingBundleHash,
+            isRetryingFailedTransaction:isRetryingFailedTransaction,
+            transactions:tx
+        })
     }
+
     render() {
         const {
-            isLoading,
-            isBusy,
-            currentlyPromotingBundleHash,
-            isRetryingFailedTransaction,
+            
             mode,
             hideEmptyTransactions,
             toggleEmptyTransactions,
             updateAccount,
-            transactions,
             setItem,
             currentItem,
             t,
-            accountNames,
-            accountMeta,
-            password,
-            seedIndex,
-            accounts,
-            limit,
-            compact,
-            filter,
-            theme,
-            generateAlert,
-            ui
         } = this.props;
-        const { filter, loaded, search } = this.state;
+        const { filter, isBusy, isLoading, loaded, currentlyPromotingBundleHash, isRetryingFailedTransaction, transactions, search } = this.state;
 
         const filters = ['All', 'Sent', 'Received', 'Pending'];
 
@@ -251,8 +229,6 @@ export class ListComponent extends React.PureComponent {
 
         const activeTx = currentItem ? filteredTransactions.filter((tx) => tx.bundle === currentItem)[0] : null;
         const isActiveFailed = activeTx && activeTx.broadcasted === false;
-        const isReceived = transaction.incoming;
-        const isConfirmed = transaction.persistence;
 
         return (
             <React.Fragment>
@@ -331,7 +307,9 @@ export class ListComponent extends React.PureComponent {
                     <Scrollbar>
                         {filteredTransactions.length ? (
                             filteredTransactions.map((transaction, key) => {
-                            //    
+                                const isReceived = transaction.incoming;
+                                const isConfirmed = transaction.persistence;
+
                                 return (
                                     <a
                                         key={key}
@@ -456,6 +434,7 @@ export class ListComponent extends React.PureComponent {
         );
     }
 }
+
 const mapStateToProps = (state) => ({
     seedIndex: state.wallet.seedIndex,
     accounts: state.accounts,
@@ -463,7 +442,6 @@ const mapStateToProps = (state) => ({
     theme: getThemeFromState(state),
     accountMeta: getSelectedAccountMeta(state),
     accountNames: getAccountNamesFromState(state),
-    transactions:[],
     accountInfo:selectAccountInfo(state),
     mode: state.settings.mode,
     ui: state.ui,

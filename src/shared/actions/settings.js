@@ -279,3 +279,18 @@ export function getCurrencyData(currency, withAlerts = false) {
             });
     };
 }
+
+/**
+ * Dispatch to show/hide empty transactions in transactions history
+ *
+ * @method toggleEmptyTransactions
+ *
+ * @returns {{type: {string} }}
+ */
+export const toggleEmptyTransactions = () => {
+    Wallet.toggleEmptyTransactionsDisplay();
+
+    return {
+        type: SettingsActionTypes.TOGGLE_EMPTY_TRANSACTIONS,
+    };
+};
