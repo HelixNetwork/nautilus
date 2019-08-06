@@ -16,7 +16,7 @@ export const DEFAULT_NODE = __TEST__
     };
 // url: 'https://hlxtest.net:8087',
 export const NODES_WITH_POW_DISABLED = [
-    'https://hlxtest.net:8088',
+    // 'https://hlxtest.net:8087',
 ].map((url) => ({
     url,
     pow: false,
@@ -30,8 +30,7 @@ export const NODES_WITH_POW_ENABLED = [
     'https://hlxtest.net:8087',
     'https://node1.hlxtest.net:8087',
     'https://node2.hlxtest.net:8087',
-    'https://node3.hlxtest.net:8087',
-    'https://node4.hlxtest.net:8087',
+    'https://node3.hlxtest.net:8087'
 
 ].map((url) => ({
     url,

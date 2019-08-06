@@ -13,10 +13,12 @@ import size from 'lodash/size';
 import every from 'lodash/every';
 import includes from 'lodash/includes';
 import uniq from 'lodash/uniq';
+import get from 'lodash/get';
 import {
     replayBundle,
     promoteTransaction as promoteTx,
     getTransactionsToApprove,
+    isNodeHealthy,
     attachToTangle,
     storeAndBroadcast,
 } from '../libs/hlx/extendedApi';
@@ -32,6 +34,7 @@ import {
     constructBundlesFromTransactions,
     isFundedBundle,
     isBundle,
+    filterInvalidPendingTransactions
 } from '../libs/hlx/transfers';
 import {
     syncAccountAfterReattachment,
@@ -49,8 +52,9 @@ import {
     isAnyAddressSpent,
     getAddressDataUptoRemainder,
     categoriseAddressesBySpentStatus,
+    shouldAllowSendingToAddress
 } from '../libs/hlx/addresses';
-import { getInputs } from '../libs/hlx/inputs';
+import { getInputs, getStartingSearchIndexToPrepareInputs, getSpentAddressesFromTransactions, getUnspentInputs} from '../libs/hlx/inputs';
 import {
     generateAlert,
     generateTransferErrorAlert,
@@ -431,7 +435,7 @@ export const forceTransactionPromotion = (
  *
  * @returns {function} dispatch
  */
-export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum=true) => (
+export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum=true, genFn) => (
     dispatch,
     getState,
 ) => {
@@ -457,7 +461,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
         console.log('intr123');
         dispatch(setNextStepAsActive());
 
-        return isNodeSynced()
+        return isNodeHealthy()
             .then((isSynced) => {
               console.log('intrissync',isSynced);
                 if (isSynced) {
@@ -475,7 +479,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     // Progressbar step => (Syncing account)
                     dispatch(setNextStepAsActive());
 
-                    return syncAccount()(accountState, seed, genFn);
+                    return syncAccount()(accountState, seedStore, genFn);
                 }
 
                 throw new Error(Errors.KEY_REUSE);
@@ -487,19 +491,21 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
 
                 const valueTransfers = filter(map(accountState.transfers, (tx) => tx), (tx) => tx.transferValue !== 0);
 
-                return filterInvalidPendingTransactions()(valueTransfers, accountState.addresses);
+                return filterInvalidPendingTransactions()(valueTransfers, accountState.addressData);
             })
             .then((filteredTransfers) => {
-                const { addresses, transfers } = accountState;
-                const startIndex = getStartingSearchIndexToPrepareInputs(addresses);
+                const { addressData, transfers } = accountState;
+                console.log('acstate',accountState);
+                const startIndex = getStartingSearchIndexToPrepareInputs(addressData);
                 const spentAddressesFromTransactions = getSpentAddressesFromTransactions(transfers);
 
                 // Progressbar step => (Preparing inputs)
                 dispatch(setNextStepAsActive());
-
+                console.log('valvue',value);
+                
                 // Prepare inputs.
                 return getUnspentInputs()(
-                    addresses,
+                    addressData,
                     spentAddressesFromTransactions,
                     filteredTransfers,
                     startIndex,
@@ -517,9 +523,9 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     // Contains only spendable balance
                     // Note: At this point, we could leverage the change addresses and allow user making a transfer on top from those.
                 } else if (get(inputs, 'availableBalance') < value) {
-                    const addresses = accountState.addresses;
+                    const addressData = accountState.addressData;
                     const transfers = accountState.transfers;
-                    const pendingOutgoingTransfers = getPendingOutgoingTransfersForAddresses(addresses, transfers);
+                    const pendingOutgoingTransfers = getPendingOutgoingTransfersForAddresses(addressData, transfers);
 
                     if (size(pendingOutgoingTransfers)) {
                         throw new Error(Errors.ADDRESS_HAS_PENDING_TRANSFERS);
@@ -546,7 +552,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
 
                 transferInputs = get(inputs, 'inputs');
 
-                return getAddressesUptoRemainder()(accountState.addresses, seed, genFn, [
+                return getAddressDataUptoRemainder()(accountState.addressData, seedStore, genFn, [
                     // Make sure inputs are blacklisted
                     ...map(transferInputs, (input) => input.address),
                     // Make sure receive address is blacklisted
@@ -558,7 +564,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 // Also returns updated address data including new address data for the intermediate addresses.
                 // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
                 // at index 53 it would include address data for 51, 52 and 53.
-                accountState.addresses = addressDataUptoRemainder;
+                accountState.addressData = addressDataUptoRemainder;
 
                 return {
                     inputs: transferInputs,

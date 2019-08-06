@@ -1101,3 +1101,20 @@ export const isFatalTransactionError = (err) => {
     ];
     return some(fatalTransferErrors, (error) => err.message && err.message.includes(error));
 };
+
+
+export const filterInvalidPendingTransactions = (provider) => (transactions, addressData) => {
+    const pendingTransactions = filter(transactions, (tx) => !tx.persistence);
+
+    if (isEmpty(pendingTransactions)) {
+        return Promise.resolve([]);
+    }
+
+    const { incoming, outgoing } = categoriseTransactions(pendingTransactions);
+
+    const validOutgoingTransfers = filterInvalidTransactionsSync(outgoing, addressData);
+
+    return filterInvalidTransactionsAsync(provider)(incoming).then((validIncomingTransfers) => {
+        return [...validOutgoingTransfers, ...validIncomingTransfers];
+    });
+};

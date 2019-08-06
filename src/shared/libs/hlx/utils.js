@@ -544,7 +544,7 @@ export const withRequestTimeoutsHandler = (timeout) => {
 **/
 export const noChecksum = function (address) {
 
-    var isSingleAddress = inputValidator.isString(address)
+    var isSingleAddress = typeof address === 'string';
 
     if (isSingleAddress && address.length === 64) {
 
