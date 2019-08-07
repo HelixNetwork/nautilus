@@ -50,8 +50,8 @@ class WalletHistory extends React.PureComponent {
                                     <div className={classNames(css.foo_bxx1)}>
                                         <h3 style={{ marginLeft: '25vw' }}>Transaction History<span>.</span></h3>
                                         <h6 style={{ marginLeft: '28vw' }}>Access and manage your Transaction</h6>
-                                        <div className={classNames(css.main_div)}>
-                                            <div className={classNames(css.Left_div)}>
+                                        <div className={classNames(css.main_div)} style={{"height": "12%"}}>
+                                            {/* <div className={classNames(css.Left_div)}>
                                                 <ul>
                                                     <li className={classNames(css.list, (this.state.active == 'li0' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li0')}>ALL</li>
                                                     <li className={classNames(css.list, (this.state.active == 'li1' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li1')}><a className={classNames(css.list_anchor)} href="#">SENT</a></li>
@@ -63,7 +63,7 @@ class WalletHistory extends React.PureComponent {
                                                     <input type="text" name="name" className={classNames(css.search_text)} placeholder="Search Transaction" />
                                                     <button className={classNames(css.bts)} variant="backgroundNone" type=""> <FontAwesomeIcon style={{ verticalAlign: "-1.125em", marginLeft: "-140px" }} icon={faSearch} /></button>
                                                 </div>
-                                            </div>
+                                            </div> */}
 
                                             <List
                                                 updateAccount={() => this.updateAccount()}

@@ -19,7 +19,7 @@ import Clipboard from 'ui/components/clipboard';
 import Icon from 'ui/components/icon';
 import Scrollbar from 'ui/components/scrollbar';
 import Button from 'ui/components/button';
-import css from '../views/wallet/wallet.scss'
+import css from './list.scss';
 /**
  * Transaction history list component
  */
@@ -232,8 +232,9 @@ export class ListComponent extends React.PureComponent {
 
         return (
             <React.Fragment>
-                <nav className={css.nav}>
-                    <ul>
+                <nav>
+                    
+                    <ul style={{ "listStyleType": "none" }}>
                         {/* <a key="active" onClick={() => this.switchFilter(filter)}>
                             {t(filter.toLowerCase())} <small>({filteredTransactions.length})</small>
                             <Icon icon="chevronDown" size={8} />
@@ -243,6 +244,7 @@ export class ListComponent extends React.PureComponent {
                                 {filters.map((item) => {
                                     return (
                                         <a
+                                            style={{"display": "inlineBlock", "float":"left", "paddingRight": "1vw"}}
                                             key={item}
                                             onClick={() => this.switchFilter(item)}
                                             className={classNames(
@@ -302,7 +304,7 @@ export class ListComponent extends React.PureComponent {
                         <Icon icon="sync" size={24} />
                     </a>
                 </nav>
-                <hr />
+                {/* <hr /> */}
                 <div className={css.list}>
                     <Scrollbar>
                         {filteredTransactions.length ? (
