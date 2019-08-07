@@ -20,15 +20,16 @@ class Top extends React.PureComponent {
 
     doLogout(){
       this.props.clearWalletData();
+      this.props.setPassword({});
       this.props.history.push('/');
     }
     render() {
-        const { wallet, balance} = this.props;
+        const { wallet, balance, unit} = this.props;
         return (
             <div className={classNames(css.top_sec1)}>
                 <div className={classNames(css.lg_logos)}><img src={logo} alt="" /></div>
                 <div className={classNames(css.bal_bx)} style={{ display: this.props.bal }}><span style={{ color: 'white', fontSize: '22px' }}>Balance</span><br /><br /><span>0,02€ /mHLX</span></div>
-                <div className={classNames(css.bal_bxs)} style={{ display: this.props.bal }}>&nbsp;&nbsp;{balance} &nbsp; <span style={{ color: '#e8b349', fontSize: '14px' }}> mHLX</span><br /><span style={{ marginLeft: "20px" }}>26,67 &nbsp;&nbsp;&nbsp;&nbsp;  <span style={{ fontSize: '15px', marginRight: '9px' }}>EUR</span></span></div>
+                <div className={classNames(css.bal_bxs)} style={{ display: this.props.bal }}>&nbsp;&nbsp;{balance} &nbsp; <span style={{ color: '#e8b349', fontSize: '14px' }}>{unit}</span><br /><span style={{ marginLeft: "20px" }}>26,67 &nbsp;&nbsp;&nbsp;&nbsp;  <span style={{ fontSize: '15px', marginRight: '9px' }}>EUR</span></span></div>
                 <div style={{ marginRight: '30px', marginTop: '-36px' }}>
                     {wallet.ready ? (
                         <React.Fragment>
@@ -56,6 +57,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  setPassword,
   clearWalletData
 };
 

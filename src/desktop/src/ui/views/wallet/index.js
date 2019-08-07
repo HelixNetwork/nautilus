@@ -22,6 +22,7 @@ import SeedStore from 'libs/seed';
 import { accumulateBalance } from 'libs/hlx/addresses';
 import Loading from 'ui/components/loading';
 import { setSeedIndex } from 'actions/wallet';
+import {formatValue, formatUnit, formatHlx} from 'libs/hlx/utils';
 /**
  * Wallet functionallity router wrapper component
  */
@@ -61,7 +62,7 @@ class Wallet extends React.PureComponent {
         };
 
         const { location, history, accountNames, accountName, accountInfo, t } = this.props;
-
+        let balance = accumulateBalance(accountInfo.addressData.map((addressdata)=>addressdata.balance));
         const currentKey = location.pathname.split('/')[2] || '/';
         if (currentKey == '/') {
             return (
@@ -70,7 +71,8 @@ class Wallet extends React.PureComponent {
                         bal={'block'}
                         main={'none'}
                         user={'block'}
-                        balance={accumulateBalance(accountInfo.addressData.map((addressdata)=>addressdata.balance))}
+                        balance={formatHlx(balance, true, false)}
+                        unit={formatUnit(balance)}
                         history={this.props.history}
                     />
                     <section className="spage_1">
@@ -82,8 +84,8 @@ class Wallet extends React.PureComponent {
                                 <h4 className={classNames(css.welcome)}>{t('welcome:welcome')} {accountName} <span style={styles}>.</span> </h4>
                                     <div className={classNames(css.welcome_box)}>
                                         <h2 style={{ color: '#e8b349' }}>{
-                                          accumulateBalance(accountInfo.addressData.map((addressdata)=>addressdata.balance))
-                                        } mHLX</h2>
+                                          formatHlx(balance, true, true)
+                                        }</h2>
                                         <h3>26,67 EUR</h3>
                                     </div>
                                     <div className={classNames(css.icon_secs1)}>
