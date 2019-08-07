@@ -4,6 +4,9 @@ import css from './wallet.scss';
 import classNames from 'classnames';
 import Top from '../../components/topbar';
 import List from 'ui/components/list';
+import { getSelectedAccountName, getSelectedAccountMeta} from 'selectors/accounts';
+import { getAccountInfo } from 'actions/accounts';
+import SeedStore from 'libs/seed';
 
 import PropTypes from 'prop-types';
 import reload from 'ui/images/refresh.svg';
@@ -21,6 +24,10 @@ class WalletHistory extends React.PureComponent {
             push: PropTypes.func.isRequired,
         }).isRequired,
         t: PropTypes.func.isRequired,
+        getAccountInfo: PropTypes.func.isRequired,
+        accountName: PropTypes.string.isRequired,
+        accountMeta: PropTypes.object.isRequired,
+        password: PropTypes.object.isRequired,
     }
     state = {
         active: 'li0'
@@ -30,8 +37,21 @@ class WalletHistory extends React.PureComponent {
             active: element
         });
     }
+
+    updateAccount = async () => {
+        const { password, accountName, accountMeta } = this.props;
+
+        const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
+
+        this.props.getAccountInfo(
+            seedStore,
+            accountName,
+            Electron.notify,
+            true, // Sync with quorum enabled
+        );
+    };
     render() {
-        const { t } = this.props;
+        const { t, history } = this.props;
         const subroute = location.pathname.split('/')[3] || null;
 
         return (
@@ -128,7 +148,14 @@ class WalletHistory extends React.PureComponent {
         )
     }
 }
-const mapDispatchToProps = {
 
+const mapStateToProps = (state) => ({
+    accountName: getSelectedAccountName(state),
+    accountMeta: getSelectedAccountMeta(state),
+    password: state.wallet.password,
+});
+
+const mapDispatchToProps = {
+    getAccountInfo
 };
-export default connect(null, mapDispatchToProps)(withI18n()(WalletHistory));
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(WalletHistory));

@@ -232,7 +232,7 @@ export class ListComponent extends React.PureComponent {
 
         return (
             <React.Fragment>
-                <nav>
+                <nav className={css.nav}>
                     
                     <ul style={{ "listStyleType": "none" }}>
                         {/* <a key="active" onClick={() => this.switchFilter(filter)}>
@@ -276,25 +276,7 @@ export class ListComponent extends React.PureComponent {
                         />
                         <div onClick={() => this.setState({ search: '' })}>
                             <Icon icon={search.length > 0 ? 'cross' : 'search'} size={search.length > 0 ? 16 : 20} />
-                            {search === '!help' && (
-                                <ul className={css.tooltip}>
-                                    <li>
-                                        <strong>XYZ</strong> {t('history:searchHelpText')}
-                                    </li>
-                                    <li>
-                                        <strong>100</strong> {t('history:searchHelpValue')}
-                                    </li>
-                                    <li>
-                                        <strong>100Mi</strong> {t('history:searchHelpUnits')}
-                                    </li>
-                                    <li>
-                                        <strong>&gt;100 </strong> {t('history:searchHelpMore')}
-                                    </li>
-                                    <li>
-                                        <strong>&lt;100i</strong> {t('history:searchHelpLess')}
-                                    </li>
-                                </ul>
-                            )}
+                            
                         </div>
                     </div> */}
                     <a
