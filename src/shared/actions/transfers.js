@@ -69,11 +69,11 @@ import { DEFAULT_RETRIES } from '../config';
 import { Account } from '../database';
 
 import {
-    getChecksum,
     noChecksum,
     ADDRESS_LENGTH,
-    addChecksum
 } from '../libs/hlx/utils';
+
+import {addChecksum} from "@helixnetwork/checksum";
 
 import {
     asTransactionObject

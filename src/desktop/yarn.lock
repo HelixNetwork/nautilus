@@ -1045,7 +1045,7 @@
   resolved "https://registry.yarnpkg.com/@helixnetwork/converter/-/converter-1.0.0-alpha.4.tgz#b2e655e007c5ce935f587d1c9c4fb817f2cf441e"
   integrity sha512-GVocmoqZut78BWQwRlKiCBd/C59GAd8GCtQ9nxiE4qydfYPmo+5JFdoW6cEG8dwW7KL5QuXZMxAasjBEXY767w==
 
-"@helixnetwork/core@^1.0.0-alpha.4":
+"@helixnetwork/core@1.0.0-alpha.4":
   version "1.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@helixnetwork/core/-/core-1.0.0-alpha.4.tgz#84133ea0f17e2d8d7227b4f3f028a9598c5034a3"
   integrity sha512-IeCkUPaP2qnPZYSIc7Ef3eQ6nwOTs61950UroJh2/WURmyCAKOJ8QtpBLWt2slsrQjIjHzGn9iysw/5dsA7NnA==
@@ -1083,7 +1083,7 @@
   resolved "https://registry.yarnpkg.com/@helixnetwork/pad/-/pad-1.0.0-alpha.4.tgz#055c8ce50dc09197c90794affb7a91e25c3d81e1"
   integrity sha512-FnsVWBLv3Rp9BVBwnt4qY5mborVpKN+Ck6Mq2j9JJhQEUrekNQRtWcAnVcurFoRA+QukdceI9EVQgomJKmGXqw==
 
-"@helixnetwork/sha3@^1.0.0-alpha.4":
+"@helixnetwork/sha3@1.0.0-alpha.4", "@helixnetwork/sha3@^1.0.0-alpha.4":
   version "1.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@helixnetwork/sha3/-/sha3-1.0.0-alpha.4.tgz#1cbe39152363cc193238116df4e876d73a482336"
   integrity sha512-Y0MwsilxFF6km8y71mq/p1h93DjbocOIr7CE3r+4vgueflPJadVfJaWXkoJ56gilkJI8MBeIys2UGW3qq0Uadg==
@@ -1092,7 +1092,7 @@
     js-sha3 "^0.8.0"
     types-bn "0.0.1"
 
-"@helixnetwork/transaction-converter@^1.0.0-alpha.4":
+"@helixnetwork/transaction-converter@1.0.0-alpha.4", "@helixnetwork/transaction-converter@^1.0.0-alpha.4":
   version "1.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@helixnetwork/transaction-converter/-/transaction-converter-1.0.0-alpha.4.tgz#1620fdd197ae1a3347da38f799dd56cc8233e498"
   integrity sha512-JH7AnLx6HvfZe3AerZHoM3d9ZMOGT6gzarduXcfV/3UAyF72kzyosbFLj06cPxJI/c0UKkiHCFpeb8kvf0KPZw==
@@ -1110,7 +1110,7 @@
     "@helixnetwork/converter" "^1.0.0-alpha.4"
     "@helixnetwork/hash-module" "^1.0.0-alpha.4"
 
-"@helixnetwork/validators@^1.0.0-alpha.4":
+"@helixnetwork/validators@1.0.0-alpha.4":
   version "1.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@helixnetwork/validators/-/validators-1.0.0-alpha.4.tgz#07412c2093ae36930a9ff18e16adf7dec96a8176"
   integrity sha512-6l8FkwqQ4GrV4jUoOIVSrV6YJhGqTYdECBQbrwUkKXrkTYQit5J8DmNNVPQR2AHgISfwO8V1UFleXYQt213UAA==
