@@ -116,22 +116,22 @@
 }
 
 .search {
-    margin: 0px 0px 0 110px;
+    margin: 0px 0px 0 175px;
     line-height: 40px;
     height: 40px;
-    background: var(--body);
+    background: white;
     border: none;
     color: var(--input-color);
     border-radius: 4px;
     cursor: pointer;
     transition: width 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
     width: 35%;
-    padding: 0 40px 0 10px;
+    padding: 0px 0px 0 10px;
     overflow: hidden;
     input {
         display: inline-block;
         height: 84%;
-        width: 90%;
+        width: 65%;
         float: left;
         &::placeholder {
             font-size: 14px;

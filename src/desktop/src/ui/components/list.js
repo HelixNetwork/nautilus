@@ -333,12 +333,12 @@ export class ListComponent extends React.PureComponent {
             <input
               // className={css.filled}
               value={search}
-              placeholder={t("history:typeHelp")}
+              placeholder="SEARCH"
               onChange={e => this.setState({ search: e.target.value })}
             />
             <div
               onClick={() => this.setState({ search: "" })}
-              style={{ display: "inline-block" }}
+              style={{ display: "inline-block" ,    "marginLeft": "-22%"}}
             >
               <Icon
                 icon={search.length > 0 ? "cross" : "search"}
