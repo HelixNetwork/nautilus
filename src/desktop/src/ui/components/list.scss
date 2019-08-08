@@ -7,7 +7,9 @@
     color: black;
     overflow: hidden;
     > a {
-        color: var(--body);
+        padding-top: 1vw;
+        margin-left: 3vw;
+        color: var(--body-bg);
         margin: 0 22px 0 0;
         font-weight: 400;
         cursor: pointer;
@@ -22,6 +24,9 @@
             font-size: 13px;
             margin: 0 2px;
         }
+    }
+    > ul > li > a {
+        cursor: pointer;
     }
 }
 
@@ -87,6 +92,50 @@
             div {
                 opacity: 0.5;
             }
+        }
+    }
+}
+
+.refresh {
+    display: block;
+    text-align: center;
+
+    &:hover {
+        color: var(--input-bg);
+    }
+
+    &.busy {
+        pointer-events: none;
+        color: var(--body-alt);
+    }
+
+    &.loading {
+        pointer-events: none;
+        animation: spin 0.8s ease infinite;
+    }
+}
+
+.search {
+    margin: 0px 0px 0 110px;
+    line-height: 40px;
+    height: 40px;
+    background: var(--body);
+    border: none;
+    color: var(--input-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: width 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 35%;
+    padding: 0 40px 0 10px;
+    overflow: hidden;
+    input {
+        display: inline-block;
+        height: 84%;
+        width: 90%;
+        float: left;
+        &::placeholder {
+            font-size: 14px;
+            color: gray;
         }
     }
 }

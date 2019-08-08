@@ -267,24 +267,26 @@ export class ListComponent extends React.PureComponent {
                             </li>
                         ) : null}
                     </ul>
-                    {/* <div className={css.search}>
-                        <input
-                            className={search.length > 0 ? css.filled : null}
-                            value={search}
-                            placeholder={t('history:typeHelp')}
-                            onChange={(e) => this.setState({ search: e.target.value })}
-                        />
-                        <div onClick={() => this.setState({ search: '' })}>
-                            <Icon icon={search.length > 0 ? 'cross' : 'search'} size={search.length > 0 ? 16 : 20} />
-                            
-                        </div>
-                    </div> */}
+                    
                     <a
                         onClick={() => updateAccount()}
                         className={classNames(css.refresh, isBusy ? css.busy : null, isLoading ? css.loading : null)}
                     >
                         <Icon icon="sync" size={24} />
                     </a>
+
+                    <div className={css.search}>
+                        <input
+                            // className={css.filled}
+                            value={search}
+                            placeholder={t('history:typeHelp')}
+                            onChange={(e) => this.setState({ search: e.target.value })}
+                        />
+                        <div onClick={() => this.setState({ search: '' })} style={{"display": "inline-block"}}>
+                            <Icon icon={search.length > 0 ? 'cross' : 'search'} size={search.length > 0 ? 16 : 20} />
+                            
+                        </div>
+                    </div>
                 </nav>
                 {/* <hr /> */}
                 <div className={css.list}>
@@ -303,7 +305,7 @@ export class ListComponent extends React.PureComponent {
                                             isReceived ? css.received : css.sent,
                                         )}
                                     >
-                                        <div>
+                                        <div className={css.alt_bg}>
                                             {isReceived ? (
                                                 <Icon icon="plus" size={14} />
                                             ) : (
