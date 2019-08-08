@@ -5,6 +5,8 @@ import { changeHelixNode } from '../libs/hlx'
 import { SettingsActionTypes } from '../actions/types';
 import { generateAlert, generateNodeOutOfSyncErrorAlert, generateUnsupportedNodeErrorAlert } from '../actions/alerts';
 import { allowsRemotePow } from '../libs/hlx/extendedApi';
+import get from 'lodash/get';
+import keys from 'lodash/keys';
 /**
  * Change wallet's active language
  *

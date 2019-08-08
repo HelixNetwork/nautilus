@@ -22,7 +22,8 @@ import SeedStore from 'libs/seed';
 import { accumulateBalance } from 'libs/hlx/addresses';
 import Loading from 'ui/components/loading';
 import { setSeedIndex } from 'actions/wallet';
-import {formatValue, formatUnit, formatHlx} from 'libs/hlx/utils';
+import {formatValue, formatUnit, formatHlx, getCurrencyValue} from 'libs/hlx/utils';
+import axios from 'axios';
 /**
  * Wallet functionallity router wrapper component
  */
@@ -51,7 +52,18 @@ class Wallet extends React.PureComponent {
         getAccountInfo(seedStore,accountName,Electron.notify);
         history.push('/wallet/')
   }
-
+  state={
+      currencyValue : 0
+  }
+  componentDidMount(){
+    const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+    axios.get(url).then(resp=>{
+        console.log('resp',resp);
+        this.setState({
+            currencyValue:this.props.balance*resp.data.rates[this.props.currency]
+        })
+    })
+  }
 
 
     render() {
@@ -61,7 +73,7 @@ class Wallet extends React.PureComponent {
 
         };
 
-        const { location, history, accountNames, accountName, accountInfo, t } = this.props;
+        const { location, history, accountNames, accountName, accountInfo, currency, t } = this.props;
         let balance = accumulateBalance(accountInfo.addressData.map((addressdata)=>addressdata.balance));
         const currentKey = location.pathname.split('/')[2] || '/';
         if (currentKey == '/') {
@@ -86,7 +98,7 @@ class Wallet extends React.PureComponent {
                                         <h2 style={{ color: '#e8b349' }}>{
                                           formatHlx(balance, true, true)
                                         }</h2>
-                                        <h3>26,67 EUR</h3>
+                                        <h3>{this.state.currencyValue+" "+currency}</h3>
                                     </div>
                                     <div className={classNames(css.icon_secs1)}>
                                          {/* <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><img src={img} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
@@ -136,11 +148,12 @@ const mapStateToProps = (state) => ({
         accountName:getSelectedAccountName(state),
         accountInfo:selectAccountInfo(state),
         seedIndex:getSeedIndexFromState(state),
-        balance:getBalanceForSelectedAccount(state)
-
+        balance:getBalanceForSelectedAccount(state),
+        currency:state.settings.currency
 });
 
 const mapDispatchToProps = {
+  
   getAccountInfo,
   setSeedIndex
 };

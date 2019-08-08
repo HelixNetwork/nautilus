@@ -62,13 +62,14 @@ class Currency extends React.PureComponent {
                                 return { value: item, label: item };
                             })}
                     />
-                </form>
+                
                 <Button
                     style={{ marginLeft: '26vw', marginTop: '4vw' }}
                     loading={isFetchingCurrencyData}
                     type="submit">
                     {t('global:save')}
                 </Button>
+                </form>
                 <div className={classNames(css.spe_bx)}></div>
             </div>
         );

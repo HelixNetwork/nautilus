@@ -36,7 +36,7 @@ class Top extends React.PureComponent {
                             <a href="#" className={classNames(css.main_mn)} style={{ display: this.props.user }}><img src={log} style={{ width: '40px' }} alt="" /></a>
                             <a onClick={this.doLogout.bind(this)} className={classNames(css.setting)} style={{ display: this.props.common }}><FontAwesomeIcon icon={faPowerOff} /> Logout </a>
                             <a onClick={() => this.props.history.push('/settings/editname')} className={classNames(css.setting)} style={{ display: this.props.common }}><FontAwesomeIcon icon={faCog} /> Settings</a>
-                            <a onClick={() => this.props.history.push('/wallet')} className={classNames(css.setting)} style={{ display: this.props.main }}><FontAwesomeIcon icon={faTh} /> Main Menu</a>
+                            <a onClick={() => this.props.history.push('/wallet/')} className={classNames(css.setting)} style={{ display: this.props.main }}><FontAwesomeIcon icon={faTh} /> Main Menu</a>
                         </React.Fragment>
                     ) : (
                             <React.Fragment>

@@ -438,7 +438,6 @@ class Wallet {
      */
     static updateRemotePowSetting(payload) {
         realm.write(() => {
-            console.log("state",payload);
             Wallet.latestSettings.remotePoW = payload;
         });
     }
@@ -448,6 +447,15 @@ class Wallet {
         const existingConfig = Wallet.latestData.quorum;
         realm.write(() => {
             Wallet.latestData.quorum = assign({}, existingConfig, payload);
+        });
+    }
+
+    static updateCurrencyData(payload) {
+        const { conversionRate, currency, availableCurrencies } = payload;
+        realm.write(() => {
+            Wallet.latestSettings.currency = currency;
+            Wallet.latestSettings.conversionRate = conversionRate;
+            Wallet.latestSettings.availableCurrencies = availableCurrencies;
         });
     }
 }
