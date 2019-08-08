@@ -66,8 +66,6 @@ class Login extends React.PureComponent {
 
     componentDidMount() {
         const { password, addingAdditionalAccount } = this.props;
-        console.log("login props", this.props);
-        console.log(password);
         if (password.length && addingAdditionalAccount) {
             this.setupAccount();
         } else {
@@ -77,7 +75,6 @@ class Login extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        console.log("prev props", this.prevProps);
         if (this.state.shouldMigrate && !prevProps.completedMigration && this.props.completedMigration) {
             this.setupAccount();
         }
@@ -117,21 +114,11 @@ class Login extends React.PureComponent {
             currentAccountMeta,
             generateAlert
         } = this.props;
-
-        console.log("props", this.props)
-
-        console.log("account addi", addingAdditionalAccount)
-
         const accountName = addingAdditionalAccount ? additionalAccountName : currentAccountName;
         const accountMeta = addingAdditionalAccount ? additionalAccountMeta : currentAccountMeta;
-
-        console.log("account name", accountName)
-
-        console.log("account meta", accountMeta)
         let seedStore;
         try {
             seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
-            console.log('seeedstore', seedStore);
         } catch (e) {
             e.accountName = accountName;
             throw e;
@@ -171,7 +158,6 @@ class Login extends React.PureComponent {
         } catch (err) {
             generateAlert('error', t('errorAccessingKeychain'), t('errorAccessingKeychainExplanation'), 2000, err);
         }
-        console.log("Hashed", passwordHash);
         try {
             authorised = await authorize(passwordHash);
         } catch (err) {
@@ -179,7 +165,6 @@ class Login extends React.PureComponent {
         }
 
         if (authorised) {
-            console.log("here");
             setPassword(passwordHash);
 
             this.setState({

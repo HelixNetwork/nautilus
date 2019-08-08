@@ -65,7 +65,6 @@ class Onboarding extends React.PureComponent {
     }
 
     render() {
-        console.log("this state", this.props);
         const { history, location, complete, isAuthorised } = this.props;
         const indexComponent = complete ? Login : Welcome;
         const currentKey = location.pathname.split('/')[2] || '/';

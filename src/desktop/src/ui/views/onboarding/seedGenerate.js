@@ -164,8 +164,6 @@ class SeedGenerate extends React.PureComponent {
      */
     generateNewSeed = () => {
         const newSeed = createRandomSeed();
-        console.log("newSeed=====", newSeed);
-        
         const newSeed1 = newSeed.slice(0, 16);
         const newSeed2 = newSeed.slice(16, 32);
         const newSeed3 = newSeed.slice(32, 48);
@@ -232,12 +230,11 @@ class SeedGenerate extends React.PureComponent {
     // }
 
     viewseed(index) {
-        console.log(index)
+        
     }
     saveAccountName = () => {
         const { history } = this.props;
         const { seed } = this.state;
-        console.log('seed', seed);
         Electron.setOnboardingSeed(seed, true);
         history.push('/onboarding/account-name');
     }

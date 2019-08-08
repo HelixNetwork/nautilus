@@ -5,7 +5,7 @@ import {
 } from "@helixnetwork/transaction-converter"
 export default class SeedStoreCore {
     /**
-     * Performs proof-of-works on provided trytes
+     * Performs proof-of-works on provided txs
      *
      * @method performPow
      *
@@ -40,14 +40,12 @@ export default class SeedStoreCore {
      * @returns {Promise<string>}
      */
     getDigest=async(TxBytes)=> {
-        console.log("here sa =", TxBytes);
         try{
           let result =  await asTransactionObject(TxBytes);
-          console.log("result",result);
         return await asTransactionObject(TxBytes).hash;
       }
       catch(err){
-        console.log('eerererere',err);
+        console.log(err);
       }
     }
 }

@@ -62,12 +62,9 @@ class Viewseed extends React.PureComponent {
      */
     setSeed = async () => {
         const { accountName, accountMeta, password } = this.props;
-        console.log("ACCOUNTID===", this.props.account);
 
 
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
-        console.log('sseedd', seedStore);
-        console.log(await seedStore.getSeed());
         this.seed = await seedStore.getSeed();
         const checksum = this.seed ? await Electron.getChecksum(this.seed) : '';
         this.setState({
@@ -145,7 +142,6 @@ class Viewseed extends React.PureComponent {
         }
 
         const checksum = this.state.checksum;
-        console.log(checksum);
         return (
             <React.Fragment>
                 <div className={classNames(css.foo_bxx12)}>

@@ -63,7 +63,6 @@ export const isValidAddressObject = (addressObject) => {
 export const preserveAddressLocalSpendStatus = (existingAddressData, newAddressData) =>
 
     map(newAddressData, (addressObject) => {
-        console.log(';;;;;',existingAddressData,newAddressData);
         
         const seenAddress = find(existingAddressData, { address: addressObject.address });
         const existingLocalSpendStatus = get(seenAddress, 'spent.local');
@@ -363,7 +362,6 @@ const findAddressesData = (settings, withQuorum) => (addresses, transactions = [
         getBalances(settings, withQuorum)(addresses),
         wereAddressesSpentFrom(settings, withQuorum)(addresses),
     ]).then((data) => {
-        console.log('findall',data);
         const [hashes, balances, wereSpent] = data;
         const spendStatusesFromTransactions = findSpendStatusesFromTransactions(addresses, transactions);
 

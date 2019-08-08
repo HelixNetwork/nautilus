@@ -228,7 +228,7 @@ describe('libs: helix/extendedApi', () => {
                     nock.cleanAll();
                 });
 
-                it('should return true if "timestamp" on trytes is within five minutes', () => {
+                it('should return true if "timestamp" on txBytes is within five minutes', () => {
                     return isNodeHealthy().then((result) => expect(result).to.equal(true));
                 });
             });

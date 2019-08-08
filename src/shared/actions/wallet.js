@@ -61,18 +61,15 @@ export const generateNewAddressRequest = () => ({
  * @returns {function(*): Promise<any>}
  */
 export const generateNewAddress = (seed, accountName, existingAccountData, genFn) => {
-    console.log("ExistingAccount===",existingAccountData);
     
     return (dispatch) => {
         dispatch(generateNewAddressRequest());
         return syncAddresses()(seed, existingAccountData.addressData, genFn)
             .then((latestAddressData) => {
-                console.log("ADDRESS===", latestAddressData);
                 dispatch(updateAddresses(accountName, latestAddressData));
                 dispatch(generateNewAddressSuccess());
             })
             .catch((err) => {
-                console.log("ERRORRR...",err);
 
                 dispatch(generateNewAddressError())
             });

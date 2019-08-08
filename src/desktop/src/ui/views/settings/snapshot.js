@@ -102,11 +102,7 @@ class Snapshot extends PureComponent {
      */
     startSnapshotTransition = async () => {
         const { wallet, addresses } = this.props;
-        console.log('wallet:=', wallet);
-        console.log('addressess:=', addresses);
         const { accountName, meta } = this.props.account;
-        console.log('accoundname:=', accountName);
-        console.log('meta:=', meta);
 
         const seedStore = await new SeedStore[meta.type](wallet.password, accountName, meta);
 

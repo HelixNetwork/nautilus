@@ -47,11 +47,6 @@ export const nodesConfigurationFactory = (overrides) =>
     createSelector(
         getSettingsFromState,
         (state) => {
-            console.log("Function===", getSettingsFromState);
-
-            console.log("State===", state);
-            console.log(overrides);
-
             const config = {
                 /** Node that should be given priority while connecting. */
                 priorityNode: DEFAULT_NODE,
@@ -78,8 +73,6 @@ export const nodesConfigurationFactory = (overrides) =>
                  */
                 autoNodeList: state.autoNodeList,
             };
-
-            console.log("config", config);
 
             const shouldOverrideQuorumConfig = has(overrides, 'quorum');
             const shouldUseOnlyPowNodes = has(overrides, 'useOnlyPowNodes');

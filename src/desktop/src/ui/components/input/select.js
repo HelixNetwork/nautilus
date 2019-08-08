@@ -65,7 +65,6 @@ export default class Select extends React.PureComponent {
     render() {
         const { value, valueLabel, options, label, disabled } = this.props;
         const { open } = this.state;
-        console.log('select props',this.props);
 
         return (
             <div className={classNames(css.input, css.select, open ? css.open : null, disabled ? css.disabled : null)}>

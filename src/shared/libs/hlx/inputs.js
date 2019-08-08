@@ -41,8 +41,6 @@ export const prepareInputs = (addressData, threshold, maxInputs = 2, security = 
     const _throw = (error) => {
         throw new Error(error);
     };
-    console.log("addressData",addressData);
-    console.log("thresh",threshold);
     
     if (reduce(addressData, (acc, addressObject) => acc + addressObject.balance, 0) < threshold) {
         _throw(Errors.INSUFFICIENT_BALANCE);

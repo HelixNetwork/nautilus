@@ -147,7 +147,6 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
                 dispatch(accountInfoFetchSuccess(result));
             })
             .catch((err) => {
-                console.log('err', err)
                 if (navigator) {
                     navigator.pop({ animated: false });
                 }
@@ -157,36 +156,6 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
             });
     };
 };
-
-// export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = false) => {
-
-//     return (dispatch, getState) => {
-//         dispatch(accountInfoFetchRequest());
-
-//         const existingAccountState = selectedAccountStateFactory(accountName)(getState());
-//         console.log(existingAccountState);
-//         const settings = getState().settings;
-//         console.log('set',settings)
-//         return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
-//             .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(syncAccount)(
-//                 existingAccountState,
-//                 seedStore,
-//                 notificationFn,
-//                 settings,
-//             )
-//             .then((result) => {
-//                 // Update account in storage (realm)
-//                 Account.update(accountName, result);
-//                 console.log('re',result);
-//                 dispatch(accountInfoFetchSuccess(result));
-//             })
-//             .catch((err) => {
-//                 console.log('err', err);
-//                 setTimeout(() => dispatch(generateAlert(generateAccountInfoErrorAlert, err)), 500);
-//                 dispatch(accountInfoFetchError());
-//             });
-//     };
-// };
 
 export const fullAccountInfoFetchError = () => ({
     type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
@@ -265,9 +234,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
         dispatch(fullAccountInfoFetchRequest());
 
         const selectedNode = getSelectedNodeFromState(getState());
-        console.log('selectednode', selectedNode);
         const existingAccountNames = getAccountNamesFromState(getState());
-        console.log('exst1', existingAccountNames)
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
         withRetriesOnDifferentNodes(
             [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],

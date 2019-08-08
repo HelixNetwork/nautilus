@@ -16,7 +16,6 @@ export const mapStorageToState = () => {
     const accountsData = Account.getDataAsArray();
 
     const { settings, onboardingComplete, errorLog, accountInfoDuringSetup } = Wallet.latestDataAsPlainObject;
-    console.log('sereret',settings);
     const nodes = Node.getDataAsArray();
     return {
         accounts: {

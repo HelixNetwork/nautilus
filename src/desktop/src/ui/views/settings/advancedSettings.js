@@ -53,7 +53,6 @@ class AdvancedSettings extends React.PureComponent {
 
             Electron.reload();
         } catch (err) {
-            console.log("wallet reset", err);
             generateAlert(
                 'error',
                 t('changePassword:incorrectPassword'),
@@ -68,7 +67,6 @@ class AdvancedSettings extends React.PureComponent {
         const { wallet } = this.props;
 
         this.setState({ resetConfirm: !this.state.resetConfirm, resetCountdown: 15 });
-        console.log('value address here');
         if (!wallet || !wallet.isOpen) {
             this.interval = setInterval(() => {
                 if (this.state.resetCountdown === 1) {
@@ -85,7 +83,6 @@ class AdvancedSettings extends React.PureComponent {
     render() {
 
         const { t, settings, wallet , changePowSettings} = this.props;
-        console.log("powsettings",changePowSettings);
         const { resetConfirm, resetCountdown } = this.state;
 
         return (

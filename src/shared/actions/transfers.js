@@ -453,17 +453,14 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     // Initialize account state
     // Reassign with latest state when account is synced
     let accountState = selectedAccountStateFactory(accountName)(getState());
-    console.log('',accountState);
     let transferInputs = [];
 
     const withPreTransactionSecurityChecks = () => {
         // Progressbar step => (Checking node's health)
-        console.log('intr123');
         dispatch(setNextStepAsActive());
 
         return isNodeHealthy()
             .then((isSynced) => {
-              console.log('intrissync',isSynced);
                 if (isSynced) {
                     // Progressbar step => (Validating receive address)
                     dispatch(setNextStepAsActive());
@@ -495,13 +492,11 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
             })
             .then((filteredTransfers) => {
                 const { addressData, transfers } = accountState;
-                console.log('acstate',accountState);
                 const startIndex = getStartingSearchIndexToPrepareInputs(addressData);
                 const spentAddressesFromTransactions = getSpentAddressesFromTransactions(transfers);
 
                 // Progressbar step => (Preparing inputs)
                 dispatch(setNextStepAsActive());
-                console.log('valvue',value);
                 
                 // Prepare inputs.
                 return getUnspentInputs()(
@@ -581,36 +576,27 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     };
 
     const withInputs = isZeroValue ? () => Promise.resolve(null) : withPreTransactionSecurityChecks;
-    console.log('123',withInputs);
     return (
         withInputs()
             // If we are making a zero value transaction, options would be null
             // Otherwise, it would be a dictionary with inputs and remainder address
             // Forward options to prepareTransfersAsync as is, because it contains a null check
             .then((options) => {
-              console.log('opt',options);
                 const transfer = prepareTransferArray(address, value, message, accountState.addressData);
-                console.log('tr',transfer);
                 // Progressbar step => (Preparing transfers)
                 dispatch(setNextStepAsActive());
-                console.log("Here after disptachss");
-                console.log('afterdispatch',seedStore);
                 return seedStore.prepareTransfers(transfer, options);
             })
             .then((txs) => {
                 if (!isZeroValue) {
                     hasSignedInputs = true;
                 }
-                console.log('txs',txs);
                 cached.txs = txs;
 
                 const convertToTransactionObjects = (hexString) => asTransactionObject(hexString);
                 cached.transactionObjects = map(cached.txs, convertToTransactionObjects);
-                console.log('cached',cached);
-                console.log('ctt',convertToTransactionObjects);
                 if (isBundle(cached.transactionObjects)) {
                     isValidBundle = true;
-                    console.log("Entering validBundle");
                     // Progressbar step => (Getting transactions to approve)
                     dispatch(setNextStepAsActive());
 
@@ -620,14 +606,9 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 throw new Error(Errors.INVALID_BUNDLE);
             })
             .then(({ trunkTransaction, branchTransaction }) => {
-              console.log("Trunk tx");
-              console.log(trunkTransaction );
-              console.log(branchTransaction );
                 const shouldOffloadPow = getRemotePoWFromState(getState());
 
                 // const shouldOffloadPow = true;
-                console.log("Pow here");
-                console.log(shouldOffloadPow);
                 // Progressbar step => (Proof of work)
                 dispatch(setNextStepAsActive());
 
@@ -635,10 +616,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.txs);
 
                 if (!shouldOffloadPow) {
-                  console.log("Entering local pow");
                     return performLocalPow();
                 }
-                console.log("offloading");
                 // If proof of work configuration is set to remote PoW
                 // Make an attempt to offload proof of work to remote
                 // If network call fails:
@@ -666,7 +645,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             20000,
                         ),
                     );
-                    console.log("entering error");
                     // Find nodes with proof of work enabled
                     return fetchRemoteNodes()
                         .then((remoteNodes) => {
@@ -674,7 +652,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                                 filter(remoteNodes, (node) => node.pow),
                                 (nodeWithPoWEnabled) => nodeWithPoWEnabled.node,
                             );
-                            console.log("nodes with pow",nodesWithPowEnabled);
                             return withRetriesOnDifferentNodes(
                                 getRandomNodes(nodesWithPowEnabled, DEFAULT_RETRIES, [
                                     getSelectedNodeFromState(getState()),
@@ -711,13 +688,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
             })
             // Re-check spend statuses of all addresses in bundle
             .then(({ txs, transactionObjects }) => {
-
-              console.log("Entering here 123");
-
-              console.log(txs);
                 // Skip this check if it's a zero value transaction
                 if (isZeroValue) {
-                    console.log("Its zero value");
                     
                     return Promise.resolve({ txs, transactionObjects });
                 }
@@ -726,7 +698,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 dispatch(setNextStepAsActive());
 
                 const addresses = uniq(map(transactionObjects, (transaction) => transaction.address));
-                console.log('adds',addresses);
                 return isAnyAddressSpent(undefined, withQuorum)(addresses).then((isSpent) => {
                     if (isSpent) {
                         throw new Error(Errors.KEY_REUSE);
@@ -749,7 +720,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     selectedNode,
                     ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode]),
                 ];
-                console.log("Random nodes",randomNodes);
                 
 
                 return withRetriesOnDifferentNodes(
@@ -770,7 +740,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 )(storeAndBroadcast)(cached.txs);
             })
             .then(() => {
-                console.log("before sync");
                 
                 return syncAccountAfterSpending(undefined, withQuorum)(
                     seedStore,
@@ -779,20 +748,15 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 );
             })
             .then((newState) => {
-                console.log("after sync",newState);
                 // newState.addressData[0].balance = 0;
                 // newState.addressData[1].balance = 0;
                 // Update account in (Realm) storage
                 Account.update(accountName, newState);
-                console.log("entering here");
                 
                 dispatch(updateAccountInfoAfterSpending(assign({}, newState, { accountName })));
-                console.log("entering here 2");
                 // Progressbar => (Progress complete)
                 dispatch(setNextStepAsActive());
-                console.log("entering here 3");
                 dispatch(generateTransactionSuccessAlert(isZeroValue));
-                console.log("entering here 4");
 
                 setTimeout(() => {
                     dispatch(completeTransfer());
@@ -800,7 +764,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 }, 3500);
             })
             .catch((error) => {
-                console.log('error is=',error);
                 
                 dispatch(sendTransferError());
                 dispatch(resetProgress());
@@ -830,7 +793,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                         generateAlert(
                             'error',
                             i18next.t('global:rebroadcastError'),
-                            i18next.t('global:signedTrytesBroadcastErrorExplanation'),
+                            i18next.t('global:signedTxBytesBroadcastErrorExplanation'),
                             20000,
                             error,
                         ),
@@ -841,7 +804,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                     return dispatch(generateNodeOutOfSyncErrorAlert());
                 } else if (message === Errors.UNSUPPORTED_NODE) {
                     return dispatch(generateUnsupportedNodeErrorAlert());
-                } else if (message === Errors.INVALID_LAST_TRIT) {
+                } else if (message === Errors.INVALID_LAST_BIT) {
                     return dispatch(
                         generateAlert(
                             'error',

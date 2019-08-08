@@ -386,19 +386,16 @@ export const withRetriesOnDifferentNodes = (nodes, failureCallbacks) => {
     let attempt = 0;
     let executedCallback = false;
     const retries = size(nodes);
-    console.log("retries", retries)
     return (promiseFunc) => {
         const execute = (...args) => {
             
             if (isUndefined(nodes[attempt])) {
                 return Promise.reject(new Error(Errors.NO_NODE_TO_RETRY));
             }
-            console.log("args", args)
             
             return promiseFunc(nodes[attempt])(...args)
                 .then((result) => ({ node: nodes[attempt], result }))
                 .catch((err) => {
-                    console.log("error is comming",err);
                     
                     if (get(err, 'message') === Errors.LEDGER_INVALID_INDEX) {
                         throw new Error(Errors.LEDGER_INVALID_INDEX);

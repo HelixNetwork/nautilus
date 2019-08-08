@@ -1,7 +1,6 @@
 const fork = require('child_process').fork;
 const path = require('path');
 
-// import { powTrytesFunc, powBundleFunc, genAddressTritsFunc } from 'entangled-node';
 import { generateAddress } from "@helixnetwork/core";
 import { bitsToChars, indexToBit } from 'libs/hlx/converter';
 

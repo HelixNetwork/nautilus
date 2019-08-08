@@ -75,7 +75,6 @@ export default (state = initialState, action) => {
                 ready: action.payload,
             };
         case WalletActionTypes.SET_SEED_INDEX:
-            console.log('-----',action.payload);
             return {
                 ...state,
                 seedIndex: action.payload,

@@ -78,7 +78,6 @@ class AccountName extends React.PureComponent {
     render() {
         const { t, generateAlert } = this.props;
         const { name, isGenerated } = this.state;
-        console.log("Name->SeedIsGenerated====", isGenerated,name);
 
         return (
 

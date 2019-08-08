@@ -17,7 +17,6 @@ export const getEncryptionKey = () => {
 
             return Electron.setKeychain(ALIAS_REALM, key.toString()).then(() => key);
         }
-        console.log("encryption key",encryptionKey);
         return Uint8Array.from(encryptionKey.split(','));
     });
 };

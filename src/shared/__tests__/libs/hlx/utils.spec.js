@@ -8,8 +8,7 @@ import {
     withRetriesOnDifferentNodes,
     throwIfNodeNotHealthy,
     isLastBitZero,
-    getChecksum,
-    isLastTritZero,
+    getChecksum
 } from '../../../libs/hlx/utils';
 import { latestAddressWithoutChecksum, latestAddressChecksum } from '../../__samples__/addresses';
 import { hexToBits , bitsToChars } from '../../../libs/hlx/converter';

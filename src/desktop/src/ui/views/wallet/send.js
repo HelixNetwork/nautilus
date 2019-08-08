@@ -116,7 +116,7 @@ class Send extends React.PureComponent {
       }
 
       // Validate whether message only contains ASCII letters
-      // as anything else is lost up on conversion to trytes
+      // as anything else is lost up on conversion to txBytes
       if (!isValidMessage(message)) {
           generateAlert('error', t('send:invalidMessage'), t('send:invalidMessageExplanation'));
           return false;

@@ -128,9 +128,7 @@ export function changePowSettings() {
  * @returns {{type: {string}, payload: {boolean} }}
  */
 export const setRemotePoW = (payload) => {
-    console.log("payload",payload);
     Wallet.updateRemotePowSetting(payload);
-    console.log("payload",payload);
     return {
         
         type: SettingsActionTypes.SET_REMOTE_POW,

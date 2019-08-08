@@ -558,7 +558,7 @@ describe('libs: helix/inputs', () => {
                 });
             });
 
-            describe('when "keyIndex" is a number and is greater than or equals 0, "balance" is number, "security" is number and address is valid trytes', () => {
+            describe('when "keyIndex" is a number and is greater than or equals 0, "balance" is number, "security" is number and address is valid txBytes', () => {
                 it('should return true', () => {
                     expect(isValidInput(validInput)).to.eql(true);
                 });

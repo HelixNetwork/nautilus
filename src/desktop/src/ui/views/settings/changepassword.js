@@ -38,7 +38,6 @@ class Changepassword extends React.PureComponent {
     };
 
     changePassword = async (event) => {
-        console.log('show password.........');
         event.preventDefault();
 
         const { passwordCurrent, passwordNew, passwordConfirm } = this.state;

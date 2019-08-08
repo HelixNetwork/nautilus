@@ -34,7 +34,6 @@ export const getAccountNamesFromState = createSelector(
     getAccountsFromState,
     (state) => {
         // Get [{ index, name }] for all accounts
-        console.log(state);
         const accountNames = map(state.accountInfo, ({ index }, name) => ({ index, name }));
 
         // Order them by (account) index

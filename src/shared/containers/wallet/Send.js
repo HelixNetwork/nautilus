@@ -6,6 +6,7 @@ import { completeDeepLinkRequest } from '../../actions/wallet';
 import { makeTransaction } from '../../actions/transfers';
 import { setSendAddressField, setSendAmountField, setSendMessageField } from '../../actions/ui';
 import { reset as resetProgress, startTrackingProgress } from '../../actions/progress';
+import {isValidChecksum} from '@helixnetwork/checksum';
 
 import {
     getSelectedAccountName,
@@ -118,14 +119,14 @@ export default function withSendData(SendComponent) {
                 return false;
             }
 
-            // Validate valid IOTA address
+            // Validate valid Helix address
             if (!address.match(VALID_SEED_REGEX)) {
                 generateAlert('error', t('send:invalidAddress'), t('send:invalidAddressExplanation2'));
                 return false;
             }
 
             // Validate address checksum
-            if (!iota.utils.isValidChecksum(address)) {
+            if (!isValidChecksum(address)) {
                 generateAlert('error', t('send:invalidAddress'), t('send:invalidAddressExplanation3'));
                 return false;
             }
@@ -137,7 +138,7 @@ export default function withSendData(SendComponent) {
             }
 
             // Validate whether message only contains ASCII letters
-            // as anything else is lost up on conversion to trytes
+            // as anything else is lost up on conversion to txBytes
             if (!isValidMessage(message)) {
                 generateAlert('error', t('send:invalidMessage'), t('send:invalidMessageExplanation'));
                 return false;

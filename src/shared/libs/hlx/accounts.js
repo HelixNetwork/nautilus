@@ -99,8 +99,6 @@ export const syncAccount = (settings, withQuorum=false) => (
 ) => {
     const thisStateCopy = cloneDeep(existingAccountState);
     const rescanAddresses = typeof seedStore === 'object';
-    console.log("rescan address",rescanAddresses)
-    console.log("with Qurum",withQuorum)
     return throwIfNodeNotHealthy(settings)
         .then(() =>
             rescanAddresses
@@ -191,7 +189,6 @@ export const syncAccount = (settings, withQuorum=false) => (
  *   @returns {function(string, string, array, object, boolean, function): Promise<object>}
  **/
 export const syncAccountAfterSpending = (settings, withQuorum) => (seedStore, newTransactions, accountState) => {
-    console.log(settings);
     // Update transactions
     const updatedTransactions = [
         ...accountState.transactions,

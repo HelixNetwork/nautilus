@@ -182,7 +182,6 @@ class Receive extends React.PureComponent {
     render() {
         const { t, receiveAddress, isGeneratingReceiveAddress, hadErrorGeneratingNewAddress } = this.props;
         const { message, scramble, hasSyncedAddress } = this.state;
-        console.log("ReceiveAddress==", receiveAddress);
         
         return (
             <div>

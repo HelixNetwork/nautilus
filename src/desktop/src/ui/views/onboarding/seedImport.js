@@ -48,7 +48,6 @@ class SeedImport extends React.PureComponent {
 
     onPaste = (e) => {
         e.preventDefault();
-        console.log(e);
     };
 
     onDrop = async (buffer) => {
@@ -100,7 +99,6 @@ class SeedImport extends React.PureComponent {
                 seedSequence += letter
             });
             Electron.setOnboardingSeed(seed[0].seed, false);
-            console.log('name',seed[0].title);
             Electron.setOnboardingName(seed[0].title)
             this.setState({
                 seed: seed[0].seed,
@@ -134,10 +132,6 @@ class SeedImport extends React.PureComponent {
         }
         const { setAccountInfoDuringSetup, wallet, additionalAccountName, additionalAccountMeta, history, t, generateAlert } = this.props;
         const { seed, isGenerated , seedPhrase} = this.state;
-
-        console.log('verify props', this.props);
-        console.log('verify state', this.state);
-        console.log('is seed gener', isGenerated);
         if(Electron.getOnboardingSeed()==null && seedPhrase !=''){
             for(let i=0;i<64;i++){
                 seed.push(charToIndex(seedPhrase[i]));
@@ -160,7 +154,6 @@ class SeedImport extends React.PureComponent {
                 return;
             }
         }
-        console.log("seed length", seed.length)
         if (seed.length !== MAX_SEED_LENGTH) {
             generateAlert(
                 'error',

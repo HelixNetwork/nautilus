@@ -37,7 +37,6 @@ class Viewaddress extends React.PureComponent {
     render() {
 
         const { account, location, t } = this.props;
-        console.log("ViewACCOUNT===", account);
 
         const isSpent = ({ spent: { local, remote } }) => local || remote;
         const addressData = account.addressData.slice().sort((a, b) => b.index - a.index);
