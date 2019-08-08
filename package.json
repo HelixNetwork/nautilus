@@ -1,6 +1,5 @@
 {
   "name": "helix-wallet",
-  "author": "Netobjex",
   "version": "0.1.0",
   "private": true,
   "description": "Desktop wallet for Helix",
