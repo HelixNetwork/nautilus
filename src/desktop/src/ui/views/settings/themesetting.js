@@ -1,75 +1,88 @@
-import React from 'react';
-import css from './settings.scss';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { withI18n, Trans } from 'react-i18next';
-import { Switch, Route, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Top from '../../components/topbar';
-import themes from 'themes/themes';
-import Icon from 'ui/components/icon';
-import Button from 'ui/components/button';
-import Select from 'ui/components/input/select';
-import { updateTheme } from 'actions/settings';
-
+import React from "react";
+import css from "./settings.scss";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import { withI18n, Trans } from "react-i18next";
+import { Switch, Route, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import Top from "../../components/topbar";
+import themes from "themes/themes";
+import Icon from "ui/components/icon";
+import Button from "ui/components/button";
+import Select from "ui/components/input/select";
+import { updateTheme } from "actions/settings";
 
 /**
  * Theme settings component
  */
 
 class SettingsTheme extends React.PureComponent {
-    static propTypes = {
+  static propTypes = {
+    location: PropTypes.object,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired,
+    t: PropTypes.func.isRequired
+  };
+  state = {
+    themeName: null
+  };
+  render() {
+    const { location, history, updateTheme, t } = this.props;
+    const currentKey = location.pathname.split("/")[2] || "/";
+    const { themeName } = this.state;
 
-        location: PropTypes.object,
-        history: PropTypes.shape({
-            push: PropTypes.func.isRequired,
-        }).isRequired,
-        t: PropTypes.func.isRequired,
-    }
-    state = {
-        themeName: null,
-    }
-    render() {
-
-        const { location, history, updateTheme, t } = this.props;
-        const currentKey = location.pathname.split('/')[2] || '/';
-        const { themeName } = this.state;
-
-        return (
-            <div className={classNames(css.foo_bxx12)}>
-                <form  style={{marginTop:'7vw'}} onSubmit={(e) => {
-                    e.preventDefault();
-                    if (themeName) {
-                        document.body.style.background = themes[themeName].body.bg;
-                        updateTheme(themeName);
-                    }
-                }}>
-                    <Select
-                        label={t('settings:theme')}
-                        value={themeName || this.props.themeName}
-                        valueLabel={t(`themes:${themeName ? themeName.toLowerCase() : this.props.themeName.toLowerCase()}`,
-                        )}
-                        onChange={(value) => this.setState({ themeName: value })}
-                        options={Object.keys(themes).map((item) => {
-                            return {
-                                value: item,
-                                label: t(`themes:${item.toLowerCase()}`),
-                            };
-                        })}
-                    />
-                    <Button style={{ marginLeft: '26vw', marginTop: '4vw' }} type="submit" disabled={!themeName || themeName === this.props.themeName}>{t('global:save')}</Button>
-                    <div className={classNames(css.spe_bx)}>
-                    </div>
-                </form>
-            </div>
-        );
-    }
+    return (
+      <div className={classNames(css.foo_bxx12)}>
+        <form
+          style={{ marginTop: "7vw" }}
+          onSubmit={e => {
+            e.preventDefault();
+            if (themeName) {
+              document.body.style.background = themes[themeName].body.bg;
+              updateTheme(themeName);
+            }
+          }}
+        >
+          <Select
+            label={t("settings:theme")}
+            value={themeName || this.props.themeName}
+            valueLabel={t(
+              `themes:${
+                themeName
+                  ? themeName.toLowerCase()
+                  : this.props.themeName.toLowerCase()
+              }`
+            )}
+            onChange={value => this.setState({ themeName: value })}
+            options={Object.keys(themes).map(item => {
+              return {
+                value: item,
+                label: t(`themes:${item.toLowerCase()}`)
+              };
+            })}
+          />
+          <Button
+            style={{ marginLeft: "26vw", marginTop: "4vw" }}
+            type="submit"
+            disabled={!themeName || themeName === this.props.themeName}
+          >
+            {t("global:save")}
+          </Button>
+          <div className={classNames(css.spe_bx)}></div>
+        </form>
+      </div>
+    );
+  }
 }
-const mapStateToProps = (state) => ({
-    themeName: state.settings.themeName,
+const mapStateToProps = state => ({
+  themeName: state.settings.themeName
 });
 
 const mapDispatchToProps = {
-    updateTheme,
+  updateTheme
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(SettingsTheme));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withI18n()(SettingsTheme));

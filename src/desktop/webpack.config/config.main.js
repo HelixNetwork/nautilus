@@ -7,9 +7,9 @@ module.exports = {
   target: "electron-main",
   entry: {
     main: "./main.js",
-    preloadDev: './native/preload/development.js',
-    preloadProd: './native/preload/production.js',
-    helixTangled: './native/helixTangled.js',
+    preloadDev: "./native/preload/development.js",
+    preloadProd: "./native/preload/production.js",
+    helixTangled: "./native/helixTangled.js"
   },
   node: {
     __dirname: false

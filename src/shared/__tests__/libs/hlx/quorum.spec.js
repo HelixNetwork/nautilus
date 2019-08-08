@@ -1,262 +1,306 @@
-
 // TODO Recheck these tests, check whether thay fail
-import { expect } from 'chai';
-import sinon from 'sinon';
-import { findSyncedNodes, fallbackToSafeResult, determineQuorumResult } from '../../../libs/hlx/quorum';
-import * as extendedApis from '../../../libs/hlx/extendedApi';
-import { EMPTY_HASH_TXBYTES } from '../../../libs/hlx/utils';
+import { expect } from "chai";
+import sinon from "sinon";
+import {
+  findSyncedNodes,
+  fallbackToSafeResult,
+  determineQuorumResult
+} from "../../../libs/hlx/quorum";
+import * as extendedApis from "../../../libs/hlx/extendedApi";
+import { EMPTY_HASH_TXBYTES } from "../../../libs/hlx/utils";
 
-describe('libs: helix/quorum', () => {
-    describe('#determineQuorumResult', () => {
-        describe('when method is wereAddressesSpentFrom', () => {
-            describe('when frequency is greater than 67 percent', () => {
-                it('should return most frequently occurring status', () => {
-                    const args = [true, true, true, true, false, true, true];
+describe("libs: helix/quorum", () => {
+  describe("#determineQuorumResult", () => {
+    describe("when method is wereAddressesSpentFrom", () => {
+      describe("when frequency is greater than 67 percent", () => {
+        it("should return most frequently occurring status", () => {
+          const args = [true, true, true, true, false, true, true];
 
-                    const result = determineQuorumResult(args, args.length)('wereAddressesSpentFrom', 67);
-                    expect(result).to.equal(true);
-                });
-            });
-
-            describe('when frequency is less than 67 percent', () => {
-                it('should return true as a fallback status', () => {
-                    const args = [true, true, false, false, false, false, true];
-
-                    const result = determineQuorumResult(args, args.length)('wereAddressesSpentFrom', 67);
-                    expect(result).to.equal(true);
-                });
-            });
+          const result = determineQuorumResult(args, args.length)(
+            "wereAddressesSpentFrom",
+            67
+          );
+          expect(result).to.equal(true);
         });
+      });
 
-        describe('when method is getInclusionStates', () => {
-            describe('when frequency is greater than 67 percent', () => {
-                it('should return most frequently occurring status', () => {
-                    const args = [true, true, true, true, false, true, true];
+      describe("when frequency is less than 67 percent", () => {
+        it("should return true as a fallback status", () => {
+          const args = [true, true, false, false, false, false, true];
 
-                    const result = determineQuorumResult(args, args.length)('getInclusionStates', 67);
-                    expect(result).to.equal(true);
-                });
-            });
-
-            describe('when frequency is less than 67 percent', () => {
-                it('should return false as a fallback status', () => {
-                    const args = [true, true, false, false, false, false, true];
-
-                    const result = determineQuorumResult(args, args.length)('getInclusionStates', 67);
-                    expect(result).to.equal(false);
-                });
-            });
+          const result = determineQuorumResult(args, args.length)(
+            "wereAddressesSpentFrom",
+            67
+          );
+          expect(result).to.equal(true);
         });
-
-        describe('when method is getBalances:balances', () => {
-            describe('when frequency is greater than 67 percent', () => {
-                it('should return most frequently occurring balance', () => {
-                    const args = ['10', '10', '10', '10', '0', '10', '10'];
-
-                    const result = determineQuorumResult(args, args.length)('getBalances:balances', 67);
-                    expect(result).to.equal('10');
-                });
-            });
-
-            describe('when frequency is less than 67 percent', () => {
-                it('should return "0" as a fallback balance', () => {
-                    const args = ['10', '10', '0', '0', '0', '0', '10'];
-
-                    const result = determineQuorumResult(args, args.length)('getBalances:balances', 67);
-                    expect(result).to.equal('0');
-                });
-            });
-        });
-
-        describe('when method is getNodeInfo:latestSolidSubtangleMilestone', () => {
-            describe('when frequency is greater than 67 percent', () => {
-                it('should return most frequently occurring latestSolidSubtangleMilestone', () => {
-                    const correctHash = 'e'.repeat(64);
-                    const incorrectHash = 'f'.repeat(64);
-
-                    const args = [
-                        correctHash,
-                        correctHash,
-                        correctHash,
-                        correctHash,
-                        incorrectHash,
-                        correctHash,
-                        correctHash,
-                    ];
-
-                    const result = determineQuorumResult(args, args.length)(
-                        'getNodeInfo:latestSolidSubtangleMilestone',
-                        67,
-                    );
-                    expect(result).to.equal(correctHash);
-                });
-            });
-
-            describe('when frequency is less than 67 percent', () => {
-                it(`should return ${EMPTY_HASH_TXBYTES} as a fallback latestSolidSubtangleMilestone`, () => {
-                    const correctHash = 'e'.repeat(64);
-                    const incorrectHash = 'f'.repeat(64);
-
-                    const args = [
-                        correctHash,
-                        correctHash,
-                        incorrectHash,
-                        incorrectHash,
-                        incorrectHash,
-                        incorrectHash,
-                        correctHash,
-                    ];
-
-                    const result = determineQuorumResult(args, args.length)(
-                        'getNodeInfo:latestSolidSubtangleMilestone',
-                        67,
-                    );
-                    expect(result).to.equal(EMPTY_HASH_TXBYTES);
-                });
-            });
-        });
+      });
     });
 
-    describe('#fallbackToSafeResult', () => {
-        describe('when method is wereAddressesSpentFrom', () => {
-            it('should return true', () => {
-                expect(fallbackToSafeResult('wereAddressesSpentFrom')).to.equal(true);
-            });
-        });
+    describe("when method is getInclusionStates", () => {
+      describe("when frequency is greater than 67 percent", () => {
+        it("should return most frequently occurring status", () => {
+          const args = [true, true, true, true, false, true, true];
 
-        describe('when method is getInclusionStates', () => {
-            it('should return false', () => {
-                expect(fallbackToSafeResult('getInclusionStates')).to.equal(false);
-            });
+          const result = determineQuorumResult(args, args.length)(
+            "getInclusionStates",
+            67
+          );
+          expect(result).to.equal(true);
         });
+      });
 
-        describe('when method is getBalances:balances', () => {
-            it('should return "0"', () => {
-                expect(fallbackToSafeResult('getBalances:balances')).to.equal('0');
-            });
-        });
+      describe("when frequency is less than 67 percent", () => {
+        it("should return false as a fallback status", () => {
+          const args = [true, true, false, false, false, false, true];
 
-        describe('when method is getNodeInfo:latestSolidSubtangleMilestone', () => {
-            it(`should return ${EMPTY_HASH_TXBYTES}`, () => {
-                expect(fallbackToSafeResult('getNodeInfo:latestSolidSubtangleMilestone')).to.equal(EMPTY_HASH_TXBYTES);
-            });
+          const result = determineQuorumResult(args, args.length)(
+            "getInclusionStates",
+            67
+          );
+          expect(result).to.equal(false);
         });
-
-        describe('when method is not supported', () => {
-            it('throw with an error "Method not supported for quorum."', () => {
-                expect(fallbackToSafeResult.bind(null, 'foo')).to.throw('Method not supported for quorum.');
-            });
-        });
+      });
     });
 
-    describe('#findSyncedNodes', () => {
-        let nodes;
+    describe("when method is getBalances:balances", () => {
+      describe("when frequency is greater than 67 percent", () => {
+        it("should return most frequently occurring balance", () => {
+          const args = ["10", "10", "10", "10", "0", "10", "10"];
 
-        before(() => {
-            nodes = [
-                'https://node.helixner.org',
-                'https://nodes.thetangle.one',
-                'https://helix.moe',
-                'https://tangle-nodes.org',
-                'https://alpha.nodes.com',
-                'https://node.helix.mausbeweger.de',
-                'https://helix.saru.moe',
-                'https://helixnode.lld.at',
-                'https://helix.phibit.io',
-                'https://whitey.org',
-                'https://helix10.lld.at',
-                'https://helix20.lld.at',
-                'https://trin.fm',
-                'https://iri.helix.fm',
-                'https://nodes.helix.fm',
-            ].map((url) => ({
-                url,
-                pow: false,
-                token: '',
-                password: '',
-            }));
+          const result = determineQuorumResult(args, args.length)(
+            "getBalances:balances",
+            67
+          );
+          expect(result).to.equal("10");
         });
+      });
 
-        describe('when has no whitelisted nodes', () => {
-            describe('when size of synced nodes is less than quorum size', () => {
-                it('should throw with an error "Not enough synced nodes for quorum."', () => {
-                    const blacklistedNodes = nodes.slice(0, nodes.length - 1);
-                    const syncedNodes = nodes.slice(nodes.length - 1);
+      describe("when frequency is less than 67 percent", () => {
+        it('should return "0" as a fallback balance', () => {
+          const args = ["10", "10", "0", "0", "0", "0", "10"];
 
-                    return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes)
-                        .then(() => {
-                            throw new Error();
-                        })
-                        .catch((err) => expect(err.message).to.equal('Not enough synced nodes for quorum.'));
-                });
-            });
-
-            describe('when size of synced nodes is not less than quorum size', () => {
-                it('should not throw with an error "Not enough synced nodes for quorum."', () => {
-                    const syncedNodes = nodes.slice(0, 7);
-                    const blacklistedNodes = nodes.slice(7);
-
-                    const stub = sinon.stub(extendedApis, 'isNodeHealthy').resolves(true);
-
-                    return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes).then((nodes) => {
-                        expect(nodes).to.eql(syncedNodes);
-
-                        stub.restore();
-                    });
-                });
-            });
+          const result = determineQuorumResult(args, args.length)(
+            "getBalances:balances",
+            67
+          );
+          expect(result).to.equal("0");
         });
-
-        describe('when has whitelisted nodes', () => {
-            describe('when size of synced nodes equals quorum size', () => {
-                it('should recheck sync status of existing synced nodes', () => {
-                    const syncedNodes = nodes.slice(0, 7);
-                    const blacklistedNodes = nodes.slice(8);
-
-                    const stub = sinon.stub(extendedApis, 'isNodeHealthy').resolves(true);
-
-                    return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes).then((newSyncedNodes) => {
-                        expect(newSyncedNodes).to.eql(syncedNodes);
-
-                        newSyncedNodes.forEach(({ url, token, password }) =>
-                            expect(stub.calledWith({ url, token, password })).to.equal(true),
-                        );
-
-                        // Also assert that it was never called with any blacklisted node
-                        blacklistedNodes.forEach(({ url, token, password }) =>
-                            expect(stub.calledWith({ url, token, password })).to.equal(false),
-                        );
-
-                        stub.restore();
-                    });
-                });
-            });
-
-            describe('when size of synced nodes is less than quorum size', () => {
-                it('should check sync status of (size(syncedNodes) - quorumSize) whitelisted nodes', () => {
-                    const syncedNodes = nodes.slice(0, 6);
-                    const blacklistedNodes = nodes.slice(7);
-                    const whitelistedNodes = nodes.slice(6, 7);
-
-                    const stub = sinon.stub(extendedApis, 'isNodeHealthy').resolves(true);
-
-                    return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes).then((newSyncedNodes) => {
-                        expect(newSyncedNodes).to.eql([...syncedNodes, ...whitelistedNodes]);
-
-                        // Check that existing synced nodes were never rechecked for sync status
-                        syncedNodes.forEach(({ url, token, password }) =>
-                            expect(stub.calledWith({ url, token, password })).to.equal(false),
-                        );
-
-                        // Also assert that it was never called with any blacklisted node
-                        blacklistedNodes.forEach(({ url, token, password }) =>
-                            expect(stub.calledWith({ url, token, password })).to.equal(false),
-                        );
-
-                        stub.restore();
-                    });
-                });
-            });
-        });
+      });
     });
+
+    describe("when method is getNodeInfo:latestSolidSubtangleMilestone", () => {
+      describe("when frequency is greater than 67 percent", () => {
+        it("should return most frequently occurring latestSolidSubtangleMilestone", () => {
+          const correctHash = "e".repeat(64);
+          const incorrectHash = "f".repeat(64);
+
+          const args = [
+            correctHash,
+            correctHash,
+            correctHash,
+            correctHash,
+            incorrectHash,
+            correctHash,
+            correctHash
+          ];
+
+          const result = determineQuorumResult(args, args.length)(
+            "getNodeInfo:latestSolidSubtangleMilestone",
+            67
+          );
+          expect(result).to.equal(correctHash);
+        });
+      });
+
+      describe("when frequency is less than 67 percent", () => {
+        it(`should return ${EMPTY_HASH_TXBYTES} as a fallback latestSolidSubtangleMilestone`, () => {
+          const correctHash = "e".repeat(64);
+          const incorrectHash = "f".repeat(64);
+
+          const args = [
+            correctHash,
+            correctHash,
+            incorrectHash,
+            incorrectHash,
+            incorrectHash,
+            incorrectHash,
+            correctHash
+          ];
+
+          const result = determineQuorumResult(args, args.length)(
+            "getNodeInfo:latestSolidSubtangleMilestone",
+            67
+          );
+          expect(result).to.equal(EMPTY_HASH_TXBYTES);
+        });
+      });
+    });
+  });
+
+  describe("#fallbackToSafeResult", () => {
+    describe("when method is wereAddressesSpentFrom", () => {
+      it("should return true", () => {
+        expect(fallbackToSafeResult("wereAddressesSpentFrom")).to.equal(true);
+      });
+    });
+
+    describe("when method is getInclusionStates", () => {
+      it("should return false", () => {
+        expect(fallbackToSafeResult("getInclusionStates")).to.equal(false);
+      });
+    });
+
+    describe("when method is getBalances:balances", () => {
+      it('should return "0"', () => {
+        expect(fallbackToSafeResult("getBalances:balances")).to.equal("0");
+      });
+    });
+
+    describe("when method is getNodeInfo:latestSolidSubtangleMilestone", () => {
+      it(`should return ${EMPTY_HASH_TXBYTES}`, () => {
+        expect(
+          fallbackToSafeResult("getNodeInfo:latestSolidSubtangleMilestone")
+        ).to.equal(EMPTY_HASH_TXBYTES);
+      });
+    });
+
+    describe("when method is not supported", () => {
+      it('throw with an error "Method not supported for quorum."', () => {
+        expect(fallbackToSafeResult.bind(null, "foo")).to.throw(
+          "Method not supported for quorum."
+        );
+      });
+    });
+  });
+
+  describe("#findSyncedNodes", () => {
+    let nodes;
+
+    before(() => {
+      nodes = [
+        "https://node.helixner.org",
+        "https://nodes.thetangle.one",
+        "https://helix.moe",
+        "https://tangle-nodes.org",
+        "https://alpha.nodes.com",
+        "https://node.helix.mausbeweger.de",
+        "https://helix.saru.moe",
+        "https://helixnode.lld.at",
+        "https://helix.phibit.io",
+        "https://whitey.org",
+        "https://helix10.lld.at",
+        "https://helix20.lld.at",
+        "https://trin.fm",
+        "https://iri.helix.fm",
+        "https://nodes.helix.fm"
+      ].map(url => ({
+        url,
+        pow: false,
+        token: "",
+        password: ""
+      }));
+    });
+
+    describe("when has no whitelisted nodes", () => {
+      describe("when size of synced nodes is less than quorum size", () => {
+        it('should throw with an error "Not enough synced nodes for quorum."', () => {
+          const blacklistedNodes = nodes.slice(0, nodes.length - 1);
+          const syncedNodes = nodes.slice(nodes.length - 1);
+
+          return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes)
+            .then(() => {
+              throw new Error();
+            })
+            .catch(err =>
+              expect(err.message).to.equal(
+                "Not enough synced nodes for quorum."
+              )
+            );
+        });
+      });
+
+      describe("when size of synced nodes is not less than quorum size", () => {
+        it('should not throw with an error "Not enough synced nodes for quorum."', () => {
+          const syncedNodes = nodes.slice(0, 7);
+          const blacklistedNodes = nodes.slice(7);
+
+          const stub = sinon.stub(extendedApis, "isNodeHealthy").resolves(true);
+
+          return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes).then(
+            nodes => {
+              expect(nodes).to.eql(syncedNodes);
+
+              stub.restore();
+            }
+          );
+        });
+      });
+    });
+
+    describe("when has whitelisted nodes", () => {
+      describe("when size of synced nodes equals quorum size", () => {
+        it("should recheck sync status of existing synced nodes", () => {
+          const syncedNodes = nodes.slice(0, 7);
+          const blacklistedNodes = nodes.slice(8);
+
+          const stub = sinon.stub(extendedApis, "isNodeHealthy").resolves(true);
+
+          return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes).then(
+            newSyncedNodes => {
+              expect(newSyncedNodes).to.eql(syncedNodes);
+
+              newSyncedNodes.forEach(({ url, token, password }) =>
+                expect(stub.calledWith({ url, token, password })).to.equal(true)
+              );
+
+              // Also assert that it was never called with any blacklisted node
+              blacklistedNodes.forEach(({ url, token, password }) =>
+                expect(stub.calledWith({ url, token, password })).to.equal(
+                  false
+                )
+              );
+
+              stub.restore();
+            }
+          );
+        });
+      });
+
+      describe("when size of synced nodes is less than quorum size", () => {
+        it("should check sync status of (size(syncedNodes) - quorumSize) whitelisted nodes", () => {
+          const syncedNodes = nodes.slice(0, 6);
+          const blacklistedNodes = nodes.slice(7);
+          const whitelistedNodes = nodes.slice(6, 7);
+
+          const stub = sinon.stub(extendedApis, "isNodeHealthy").resolves(true);
+
+          return findSyncedNodes(nodes, 7, syncedNodes, blacklistedNodes).then(
+            newSyncedNodes => {
+              expect(newSyncedNodes).to.eql([
+                ...syncedNodes,
+                ...whitelistedNodes
+              ]);
+
+              // Check that existing synced nodes were never rechecked for sync status
+              syncedNodes.forEach(({ url, token, password }) =>
+                expect(stub.calledWith({ url, token, password })).to.equal(
+                  false
+                )
+              );
+
+              // Also assert that it was never called with any blacklisted node
+              blacklistedNodes.forEach(({ url, token, password }) =>
+                expect(stub.calledWith({ url, token, password })).to.equal(
+                  false
+                )
+              );
+
+              stub.restore();
+            }
+          );
+        });
+      });
+    });
+  });
 });

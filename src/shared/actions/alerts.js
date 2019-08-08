@@ -1,8 +1,8 @@
-import isString from 'lodash/isString';
-import i18next from '../libs/i18next.js';
-import Errors from '../libs/errors';
-import { Wallet } from '../database';
-import { AlertsActionTypes } from '../actions/types';
+import isString from "lodash/isString";
+import i18next from "../libs/i18next.js";
+import Errors from "../libs/errors";
+import { Wallet } from "../database";
+import { AlertsActionTypes } from "../actions/types";
 
 /**
  * Dispatch to generate an alert
@@ -17,11 +17,11 @@ import { AlertsActionTypes } from '../actions/types';
  * @returns {{ type: {string}, category: {string}, title: {string}, message: {string}, category: {string}, closeInterval: {number} }}
  */
 const generate = (category, title, message, closeInterval = null) => ({
-    type: AlertsActionTypes.SHOW,
-    category,
-    title,
-    message,
-    closeInterval,
+  type: AlertsActionTypes.SHOW,
+  category,
+  title,
+  message,
+  closeInterval
 });
 
 /**
@@ -46,11 +46,17 @@ const dismiss = () => ({ type: AlertsActionTypes.HIDE });
  *
  * @returns {function} dispatch
  */
-export const generateAlert = (category, title, message, closeInterval = 5500, err) => (dispatch) => {
-    dispatch(generate(category, title, message, closeInterval));
-    if (err) {
-        dispatch(prepareLogUpdate(err));
-    }
+export const generateAlert = (
+  category,
+  title,
+  message,
+  closeInterval = 5500,
+  err
+) => dispatch => {
+  dispatch(generate(category, title, message, closeInterval));
+  if (err) {
+    dispatch(prepareLogUpdate(err));
+  }
 };
 
 /**
@@ -61,16 +67,16 @@ export const generateAlert = (category, title, message, closeInterval = 5500, er
  *
  * @returns {function} dispatch
  */
-export const generateAccountInfoErrorAlert = (err) => (dispatch) => {
-    dispatch(
-        generateAlert(
-            'error',
-            i18next.t('global:invalidResponse'),
-            i18next.t('global:invalidResponseFetchingAccount'),
-            9000,
-        ),
-    );
-    dispatch(prepareLogUpdate(err));
+export const generateAccountInfoErrorAlert = err => dispatch => {
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("global:invalidResponse"),
+      i18next.t("global:invalidResponseFetchingAccount"),
+      9000
+    )
+  );
+  dispatch(prepareLogUpdate(err));
 };
 
 /**
@@ -80,8 +86,14 @@ export const generateAccountInfoErrorAlert = (err) => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const generateNodeOutOfSyncErrorAlert = () => (dispatch) => {
-    dispatch(generateAlert('error', i18next.t('global:nodeOutOfSync'), i18next.t('global:nodeOutOfSyncExplanation')));
+export const generateNodeOutOfSyncErrorAlert = () => dispatch => {
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("global:nodeOutOfSync"),
+      i18next.t("global:nodeOutOfSyncExplanation")
+    )
+  );
 };
 
 /**
@@ -91,10 +103,14 @@ export const generateNodeOutOfSyncErrorAlert = () => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const generateUnsupportedNodeErrorAlert = () => (dispatch) => {
-    dispatch(
-        generateAlert('error', i18next.t('global:experimentalNode'), i18next.t('global:experimentalNodeExplanation')),
-    );
+export const generateUnsupportedNodeErrorAlert = () => dispatch => {
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("global:experimentalNode"),
+      i18next.t("global:experimentalNodeExplanation")
+    )
+  );
 };
 
 /**
@@ -105,36 +121,38 @@ export const generateUnsupportedNodeErrorAlert = () => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const generateTransitionErrorAlert = (err) => (dispatch) => {
-    if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
-        dispatch(
-            generateAlert(
-                'error',
-                i18next.t('global:attachToTangleUnavailable'),
-                i18next.t('global:attachToTangleUnavailableExplanation'),
-                10000,
-            ),
-        );
-    } else if (err.message.includes(Errors.CANNOT_TRANSITION_ADDRESSES_WITH_ZERO_BALANCE)) {
-        dispatch(
-            generateAlert(
-                'error',
-                i18next.t('snapshotTransition:cannotCompleteTransition'),
-                i18next.t('snapshotTransition:cannotCompleteTransitionExplanation'),
-                10000,
-            ),
-        );
-    } else {
-        dispatch(
-            generateAlert(
-                'error',
-                i18next.t('snapshotTransition:cannotCompleteTransition'),
-                i18next.t('snapshotTransition:somethingWentWrongTryAgain'),
-                10000,
-            ),
-        );
-    }
-    dispatch(prepareLogUpdate(err));
+export const generateTransitionErrorAlert = err => dispatch => {
+  if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
+    dispatch(
+      generateAlert(
+        "error",
+        i18next.t("global:attachToTangleUnavailable"),
+        i18next.t("global:attachToTangleUnavailableExplanation"),
+        10000
+      )
+    );
+  } else if (
+    err.message.includes(Errors.CANNOT_TRANSITION_ADDRESSES_WITH_ZERO_BALANCE)
+  ) {
+    dispatch(
+      generateAlert(
+        "error",
+        i18next.t("snapshotTransition:cannotCompleteTransition"),
+        i18next.t("snapshotTransition:cannotCompleteTransitionExplanation"),
+        10000
+      )
+    );
+  } else {
+    dispatch(
+      generateAlert(
+        "error",
+        i18next.t("snapshotTransition:cannotCompleteTransition"),
+        i18next.t("snapshotTransition:somethingWentWrongTryAgain"),
+        10000
+      )
+    );
+  }
+  dispatch(prepareLogUpdate(err));
 };
 
 /**
@@ -144,15 +162,15 @@ export const generateTransitionErrorAlert = (err) => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const generateSyncingCompleteAlert = () => (dispatch) => {
-    dispatch(
-        generateAlert(
-            'success',
-            i18next.t('settings:syncingComplete'),
-            i18next.t('settings:syncingCompleteExplanation'),
-            9000,
-        ),
-    );
+export const generateSyncingCompleteAlert = () => dispatch => {
+  dispatch(
+    generateAlert(
+      "success",
+      i18next.t("settings:syncingComplete"),
+      i18next.t("settings:syncingCompleteExplanation"),
+      9000
+    )
+  );
 };
 
 /**
@@ -162,10 +180,14 @@ export const generateSyncingCompleteAlert = () => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const generateAccountDeletedAlert = () => (dispatch) =>
-    dispatch(
-        generateAlert('success', i18next.t('settings:accountDeleted'), i18next.t('settings:accountDeletedExplanation')),
-    );
+export const generateAccountDeletedAlert = () => dispatch =>
+  dispatch(
+    generateAlert(
+      "success",
+      i18next.t("settings:accountDeleted"),
+      i18next.t("settings:accountDeletedExplanation")
+    )
+  );
 
 /**
  * Generates an error alert if something goes wrong during manual sync
@@ -175,11 +197,15 @@ export const generateAccountDeletedAlert = () => (dispatch) =>
  *
  * @returns {function} dispatch
  */
-export const generateSyncingErrorAlert = (err) => (dispatch) => {
-    dispatch(
-        generateAlert('error', i18next.t('settings:invalidResponse'), i18next.t('settings:invalidResponseExplanation')),
-    );
-    dispatch(prepareLogUpdate(err));
+export const generateSyncingErrorAlert = err => dispatch => {
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("settings:invalidResponse"),
+      i18next.t("settings:invalidResponseExplanation")
+    )
+  );
+  dispatch(prepareLogUpdate(err));
 };
 
 /**
@@ -190,16 +216,16 @@ export const generateSyncingErrorAlert = (err) => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const generateTransferErrorAlert = (error) => (dispatch) =>
-    dispatch(
-        generateAlert(
-            'error',
-            i18next.t('global:transferError'),
-            i18next.t('global:transferErrorMessage'),
-            20000,
-            error,
-        ),
-    );
+export const generateTransferErrorAlert = error => dispatch =>
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("global:transferError"),
+      i18next.t("global:transferErrorMessage"),
+      20000,
+      error
+    )
+  );
 
 /**
  * Generates an error alert if something goes wrong during transaction promotion
@@ -209,16 +235,16 @@ export const generateTransferErrorAlert = (error) => (dispatch) =>
  *
  * @returns {function} dispatch
  */
-export const generatePromotionErrorAlert = (error) => (dispatch) =>
-    dispatch(
-        generateAlert(
-            'error',
-            i18next.t('global:promotionError'),
-            i18next.t('global:promotionErrorExplanation'),
-            20000,
-            error,
-        ),
-    );
+export const generatePromotionErrorAlert = error => dispatch =>
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("global:promotionError"),
+      i18next.t("global:promotionErrorExplanation"),
+      20000,
+      error
+    )
+  );
 
 /**
  * Generates an info alert (if account syncing fails) for auto retrying account sync
@@ -227,17 +253,17 @@ export const generatePromotionErrorAlert = (error) => (dispatch) =>
  *
  * @returns {function} dispatch
  */
-export const generateAccountSyncRetryAlert = () => (dispatch) =>
-    dispatch(
-        generateAlert(
-            'info',
-            i18next.t('global:pleaseWait'),
-            `${i18next.t('global:errorFetchingAccountInformation')} ${i18next.t(
-                'global:tryingAgainWithDifferentNode',
-            )}`,
-            20000,
-        ),
-    );
+export const generateAccountSyncRetryAlert = () => dispatch =>
+  dispatch(
+    generateAlert(
+      "info",
+      i18next.t("global:pleaseWait"),
+      `${i18next.t("global:errorFetchingAccountInformation")} ${i18next.t(
+        "global:tryingAgainWithDifferentNode"
+      )}`,
+      20000
+    )
+  );
 
 /**
  * Generates an info alert (if addresses syncing fails) for auto retrying addresses sync
@@ -246,8 +272,15 @@ export const generateAccountSyncRetryAlert = () => (dispatch) =>
  *
  * @returns {function} dispatch
  */
-export const generateAddressesSyncRetryAlert = () => (dispatch) =>
-    dispatch(generateAlert('info', i18next.t('global:pleaseWait'), i18next.t('global:errorSyncingAddresses'), 20000));
+export const generateAddressesSyncRetryAlert = () => dispatch =>
+  dispatch(
+    generateAlert(
+      "info",
+      i18next.t("global:pleaseWait"),
+      i18next.t("global:errorSyncingAddresses"),
+      20000
+    )
+  );
 
 /**
  * Generates a success alert on successful transaction. Generates different alerts based on value/non-value transaction
@@ -257,16 +290,28 @@ export const generateAddressesSyncRetryAlert = () => (dispatch) =>
  *
  * @returns {function} dispatch
  */
-export const generateTransactionSuccessAlert = (isZeroValue = false) => (dispatch) => {
-    if (isZeroValue) {
-        dispatch(
-            generateAlert('success', i18next.t('global:messageSent'), i18next.t('global:messageSentMessage'), 20000),
-        );
-    } else {
-        dispatch(
-            generateAlert('success', i18next.t('global:transferSent'), i18next.t('global:transferSentMessage'), 20000),
-        );
-    }
+export const generateTransactionSuccessAlert = (
+  isZeroValue = false
+) => dispatch => {
+  if (isZeroValue) {
+    dispatch(
+      generateAlert(
+        "success",
+        i18next.t("global:messageSent"),
+        i18next.t("global:messageSentMessage"),
+        20000
+      )
+    );
+  } else {
+    dispatch(
+      generateAlert(
+        "success",
+        i18next.t("global:transferSent"),
+        i18next.t("global:transferSentMessage"),
+        20000
+      )
+    );
+  }
 };
 
 /**
@@ -277,10 +322,14 @@ export const generateTransactionSuccessAlert = (isZeroValue = false) => (dispatc
  *
  * @returns {function} dispatch
  */
-export const generateLedgerCancelledAlert = () => (dispatch) => {
-    dispatch(
-        generateAlert('error', i18next.t('ledger:actionCancelled'), i18next.t('ledger:actionCancelledExplanation')),
-    );
+export const generateLedgerCancelledAlert = () => dispatch => {
+  dispatch(
+    generateAlert(
+      "error",
+      i18next.t("ledger:actionCancelled"),
+      i18next.t("ledger:actionCancelledExplanation")
+    )
+  );
 };
 
 /**
@@ -290,7 +339,7 @@ export const generateLedgerCancelledAlert = () => (dispatch) => {
  *
  * @returns {function} dispatch
  */
-export const dismissAlert = () => (dispatch) => dispatch(dismiss());
+export const dismissAlert = () => dispatch => dispatch(dismiss());
 
 /**
  * Formats error object, assigns error receive time and update notification logs with the newly received error
@@ -300,15 +349,18 @@ export const dismissAlert = () => (dispatch) => dispatch(dismiss());
  *
  * @returns {function} dispatch
  */
-export const prepareLogUpdate = (err) => (dispatch) => {
-    const time = Date.now();
+export const prepareLogUpdate = err => dispatch => {
+  const time = Date.now();
 
-    const error = {
-        error: err instanceof Error && isString(err.message) ? err.message : err.toString(),
-        time: time,
-    };
+  const error = {
+    error:
+      err instanceof Error && isString(err.message)
+        ? err.message
+        : err.toString(),
+    time: time
+  };
 
-    dispatch(updateLog(error));
+  dispatch(updateLog(error));
 };
 
 /**
@@ -319,13 +371,13 @@ export const prepareLogUpdate = (err) => (dispatch) => {
  *
  * @returns {{type: {string}, logItem: {object} }}
  */
-export const updateLog = (logItem) => {
-    Wallet.updateErrorLog(logItem);
+export const updateLog = logItem => {
+  Wallet.updateErrorLog(logItem);
 
-    return {
-        type: AlertsActionTypes.UPDATE_LOG,
-        logItem,
-    };
+  return {
+    type: AlertsActionTypes.UPDATE_LOG,
+    logItem
+  };
 };
 
 /**
@@ -337,9 +389,9 @@ export const updateLog = (logItem) => {
  * @returns {{type: {string} }}
  */
 export const clearLog = () => {
-    Wallet.clearErrorLog();
+  Wallet.clearErrorLog();
 
-    return {
-        type: AlertsActionTypes.CLEAR_LOG,
-    };
+  return {
+    type: AlertsActionTypes.CLEAR_LOG
+  };
 };

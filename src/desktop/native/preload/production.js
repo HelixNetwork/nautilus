@@ -1,11 +1,11 @@
-import Electron from './electron';
+import Electron from "./electron";
 
 // Define environment mode as Production
-Electron.mode = 'prod';
+Electron.mode = "prod";
 
 // Disable default drag&drop
-document.addEventListener('dragover', (e) => e.preventDefault());
-document.addEventListener('drop', (e) => e.preventDefault());
+document.addEventListener("dragover", e => e.preventDefault());
+document.addEventListener("drop", e => e.preventDefault());
 
 // Disable eval
 // eslint-disable-next-line

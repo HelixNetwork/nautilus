@@ -11,10 +11,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
+    "format": "prettier --write \"**/*.{js,json,css}\"",
     "deps:shared": "cd src/shared && yarn install && cd ../..",
     "deps:desktop": "cd src/desktop && yarn install && cd ../..",
     "start:desktop": "cd src/desktop && yarn run start"
-    
   },
   "homepage": "https://hlx.ai",
   "lint-staged": {
@@ -39,7 +39,7 @@
     "eslint-plugin-react-native": "^3.7.0",
     "husky": "^2.3.0",
     "lint-staged": "^8.1.7",
-    "prettier": "^1.17.1"
+    "prettier": "1.18.2"
   },
   "dependencies": {
     "@fortawesome/free-regular-svg-icons": "^5.9.0",

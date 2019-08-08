@@ -1,11 +1,7 @@
-import enPrivacyPolicyAndroid from './enPrivacyPolicyAndroid';
-import enPrivacyPolicyIOS from './enPrivacyPolicyIOS';
-import enTermsAndConditionsAndroid from './enTermsAndConditionsAndroid';
-import enTermsAndConditionsIOS from './enTermsAndConditionsIOS';
+import enPrivacyPolicy from "./enPrivacyPolicy";
+import enTermsAndConditions from "./enTermsAndConditions";
 
 export {
-    enPrivacyPolicyAndroid,
-    enTermsAndConditionsAndroid,
-    enPrivacyPolicyIOS,
-    enTermsAndConditionsIOS
+  enPrivacyPolicy,
+  enTermsAndConditions
 };

@@ -1,5 +1,5 @@
-import Keychain from './keychain';
+import Keychain from "./keychain";
 
 export default {
-    keychain: Keychain
+  keychain: Keychain
 };

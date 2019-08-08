@@ -1,56 +1,57 @@
-export const __DEV__ = process.env.NODE_ENV === 'development';
-export const __TEST__ = process.env.NODE_ENV === 'test';
+export const __DEV__ = process.env.NODE_ENV === "development";
+export const __TEST__ = process.env.NODE_ENV === "test";
 /** Default IRI node object */
 export const DEFAULT_NODE = __TEST__
-    ? {
-        url: 'http://localhost:14265',
-        pow: false,
-        token: '',
-        password: '',
+  ? {
+      url: "http://localhost:14265",
+      pow: false,
+      token: "",
+      password: ""
     }
-    : {
-        url:'https://hlxtest.net:8087',
-        pow: true,
-        token: '',
-        password: '',
+  : {
+      url: "https://hlxtest.net:8087",
+      pow: true,
+      token: "",
+      password: ""
     };
 // url: 'https://hlxtest.net:8087',
 export const NODES_WITH_POW_DISABLED = [
-    // 'https://hlxtest.net:8087',
-].map((url) => ({
-    url,
-    pow: false,
-    token: '',
-    password: '',
+  // 'https://hlxtest.net:8087',
+].map(url => ({
+  url,
+  pow: false,
+  token: "",
+  password: ""
 }));
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-    // 'http://13.234.122.84:8087',
-    'https://hlxtest.net:8087',
-    'https://node1.hlxtest.net:8087',
-    'https://node2.hlxtest.net:8087',
-    'https://node3.hlxtest.net:8087'
-
-].map((url) => ({
-    url,
-    pow: true,
-    token: '',
-    password: '',
+  // 'http://13.234.122.84:8087',
+  "https://hlxtest.net:8087",
+  "https://node1.hlxtest.net:8087",
+  "https://node2.hlxtest.net:8087",
+  "https://node3.hlxtest.net:8087"
+].map(url => ({
+  url,
+  pow: true,
+  token: "",
+  password: ""
 }));
 
-export const DEFAULT_NODES = [...NODES_WITH_POW_ENABLED, ...NODES_WITH_POW_DISABLED ];
+export const DEFAULT_NODES = [
+  ...NODES_WITH_POW_ENABLED,
+  ...NODES_WITH_POW_DISABLED
+];
 // TODO
-export const NODELIST_URL = '';
+export const NODELIST_URL = "";
 // export const NODELIST_URL = '';
 
 // TODO
-export const VERSIONS_URL =
-    '';
+export const VERSIONS_URL = "";
 
 export const DEFAULT_DEPTH = 2; // 4
 export const DEFAULT_MIN_WEIGHT_MAGNITUDE = 2; // 14
-export const DEFAULT_TAG = '48454c4958'; // HELIX
+export const DEFAULT_TAG = "48454c4958"; // HELIX
 export const DEFAULT_SECURITY = 2;
 export const DEFAULT_BALANCES_THRESHOLD = 100;
 
@@ -67,7 +68,7 @@ export const GET_TRANSACTIONS_TO_APPROVE_REQUEST_TIMEOUT = 40000;
 
 export const DEFAULT_RETRIES = 4;
 
-export const IRI_API_VERSION = '1';
+export const IRI_API_VERSION = "1";
 
 // TODO Recheck Quorum size
 

@@ -3,15 +3,15 @@ import logger from "redux-logger";
 import freeze from "redux-freeze";
 import thunk from "redux-thunk";
 import home from "./reducers/home";
-import settings from './reducers/settings';
-import assign from 'lodash/assign';
-import wallet from './reducers/wallet';
-import accounts from './reducers/accounts';
-import polling from './reducers/polling';
-import progress from './reducers/progress';
-import ui from './reducers/ui';
-import alerts from './reducers/alerts';
-import { WalletActionTypes, SettingsActionTypes } from './actions/types';
+import settings from "./reducers/settings";
+import assign from "lodash/assign";
+import wallet from "./reducers/wallet";
+import accounts from "./reducers/accounts";
+import polling from "./reducers/polling";
+import progress from "./reducers/progress";
+import ui from "./reducers/ui";
+import alerts from "./reducers/alerts";
+import { WalletActionTypes, SettingsActionTypes } from "./actions/types";
 
 /**
  *  This defines base configuration for setting up redux with react.

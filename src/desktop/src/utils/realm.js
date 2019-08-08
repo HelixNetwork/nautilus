@@ -1,6 +1,6 @@
-import { randomTxBytes } from './crypto.js';
+import { randomTxBytes } from "./crypto.js";
 
-export const ALIAS_REALM = 'realm_enc_key';
+export const ALIAS_REALM = "realm_enc_key";
 /**
  * Gets encryption key for realm.
  * - Checks keychain if there is already an encryption key stored for realm data.
@@ -11,12 +11,12 @@ export const ALIAS_REALM = 'realm_enc_key';
  * @returns {Promise}
  */
 export const getEncryptionKey = () => {
-    return Electron.readKeychain(ALIAS_REALM).then((encryptionKey) => {
-        if (encryptionKey === null) {
-            const key = Uint8Array.from(randomTxBytes(64));
+  return Electron.readKeychain(ALIAS_REALM).then(encryptionKey => {
+    if (encryptionKey === null) {
+      const key = Uint8Array.from(randomTxBytes(64));
 
-            return Electron.setKeychain(ALIAS_REALM, key.toString()).then(() => key);
-        }
-        return Uint8Array.from(encryptionKey.split(','));
-    });
+      return Electron.setKeychain(ALIAS_REALM, key.toString()).then(() => key);
+    }
+    return Uint8Array.from(encryptionKey.split(","));
+  });
 };

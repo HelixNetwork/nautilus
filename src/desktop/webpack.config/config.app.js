@@ -34,17 +34,17 @@ const config = {
           devMode
             ? "style-loader"
             : {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                publicPath: "../"
-              }
-            },
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  publicPath: "../"
+                }
+              },
           {
             loader: "css-loader",
             options: {
-              modules:{
-                localIdentName: "[name]__[local]",
-                }
+              modules: {
+                localIdentName: "[name]__[local]"
+              }
             }
           },
           {
@@ -71,7 +71,7 @@ const config = {
         ]
       },
       { test: /\.node$/, loader: "node-loader" },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.css$/, loader: "style-loader!css-loader" }
     ]
   },
   devServer: {

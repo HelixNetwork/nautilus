@@ -1,203 +1,224 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { formatHlx, TOTAL_HELIX_SUPPLY } from 'libs/hlx/utils';
-import { round } from 'libs/utils';
-import { getCurrencySymbol, formatMonetaryValue } from 'libs/currency';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { formatHlx, TOTAL_HELIX_SUPPLY } from "libs/hlx/utils";
+import { round } from "libs/utils";
+import { getCurrencySymbol, formatMonetaryValue } from "libs/currency";
 
-import Icon from 'ui/components/icon';
-import css from './input.scss';
+import Icon from "ui/components/icon";
+import css from "./input.scss";
 
-const units = ['i', 'Ki', 'Mi', 'Gi', 'Ti', '$'];
+const units = ["i", "Ki", "Mi", "Gi", "Ti", "$"];
 const decimals = [0, 3, 6, 9, 12, 2];
 
 /**
  * Amount input component
  */
 export default class AmountInput extends React.PureComponent {
-    static propTypes = {
-        /** Current amount value */
-        amount: PropTypes.string.isRequired,
-        /** Element id */
-        id: PropTypes.string,
-        /** Max available amount */
-        balance: PropTypes.number.isRequired,
-        /** Fiat currency settings
-         * @property {string} conversionRate - Active currency conversion rate to hlx
-         * @property {string} currency - Active currency name
-         * @property {string} usdPrice - Current USD price per hlx
-         */
-        settings: PropTypes.shape({
-            conversionRate: PropTypes.number.isRequired,
-            currency: PropTypes.string.isRequired,
-            usdPrice: PropTypes.number.isRequired,
-        }).isRequired,
-        /** Amount input label */
-        label: PropTypes.string.isRequired,
-        /** Max amount controller label */
-        labelMax: PropTypes.string.isRequired,
-        /** Amount change event function
-         * @param {string} value - Current amount value
-         */
-        onChange: PropTypes.func.isRequired,
-    };
+  static propTypes = {
+    /** Current amount value */
+    amount: PropTypes.string.isRequired,
+    /** Element id */
+    id: PropTypes.string,
+    /** Max available amount */
+    balance: PropTypes.number.isRequired,
+    /** Fiat currency settings
+     * @property {string} conversionRate - Active currency conversion rate to hlx
+     * @property {string} currency - Active currency name
+     * @property {string} usdPrice - Current USD price per hlx
+     */
+    settings: PropTypes.shape({
+      conversionRate: PropTypes.number.isRequired,
+      currency: PropTypes.string.isRequired,
+      usdPrice: PropTypes.number.isRequired
+    }).isRequired,
+    /** Amount input label */
+    label: PropTypes.string.isRequired,
+    /** Max amount controller label */
+    labelMax: PropTypes.string.isRequired,
+    /** Amount change event function
+     * @param {string} value - Current amount value
+     */
+    onChange: PropTypes.func.isRequired
+  };
 
-    state = {
-        unit: 'Mi',
-        value: 0,
-        helix: 0,
-    };
+  state = {
+    unit: "Mi",
+    value: 0,
+    helix: 0
+  };
 
-    componentWillMount() {
-        this.stateToProps(this.props);
+  componentWillMount() {
+    this.stateToProps(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.stateToProps(nextProps);
+  }
+
+  onChange = value => {
+    // Replace , with . and remove leading zeros
+    value = value.replace(/,/g, ".").replace(/^0+(?=\d)/, "");
+
+    // Ignore invalid or empty input
+    if (!value.length) {
+      value = "0";
+    } else if (!value.match(/^\d+(\.\d{0,20})?$/g)) {
+      return;
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.stateToProps(nextProps);
+    // Strip to max allowed decimals
+    if (value.indexOf(".") > 0) {
+      value = value.substr(
+        0,
+        value.indexOf(".") + decimals[units.indexOf(this.state.unit)] + 1
+      );
     }
 
-    onChange = (value) => {
-        // Replace , with . and remove leading zeros
-        value = value.replace(/,/g, '.').replace(/^0+(?=\d)/, '');
+    // Convert to helix
+    const helix = round(value * this.getUnitMultiplier());
 
-        // Ignore invalid or empty input
-        if (!value.length) {
-            value = '0';
-        } else if (!value.match(/^\d+(\.\d{0,20})?$/g)) {
-            return;
-        }
-
-        // Strip to max allowed decimals
-        if (value.indexOf('.') > 0) {
-            value = value.substr(0, value.indexOf('.') + decimals[units.indexOf(this.state.unit)] + 1);
-        }
-
-        // Convert to helix
-        const helix = round(value * this.getUnitMultiplier());
-
-        if (helix > TOTAL_HELIX_SUPPLY) {
-            return;
-        }
-
-        this.setState(
-            {
-                value: value,
-                helix: helix,
-            },
-            () => this.props.onChange(String(helix)),
-        );
-    };
-
-    getUnitMultiplier(unit) {
-        let multiplier = 1;
-        const target = unit || this.state.unit;
-        switch (target) {
-            case 'i':
-                break;
-            case 'Ki':
-                multiplier = 1000;
-                break;
-            case 'Mi':
-                multiplier = 1000000;
-                break;
-            case 'Gi':
-                multiplier = 1000000000;
-                break;
-            case 'Ti':
-                multiplier = 1000000000000;
-                break;
-            case '$':
-                multiplier = 1000000 / (this.props.settings.usdPrice * this.props.settings.conversionRate);
-                break;
-        }
-        return multiplier;
+    if (helix > TOTAL_HELIX_SUPPLY) {
+      return;
     }
 
-    stateToProps = (props) => {
-        if (this.state.helix !== parseInt(props.amount)) {
-            this.setState({
-                helix: props.amount.length ? parseInt(props.amount) : 0,
-                value: props.amount.length ? parseInt(props.amount) / this.getUnitMultiplier() : 0,
-            });
-        }
-    };
+    this.setState(
+      {
+        value: value,
+        helix: helix
+      },
+      () => this.props.onChange(String(helix))
+    );
+  };
 
-    maxAmount = () => {
-        const { amount, balance } = this.props;
-        const total = balance === parseInt(amount) ? 0 : balance;
-        this.props.onChange(String(total));
-    };
+  getUnitMultiplier(unit) {
+    let multiplier = 1;
+    const target = unit || this.state.unit;
+    switch (target) {
+      case "i":
+        break;
+      case "Ki":
+        multiplier = 1000;
+        break;
+      case "Mi":
+        multiplier = 1000000;
+        break;
+      case "Gi":
+        multiplier = 1000000000;
+        break;
+      case "Ti":
+        multiplier = 1000000000000;
+        break;
+      case "$":
+        multiplier =
+          1000000 /
+          (this.props.settings.usdPrice * this.props.settings.conversionRate);
+        break;
+    }
+    return multiplier;
+  }
 
-    unitChange = (unit) => {
-        if (unit === this.state.unit) {
-            return;
-        }
+  stateToProps = props => {
+    if (this.state.helix !== parseInt(props.amount)) {
+      this.setState({
+        helix: props.amount.length ? parseInt(props.amount) : 0,
+        value: props.amount.length
+          ? parseInt(props.amount) / this.getUnitMultiplier()
+          : 0
+      });
+    }
+  };
 
-        this.setState((prevState) => {
-            const helix = round(prevState.value * this.getUnitMultiplier(unit));
+  maxAmount = () => {
+    const { amount, balance } = this.props;
+    const total = balance === parseInt(amount) ? 0 : balance;
+    this.props.onChange(String(total));
+  };
 
-            const value =
-                helix <= TOTAL_HELIX_SUPPLY ? prevState.value : round(TOTAL_HELIX_SUPPLY / this.getUnitMultiplier(unit));
+  unitChange = unit => {
+    if (unit === this.state.unit) {
+      return;
+    }
 
-            this.props.onChange(String(helix));
+    this.setState(prevState => {
+      const helix = round(prevState.value * this.getUnitMultiplier(unit));
 
-            return {
-                unit: unit,
-                helix: helix,
-                value: value,
-            };
-        });
-    };
+      const value =
+        helix <= TOTAL_HELIX_SUPPLY
+          ? prevState.value
+          : round(TOTAL_HELIX_SUPPLY / this.getUnitMultiplier(unit));
 
-    render() {
-        const { amount, balance, id, settings, label, labelMax } = this.props;
-        const { value, unit } = this.state;
+      this.props.onChange(String(helix));
 
-        return (
-            <div className={css.input}>
-                <fieldset>
-                    <a>
-                        <strong>
-                            {unit === '$' ? getCurrencySymbol(settings.currency) : unit}
-                            <Icon icon="chevronDown" size={8} />
-                            <ul className={css.dropdown}>
-                                {units.map((item) => {
-                                    return (
-                                        <li
-                                            key={item}
-                                            className={item === unit ? css.selected : null}
-                                            onClick={() => this.unitChange(item)}
-                                        >
-                                            {item === '$' ? getCurrencySymbol(settings.currency) : item}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </strong>
-                        {amount > 0 && unit !== '$' ? (
-                            <p>
-                                ={' '}
-                                {formatMonetaryValue(
-                                    amount,
-                                    settings.usdPrice * settings.conversionRate,
-                                    settings.currency,
-                                )}
-                            </p>
-                        ) : null}
-                        {amount > 0 && unit === '$' ? <p>= {formatHlx(amount, false, true)}</p> : null}
-                    </a>
-                    <input id={id} type="text" value={value} onChange={(e) => this.onChange(e.target.value)} />
-                    <small>{label}</small>
-                </fieldset>
-                {balance > 0 && (
-                    <a
-                        className={classNames(css.checkbox, parseInt(amount) === balance ? css.on : css.off)}
-                        onClick={this.maxAmount}
+      return {
+        unit: unit,
+        helix: helix,
+        value: value
+      };
+    });
+  };
+
+  render() {
+    const { amount, balance, id, settings, label, labelMax } = this.props;
+    const { value, unit } = this.state;
+
+    return (
+      <div className={css.input}>
+        <fieldset>
+          <a>
+            <strong>
+              {unit === "$" ? getCurrencySymbol(settings.currency) : unit}
+              <Icon icon="chevronDown" size={8} />
+              <ul className={css.dropdown}>
+                {units.map(item => {
+                  return (
+                    <li
+                      key={item}
+                      className={item === unit ? css.selected : null}
+                      onClick={() => this.unitChange(item)}
                     >
-                        {labelMax}
-                    </a>
+                      {item === "$"
+                        ? getCurrencySymbol(settings.currency)
+                        : item}
+                    </li>
+                  );
+                })}
+              </ul>
+            </strong>
+            {amount > 0 && unit !== "$" ? (
+              <p>
+                ={" "}
+                {formatMonetaryValue(
+                  amount,
+                  settings.usdPrice * settings.conversionRate,
+                  settings.currency
                 )}
-            </div>
-        );
-    }
+              </p>
+            ) : null}
+            {amount > 0 && unit === "$" ? (
+              <p>= {formatHlx(amount, false, true)}</p>
+            ) : null}
+          </a>
+          <input
+            id={id}
+            type="text"
+            value={value}
+            onChange={e => this.onChange(e.target.value)}
+          />
+          <small>{label}</small>
+        </fieldset>
+        {balance > 0 && (
+          <a
+            className={classNames(
+              css.checkbox,
+              parseInt(amount) === balance ? css.on : css.off
+            )}
+            onClick={this.maxAmount}
+          >
+            {labelMax}
+          </a>
+        )}
+      </div>
+    );
+  }
 }

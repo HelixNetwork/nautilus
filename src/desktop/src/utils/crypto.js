@@ -1,7 +1,7 @@
-import { ALIAS_REALM } from 'utils/realm';
-import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
+import { ALIAS_REALM } from "utils/realm";
+import { MAX_SEED_LENGTH } from "libs/hlx/utils";
 
-export const ACC_MAIN = 'Helix';
+export const ACC_MAIN = "Helix";
 // Maximum allowed account title
 export const MAX_ACC_LENGTH = 250;
 
@@ -12,21 +12,21 @@ export const MAX_ACC_LENGTH = 250;
  * @returns {array} Random number array
  */
 export const randomTxBytes = (size, max = 256) => {
-    if (size !== parseInt(size, 10) || size < 0) {
-        return false;
+  if (size !== parseInt(size, 10) || size < 0) {
+    return false;
+  }
+
+  const rawBytes = new Uint8Array(size);
+
+  const txBytes = global.crypto.getRandomValues(rawBytes);
+
+  for (let i = 0; i < txBytes.length; i++) {
+    while (txBytes[i] >= 256 - (256 % max)) {
+      txBytes[i] = randomTxBytes(1, max)[0];
     }
+  }
 
-    const rawBytes = new Uint8Array(size);
-
-    const txBytes = global.crypto.getRandomValues(rawBytes);
-
-    for (let i = 0; i < txBytes.length; i++) {
-        while (txBytes[i] >= 256 - 256 % max) {
-            txBytes[i] = randomTxBytes(1, max)[0];
-        }
-    }
-
-    return Array.from(txBytes);
+  return Array.from(txBytes);
 };
 
 /**
@@ -35,7 +35,7 @@ export const randomTxBytes = (size, max = 256) => {
  * @returns {array} Random txByte array seed
  */
 export const createRandomSeed = (length = MAX_SEED_LENGTH) => {
-    return randomTxBytes(length, 27);
+  return randomTxBytes(length, 27);
 };
 
 /**
@@ -45,20 +45,22 @@ export const createRandomSeed = (length = MAX_SEED_LENGTH) => {
  * @returns {string} Ecnrypted initialization vector + content
  */
 export const encrypt = async (contentPlain, hash) => {
-    const content = new TextEncoder().encode(JSON.stringify(contentPlain));
+  const content = new TextEncoder().encode(JSON.stringify(contentPlain));
 
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const ivHex = iv.toString();
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ivHex = iv.toString();
 
-    const algorithm = { name: 'AES-GCM', iv: iv };
+  const algorithm = { name: "AES-GCM", iv: iv };
 
-    const key = await crypto.subtle.importKey('raw', hash, algorithm, false, ['encrypt']);
+  const key = await crypto.subtle.importKey("raw", hash, algorithm, false, [
+    "encrypt"
+  ]);
 
-    const cipherBuffer = await crypto.subtle.encrypt(algorithm, key, content);
-    const cipherArray = new Uint8Array(cipherBuffer);
-    const cipherHex = cipherArray.toString();
+  const cipherBuffer = await crypto.subtle.encrypt(algorithm, key, content);
+  const cipherArray = new Uint8Array(cipherBuffer);
+  const cipherHex = cipherArray.toString();
 
-    return `${ivHex}|${cipherHex}`;
+  return `${ivHex}|${cipherHex}`;
 };
 
 /**
@@ -68,30 +70,32 @@ export const encrypt = async (contentPlain, hash) => {
  * @returns {object} Derypted content
  */
 export const decrypt = async (cipherText, hash) => {
-    const cipherParts = cipherText.split('|');
+  const cipherParts = cipherText.split("|");
 
-    if (cipherParts.length !== 2 || typeof hash !== 'object') {
-        throw new Error('Wrong password');
-    }
-    try {
-        const ivArray = cipherParts[0].split(',');
-        const iv = Uint8Array.from(ivArray);
+  if (cipherParts.length !== 2 || typeof hash !== "object") {
+    throw new Error("Wrong password");
+  }
+  try {
+    const ivArray = cipherParts[0].split(",");
+    const iv = Uint8Array.from(ivArray);
 
-        const algorithm = { name: 'AES-GCM', iv: iv };
+    const algorithm = { name: "AES-GCM", iv: iv };
 
-        const key = await crypto.subtle.importKey('raw', hash, algorithm, false, ['decrypt']);
+    const key = await crypto.subtle.importKey("raw", hash, algorithm, false, [
+      "decrypt"
+    ]);
 
-        const cipherArray = cipherParts[1].split(',');
-        const cipher = Uint8Array.from(cipherArray);
+    const cipherArray = cipherParts[1].split(",");
+    const cipher = Uint8Array.from(cipherArray);
 
-        const plainBuffer = await crypto.subtle.decrypt(algorithm, key, cipher);
+    const plainBuffer = await crypto.subtle.decrypt(algorithm, key, cipher);
 
-        const plainText = new TextDecoder().decode(plainBuffer);
+    const plainText = new TextDecoder().decode(plainBuffer);
 
-        return JSON.parse(plainText);
-    } catch (err) {
-        throw new Error('Wrong password');
-    }
+    return JSON.parse(plainText);
+  } catch (err) {
+    throw new Error("Wrong password");
+  }
 };
 
 /**
@@ -99,29 +103,29 @@ export const decrypt = async (cipherText, hash) => {
  * @param {string} Password - Plain text password for decryption
  * @returns {boolean}
  */
-export const initVault = async (password) => {
-    try {
-        const vault = await Electron.readKeychain(ACC_MAIN);
-        const decryptedVault = vault === null ? {} : await decrypt(vault, password);
+export const initVault = async password => {
+  try {
+    const vault = await Electron.readKeychain(ACC_MAIN);
+    const decryptedVault = vault === null ? {} : await decrypt(vault, password);
 
-        const updatedVault = await encrypt(decryptedVault, password);
+    const updatedVault = await encrypt(decryptedVault, password);
 
-        await Electron.setKeychain(ACC_MAIN, updatedVault);
+    await Electron.setKeychain(ACC_MAIN, updatedVault);
 
-        return true;
-    } catch (err) {
-        throw err;
-    }
+    return true;
+  } catch (err) {
+    throw err;
+  }
 };
 
 /**
  * Set and store random salt to keychain
  */
 export const initKeychain = async () => {
-    await clearVault([ALIAS_REALM]);
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const saltHex = salt.toString();
-    await Electron.setKeychain(`${ACC_MAIN}-salt`, saltHex);
+  await clearVault([ALIAS_REALM]);
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const saltHex = salt.toString();
+  await Electron.setKeychain(`${ACC_MAIN}-salt`, saltHex);
 };
 
 /**
@@ -129,18 +133,18 @@ export const initKeychain = async () => {
  * @param {array} Key - Account decryption key
  * @returns {boolean | string}
  */
-export const authorize = async (key) => {
-    const vault = await Electron.readKeychain(ACC_MAIN);
+export const authorize = async key => {
+  const vault = await Electron.readKeychain(ACC_MAIN);
 
-    if (!vault) {
-        throw new Error('Local storage not available');
-    }
-    try {
-        await decrypt(vault, key);
-        return true;
-    } catch (err) {
-        throw err;
-    }
+  if (!vault) {
+    throw new Error("Local storage not available");
+  }
+  try {
+    await decrypt(vault, key);
+    return true;
+  } catch (err) {
+    throw err;
+  }
 };
 
 /**
@@ -149,16 +153,16 @@ export const authorize = async (key) => {
  * @returns {boolean} True if vault cleared
  */
 export const clearVault = async (keepAccounts = []) => {
-    const vault = await Electron.listKeychain();
-    const accounts = Object.keys(vault);
+  const vault = await Electron.listKeychain();
+  const accounts = Object.keys(vault);
 
-    for (let i = 0; i < accounts.length; i++) {
-        if (keepAccounts.indexOf(vault[i].account) < 0) {
-            await Electron.removeKeychain(vault[i].account);
-        }
+  for (let i = 0; i < accounts.length; i++) {
+    if (keepAccounts.indexOf(vault[i].account) < 0) {
+      await Electron.removeKeychain(vault[i].account);
     }
+  }
 
-    return true;
+  return true;
 };
 
 /**
@@ -166,16 +170,16 @@ export const clearVault = async (keepAccounts = []) => {
  * @param {string} Password - Plain text to hash
  * @returns {string} SHA-256 hash
  */
-export const sha256 = async (inputPlain) => {
-    if (typeof inputPlain !== 'string' || inputPlain.length < 1) {
-        return false;
-    }
+export const sha256 = async inputPlain => {
+  if (typeof inputPlain !== "string" || inputPlain.length < 1) {
+    return false;
+  }
 
-    const input = new TextEncoder().encode(inputPlain);
-    const hash = await crypto.subtle.digest('SHA-256', input);
-    const plainHash = bufferToHex(hash);
+  const input = new TextEncoder().encode(inputPlain);
+  const hash = await crypto.subtle.digest("SHA-256", input);
+  const plainHash = bufferToHex(hash);
 
-    return plainHash;
+  return plainHash;
 };
 
 /**
@@ -183,25 +187,25 @@ export const sha256 = async (inputPlain) => {
  * @param {string} Password - Plain text to hash
  * @returns {string} Argon2 raw hash
  */
-export const hash = async (inputPlain) => {
-    if (typeof inputPlain !== 'string' || inputPlain.length < 1) {
-        return false;
-    }
+export const hash = async inputPlain => {
+  if (typeof inputPlain !== "string" || inputPlain.length < 1) {
+    return false;
+  }
 
-    const saltHex = await Electron.readKeychain(`${ACC_MAIN}-salt`);
+  const saltHex = await Electron.readKeychain(`${ACC_MAIN}-salt`);
 
-    if (!saltHex) {
-        throw new Error('Keychain unavailable');
-    }
+  if (!saltHex) {
+    throw new Error("Keychain unavailable");
+  }
 
-    const saltArray = saltHex.split(',');
-    const salt = Uint8Array.from(saltArray);
+  const saltArray = saltHex.split(",");
+  const salt = Uint8Array.from(saltArray);
 
-    const input = new TextEncoder().encode(inputPlain);
+  const input = new TextEncoder().encode(inputPlain);
 
-    const hash = await Electron.argon2(input, salt);
+  const hash = await Electron.argon2(input, salt);
 
-    return hash;
+  return hash;
 };
 
 /**
@@ -209,16 +213,16 @@ export const hash = async (inputPlain) => {
  * @param {buffer} - Input buffer
  * @returns {string} Output string
  */
-const bufferToHex = (buffer) => {
-    const hexCodes = [];
-    const view = new DataView(buffer);
-    for (let i = 0; i < view.byteLength; i += 4) {
-        const value = view.getUint32(i);
-        const stringValue = value.toString(16);
-        const padding = '00000000';
-        const paddedValue = (padding + stringValue).slice(-padding.length);
-        hexCodes.push(paddedValue);
-    }
+const bufferToHex = buffer => {
+  const hexCodes = [];
+  const view = new DataView(buffer);
+  for (let i = 0; i < view.byteLength; i += 4) {
+    const value = view.getUint32(i);
+    const stringValue = value.toString(16);
+    const padding = "00000000";
+    const paddedValue = (padding + stringValue).slice(-padding.length);
+    hexCodes.push(paddedValue);
+  }
 
-    return hexCodes.join('');
+  return hexCodes.join("");
 };
