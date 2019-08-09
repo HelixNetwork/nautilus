@@ -198,6 +198,8 @@ export class ListComponent extends React.PureComponent {
       currentItem,
       t
     } = this.props;
+    console.log("currentItem===", currentItem);
+
     const {
       filter,
       isBusy,
@@ -218,59 +220,56 @@ export class ListComponent extends React.PureComponent {
       Pending: 0
     };
 
-    const filteredTransactions = orderBy(transactions, "timestamp", [
-      "desc"
-    ]).filter(transaction => {
+    const filteredTransactions = orderBy(transactions, 'timestamp', ['desc']).filter((transaction) => {
       const isReceived = transaction.incoming;
       const isConfirmed = transaction.persistence;
 
       if (hideEmptyTransactions && transaction.transferValue === 0) {
-        return false;
+          return false;
       }
 
       if (
-        search.length &&
-        transaction.message.toLowerCase().indexOf(search.toLowerCase()) < 0 &&
-        transaction.bundle.toLowerCase().indexOf(search.toLowerCase()) !== 0 &&
-        !(
-          search[0] === ">" &&
-          unitStringToValue(search.substr(1)) < transaction.transferValue
-        ) &&
-        !(
-          search[0] === "<" &&
-          unitStringToValue(search.substr(1)) > transaction.transferValue
-        ) &&
-        transaction.transferValue !== unitStringToValue(search)
+          search.length &&
+          transaction.message.toLowerCase().indexOf(search.toLowerCase()) < 0 &&
+          transaction.bundle.toLowerCase().indexOf(search.toLowerCase()) !== 0 &&
+          !(search[0] === '>' && unitStringToValue(search.substr(1)) < transaction.transferValue) &&
+          !(search[0] === '<' && unitStringToValue(search.substr(1)) > transaction.transferValue) &&
+          transaction.transferValue !== unitStringToValue(search)
       ) {
-        return false;
+          return false;
       }
 
       totals.All++;
 
       if (!isConfirmed) {
-        totals.Pending++;
-        if (filter === "Pending") {
-          return true;
-        }
+          totals.Pending++;
+          if (filter === 'Pending') {
+              return true;
+          }
       } else if (isReceived) {
-        totals.Received++;
-        if (filter === "Received") {
-          return true;
-        }
+          totals.Received++;
+          if (filter === 'Received') {
+              return true;
+          }
       } else {
-        totals.Sent++;
-        if (filter === "Sent") {
-          return true;
-        }
+          totals.Sent++;
+          if (filter === 'Sent') {
+              return true;
+          }
       }
 
-      return filter === "All";
-    });
+      return filter === 'All';
+  });
 
     const activeTx = currentItem
       ? filteredTransactions.filter(tx => tx.bundle === currentItem)[0]
       : null;
     const isActiveFailed = activeTx && activeTx.broadcasted === false;
+    console.log("ACTIVETX===", activeTx);
+
+
+
+
 
     return (
       <React.Fragment>
@@ -296,8 +295,8 @@ export class ListComponent extends React.PureComponent {
                         totals[item] === 0
                           ? css.disabled
                           : filter === item
-                          ? css.active
-                          : null
+                            ? css.active
+                            : null
                       )}
                     >
                       {item === "All" ? t("global:all") : t(item.toLowerCase())}{" "}
@@ -338,7 +337,7 @@ export class ListComponent extends React.PureComponent {
             />
             <div
               onClick={() => this.setState({ search: "" })}
-              style={{ display: "inline-block" ,    "marginLeft": "-22%"}}
+              style={{ display: "inline-block", "marginLeft": "-22%" }}
             >
               <Icon
                 icon={search.length > 0 ? "cross" : "search"}
@@ -368,8 +367,8 @@ export class ListComponent extends React.PureComponent {
                       {isReceived ? (
                         <Icon icon="plus" size={14} />
                       ) : (
-                        <Icon icon="minus" size={14} />
-                      )}
+                          <Icon icon="minus" size={14} />
+                        )}
                       <span>
                         {formatTime(
                           navigator.language,
@@ -383,15 +382,15 @@ export class ListComponent extends React.PureComponent {
                             ? t("receiving")
                             : t("sending")
                           : isReceived
-                          ? t("received")
-                          : t("sent")}
+                            ? t("received")
+                            : t("sent")}
                       </span>
                       <span>
                         {transaction.transferValue === 0
                           ? ""
                           : isReceived
-                          ? "+"
-                          : "-"}
+                            ? "+"
+                            : "-"}
                         {formatHlx(transaction.transferValue, true, true)}
                       </span>
                     </div>
@@ -399,12 +398,12 @@ export class ListComponent extends React.PureComponent {
                 );
               })
             ) : (
-              <p className={css.empty}>
-                {!transactions.length
-                  ? t("noTransactions")
-                  : t("history:noTransactionsFound")}
-              </p>
-            )}
+                <p className={css.empty}>
+                  {!transactions.length
+                    ? t("noTransactions")
+                    : t("history:noTransactionsFound")}
+                </p>
+              )}
           </Scrollbar>
         </div>
         <div
@@ -432,8 +431,8 @@ export class ListComponent extends React.PureComponent {
                     {!activeTx.persistence
                       ? t("pending")
                       : activeTx.incoming
-                      ? t("received")
-                      : t("sent")}
+                        ? t("received")
+                        : t("sent")}
                     <em>
                       {formatModalTime(
                         navigator.language,

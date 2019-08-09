@@ -58,8 +58,11 @@ class WalletHistory extends React.PureComponent {
     );
   };
   render() {
-    const { t, history } = this.props;
+    const { t, history, location } = this.props;
+    console.log("Location===",location.pathname);
     const subroute = location.pathname.split("/")[3] || null;
+    console.log("SUBROUTE===",subroute);
+    
 
     return (
       <div>
@@ -99,7 +102,7 @@ class WalletHistory extends React.PureComponent {
                         setItem={item =>
                           item !== null
                             ? history.push(`/wallet/history/${item}`)
-                            : history.push("/wallet/")
+                            : history.push("/wallet/history")
                         }
                         currentItem={subroute}
                       />
