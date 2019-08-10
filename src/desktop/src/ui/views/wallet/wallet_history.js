@@ -59,9 +59,7 @@ class WalletHistory extends React.PureComponent {
   };
   render() {
     const { t, history, location } = this.props;
-    console.log("Location===", location.pathname);
     const subroute = location.pathname.split("/")[3] || null;
-    console.log("SUBROUTE===", subroute);
 
     return (
       <div>

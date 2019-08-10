@@ -198,7 +198,6 @@ export class ListComponent extends React.PureComponent {
       currentItem,
       t
     } = this.props;
-    console.log("currentItem===", currentItem);
 
     const {
       filter,
@@ -273,7 +272,6 @@ export class ListComponent extends React.PureComponent {
       ? filteredTransactions.filter(tx => tx.bundle === currentItem)[0]
       : null;
     const isActiveFailed = activeTx && activeTx.broadcasted === false;
-    console.log("ACTIVETX===", activeTx);
 
     return (
       <React.Fragment>
