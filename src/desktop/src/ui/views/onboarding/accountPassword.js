@@ -106,6 +106,10 @@ class AccountPassword extends React.PureComponent {
     const seedStore = await new SeedStore[additionalAccountMeta.type](
       passwordHash
     );
+    await seedStore.addAccount(
+      additionalAccountName,
+      Electron.getOnboardingSeed()
+    );
     Electron.setOnboardingSeed(null);
 
     history.push("/onboarding/done");
@@ -168,7 +172,6 @@ class AccountPassword extends React.PureComponent {
               >
                 {t("global:goBack")} <span>></span>
               </Button>
-              {/* onClick={() => this.stepBack()} */}
               <Button
                 type="submit"
                 className="navright"
