@@ -63,6 +63,15 @@ yarn run start:desktop
 
 ```
 cd src/desktop
-yarn run compile
+yarn run build
+
+# For windows
+yarn run compile:win
+
+# For linux
+yarn run compile:linux
+
+# For mac, You should be on mac OS
+yarn run compile:mac
 ```
 
