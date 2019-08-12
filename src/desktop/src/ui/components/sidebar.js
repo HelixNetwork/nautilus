@@ -30,11 +30,11 @@ class Sidebar extends React.PureComponent {
             {t("settings:language")}
           </a>
         </li>
-        <li className={active == "node" ? css.active : ""}>
+        {/* <li className={active == "node" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/settings/node")}>
             {t("global:node")}
           </a>
-        </li>
+        </li> */}
         <li className={active == "theme" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/settings/theme")}>
             {t("settings:theme")}
@@ -67,11 +67,11 @@ class Sidebar extends React.PureComponent {
                 {t("settings:changePassword")}
               </a>
             </li>
-            <li className={active == "mode" ? css.active : ""}>
+            {/* <li className={active == "mode" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/mode")}>
                 {t("settings:mode")}
               </a>
-            </li>
+            </li> */}
             <li className={active == "snapshot" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/snapshot")}>
                 {t("settings:snap")}

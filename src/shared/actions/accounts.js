@@ -74,6 +74,42 @@ export const setAccountInfoDuringSetup = payload => {
   };
 };
 
+
+/**
+ * Performs a manual sync for an account. Syncs full account information with the ledger.
+ *
+ * @method manuallySyncAccount
+ * @param {object} seedStore - SeedStore class object
+ * @param {string} accountName
+ * @param {boolean} [quorum]
+ *
+ * @returns {function} dispatch
+ */
+export const manuallySyncAccount = (seedStore, accountName, quorum = false) => {
+    return (dispatch, getState) => {
+        dispatch(manualSyncRequest());
+
+        const existingAccountState = selectedAccountStateFactory(accountName)(getState());
+
+        return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
+            .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(getAccountData)(
+                seedStore,
+                accountName,
+                existingAccountState,
+            )
+            .then((result) => {
+                dispatch(generateSyncingCompleteAlert());
+
+                // Update account in storage (realm)
+                Account.update(accountName, result);
+                dispatch(manualSyncSuccess(result));
+            })
+            .catch((err) => {
+                dispatch(generateErrorAlert(generateSyncingErrorAlert, err));
+                dispatch(manualSyncError());
+            });
+    };
+};
 /**
  * Dispatch to update address data for provided account
  *

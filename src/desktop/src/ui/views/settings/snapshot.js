@@ -12,56 +12,60 @@ import {
 import SeedStore from "libs/seed";
 import { connect } from "react-redux";
 import {
-  getAddressesForSelectedAccount,
-  selectAccountInfo,
-  getSelectedAccountName
-} from "selectors/accounts";
-import ModalConfirm from "ui/components/modal/Confirm";
-import Button from "ui/components/button";
-import Loading from "ui/components/loading";
-import { formatValue, formatUnit } from "libs/hlx/utils";
-import { round } from "libs/utils";
-import size from "lodash/size";
-import Scrollbar from "ui/components/scrollbar";
-import Top from "ui/components/topbar";
+    getAddressesForSelectedAccount,
+    selectAccountInfo,
+    getSelectedAccountName
+} from 'selectors/accounts';
+import { manuallySyncAccount } from 'actions/accounts';
+import ModalConfirm from 'ui/components/modal/Confirm';
+import Button from 'ui/components/button';
+import Loading from 'ui/components/loading';
+import { formatValue, formatUnit } from 'libs/hlx/utils';
+import { round } from 'libs/utils';
+import size from 'lodash/size';
+import Scrollbar from 'ui/components/scrollbar';
+import Top from 'ui/components/topbar';
 
 /**
  * Snapshot setup
  */
 
 class Snapshot extends PureComponent {
-  static propTypes = {
-    /** @ignore */
-    wallet: PropTypes.object.isRequired,
-    /** @ignore */
-    ui: PropTypes.object.isRequired,
-    /** Addresses for selected account */
-    addresses: PropTypes.array.isRequired,
-    /** @ignore */
-    completeSnapshotTransition: PropTypes.func.isRequired,
-    /** @ignore */
-    setBalanceCheckFlag: PropTypes.func.isRequired,
-    /** @ignore */
-    generateAddressesAndGetBalance: PropTypes.func.isRequired,
-    /** @ignore */
-    transitionForSnapshot: PropTypes.func.isRequired,
-    /** @ignore */
-    activeStepIndex: PropTypes.number.isRequired,
-    /** @ignore */
-    activeSteps: PropTypes.array.isRequired,
-    /** @ignore */
-    t: PropTypes.func.isRequired
-  };
-  static renderProgressChildren(activeStepIndex, sizeOfActiveSteps, t) {
-    if (activeStepIndex === -1) {
-      return null;
+    static propTypes = {
+        /** @ignore */
+        wallet: PropTypes.object.isRequired,
+        /** @ignore */
+        ui: PropTypes.object.isRequired,
+        /** Addresses for selected account */
+        addresses: PropTypes.array.isRequired,
+        /** @ignore */
+        completeSnapshotTransition: PropTypes.func.isRequired,
+        /** @ignore */
+        setBalanceCheckFlag: PropTypes.func.isRequired,
+        /** @ignore */
+        generateAddressesAndGetBalance: PropTypes.func.isRequired,
+        manuallySyncAccount: PropTypes.func.isRequired,
+        /** @ignore */
+        transitionForSnapshot: PropTypes.func.isRequired,
+        /** @ignore */
+        activeStepIndex: PropTypes.number.isRequired,
+        /** @ignore */
+        activeSteps: PropTypes.array.isRequired,
+        /** @ignore */
+        t: PropTypes.func.isRequired,
+    };
+    static renderProgressChildren(activeStepIndex, sizeOfActiveSteps, t) {
+        if (activeStepIndex === -1) {
+            return null;
+        }
+
+        return t('snapshotTransition:attachProgress', {
+            currentAddress: activeStepIndex + 1,
+            totalAddresses: sizeOfActiveSteps,
+        });
     }
 
-    return t("snapshotTransition:attachProgress", {
-      currentAddress: activeStepIndex + 1,
-      totalAddresses: sizeOfActiveSteps
-    });
-  }
+    
 
   componentDidUpdate(prevProps) {
     const { wallet, ui } = this.props;
@@ -212,10 +216,11 @@ class Snapshot extends PureComponent {
         />
         <section className="spage_1">
           <div className={classNames(css.foo_bxx12)}>
+          <Scrollbar>
             <div className={css.scroll}>
-              <Scrollbar>
+             
                 <article>
-                  <h3 style={{ marginLeft: "14vw" }}>
+                  <h3 style={{ marginLeft: "14vw" ,marginTop:'-8vw'}}>
                     {t("advancedSettings:snapshotTransition")}
                   </h3>
                   <p>
@@ -245,9 +250,31 @@ class Snapshot extends PureComponent {
                       cancel: t("global:no")
                     }}
                   />
+                   <h3 style={{ marginLeft: "16vw"}}>{t('advancedSettings:manualSync')}</h3>
+                        {ui.isSyncing ? (
+                            <p>
+                                {t('manualSync:syncingYourAccount')} <br />
+                                {t('manualSync:thisMayTake')}
+                            </p>
+                        ) : (
+                            <p>
+                                {t('manualSync:outOfSync')} <br />
+                                {t('manualSync:pressToSync')}
+                            </p>
+                        )}
+                        <Button
+                            style={{ marginLeft: "16vw" }}
+                            onClick={this.syncAccount}
+                            className="small"
+                            loading={ui.isSyncing}
+                            disabled={ui.isTransitioning || ui.isAttachingToTangle}
+                        >
+                            {t('manualSync:syncAccount')}
+                        </Button>
                 </article>
-              </Scrollbar>
+         
             </div>
+            </Scrollbar>
           </div>
         </section>
       </div>
@@ -267,10 +294,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  completeSnapshotTransition,
-  transitionForSnapshot,
-  generateAddressesAndGetBalance,
-  setBalanceCheckFlag
+    completeSnapshotTransition,
+    transitionForSnapshot,
+    manuallySyncAccount,
+    generateAddressesAndGetBalance,
+    setBalanceCheckFlag,
 };
 
 export default connect(
