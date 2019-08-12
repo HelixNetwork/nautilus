@@ -15,7 +15,7 @@ On **Windows** platforms you'll need to install build tools to compile native mo
 
 ```
 # Install Visual C++ Build Tools and Python 2.7
-npm install --global windows-build-tools
+npm install --global --production windows-build-tools --vs2015
 
 # Install OpenSSL VC++ Static 64bit Library
 git clone https://github.com/Microsoft/vcpkg C:\src\vcpkg
