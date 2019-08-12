@@ -45,12 +45,14 @@ class Viewaddress extends React.PureComponent {
 
     return (
       <div className={classNames(css.foo_bxx12)}>
-        <div cllassname={classNames(css.set_bxac)}>
-          <h5 style={{ marginLeft: "3vw" }}>
+          <Scrollbar>
+        <div classname={classNames(css.set_bxac)}>
+      
+          <h5 style={{ marginLeft: "23vw" }}>
             {t("accountManagement:viewAddresses")}
           </h5>
           <div className={css.scroll}>
-            <Scrollbar>
+           
               <ul className={css.addresses}>
                 <Scrollbar className={css.scroll_address}>
                   {addressData.map(addressObject => {
@@ -84,9 +86,11 @@ class Viewaddress extends React.PureComponent {
                   })}
                 </Scrollbar>
               </ul>
-            </Scrollbar>
+           
           </div>
+        
         </div>
+        </Scrollbar>
       </div>
     );
   }
