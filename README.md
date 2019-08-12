@@ -59,13 +59,10 @@ yarn run deps:desktop
 yarn run start:desktop
 ```
 
-6. Package app for Windows
+6. Package app for windows , mac and linux
 
 ```
-yarn run package:win
+cd src/desktop
+yarn run compile
 ```
-7. Package app for Linux
 
-```
-yarn run package:linux
-```
