@@ -102,6 +102,7 @@ class WalletHistory extends React.PureComponent {
                             : history.push("/wallet/history")
                         }
                         currentItem={subroute}
+                        style= {{ height: "20vw" }}
                       />
 
                       {/* <table className={classNames(css.table)}> */}

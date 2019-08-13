@@ -72,7 +72,9 @@ export class ListComponent extends React.PureComponent {
     /** @ignore */
     accountMeta: PropTypes.object.isRequired,
     /** @ignore */
-    password: PropTypes.object.isRequired
+    password: PropTypes.object.isRequired,
+        /** @ignore */
+    style: PropTypes.object
   };
 
   state = {
@@ -196,7 +198,8 @@ export class ListComponent extends React.PureComponent {
       updateAccount,
       setItem,
       currentItem,
-      t
+      t,
+      style
     } = this.props;
 
     const {
@@ -349,7 +352,7 @@ export class ListComponent extends React.PureComponent {
           </div>
         </nav>
         {/* <hr /> */}
-        <div className={css.list}>
+        <div className={css.list} style={style}>
           <Scrollbar>
             {filteredTransactions.length ? (
               filteredTransactions.map((transaction, key) => {
