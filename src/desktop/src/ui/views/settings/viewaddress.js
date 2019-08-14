@@ -45,24 +45,25 @@ class Viewaddress extends React.PureComponent {
 
     return (
       <div className={classNames(css.foo_bxx12)}>
-          <Scrollbar>
-        <div classname={classNames(css.set_bxac)}>
-      
-          <h5 style={{ marginLeft: "23vw" }}>
+         <h5 style={{ marginLeft: "28vw" }}>
             {t("accountManagement:viewAddresses")}
           </h5>
+          <Scrollbar style={{height: "88%"}}>
+        <div classname={classNames(css.set_bxac)}>
           <div className={css.scroll}>
            
-              <ul className={css.addresses}>
+              <ul className={css.addresses} style={{ marginLeft: "100px", paddingTop: "0px" }}>
                 <Scrollbar className={css.scroll_address}>
                   {addressData.map(addressObject => {
                     const address =
                       addressObject.address + addressObject.checksum;
 
                     return (
-                      <li key={address}>
+                      <li key={address} style={{overflow:"hidden"}}>
                         <p
                           className={isSpent(addressObject) ? css.spent : null}
+                          style={{marginTop: "10px", float: "left", width: "77%"}}
+
                         >
                           <Clipboard
                             text={address}
@@ -77,7 +78,7 @@ class Viewaddress extends React.PureComponent {
                             </span>
                           </Clipboard>
                         </p>
-                        <strong>
+                        <strong style={{float: "right", marginTop: "4%"}}>
                           {formatValue(addressObject.balance)}
                           {formatUnit(addressObject.balance)}
                         </strong>
