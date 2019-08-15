@@ -11,7 +11,7 @@ import size from "lodash/size";
 import cloneDeep from "lodash/cloneDeep";
 import URL from "url-parse";
 import { BigNumber } from "bignumber.js";
-import { txHexToAscii, asciiToTxHex } from "@helixnetwork/converter";
+import { txsToAscii, asciiToTxHex } from "@helixnetwork/converter";
 import { addChecksum, isValidChecksum } from "@helixnetwork/checksum";
 import { isNodeHealthy } from "./extendedApi";
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from "../../config";
@@ -278,7 +278,7 @@ export const isLastBitZero = address =>
  * @returns {boolean}
  */
 export const isValidMessage = message => {
-  return txHexToAscii(asciiToTxHex(message)) === message;
+  return txsToAscii(asciiToTxHex(message)) === message;
 };
 
 /**

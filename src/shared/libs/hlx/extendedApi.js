@@ -78,11 +78,9 @@ const getHelixInstance = (
     // TODO
     const { url, token, password } = settings;
     const instance = composeAPI({
-      provider: url
+      provider: url,
+      timeout:requestTimeout
     });
-
-    // TODO
-    // instance.api.setApiTimeout(requestTimeout);
 
     return instance;
   }

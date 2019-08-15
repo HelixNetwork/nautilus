@@ -11,7 +11,8 @@ import {
 
 /** Globally defined HELIX instance */
 let helixAPI = composeAPI({
-  provider: DEFAULT_NODE.url
+  provider: DEFAULT_NODE.url,
+  timeout:DEFAULT_NODE_REQUEST_TIMEOUT
 });
 
 // Set node request timeout
@@ -34,7 +35,8 @@ export const quorum = new Quorum({
  */
 export const changeHelixNode = NODE_URI => {
   helixAPI = composeAPI({
-    provider: NODE_URI
+    provider: NODE_URI,
+    timeout:DEFAULT_NODE_REQUEST_TIMEOUT
   });
 };
 
