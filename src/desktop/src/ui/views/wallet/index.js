@@ -10,7 +10,7 @@ import img1 from "ui/images/svg/recieve.svg";
 import img2 from "ui/images/svg/chart.svg";
 import img3 from "ui/images/svg/history.svg";
 import css from "./wallet.scss";
-import TopBar from "./topbar";
+import TopBar from "./topBar";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,6 +39,7 @@ import {
   formatHlx,
   getCurrencyValue
 } from "libs/hlx/utils";
+import  DashSidebar from "ui/components/dash_sidebar";
 import axios from "axios";
 /**
  * Wallet functionallity router wrapper component
@@ -110,24 +111,16 @@ class Wallet extends React.PureComponent {
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
     const currentKey = location.pathname.split("/")[2] || "/";
+    console.log('vvv',currentKey);
     if (currentKey == "/") {
       return (
         <div>
-          {/* <Top
-            bal={"block"}
-            main={"none"}
-            user={"block"}
-            balance={formatHlx(balance, true, false)}
-            unit={formatUnit(balance)}
-            history={this.props.history}
-          /> */}
+          
           <TopBar/>
           <section className="spage_1">
             <div className="container">
               <div className="row">
-                {/* <div className={classNames(css.sseed_box1, css.cre_pgs)}>
-
-                                </div> */}
+       <DashSidebar disp={"none"} history={history} active={currentKey}/>
                 <h4 className={classNames(css.welcome)}>
                   {t("welcome:welcome")} {accountName}{" "}
                   <span style={styles}>.</span>{" "}
@@ -138,87 +131,18 @@ class Wallet extends React.PureComponent {
                   </h2>
                   <h3>{this.state.currencyValue + " " + currency}</h3>
                 </div>
-                <div className={classNames(css.icon_secs1)}>
-                  {/* <div onClick={() => history.push('/wallet/send')} className={(classNames(css.img_sr1))}><img src={img} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Send <span>></span></h2></div>
-                                        <div onClick={() => history.push('/wallet/receive')} className={(classNames(css.img_sr1))}><img src={img1} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Receive <span>></span></h2></div>
-                                        <div onClick={() => history.push('/wallet/chart')}className={(classNames(css.img_sr1))}><img src={img2} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Chart <span>></span></h2></div>
-                                        <div onClick={() => history.push('/wallet/history')}className={(classNames(css.img_sr1))}><img src={img3} size='3x' /><h2 className={classNames(css.img_sr_h2)}>History <span>></span></h2></div> */}
-                  <div
-                    onClick={() => history.push("/wallet/send")}
-                    className={classNames(css.img_send)}
-                  >
-                    <FontAwesomeIcon icon={faPaperPlane} size="3x" />
-                    <h2 className={classNames(css.img_send_h2)}>
-                      Send <span>></span>
-                    </h2>
-                  </div>
-                  <div
-                    onClick={() => history.push("/wallet/receive")}
-                    className={classNames(css.img_sr1)}
-                  >
-                    <FontAwesomeIcon icon={faDownload} size="3x" />
-                    <h2 className={classNames(css.img_sr_h2)}>
-                      Receive <span>></span>
-                    </h2>
-                  </div>
-                  <div
-                    onClick={() => history.push("/wallet/chart")}
-                    className={classNames(css.img_sr1)}
-                  >
-                    <FontAwesomeIcon icon={faChartLine} size="3x" />
-                    <h2 className={classNames(css.img_sr_h2)}>
-                      Chart <span>></span>
-                    </h2>
-                  </div>
-                  <div
-                    onClick={() => history.push("/wallet/history")}
-                    className={classNames(css.img_sr1)}
-                  >
-                    <FontAwesomeIcon icon={faHistory} size="3x" />
-                    <h2 className={classNames(css.img_sr_h2)}>
-                      History <span>></span>
-                    </h2>
-                  </div>
-
-                  {/* <div className={(classNames(css.img_sr1))}><FontAwesomeIcon icon={faExchange} size='3x' /><h2 className={classNames(css.img_sr_h2)}>Swap <span>></span></h2></div> */}
-                </div>
+               
               </div>
             </div>
-            {/* <div className="row">
-
-                            <div className={(classNames(css.drop_fxbx))}>
-
-                            </div>
-                        </div> */}
+    
           </section>
-          {/* <footer className={classNames(css.footer)}>
-            <div className={classNames(css.box)}>
-              {accountNames.map((account, index) => {
-                return (
-                  <div
-                    className={classNames(css.marc_bx)}
-                    key={index}
-                    onClick={this.updateAccount.bind(this, account, index)}
-                  >
-                    &nbsp;&nbsp;{account}
-                    <br />
-                    <span>Account{index + 1}</span>
-                  </div>
-                );
-              })}
-
-              <div className={classNames(css.marc_bx, css.cc_clrs)}>
-                <a onClick={() => history.push("/onboarding/seed-intro")}>
-                  +Add Account
-                </a>
-              </div>
-            </div>
-          </footer> */}
+   
         </div>
       );
     }
     return <Dashboard></Dashboard>;
   }
+
 }
 const mapStateToProps = state => ({
   accounts: state.accounts,

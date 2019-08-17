@@ -111,6 +111,16 @@ export const manuallySyncAccount = (seedStore, accountName, quorum = false) => {
     };
 };
 /**
+ * Dispatch when account is about to be manually synced
+ *
+ * @method manualSyncRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const manualSyncRequest = () => ({
+  type: AccountsActionTypes.MANUAL_SYNC_REQUEST,
+});
+/**
  * Dispatch to update address data for provided account
  *
  * @method updateAddresses

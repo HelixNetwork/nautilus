@@ -237,7 +237,8 @@
     "send": "SEND",
     "receive": "RECEIVE",
     "history": "HISTORY",
-    "settings": "SETTINGS"
+    "settings": "SETTINGS",
+    "chart":"CHART"
   },
   "languageSetup": {
     "language": "Language",

@@ -6,6 +6,7 @@ import { withI18n } from "react-i18next";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import Top from "../../components/topbar";
+
 import Sidebar from "../../components/sidebar";
 import SettingsLanguage from "ui/views/settings/language";
 import SettingsNode from "ui/views/settings/node";
@@ -45,6 +46,7 @@ class Settings extends React.PureComponent {
     return (
       <div>
         <Top bal={"none"} main={"block"} user={"none"} history={history} />
+   
         <div className="container">
           <div className="col-lg-4">
             <div className={classNames(css.menu_box)}>
