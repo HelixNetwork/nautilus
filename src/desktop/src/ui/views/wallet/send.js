@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import css from "./wallet.scss";
 import classNames from "classnames";
 import images from "ui/images/ic1.png";
-import Top from "../../components/topbar";
+import TopBar from "./topBar";
+import SideBar from './sideBar';
 import PropTypes from "prop-types";
 import ic1 from "ui/images/send_bt.png";
 import { withI18n } from "react-i18next";
@@ -25,19 +26,19 @@ import Checksum from "ui/components/checksum";
 import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 class Send extends React.PureComponent {
-  static propTypes = {
-    /** @ignore */
-    balance: PropTypes.number.isRequired,
-    /** @ignore */
-    // settings: PropTypes.shape({
-    //     conversionRate: PropTypes.number.isRequired,
-    //     currency: PropTypes.string.isRequired,
-    //     usdPrice: PropTypes.number.isRequired,
-    // }),
-    makeTransaction: PropTypes.func.isRequired,
-    /** @ignore */
-    t: PropTypes.func.isRequired
-  };
+  // static propTypes = {
+  //   /** @ignore */
+  //   balance: PropTypes.number.isRequired,
+  //   /** @ignore */
+  //   // settings: PropTypes.shape({
+  //   //     conversionRate: PropTypes.number.isRequired,
+  //   //     currency: PropTypes.string.isRequired,
+  //   //     usdPrice: PropTypes.number.isRequired,
+  //   // }),
+  //   makeTransaction: PropTypes.func.isRequired,
+  //   /** @ignore */
+  //   t: PropTypes.func.isRequired
+  // };
   state = {
     address: "",
     amount: "",
@@ -195,16 +196,18 @@ class Send extends React.PureComponent {
     return (
       <div>
         <section className={css.home}>
-          <Top bal={"block"} main={"block"} user={"block"} history={history} />
+          {/* <Top bal={"block"} main={"block"} user={"block"} history={history} /> */}
+          <TopBar/>
+          <SideBar/>
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
-                <div className="col-lg-12">
+                <div className="col-lg-9">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3>
+                    <h5>
                       {t("send:sendCoins")}
-                      <span>.</span>
-                    </h3>
+                      {/* <span>.</span> */}
+                    </h5>
                     <h6>{t("send:irrevocableTransactionWarning")}</h6>
                     <form>
                       {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
@@ -217,7 +220,7 @@ class Send extends React.PureComponent {
                         value={amount}
                         className={classNames(css.bbx_box1, css.tr_box)}
                         style={{
-                          marginLeft: "335px",
+                          marginLeft: "50px",
                           background: "#081726",
                           color: "#eaac32"
                         }}
@@ -234,14 +237,14 @@ class Send extends React.PureComponent {
                         type="text"
                         className={classNames(css.bbx_box1, css.tr_box)}
                         style={{
-                          marginLeft: "335px",
+                          marginLeft: "50px",
                           background: "#081726",
                           color: "#eaac32"
                         }}
                         placeholder="mHLX"
                         onChange={this.hlxInput.bind(this)}
                       ></input>
-                      <h5>{t("send:enterReceiverAddress")}</h5>
+                      {/* <p>{t("send:enterReceiverAddress")}</p> */}
 
                       <input
                         id="recipient-address"
@@ -250,6 +253,7 @@ class Send extends React.PureComponent {
                         className={css.reci_text}
                         value={address}
                         onChange={this.addressInput.bind(this)}
+                        placeholder="RECEIVER ADDRESS"
                       />
                       <br />
                       <a
@@ -314,7 +318,7 @@ class Send extends React.PureComponent {
             </div>
           </div>
         </section>
-        <footer className={classNames(css.footer_bx)}></footer>
+        {/* <footer className={classNames(css.footer_bx)}></footer> */}
       </div>
     );
   }

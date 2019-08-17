@@ -10,7 +10,7 @@ import img1 from "ui/images/svg/recieve.svg";
 import img2 from "ui/images/svg/chart.svg";
 import img3 from "ui/images/svg/history.svg";
 import css from "./wallet.scss";
-import Top from "../../components/topbar";
+import TopBar from "./topbar";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -44,22 +44,22 @@ import axios from "axios";
  * Wallet functionallity router wrapper component
  */
 class Wallet extends React.PureComponent {
-  static propTypes = {
-    accounts: PropTypes.object.isRequired,
-    accountNames: PropTypes.array.isRequired,
-    accountName: PropTypes.string.isRequired,
-    accountMeta: PropTypes.object.isRequired,
-    accountInfo: PropTypes.object.isRequired,
-    getAccountInfo: PropTypes.func.isRequired,
-    setSeedIndex: PropTypes.func.isRequired,
-    balance: PropTypes.number.isRequired,
-    seedIndex: PropTypes.number,
-    location: PropTypes.object,
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired
-    }).isRequired,
-    t: PropTypes.func.isRequired
-  };
+  // static propTypes = {
+  //   accounts: PropTypes.object.isRequired,
+  //   accountNames: PropTypes.array.isRequired,
+  //   accountName: PropTypes.string.isRequired,
+  //   accountMeta: PropTypes.object.isRequired,
+  //   accountInfo: PropTypes.object.isRequired,
+  //   getAccountInfo: PropTypes.func.isRequired,
+  //   setSeedIndex: PropTypes.func.isRequired,
+  //   balance: PropTypes.number.isRequired,
+  //   seedIndex: PropTypes.number,
+  //   location: PropTypes.object,
+  //   history: PropTypes.shape({
+  //     push: PropTypes.func.isRequired
+  //   }).isRequired,
+  //   t: PropTypes.func.isRequired
+  // };
 
   updateAccount = async (accountName, index) => {
     const {
@@ -113,14 +113,15 @@ class Wallet extends React.PureComponent {
     if (currentKey == "/") {
       return (
         <div>
-          <Top
+          {/* <Top
             bal={"block"}
             main={"none"}
             user={"block"}
             balance={formatHlx(balance, true, false)}
             unit={formatUnit(balance)}
             history={this.props.history}
-          />
+          /> */}
+          <TopBar/>
           <section className="spage_1">
             <div className="container">
               <div className="row">
@@ -190,7 +191,7 @@ class Wallet extends React.PureComponent {
                             </div>
                         </div> */}
           </section>
-          <footer className={classNames(css.footer)}>
+          {/* <footer className={classNames(css.footer)}>
             <div className={classNames(css.box)}>
               {accountNames.map((account, index) => {
                 return (
@@ -212,7 +213,7 @@ class Wallet extends React.PureComponent {
                 </a>
               </div>
             </div>
-          </footer>
+          </footer> */}
         </div>
       );
     }

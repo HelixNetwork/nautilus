@@ -372,7 +372,7 @@
     "addressPasteExplanation": "It looks like you have pasted an address. Make sure that the address matches the one you want to send to.",
     "invalid": "INVALID",
     "swipeToSend": "Swipe to send",
-    "sendCoins": "Send HLX Coins",
+    "sendCoins": "SEND HLX",
     "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!",
     "enterReceiverAddress": "Enter Receiver Address"
   },
