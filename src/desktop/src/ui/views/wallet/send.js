@@ -4,9 +4,9 @@ import css from "./wallet.scss";
 import classNames from "classnames";
 import images from "ui/images/ic1.png";
 import TopBar from "./topBar";
-import SideBar from './sideBar';
+import DashSidebar from 'ui/components/dash_sidebar';
 import PropTypes from "prop-types";
-import ic1 from "ui/images/send_bt.png";
+import ic1 from "ui/images/send_bt_white.png";
 import { withI18n } from "react-i18next";
 import SeedStore from "libs/seed";
 import Modal from "ui/components/modal/Modal";
@@ -26,19 +26,22 @@ import Checksum from "ui/components/checksum";
 import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 class Send extends React.PureComponent {
-  // static propTypes = {
-  //   /** @ignore */
-  //   balance: PropTypes.number.isRequired,
-  //   /** @ignore */
-  //   // settings: PropTypes.shape({
-  //   //     conversionRate: PropTypes.number.isRequired,
-  //   //     currency: PropTypes.string.isRequired,
-  //   //     usdPrice: PropTypes.number.isRequired,
-  //   // }),
-  //   makeTransaction: PropTypes.func.isRequired,
-  //   /** @ignore */
-  //   t: PropTypes.func.isRequired
-  // };
+  static propTypes = {
+    /** @ignore */
+    balance: PropTypes.number.isRequired,
+    /** @ignore */
+    // settings: PropTypes.shape({
+    //     conversionRate: PropTypes.number.isRequired,
+    //     currency: PropTypes.string.isRequired,
+    //     usdPrice: PropTypes.number.isRequired,
+    // }),
+    makeTransaction: PropTypes.func.isRequired,
+    /** @ignore */
+    t: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired,
+  };
   state = {
     address: "",
     amount: "",
@@ -198,7 +201,9 @@ class Send extends React.PureComponent {
         <section className={css.home}>
           {/* <Top bal={"block"} main={"block"} user={"block"} history={history} /> */}
           <TopBar/>
-          <SideBar/>
+          <DashSidebar
+          history={history}
+          />
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
@@ -215,37 +220,66 @@ class Send extends React.PureComponent {
                                             <span className={classNames(css.er2)}>26,74</span>
                                             <input type="text" classNames={css.er1} placeholder="EUR"></input>
                                         </div> */}
+                      <div>
+                      <select
+                      className={css.currencyBox}
+                      >
+                        <option>EUR</option>
+                      </select>
                       <input
                         type="text"
                         value={amount}
                         className={classNames(css.bbx_box1, css.tr_box)}
                         style={{
                           marginLeft: "50px",
-                          background: "#081726",
-                          color: "#eaac32"
+                          color: "white"
                         }}
                         placeholder="EUR"
                         onChange={this.amountInput.bind(this)}
                       ></input>
+                      </div>
                       <h1 className={classNames(css.eq)}>=</h1>
                       {/* <div className={classNames(css.bbx_box1)}>
                                             <span className={classNames(css.er1)}>mHLX</span>
                                             <span className={classNames(css.er2)}>1337,00</span>
                                         </div> */}
+                      <div>
+                      <select
+                      className={css.currencyBox}
+                      >
+                        <option>mHLX</option>
+                      </select>
                       <input
                         value={hlxamount}
                         type="text"
                         className={classNames(css.bbx_box1, css.tr_box)}
                         style={{
                           marginLeft: "50px",
-                          background: "#081726",
-                          color: "#eaac32"
+                          color: "white"
                         }}
                         placeholder="mHLX"
                         onChange={this.hlxInput.bind(this)}
                       ></input>
+                      </div>
                       {/* <p>{t("send:enterReceiverAddress")}</p> */}
 
+                      <div>
+                      <span
+                      className={css.currencyBox}
+                      style={{
+                        top: '355px',
+                        left: '20px'
+                      }}
+                      >
+                        NOTE
+                      </span>
+                      <input className={css.msgBox}
+                      style={{
+                        marginLeft: "50px",
+                        color: "white"
+                      }}
+                      placeholder="Enter note"/>
+                      </div>
                       <input
                         id="recipient-address"
                         type="text"
@@ -263,7 +297,7 @@ class Send extends React.PureComponent {
                         <img src={ic1} alt="" />
                       </a>
                       <h2 className={classNames(css.send_bts_h2)}>
-                        Send <span>></span>
+                        SEND
                       </h2>
                     </form>
                     {openModal && (

@@ -39,28 +39,28 @@ import {
   formatHlx,
   getCurrencyValue
 } from "libs/hlx/utils";
-import  DashSidebar from "ui/components/dash_sidebar";
+import DashSidebar from "ui/components/dash_sidebar";
 import axios from "axios";
 /**
  * Wallet functionallity router wrapper component
  */
 class Wallet extends React.PureComponent {
-  // static propTypes = {
-  //   accounts: PropTypes.object.isRequired,
-  //   accountNames: PropTypes.array.isRequired,
-  //   accountName: PropTypes.string.isRequired,
-  //   accountMeta: PropTypes.object.isRequired,
-  //   accountInfo: PropTypes.object.isRequired,
-  //   getAccountInfo: PropTypes.func.isRequired,
-  //   setSeedIndex: PropTypes.func.isRequired,
-  //   balance: PropTypes.number.isRequired,
-  //   seedIndex: PropTypes.number,
-  //   location: PropTypes.object,
-  //   history: PropTypes.shape({
-  //     push: PropTypes.func.isRequired
-  //   }).isRequired,
-  //   t: PropTypes.func.isRequired
-  // };
+  static propTypes = {
+    accounts: PropTypes.object.isRequired,
+    accountNames: PropTypes.array.isRequired,
+    accountName: PropTypes.string.isRequired,
+    accountMeta: PropTypes.object.isRequired,
+    accountInfo: PropTypes.object.isRequired,
+    getAccountInfo: PropTypes.func.isRequired,
+    setSeedIndex: PropTypes.func.isRequired,
+    balance: PropTypes.number.isRequired,
+    seedIndex: PropTypes.number,
+    location: PropTypes.object,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired,
+    t: PropTypes.func.isRequired
+  };
 
   updateAccount = async (accountName, index) => {
     const {
@@ -111,16 +111,16 @@ class Wallet extends React.PureComponent {
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
     const currentKey = location.pathname.split("/")[2] || "/";
-    console.log('vvv',currentKey);
+    console.log('vvv', currentKey);
     if (currentKey == "/") {
       return (
         <div>
-          
-          <TopBar/>
+
+          <TopBar />
           <section className="spage_1">
             <div className="container">
               <div className="row">
-       <DashSidebar disp={"none"} history={history} active={currentKey}/>
+                <DashSidebar disp={"none"} history={history} active={currentKey} />
                 <h4 className={classNames(css.welcome)}>
                   {t("welcome:welcome")} {accountName}{" "}
                   <span style={styles}>.</span>{" "}
@@ -131,12 +131,12 @@ class Wallet extends React.PureComponent {
                   </h2>
                   <h3>{this.state.currencyValue + " " + currency}</h3>
                 </div>
-               
+
               </div>
             </div>
-    
+
           </section>
-   
+
         </div>
       );
     }

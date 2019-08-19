@@ -23,7 +23,9 @@ class DashSidebar extends React.PureComponent {
   static propTypes = {
     location: PropTypes.object,
     t: PropTypes.func.isRequired,
-    
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired,
     accounts: PropTypes.object,
     accountNames: PropTypes.array.isRequired,
     wallet: PropTypes.object
