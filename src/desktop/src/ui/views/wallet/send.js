@@ -47,7 +47,9 @@ class Send extends React.PureComponent {
     amount: "",
     hlxamount: "",
     message: "Test",
-    openModal: false
+    openModal: false,
+    selectedCurrency:'EUR',
+    selectedHlx:'mHLX',
   };
 
   validateInputs = e => {
@@ -184,9 +186,20 @@ class Send extends React.PureComponent {
     });
   }
 
+  currencyChange(e){
+    this.setState({
+      selectedCurrency:e.target.value
+    })
+  }
+
+  hlxChange(e){
+    this.setState({
+      selectedHlx:e.target.value
+    })
+  }
   render() {
-    const { accountMeta, balance, loop, history, t } = this.props;
-    const { openModal, address, amount, hlxamount } = this.state;
+    const { accountMeta, balance, loop, history,currencies, t } = this.props;
+    const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
     const defaultOptions = {
       loop: loop,
       autoplay: true,
@@ -223,8 +236,14 @@ class Send extends React.PureComponent {
                       <div>
                       <select
                       className={css.currencyBox}
+                      onChange={this.currencyChange.bind(this)}
                       >
-                        <option>EUR</option>
+                        {currencies
+                        .slice()
+                        .sort()
+                        .map(item => {
+                          return <option value={item} key={item} style={{backgroundColor:'transparent'}}>{item}</option>
+                        })}
                       </select>
                       <input
                         type="text"
@@ -234,7 +253,7 @@ class Send extends React.PureComponent {
                           marginLeft: "50px",
                           color: "white"
                         }}
-                        placeholder="EUR"
+                        placeholder={selectedCurrency}
                         onChange={this.amountInput.bind(this)}
                       ></input>
                       </div>
@@ -257,7 +276,7 @@ class Send extends React.PureComponent {
                           marginLeft: "50px",
                           color: "white"
                         }}
-                        placeholder="mHLX"
+                        placeholder={selectedHlx}
                         onChange={this.hlxInput.bind(this)}
                       ></input>
                       </div>
@@ -363,7 +382,8 @@ const mapStateToProps = state => ({
   accountMeta: getSelectedAccountMeta(state),
   password: state.wallet.password,
   balance: getBalanceForSelectedAccount(state),
-  ui: state.ui
+  ui: state.ui,
+  currencies: state.settings.availableCurrencies,
 });
 
 const mapDispatchToProps = {

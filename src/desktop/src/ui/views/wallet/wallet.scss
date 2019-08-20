@@ -216,9 +216,12 @@
     position: absolute;
     left: 15px;
     font-size: 16px;
-    background-color: transparent;
+    background-color: #111c38;
     color:white;
     border: none;
+  }
+  .currencyBox:active{
+    color:white
   }
   .tr_box1 {
     position: relative;
