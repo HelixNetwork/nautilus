@@ -69,7 +69,7 @@ class Send extends React.PureComponent {
 
     const message =
       SeedStore[accountMeta.type].isMessageAvailable ||
-      parseInt(hlxamount || "0") === 0
+        parseInt(hlxamount || "0") === 0
         ? this.state.message
         : "";
 
@@ -222,6 +222,7 @@ class Send extends React.PureComponent {
                           color: "#eaac32"
                         }}
                         placeholder="EUR"
+                        disabled="disabled"
                         onChange={this.amountInput.bind(this)}
                       ></input>
                       <h1 className={classNames(css.eq)}>=</h1>
