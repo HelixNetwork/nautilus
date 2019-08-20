@@ -267,6 +267,8 @@ class Send extends React.PureComponent {
                       className={css.currencyBox}
                       >
                         <option>mHLX</option>
+                        <option>HLX</option>
+                        <option>Kh</option>
                       </select>
                       <input
                         value={hlxamount}
