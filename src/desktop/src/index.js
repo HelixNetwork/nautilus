@@ -10,7 +10,8 @@ import i18next from "libs/i18next";
 import store from "store";
 import Index from "ui/index";
 import { getEncryptionKey } from "utils/realm";
-import { initialise as initialiseStorage, realm } from "database";
+import { initialise as initialiseStorage } from "database";
+import { updateSchema } from "database/schemas";
 import { assignAccountIndexIfNecessary } from "actions/accounts";
 import { mapStorageToState as mapStorageToStateAction } from "actions/wallet";
 import { mapStorageToState } from "libs/mapStorageToState";
@@ -35,10 +36,9 @@ const init = () => {
         }
 
         // Get persisted data from Realm storage
-        const persistedDataFromRealm = mapStorageToState();
         const data = hasDataToMigrate
-          ? oldPersistedData
-          : persistedDataFromRealm;
+          ? updateSchema(oldPersistedData)
+          : mapStorageToState();
         const node = get(data, "settings.node");
 
         changeHelixNode(assign({}, node, { provider: node.url }));
