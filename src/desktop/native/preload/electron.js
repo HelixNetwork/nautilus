@@ -5,6 +5,7 @@ import { getChecksum as checksum } from "libs/hlx/utils";
 import electronSettings from "electron-settings";
 import keytar from "keytar";
 import Realm from "../realm";
+import helixTangled from '../libs/helixTangled';
 import fs from "fs";
 const dialog = require("electron").remote.dialog;
 const kdbx = require("../kdbx");
@@ -64,6 +65,39 @@ const Electron = {
       clipboard.clear();
     }
   },
+
+    /**
+     * Do Proof of Work
+     * @param {boolean} batchedPow - Should return batched PoW function
+     * @returns {function} Proof of Work
+     */
+    getPowFn: (batchedPow) => {
+      return batchedPow ? helixTangled.batchedPowFn : helixTangled.powFn;
+  },
+
+  /**
+   * Generate address
+   * @param {array} seed - Input seed
+   * @param {number} index - Address index
+   * @param {number} security - Address generation security level
+   * @param {total} total - Amount of addresses to generate
+   * @returns {string} Generated address
+   */
+  genFn: async (seed, index, security, total) => {
+      if (!total || total === 1) {
+          return await helixTangled.genFn(seed, index, security);
+      }
+
+      const addresses = [];
+
+      for (let i = 0; i < total; i++) {
+          const address = await helixTangled.genFn(seed, index + i, security);
+          addresses.push(address);
+      }
+
+      return addresses;
+  },
+
 
   /**
    * Get keychain account entry by account name
