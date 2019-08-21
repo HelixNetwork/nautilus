@@ -5,7 +5,7 @@ import { getChecksum as checksum } from "libs/hlx/utils";
 import electronSettings from "electron-settings";
 import keytar from "keytar";
 import Realm from "../realm";
-import helixTangled from '../libs/helixTangled';
+import helixTangled from '../helixTangled';
 import fs from "fs";
 const dialog = require("electron").remote.dialog;
 const kdbx = require("../kdbx");
