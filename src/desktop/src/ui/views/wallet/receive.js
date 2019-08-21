@@ -247,7 +247,7 @@ class Receive extends React.PureComponent {
                       {t("receive:receiveCoins")}
                       <span>.</span>
                     </h3>
-                    <h6>{t("receive:irrevocableTransactionWarning")}</h6>
+                    <h3>{t("receive:irrevocableTransactionWarning")}</h3>
                     <div className={classNames(css.hlx_wallet_box)}>
                       {/* Address generate */}
                       <div className={classNames(css.hlx_receive_box)}>
@@ -348,6 +348,7 @@ class Receive extends React.PureComponent {
                         </div>
                       </div>
                     </div>
+                    <div className={classNames(css.hlx_wallet_addr)}></div>
                   </div>
                 </div>
               </div>

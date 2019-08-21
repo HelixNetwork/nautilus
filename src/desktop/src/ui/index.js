@@ -120,7 +120,7 @@ class App extends React.Component {
     return (
       <Loading
         loop={false}
-        onEnd={() => this.props.history.push("/onboarding/")}
+        onEnd={() => this.props.history.push("/wallet/")}
       />
     );
   };

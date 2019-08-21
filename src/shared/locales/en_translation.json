@@ -28,6 +28,7 @@
     "seed": "Seed",
     "checksum": "Checksum",
     "back": "Back",
+    "support":"SUPPORT",
     "goBack": "Go back",
     "goBackStep": "Go back a step",
     "done": "Done",
@@ -313,7 +314,7 @@
     "generateAnAddressTitle": "Generate an address",
     "generateAnAddressExplanation": "Please generate an address before using this function.",
     "generateAddressInformation": "Generate a new deposit address every time you wish to receive HELIX",
-    "receiveCoins": "Receive HLX Coins",
+    "receiveCoins": "Receive HLX ",
     "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
   },
   "saveYourSeed": {

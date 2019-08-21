@@ -31,7 +31,7 @@ class DashSidebar extends React.PureComponent {
     wallet: PropTypes.object
   };
   render() {
-    const { t} = this.props;
+    const { t, active } = this.props;
     
    
     return (  
@@ -41,37 +41,47 @@ class DashSidebar extends React.PureComponent {
       <a  className={classNames(css.img_sr1)}>
            MENU  
           </a>
+          <li className={active == "send" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/wallet/send")} className={classNames(css.img_sr1)}>
-            {t("home:send")}  <FontAwesomeIcon icon={faPaperPlane} size="3x" />
+          <FontAwesomeIcon icon={faPaperPlane} size="3x" />  {t("home:send")} 
           </a>
-          
+          </li>
        
      
        
-            
+          <li className={active == "recieve" ? css.active : ""}>  
           <a onClick={() => this.props.history.push("/wallet/receive")} className={classNames(css.img_sr1)}>
-            {t("home:receive")}  <FontAwesomeIcon icon={faDownload} size="3x" />
+          <FontAwesomeIcon icon={faDownload} size="3x" />  {t("home:receive")}  
           </a>
-          
+          </li>
        
-  
+          <li className={active == "chart" ? css.active : ""}>  
           <a onClick={() => this.props.history.push("/wallet/chart")}  className={classNames(css.img_sr1)}>
-            {t("home:chart")}  <FontAwesomeIcon icon={faChartLine} size="3x" />
+          <FontAwesomeIcon icon={faChartLine} size="3x" /> {t("home:chart")} 
           </a>
    
-      
-       
+          </li>
+          <li className={active == "history" ? css.active : ""}>  
           <a
             onClick={() => this.props.history.push("/wallet/history")}  className={classNames(css.img_sr1)}
           >
-            {t("home:history")} <FontAwesomeIcon icon={faHistory} size="3x" />
+           <FontAwesomeIcon icon={faHistory} size="3x" /> {t("home:history")} 
           </a>
+          </li>
+          <li className={active == "settings" ? css.active : ""}>  
           <a
             onClick={() => this.props.history.push("/settings/editname")}  className={classNames(css.img_sr1)}
           >
             {t("settings:settings")} 
           </a>
-        
+        </li>
+        <li className={active == "settings" ? css.active : ""}>  
+          <a
+            onClick={() => this.props.history.push("/settings/editname")}  className={classNames(css.img_sr1)}
+          >
+            {t("global:support")} 
+          </a>
+        </li>
       </ul>
     
       </div>
