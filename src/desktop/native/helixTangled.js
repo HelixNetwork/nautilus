@@ -1,3 +1,5 @@
+const map = require("lodash").map;
+const asTrasactionObject = require('@helixnetwork/transaction-converter').asTransactionObject;
 const fork = require("child_process").fork;
 const path = require("path");
 
@@ -30,7 +32,7 @@ const exec = (payload) => {
               reject(`Timeout: HelixTangled job: ${job}`);
               child.kill();
           },
-          job === 'batchedPow' ? 180 * 1000 : 80 * 1000,
+          job === 'batchedPow' ? 1800 * 1000 : 80 * 1000,
       );
 
       child.send(payload);
@@ -53,14 +55,20 @@ console.log("payload=",payload);
 }
 
 if (payload.job === 'batchedPow') {
-  
+    console.log("Inside pow");
     const pow = await processLocalPow(
         payload.trunkTransaction,
         payload.branchTransaction,
         payload.mwm,
         payload.txs
     );
-    process.send(pow);
+    const result ={
+       txs : pow,
+      transactionObjects :map(pow,asTrasactionObject) 
+     }
+
+    console.log("Pow is",result);
+    process.send(result);
 }
 
   if (payload.job === "genAddress") {
