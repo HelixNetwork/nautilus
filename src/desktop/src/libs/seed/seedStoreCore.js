@@ -43,12 +43,5 @@ export default class SeedStoreCore {
    *
    * @returns {Promise<string>}
    */
-  getDigest = async TxBytes => {
-    try {
-      let result = await asTransactionObject(TxBytes);
-      return await asTransactionObject(TxBytes).hash;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  getDigest =  TxBytes =>  asTransactionObject(TxBytes).hash;
 }
