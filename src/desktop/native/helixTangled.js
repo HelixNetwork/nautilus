@@ -30,7 +30,7 @@ const exec = (payload) => {
               reject(`Timeout: HelixTangled job: ${job}`);
               child.kill();
           },
-          job === 'batchedPow' ? 180 * 1000 : 30 * 1000,
+          job === 'batchedPow' ? 180 * 1000 : 80 * 1000,
       );
 
       child.send(payload);
@@ -42,6 +42,7 @@ const exec = (payload) => {
  */
 process.on("message", async data => {
   const payload = JSON.parse(data);
+console.log("payload=",payload);
 
 
   if (payload.job === 'pow') {
@@ -52,11 +53,12 @@ process.on("message", async data => {
 }
 
 if (payload.job === 'batchedPow') {
+  
     const pow = await processLocalPow(
-        payload.txs,
         payload.trunkTransaction,
         payload.branchTransaction,
         payload.mwm,
+        payload.txs
     );
     process.send(pow);
 }
