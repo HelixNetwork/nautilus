@@ -526,7 +526,7 @@ export const makeTransaction = (
           // Progressbar step => (Syncing account)
           dispatch(setNextStepAsActive());
 
-          return syncAccount()(accountState, seedStore, genFn);
+          return syncAccount()(accountState, seedStore);
         }
 
         throw new Error(Errors.KEY_REUSE);
