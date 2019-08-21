@@ -1084,6 +1084,16 @@
   resolved "https://registry.yarnpkg.com/@helixnetwork/pad/-/pad-1.0.0-alpha.6.tgz#0099a9509508ebcc93f6066579065ecb0daddc0b"
   integrity sha512-AohO1MEaPA7OLntAtCF/PRDK6nAG3q2VkD0FGigS+Lu2U7RXi0SsbaQ28MqHDnatXtq8WjJn+3sXEOCQ8D0d2A==
 
+"@helixnetwork/pow@^1.0.0-alpha.6":
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/pow/-/pow-1.0.0-alpha.6.tgz#9edbb55895cbb70529260a874de3d9959550dadf"
+  integrity sha512-rWFnzBw9Wo/7yroENQcRAbDSiNCndwzOe0e355DuMJMVC/a+QBvNbuc/ILtc9pU5b6Hroc7w4o/LBrRWk33l+Q==
+  dependencies:
+    "@helixnetwork/converter" "^1.0.0-alpha.6"
+    "@helixnetwork/sha3" "^1.0.0-alpha.6"
+    "@helixnetwork/transaction" "^1.0.0-alpha.6"
+    bcrypto "^2.0.0"
+
 "@helixnetwork/sha3@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@helixnetwork/sha3/-/sha3-1.0.0-alpha.6.tgz#2e17b282283843cb202b885ebdcb828714b9e6b1"
