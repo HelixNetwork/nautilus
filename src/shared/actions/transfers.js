@@ -32,7 +32,6 @@ import {
   withRetriesOnDifferentNodes,
   fetchRemoteNodes,
   getRandomNodes,
-  isLastBitZero
 } from "../libs/hlx/utils";
 import { setNextStepAsActive, reset as resetProgress } from "./progress";
 import { clearSendFields } from "./ui";

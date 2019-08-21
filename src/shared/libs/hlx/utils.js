@@ -258,16 +258,6 @@ export const isValidAddress = address => {
   return false;
 };
 
-/**
- * Checks if the last txBit is 0
- *
- * @method isLastBitZero
- * @param {string} address
- *
- * @returns {boolean}
- */
-export const isLastBitZero = address =>
-  !/[ace13579]/.test(address.slice(63, 64));
 
 /**
  * Checks if provided Helix message is valid
