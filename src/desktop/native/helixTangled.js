@@ -1,10 +1,8 @@
-const map = require("lodash").map;
-const asTrasactionObject = require('@helixnetwork/transaction-converter').asTransactionObject;
 const fork = require("child_process").fork;
 const path = require("path");
 
 import { generateAddress } from "@helixnetwork/core";
-import { bitsToChars, indexToBit } from "libs/hlx/converter";
+import { bitsToChars } from "libs/hlx/converter";
 import { processLocalPow , powTx } from "@helixnetwork/pow";
 let timeout = null;
 
@@ -44,31 +42,22 @@ const exec = (payload) => {
  */
 process.on("message", async data => {
   const payload = JSON.parse(data);
-console.log("payload=",payload);
-
 
   if (payload.job === 'pow') {
-    // const pow = await EntangledNode.powTrytesFunc(payload.trytes, payload.mwm);
-    // TODO, payload.txs may be string where it is expected to be unit8Array
+
     const pow = await powTx(payload.txs, payload.mwm);
     process.send(pow);
 }
 
 if (payload.job === 'batchedPow') {
-    console.log("Inside pow");
     const pow = await processLocalPow(
         payload.trunkTransaction,
         payload.branchTransaction,
         payload.mwm,
         payload.txs
     );
-    const result ={
-       txs : pow,
-      transactionObjects :map(pow,asTrasactionObject) 
-     }
 
-    console.log("Pow is",result);
-    process.send(result);
+    process.send(pow);
 }
 
   if (payload.job === "genAddress") {
