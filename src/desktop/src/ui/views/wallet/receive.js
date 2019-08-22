@@ -25,7 +25,7 @@ import {
   addressValidationRequest,
   addressValidationSuccess
 } from "actions/wallet";
-
+import QR from 'ui/components/qr';
 import SeedStore from "libs/seed";
 import { randomTxBytes } from "libs/crypto";
 import Errors from "libs/errors";
@@ -114,7 +114,7 @@ class Receive extends React.PureComponent {
       generateAlert,
       t
     } = this.props;
-
+console.log('adresss',password);
     if (isSyncing || isTransitioning) {
       return generateAlert(
         "error",
@@ -133,7 +133,7 @@ class Receive extends React.PureComponent {
       accountName,
       accountMeta
     );
-
+    console.log('seedStroe', seedStore);
     this.props.generateNewAddress(
       seedStore,
       accountName,
@@ -249,7 +249,20 @@ class Receive extends React.PureComponent {
                     </h3>
                     <h3>{t("receive:irrevocableTransactionWarning")}</h3>
                     <div className={classNames(css.hlx_wallet_box)}>
-                      {/* Address generate */}
+                      {/* Address generate */} 
+                      <div className={css.hlx_iconLeft}>
+                          <Button
+                            className="icon_hover"
+                            style={{ marginLeft : "1vw" }}
+                            variant="backgroundNone"
+                            loading={isGeneratingReceiveAddress}
+                            onClick={this.onGeneratePress}
+                          >
+                            <Icon icon="sync" size={28} />
+                            <br />
+                            {t("receive:generateNewAddress")} <span> > </span>
+                          </Button>
+                        </div>
                       <div className={classNames(css.hlx_receive_box)}>
                         {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
                           <div
@@ -302,9 +315,12 @@ class Receive extends React.PureComponent {
                           " "
                         )}
                       </div>
+                      <div className={classNames(css.addbottom)}>
+                        <hr/>
+                      </div>
                       {/* Refresh and Receive Buttons... */}
                       <div className={css.hlx_iconHolder}>
-                        <div className={css.hlx_iconLeft}>
+                        {/* <div className={css.hlx_iconLeft}>
                           <Button
                             className="icon_hover"
                             variant="backgroundNone"
@@ -315,7 +331,8 @@ class Receive extends React.PureComponent {
                             <br />
                             {t("receive:generateNewAddress")} <span> > </span>
                           </Button>
-                        </div>
+                        </div> */}
+                         <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
                         <div className={css.hlx_iconRight}>
                           {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
                             <Clipboard

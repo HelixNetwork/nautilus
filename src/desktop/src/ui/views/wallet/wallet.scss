@@ -2026,3 +2026,12 @@ margin-right: 16px;
 .acco_pg{
   margin-top: 5vw;
 }
+.addbottom hr {
+  position: absolute;
+  top: 236px;
+  left: 17px;
+  width: 38vw;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+}

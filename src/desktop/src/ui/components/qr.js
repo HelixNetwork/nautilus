@@ -22,13 +22,13 @@ export default class QR extends React.PureComponent {
         const cells = qr.modules;
 
         return (
-            <svg width="150" height="150" viewBox={`0 0 ${cells.length} ${cells.length}`}>
+            <svg width="50" height="50" marginLeft="14" viewBox={`0 0 ${cells.length} ${cells.length}`}>
                 {cells.map((row, rowIndex) => {
                     return row.map((cell, cellIndex) => (
                         <rect
                             height={1}
                             key={cellIndex}
-                            style={{ fill: cell ? '#000000' : 'none' }}
+                            style={{ fill: cell ? 'white' : 'none' }}
                             width={1}
                             x={cellIndex}
                             y={rowIndex}
