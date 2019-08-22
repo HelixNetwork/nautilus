@@ -191,7 +191,7 @@
   }
   .bbx_box1 {
     margin-left: 180px;
-    background-image:linear-gradient(to right, #162451 , #132043);
+    background-image:linear-gradient(to right, #162353 , #132145);
     color: rgb(234, 172, 50);
     width: 90%;
     height:40px;
@@ -216,7 +216,7 @@
     position: absolute;
     left: 15px;
     font-size: 16px;
-    background-color: #111c38;
+    background-color: #101c37;
     color:white;
     border: none;
   }
@@ -574,7 +574,7 @@ text-decoration-line: none;
 .welcome {
 font-size: 50px !important;
 margin-bottom: -173px !important;
-margin-left: 180px;
+margin-left: 250px;
 margin-top:100px;
 }
 .welcome_box{
@@ -941,11 +941,7 @@ margin-right: 16px;
   top: 24px;
   left: 50px;
 }
-.topBal h2{
-  position: absolute;
-  left: 80px;
-  top: 3px;
-}
+
 
 .topBal hr{
   position: absolute;
@@ -1568,7 +1564,7 @@ text-decoration-line: none;
 .welcome {
 font-size: 50px !important;
 margin-bottom: -173px !important;
-margin-left: 180px;
+margin-left: 250px;
 margin-top:100px;
 }
 .welcome_box{
@@ -1866,11 +1862,11 @@ margin-right: 16px;
       margin-top: -47px;
       color: black;
     }
-    .welcome{
+    // .welcome{
     
-      margin-left: 438px;
+    //   margin-left: 438px;
 
-    }
+    // }
   }
 
   .transferLoading{
@@ -1954,6 +1950,7 @@ margin-right: 16px;
   position: absolute;
   left: 80px;
   top: 3px;
+  width:200px
 }
 
 .topBal hr{
@@ -2026,3 +2023,19 @@ margin-right: 16px;
 .acco_pg{
   margin-top: 5vw;
 }
+
+
+.accountSelect{
+  background: #101c37;
+  border:none;
+  color: white !important;
+  position: absolute;
+  top:38px;
+  outline: none;
+}
+
+.accountSelectOption{
+ color: white;
+ border: #dee1e3
+}
+

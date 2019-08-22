@@ -46,7 +46,7 @@ export default {
     body: "rgb(0, 50, 65)"
   },
   body: {
-    bg: "#111c38",
+    bg: "#101c37",
     color: "rgb(240, 242, 246)",
     alt: "rgba(240, 240, 240, 0.25)"
   },

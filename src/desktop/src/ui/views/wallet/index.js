@@ -41,6 +41,7 @@ import {
 } from "libs/hlx/utils";
 import DashSidebar from "ui/components/dash_sidebar";
 import axios from "axios";
+import Send from './send';
 /**
  * Wallet functionallity router wrapper component
  */
@@ -59,7 +60,6 @@ class Wallet extends React.PureComponent {
     history: PropTypes.shape({
       push: PropTypes.func.isRequired
     }).isRequired,
-    t: PropTypes.func.isRequired
   };
 
   updateAccount = async (accountName, index) => {
@@ -83,6 +83,7 @@ class Wallet extends React.PureComponent {
     currencyValue: 0
   };
   componentDidMount() {
+    console.log(this.props.seedIndex);
     const url =
       "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
     axios.get(url).then(resp => {
@@ -105,32 +106,47 @@ class Wallet extends React.PureComponent {
       accountName,
       accountInfo,
       currency,
+      accountMeta,
       t
     } = this.props;
     let balance = accumulateBalance(
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
     const currentKey = location.pathname.split("/")[2] || "/";
-    console.log('vvv', currentKey);
     if (currentKey == "/") {
       return (
         <div>
 
-          <TopBar />
+          {/* <TopBar
+          balance = {formatHlx(balance, true, true)}
+          accountName = {accountName}
+          accountNames = {accountNames}
+          accountInfo = {accountInfo}
+          history = {history}
+          password = {this.props.password}
+          accountMeta = {accountMeta}
+          /> */}
+          <TopBar
+          history={history}
+          />
           <section className="spage_1">
             <div className="container">
               <div className="row">
                 <DashSidebar disp={"none"} history={history} active={currentKey} />
-                <h4 className={classNames(css.welcome)}>
-                  {t("welcome:welcome")} {accountName}{" "}
-                  <span style={styles}>.</span>{" "}
-                </h4>
-                <div className={classNames(css.welcome_box)}>
-                  <h2 style={{ color: "#e8b349" }}>
-                    {formatHlx(balance, true, true)}
-                  </h2>
-                  <h3>{this.state.currencyValue + " " + currency}</h3>
-                </div>
+                {/* <div className={classNames(css.foo_bxx1)}>
+                  <h4 className={classNames(css.welcome)}>
+                    {t("welcome:welcome")} {accountName}{" "}
+                    <span style={styles}>.</span>{" "}
+                  </h4>
+                  <div className={classNames(css.welcome_box)}>
+                    <h2 style={{ color: "#e8b349" }}>
+                      {formatHlx(balance, true, true)}
+                    </h2>
+                    <h4>{this.state.currencyValue + " " + currency}</h4>
+                  </div>
+                </div> */}
+                <Send/>
+                
 
               </div>
             </div>

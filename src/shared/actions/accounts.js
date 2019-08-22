@@ -191,6 +191,7 @@ export const getAccountInfo = (
   withQuorum = false
 ) => {
   return (dispatch, getState) => {
+    console.log(accountName);
     dispatch(accountInfoFetchRequest());
 
     const existingAccountState = selectedAccountStateFactory(accountName)(
@@ -212,6 +213,7 @@ export const getAccountInfo = (
       notificationFn
     )
       .then(({ node, result }) => {
+        console.log(node);
         dispatch(changeNode(node));
         dispatch(accountInfoFetchSuccess(result));
       })
