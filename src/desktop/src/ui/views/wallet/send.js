@@ -13,6 +13,7 @@ import Modal from "ui/components/modal/Modal";
 import { isAddress } from "@helixnetwork/validators";
 import Button from "ui/components/button";
 import Lottie from "react-lottie";
+import axios from 'axios';
 import * as animationData from "animations/wallet-loading.json";
 import {
   getSelectedAccountName,
@@ -38,18 +39,17 @@ class Send extends React.PureComponent {
     makeTransaction: PropTypes.func.isRequired,
     /** @ignore */
     t: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired
-    }).isRequired,
   };
   state = {
     address: "",
     amount: "",
     hlxamount: "",
+    txamount:"",
     message: "Test",
     openModal: false,
     selectedCurrency:'EUR',
-    selectedHlx:'mHLX',
+    selectedHlx:'h',
+    conversionRate:1
   };
 
   validateInputs = e => {
@@ -62,7 +62,7 @@ class Send extends React.PureComponent {
 
   confirmTransfer = async () => {
     const { password, accountName, accountMeta, sendTransfer } = this.props;
-    const { address, hlxamount } = this.state;
+    const { address, txamount } = this.state;
     this.setState({
       openModal: false
     });
@@ -75,7 +75,7 @@ class Send extends React.PureComponent {
 
     const message =
       SeedStore[accountMeta.type].isMessageAvailable ||
-      parseInt(hlxamount || "0") === 0
+      parseInt(txamount || "0") === 0
         ? this.state.message
         : "";
 
@@ -83,7 +83,7 @@ class Send extends React.PureComponent {
       message: message
     });
 
-    this.sendTransfer(seedStore, address, parseInt(hlxamount) || 0, message);
+    this.sendTransfer(seedStore, address, parseInt(txamount) || 0, message);
   };
 
   sendTransfer = (seedStore, address, value, message) => {
@@ -120,8 +120,15 @@ class Send extends React.PureComponent {
 
   validateInputs = () => {
     const { generateAlert, balance, t } = this.props;
-    const { address, hlxamount, message } = this.state;
-
+    const { address, txamount,hlxamount, message } = this.state;
+    if(hlxamount.indexOf('.')){
+      generateAlert(
+        "error",
+        "Invalid input",
+        "Cannot contain . in h value"
+      );
+      return false;
+    }
     // Validate address length
     if (address.length !== ADDRESS_LENGTH) {
       generateAlert(
@@ -143,7 +150,7 @@ class Send extends React.PureComponent {
     }
 
     // Validate enought balance
-    if (parseFloat(hlxamount) > balance) {
+    if (parseFloat(txamount) > balance) {
       generateAlert(
         "error",
         t("send:notEnoughFunds"),
@@ -175,30 +182,115 @@ class Send extends React.PureComponent {
   }
 
   hlxInput(e) {
+    let {txamount,selectedHlx} = this.state;
+    let hlxamount = e.target.value;
+    let base = 0;
+    if(selectedHlx=="h"){
+      base=1;
+      
+    }
+    else if(selectedHlx=="Kh"){
+      base=1000;
+    }
+    else if(selectedHlx=="Mh"){
+      base=1000000;
+    }
+    else if(selectedHlx=="Gh")
+    {
+      base=1000000000;
+    }
+    else if(e.target.value=="Th")
+    {
+      base=1000000000000;
+    }
+    txamount = hlxamount * base;
+    let amount = txamount / this.state.conversionRate
     this.setState({
-      hlxamount: e.target.value
+      hlxamount: hlxamount,
+      amount: amount,
+      txamount:txamount
     });
   }
 
   amountInput(e) {
+    let hlx = this.state.conversionRate * e.target.value;
     this.setState({
-      amount: e.target.value
+      amount: e.target.value,
+      hlxamount:hlx
     });
   }
 
   currencyChange(e){
+    let selectedCurrency = e.target.value
+    const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
+    axios.get(url)
+    .then(resp=>{
+      this.setState({
+        conversionRate: resp.data.rates[selectedCurrency]
+      });
+      if(this.state.amount!==""){
+        this.setState({
+          hlxamount:this.state.amount * resp.data.rates[selectedCurrency]
+        })
+      }
+    })
+    
     this.setState({
-      selectedCurrency:e.target.value
+      selectedCurrency:selectedCurrency
     })
   }
 
   hlxChange(e){
+    let {txamount,hlxamount} = this.state
+    let base = 0;
+    if(e.target.value=="h"){
+      base=1;
+    }
+    else if(e.target.value=="Kh"){
+      base=1000;
+    }
+    else if(e.target.value=="Mh"){
+      base=1000000;
+    }
+    else if(e.target.value=="Gh")
+    {
+      base=1000000000;
+    }
+    else if(e.target.value=="Th")
+    {
+      base=1000000000000;
+    }
+    
+   if(hlxamount!==""){
+     txamount=hlxamount*base;
+   }
+   else{
+     txamount=0;
+   }
     this.setState({
-      selectedHlx:e.target.value
+      selectedHlx:e.target.value,
+      txamount:txamount
     })
   }
+
+  msgChange(e){
+    this.setState({
+      message:e.target.value
+    })
+  }
+
+  componentDidMount(){
+    const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
+    axios.get(url)
+    .then(resp=>{
+      this.setState({
+        conversionRate: resp.data.rates['EUR']
+      });
+    })
+  }
+
   render() {
-    const { accountMeta, balance, loop, history,currencies, t } = this.props;
+    const { accountMeta, balance, loop, currencies, t } = this.props;
     const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
     const defaultOptions = {
       loop: loop,
@@ -213,10 +305,10 @@ class Send extends React.PureComponent {
       <div>
         <section className={css.home}>
           {/* <Top bal={"block"} main={"block"} user={"block"} history={history} /> */}
-          <TopBar/>
+          {/* <TopBar/>
           <DashSidebar
           history={history}
-          />
+          /> */}
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
@@ -237,6 +329,7 @@ class Send extends React.PureComponent {
                       <select
                       className={css.currencyBox}
                       onChange={this.currencyChange.bind(this)}
+                      value={selectedCurrency}
                       >
                         {currencies
                         .slice()
@@ -246,7 +339,7 @@ class Send extends React.PureComponent {
                         })}
                       </select>
                       <input
-                        type="text"
+                        type="number"
                         value={amount}
                         className={classNames(css.bbx_box1, css.tr_box)}
                         style={{
@@ -265,14 +358,16 @@ class Send extends React.PureComponent {
                       <div>
                       <select
                       className={css.currencyBox}
+                      onChange={this.hlxChange.bind(this)}
                       >
-                        <option>mHLX</option>
-                        <option>HLX</option>
-                        <option>Kh</option>
+                        <option value="h">h</option>
+                        <option value="Kh">Kh</option>
+                        <option value="Mh">Mh</option>
+                        <option value="Gh">Gh</option>
                       </select>
                       <input
                         value={hlxamount}
-                        type="text"
+                        type="number"
                         className={classNames(css.bbx_box1, css.tr_box)}
                         style={{
                           marginLeft: "50px",
@@ -299,7 +394,8 @@ class Send extends React.PureComponent {
                         marginLeft: "50px",
                         color: "white"
                       }}
-                      placeholder="Enter note"/>
+                      placeholder="Enter note" 
+                      onChange={this.msgChange.bind(this)}/>
                       </div>
                       <input
                         id="recipient-address"
@@ -386,6 +482,7 @@ const mapStateToProps = state => ({
   balance: getBalanceForSelectedAccount(state),
   ui: state.ui,
   currencies: state.settings.availableCurrencies,
+  conversionRate:state.settings.conversionRate
 });
 
 const mapDispatchToProps = {
