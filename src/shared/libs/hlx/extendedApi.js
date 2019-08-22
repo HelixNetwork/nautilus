@@ -102,10 +102,10 @@ const getBalances = (settings, withQuorum = true) => (
   threshold = DEFAULT_BALANCES_THRESHOLD
 ) =>
   withQuorum
-    ? quorum.getBalances(addresses, threshold).catch(err => err)
+    ? quorum.getBalances(addresses, threshold).catch(err =>{ throw new Error(err)})
     : getHelixInstance(settings, getApiTimeout("getBalances"))
         .getBalances(addresses, threshold)
-        .catch(err => err);
+        .catch(err =>{ throw new Error(err)});
 
 /**
  * helix getNodeInfoApi
@@ -118,7 +118,7 @@ const getBalances = (settings, withQuorum = true) => (
 const getNodeInfo = settings => () =>
   getHelixInstance(settings, getApiTimeout("getNodeInfo"))
     .getNodeInfo()
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 /**
  * Helix getTransactionsObjects
@@ -130,7 +130,7 @@ const getNodeInfo = settings => () =>
 const getTransactionsObjects = settings => hashes =>
   getHelixInstance(settings)
     .getTransactionObjects(hashes)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 // TODO : Check if fintransaction objects to be used the new dedicated helix method
 /**
@@ -144,7 +144,7 @@ const getTransactionsObjects = settings => hashes =>
 const findTransactionObjects = settings => args =>
   findTransactions(settings)(args)
     .then(hashes => getTransactionsObjects(settings)(hashes))
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 /**
  * Helix findTransactions
@@ -157,7 +157,7 @@ const findTransactionObjects = settings => args =>
 const findTransactions = settings => args =>
   getHelixInstance(settings)
     .findTransactions(args)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 /**
  * Helix getLatestInclusion
@@ -170,10 +170,10 @@ const findTransactions = settings => args =>
  */
 const getLatestInclusion = (settings, withQuorum = false) => hashes =>
   withQuorum
-    ? quorum.getLatestInclusion(hashes).catch(err => err)
+    ? quorum.getLatestInclusion(hashes).catch(err => {throw new Error (err)})
     : getHelixInstance(settings, getApiTimeout("getInclusionStates"))
         .getLatestInclusion(hashes)
-        .catch(err => err);
+        .catch(err =>{ throw new Error(err)});
 
 /**
  * Helix promoteTransaction with an option to perform PoW locally
@@ -219,8 +219,8 @@ const promoteTransaction = (settings, seedStore) => (
       cached.txs = txs;
       return storeAndBroadcast(settings)(cached.txs);
     })
-    .then(() => hash)
-    .catch(err => err);
+    .then((hash) => hash)
+    .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -265,7 +265,7 @@ const replayBundle = (settings, seedStore) => (
       return storeAndBroadcast(settings)(cached.txs);
     })
     .then(() => cached.transactionObjects)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -279,7 +279,7 @@ const replayBundle = (settings, seedStore) => (
 const getBundle = settings => tailTransactionHash =>
   getHelixInstance(settings)
     .getBundle(tailTransactionHash)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 /**
  * Helix wereAddressesSpentFrom
@@ -292,10 +292,10 @@ const getBundle = settings => tailTransactionHash =>
  */
 const wereAddressesSpentFrom = (settings, withQuorum = true) => addresses =>
   withQuorum
-    ? quorum.wereAddressesSpentFrom(addresses).catch(err => err)
+    ? quorum.wereAddressesSpentFrom(addresses).catch(err => {throw new Error (err)})
     : getHelixInstance(settings, getApiTimeout("wereAddressesSpentFrom"))
         .wereAddressesSpentFrom(addresses)
-        .catch(err => err);
+        .catch(err =>{ throw new Error(err)});
 
 /**
  * Helix sendTransfer
@@ -337,7 +337,7 @@ const sendTransfer = settings => (
       return storeAndBroadcast(settings)(cached.txs);
     })
     .then(() => cached.transactionObjects)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -355,11 +355,11 @@ const getTransactionsToApprove = settings => (
   if (isEmpty(reference))
     return getHelixInstance(settings, getApiTimeout("getTransactionsToApprove"))
       .getTransactionsToApprove(depth)
-      .catch(err => err);
+      .catch(err =>{ throw new Error(err)});
   else
     return getHelixInstance(settings, getApiTimeout("getTransactionsToApprove"))
       .getTransactionsToApprove(depth, reference)
-      .catch(err => err);
+      .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -384,10 +384,9 @@ export const prepareTransfers = settings => (
       { ...options, nativeGenerateSignatureFunction: signatureFn }
     ];
   }
-
   return getHelixInstance(settings)
     .prepareTransfers(...args)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -401,7 +400,7 @@ export const prepareTransfers = settings => (
 const storeAndBroadcast = settings => txs =>
   getHelixInstance(settings)
     .storeAndBroadcast(txs)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 /**
  * Checks if attachToTangle is available on the provided node
@@ -453,7 +452,7 @@ const allowsRemotePow = settings => {
         includes(response.error, Errors.INVALID_PARAMETERS)
       );
     })
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -512,7 +511,7 @@ const attachToTangle = (settings, seedStore) => (
               );
             }
           });
-      }).catch(err => err);
+      }).catch(err =>{ throw new Error(err)});
 
     const defaultRequestTimeout = getApiTimeout("attachToTangle");
 
@@ -554,7 +553,7 @@ const attachToTangle = (settings, seedStore) => (
 
       throw new Error(Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW);
     })
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 };
 
 /**
@@ -568,7 +567,7 @@ const attachToTangle = (settings, seedStore) => (
 const getTransactionStrings = settings => hashes =>
   getHelixInstance(settings)
     .getTransactionStrings(hashes)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 /**
  * Checks if a node is synced and runs a stable IRI release
@@ -608,7 +607,7 @@ const isNodeHealthy = settings => {
         ) {
           return getTransactionStrings(settings)([
             cached.latestMilestone
-          ]).catch(err => err);
+          ]).catch(err =>{ throw new Error(err)});
         }
 
         throw new Error(Errors.NODE_NOT_SYNCED);
@@ -636,7 +635,7 @@ const isNodeHealthy = settings => {
 const isPromotable = settings => tailTransactionHash =>
   getHelixInstance(settings)
     .isPromotable(tailTransactionHash)
-    .catch(err => err);
+    .catch(err =>{ throw new Error(err)});
 
 export {
   getHelixInstance,
