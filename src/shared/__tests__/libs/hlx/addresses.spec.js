@@ -2644,7 +2644,7 @@ describe("#syncAddresses", () => {
           } else if (body.command === "findTransactions") {
             return { hashes: [] };
           } else if (body.command === "getBalances") {
-            return { balances: { balances: map(body.addresses, () => "0") } };
+            return { balances: map(body.addresses, () => "0") };
           } else if (body.command === "getNodeInfo") {
             return {
               appVersion: "1",
