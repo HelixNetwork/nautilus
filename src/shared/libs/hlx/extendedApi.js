@@ -191,19 +191,17 @@ const promoteTransaction = (settings, seedStore) => (
   transfer = { address: "0".repeat(64), value: 0, message: "", tag: "" }
 ) => {
   const cached = {
-    txBytes: []
+    txs: []
   };
+console.log("Inside promote txs",hash);
 
   return isPromotable(settings)(hash)
     .then(() => prepareTransfers(settings)(transfer.address, [transfer]))
-    .then(txBytes => {
-      cached.txBytes = txBytes;
+    .then(txs => {
+      cached.txs = txs;
 
       return getTransactionsToApprove(settings)(
-        {
-          reference: hash,
-          adjustDepth: true
-        },
+        hash,
         depth
       );
     })
