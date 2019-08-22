@@ -43,5 +43,5 @@ export default class SeedStoreCore {
    *
    * @returns {Promise<string>}
    */
-  getDigest =  TxBytes =>  asTransactionObject(TxBytes).hash;
+  getDigest =  async TxBytes =>  await asTransactionObject(TxBytes).hash;
 }
