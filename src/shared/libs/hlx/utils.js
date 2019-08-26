@@ -63,7 +63,7 @@ export const convertFromBytes = txBytes => {
   const bytesWithoutZero = txBytes.replace(/00+$/, "");
   let message;
   try {
-    message = txHexToAscii(bytesWithoutZero);
+    message = txsToAscii(bytesWithoutZero);
   } catch (err) {
     // Fall back to safe result in case of inconsistent conversion strings
     message = null;
@@ -258,16 +258,6 @@ export const isValidAddress = address => {
   return false;
 };
 
-/**
- * Checks if the last txBit is 0
- *
- * @method isLastBitZero
- * @param {string} address
- *
- * @returns {boolean}
- */
-export const isLastBitZero = address =>
-  !/[ace13579]/.test(address.slice(60, 64));
 
 /**
  * Checks if provided Helix message is valid

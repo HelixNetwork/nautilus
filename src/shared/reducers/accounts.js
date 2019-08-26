@@ -115,7 +115,7 @@ const updateAccountName = (state, payload) => {
   };
 };
 
-const account = (
+export const account = (
   state = {
     /**
      * Temporary storage for account info during setup

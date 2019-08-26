@@ -2,7 +2,7 @@ import { SettingsActionTypes } from "../actions/types";
 import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from "../config";
 import { availableCurrencies } from "../libs/currency";
 
-const initialState = {
+export const initialState = {
   /**
    * Selected locale for wallet
    */

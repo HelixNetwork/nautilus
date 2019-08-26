@@ -95,7 +95,7 @@ class Done extends React.PureComponent {
                   className="navleft"
                   variant="backgroundNone"
                   onClick={() =>
-                    this.props.history.push("/onboarding/seed-verify")
+                    this.props.history.push("/onboarding/seed-import")
                   }
                 >
                   {t("global:goBack")} <span>></span>
