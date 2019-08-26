@@ -121,14 +121,7 @@ class Send extends React.PureComponent {
   validateInputs = () => {
     const { generateAlert, balance, t } = this.props;
     const { address, txamount,hlxamount, message } = this.state;
-    if(hlxamount.indexOf('.')){
-      generateAlert(
-        "error",
-        "Invalid input",
-        "Cannot contain . in h value"
-      );
-      return false;
-    }
+    
     // Validate address length
     if (address.length !== ADDRESS_LENGTH) {
       generateAlert(

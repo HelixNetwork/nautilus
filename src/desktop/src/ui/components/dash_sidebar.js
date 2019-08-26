@@ -11,7 +11,7 @@ import {
  
 } from "@fortawesome/free-solid-svg-icons";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import Dashboard from "ui/views/wallet/dashboard";
+
 import { setAccountInfoDuringSetup } from "actions/accounts";
 import { connect } from "react-redux";
 import { getAccountNamesFromState } from "selectors/accounts";
@@ -24,6 +24,7 @@ class DashSidebar extends React.PureComponent {
     location: PropTypes.object,
     t: PropTypes.func.isRequired,
     history: PropTypes.shape({
+      
       push: PropTypes.func.isRequired
     }).isRequired,
     accounts: PropTypes.object,

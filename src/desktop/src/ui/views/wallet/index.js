@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withI18n } from "react-i18next";
-import { withRouter } from "react-router-dom";
+import { withRouter, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import classNames from "classnames";
 import Dashboard from "ui/views/wallet/dashboard";
@@ -33,6 +33,10 @@ import SeedStore from "libs/seed";
 import { accumulateBalance } from "libs/hlx/addresses";
 import Loading from "ui/components/loading";
 import { setSeedIndex } from "actions/wallet";
+import Send from "ui/views/wallet/send";
+import Receive from "ui/views/wallet/receive";
+import Chart from "ui/views/wallet/chart";
+import WalletHistory from "ui/views/wallet/wallet_history";
 import {
   formatValue,
   formatUnit,
@@ -41,7 +45,6 @@ import {
 } from "libs/hlx/utils";
 import DashSidebar from "ui/components/dash_sidebar";
 import axios from "axios";
-import Send from './send';
 /**
  * Wallet functionallity router wrapper component
  */
@@ -107,58 +110,53 @@ class Wallet extends React.PureComponent {
       accountInfo,
       currency,
       accountMeta,
-      t
+      t,
+      active
     } = this.props;
     let balance = accumulateBalance(
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
+    console.log("dndfnb", location.pathname)
     const currentKey = location.pathname.split("/")[2] || "/";
-    if (currentKey == "/") {
+    console.log("currentttt",currentKey);
+    if(currentKey =="/"){
       return (
         <div>
-
-          {/* <TopBar
-          balance = {formatHlx(balance, true, true)}
-          accountName = {accountName}
-          accountNames = {accountNames}
-          accountInfo = {accountInfo}
-          history = {history}
-          password = {this.props.password}
-          accountMeta = {accountMeta}
-          /> */}
           <TopBar
           history={history}
           />
-          <section className="spage_1">
-            <div className="container">
-              <div className="row">
+       
                 <DashSidebar disp={"none"} history={history} active={currentKey} />
-                {/* <div className={classNames(css.foo_bxx1)}>
-                  <h4 className={classNames(css.welcome)}>
-                    {t("welcome:welcome")} {accountName}{" "}
-                    <span style={styles}>.</span>{" "}
-                  </h4>
-                  <div className={classNames(css.welcome_box)}>
-                    <h2 style={{ color: "#e8b349" }}>
-                      {formatHlx(balance, true, true)}
-                    </h2>
-                    <h4>{this.state.currencyValue + " " + currency}</h4>
-                  </div>
-                </div> */}
-                <Send/>
-                
-
-              </div>
-            </div>
-
-          </section>
+             
+                <Switch>
+      <Route path="/wallet/" component={Send} />
+        <Route path="/wallet/send" component={Send} />
+        <Route exact path="/wallet/receive" component={Receive} />
+        <Route path="/wallet/chart" component={Chart} />
+        <Route path="/wallet/history" component={WalletHistory} />
+      </Switch>
+             
 
         </div>
       );
     }
-    return <Dashboard></Dashboard>;
+    return(
+      <div>
+      <TopBar
+      history={history}
+      />
+   
+            <DashSidebar disp={"none"} history={history} active={currentKey} />
+      <Switch>
+     
+        <Route path="/wallet/send" component={Send} />
+        <Route exact path="/wallet/receive" component={Receive} />
+        <Route path="/wallet/chart" component={Chart} />
+        <Route path="/wallet/history" component={WalletHistory} />
+      </Switch>
+      </div>
+    );
   }
-
 }
 const mapStateToProps = state => ({
   accounts: state.accounts,

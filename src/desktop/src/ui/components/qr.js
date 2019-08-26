@@ -22,7 +22,7 @@ export default class QR extends React.PureComponent {
         const cells = qr.modules;
 
         return (
-            <svg width="50" height="50" marginLeft="14" viewBox={`0 0 ${cells.length} ${cells.length}`}>
+            <svg width="50" height="50" viewBox={`0 0 ${cells.length} ${cells.length}`}>
                 {cells.map((row, rowIndex) => {
                     return row.map((cell, cellIndex) => (
                         <rect

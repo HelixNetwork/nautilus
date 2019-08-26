@@ -232,12 +232,7 @@ console.log('adresss',password);
     return (
       <div>
         <section className={css.home}>
-          <Top
-            bal={"none"}
-            main={"block"}
-            user={"block"}
-            history={this.props.history}
-          />
+         
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
