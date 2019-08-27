@@ -57,7 +57,7 @@ import {
   EMPTY_TRANSACTION_HEX,
   EMPTY_TRANSACTION_MESSAGE
 } from "../../../libs/hlx/utils";
-import { IRI_API_VERSION } from "../../../config";
+import { IRI_API_VERSION, DEFAULT_MIN_WEIGHT_MAGNITUDE } from "../../../config";
 import { isBundle as bundleValidator } from "@helixnetwork/bundle-validator";
 import {
   asTransactionObject,
@@ -851,16 +851,16 @@ describe("libs: helix/transfers", () => {
 
     describe("when first (powFn) & second (digestFn) arguments are functions", () => {
       describe("when batchedPow is true", () => {
-        // it('should call proof-of-work function with txBytes, trunk, branch and minWeightMagnitude', () => {
-        //     const powFn = sinon.stub();
-        //     powFn.resolves([]);
-        //     return performPow(powFn, () => Promise.resolve(), ['foo'], '0'.repeat(64), '3'.repeat(64)).then(
-        //         () =>
-        //             expect(powFn.calledOnceWithExactly(['foo'], '0'.repeat(64), '3'.repeat(64), 14)).to.equal(
-        //                 true,
-        //             ),
-        //     );
-        // });
+        it('should call proof-of-work function with txBytes, trunk, branch and minWeightMagnitude', () => {
+            const powFn = sinon.stub();
+            powFn.resolves([]);
+            return performPow(powFn, () => Promise.resolve(), ['foo'], '0'.repeat(64), '3'.repeat(64)).then(
+                () =>
+                    expect(powFn.calledOnceWithExactly(['foo'], '0'.repeat(64), '3'.repeat(64), DEFAULT_MIN_WEIGHT_MAGNITUDE)).to.equal(
+                        true,
+                    ),
+            );
+        });
       });
     });
   });
