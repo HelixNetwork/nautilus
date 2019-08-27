@@ -880,7 +880,7 @@ describe("libs: helix/transfers", () => {
     beforeEach(() => {
       powFn = () => {
         let calledTimes = 0;
-
+        
         return () => {
           const promise = Promise.resolve(nonces[calledTimes]);
           calledTimes += 1;
@@ -913,17 +913,17 @@ describe("libs: helix/transfers", () => {
     });
 
     it('should assign generated nonce', () => {
-        // const fn = performSequentialPow(
-        //     powFn(),
-        //     digestFn,
-        //     newValueTransactionBytes.slice().reverse(),
-        //     trunkTransaction,
-        //     branchTransaction,
-        //     DEFAULT_MIN_WEIGHT_MAGNITUDE,
-        // );
-        // return fn.then(({ transactionObjects }) => {
-        //     transactionObjects.map((tx, idx) => expect(tx.nonce).to.equal(nonces.slice().reverse()[idx]));
-        // });
+        const fn = performSequentialPow(
+            powFn(),
+            digestFn,
+            newValueTransactionBytes.slice().reverse(),
+            trunkTransaction,
+            branchTransaction,
+            DEFAULT_MIN_WEIGHT_MAGNITUDE,
+        );
+        return fn.then(({ transactionObjects }) => {
+            transactionObjects.map((tx, idx) => expect(tx.nonce).to.equal(nonces.slice().reverse()[idx]));
+        });
     });
 
     it('should set correct bundle sequence', () => {

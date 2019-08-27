@@ -692,10 +692,9 @@ export const performSequentialPow = (
 
         return powFn(transactionTxByteString, minWeightMagnitude)
           .then(nonce => {
-            // TODO recheck
             // TODO check this padding with reference to this change
             // https://github.com/HelixNetwork/helix-lib/blob/d4cb0a9681d21750f1c559f1bf47a73cff263e53/packages/transaction-converter/src/index.ts#L111
-            // nonce = nonce+ "0".repeat(48);
+            nonce = nonce+ "0".repeat(48);
             const TxBytesWithNonce = transactionTxByteString
               .substr(0, TRANSACTION_BYTES_SIZE - nonce.length)
               .concat(nonce);
