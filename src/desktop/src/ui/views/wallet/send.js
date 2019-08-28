@@ -49,7 +49,8 @@ class Send extends React.PureComponent {
     openModal: false,
     selectedCurrency:'EUR',
     selectedHlx:'h',
-    conversionRate:1
+    conversionRate:1,
+    progress:''
   };
 
   validateInputs = e => {
@@ -106,7 +107,7 @@ class Send extends React.PureComponent {
       );
       return;
     }
-
+    this.setProgressSteps(value === 0);
     this.props.makeTransaction(
       seedStore,
       address,
@@ -117,6 +118,30 @@ class Send extends React.PureComponent {
       Electron.genFn
     );
   };
+
+  setProgressSteps(isZeroValueTransaction) {
+    const { t } = this.props;
+
+    const steps = isZeroValueTransaction
+      ? [
+          t("progressSteps:preparingTransfers"),
+          t("progressSteps:gettingTransactionsToApprove"),
+          t("progressSteps:proofOfWork"),
+          t("progressSteps:broadcasting")
+        ]
+      : [
+          t("progressSteps:validatingReceiveAddress"),
+          t("progressSteps:syncingAccount"),
+          t("progressSteps:preparingInputs"),
+          t("progressSteps:preparingTransfers"),
+          t("progressSteps:gettingTransactionsToApprove"),
+          t("progressSteps:proofOfWork"),
+          t("progressSteps:validatingTransactionAddresses"),
+          t("progressSteps:broadcasting")
+        ];
+
+    this.props.startTrackingProgress(steps);
+  }
 
   validateInputs = () => {
     const { generateAlert, balance, t } = this.props;
@@ -283,7 +308,7 @@ class Send extends React.PureComponent {
   }
 
   render() {
-    const { accountMeta, balance, loop, currencies, t } = this.props;
+    const { accountMeta, balance, loop, currencies, isSending, progress, t } = this.props;
     const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
     const defaultOptions = {
       loop: loop,
@@ -293,6 +318,16 @@ class Send extends React.PureComponent {
         preserveAspectRatio: "xMidYMid slice"
       }
     };
+
+    const progressTitle =
+        progress.activeStepIndex !== progress.activeSteps.length
+          ? progress.activeSteps[progress.activeStepIndex]
+          : `${t("send:totalTime")} ${Math.round(
+              progress.timeTakenByEachStep.reduce(
+                (total, time) => total + Number(time),
+                0
+              )
+            )}s`;
 
     return (
       <div>
@@ -457,6 +492,11 @@ class Send extends React.PureComponent {
                       </Modal>
                     )}
                   </div>
+                  {isSending && (
+                    <div className={css.foo_bxx1}>
+
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -475,7 +515,9 @@ const mapStateToProps = state => ({
   balance: getBalanceForSelectedAccount(state),
   ui: state.ui,
   currencies: state.settings.availableCurrencies,
-  conversionRate:state.settings.conversionRate
+  conversionRate:state.settings.conversionRate,
+  isSending:state.ui.isSendingTransfer,
+  progress: state.progress,
 });
 
 const mapDispatchToProps = {
