@@ -26,6 +26,8 @@ import { generateAlert } from "actions/alerts";
 import Checksum from "ui/components/checksum";
 import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
+import ProgressBar from 'ui/components/Progress';
+import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
 class Send extends React.PureComponent {
   static propTypes = {
     /** @ignore */
@@ -88,7 +90,7 @@ class Send extends React.PureComponent {
   };
 
   sendTransfer = (seedStore, address, value, message) => {
-    const { ui, accountName, generateAlert, t } = this.props;
+    const { ui, accountName, generateAlert, progress, t } = this.props;
 
     if (ui.isSyncing) {
       generateAlert(
@@ -108,6 +110,8 @@ class Send extends React.PureComponent {
       return;
     }
     this.setProgressSteps(value === 0);
+    
+
     this.props.makeTransaction(
       seedStore,
       address,
@@ -318,7 +322,7 @@ class Send extends React.PureComponent {
         preserveAspectRatio: "xMidYMid slice"
       }
     };
-
+    
     const progressTitle =
         progress.activeStepIndex !== progress.activeSteps.length
           ? progress.activeSteps[progress.activeStepIndex]
@@ -328,7 +332,12 @@ class Send extends React.PureComponent {
                 0
               )
             )}s`;
-
+    this.setState({
+      progress: Math.round(
+        (progress.activeStepIndex / progress.activeSteps.length) * 100
+      ),
+      title: progressTitle
+    });
     return (
       <div>
         <section className={css.home}>
@@ -493,9 +502,9 @@ class Send extends React.PureComponent {
                     )}
                   </div>
                   {isSending && (
-                    <div className={css.foo_bxx1}>
-
-                    </div>
+                    <Modal isOpen={isSending}>
+                      <ProgressBar progress={this.state.progress} title={progressTitle}/>
+                    </Modal>
                   )}
                 </div>
               </div>
@@ -522,7 +531,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   generateAlert,
-  makeTransaction
+  makeTransaction,
+  startTrackingProgress
 };
 export default connect(
   mapStateToProps,
