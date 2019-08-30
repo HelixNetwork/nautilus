@@ -32,6 +32,7 @@ import Errors from "libs/errors";
 import { indexToChar } from "libs/hlx/converter";
 import { getLatestAddressObject } from "libs/hlx/addresses";
 import { ADDRESS_LENGTH } from "libs/hlx/utils";
+import Address from "ui/components/address";
 
 /**
  *
@@ -115,6 +116,8 @@ class Receive extends React.PureComponent {
       t
     } = this.props;
 console.log('adresss',password);
+console.log('Account',account);
+console.log('AccountMeta',accountMeta);
     if (isSyncing || isTransitioning) {
       return generateAlert(
         "error",
@@ -238,17 +241,18 @@ console.log('adresss',password);
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3>
+                    <h3 style={{fontSize:'23px'}}>
                       {t("receive:receiveCoins")}
                       <span>.</span>
                     </h3>
-                    <h3>{t("receive:irrevocableTransactionWarning")}</h3>
+                    <h3 style={{fontSize:'16px', marginLeft:'136px',marginTop:'-3vw'}}>{t("receive:irrevocableTransactionWarning")}</h3><br/>
+                    <h3 style={{fontSize:'16px', marginLeft:'136px',marginTop:'-5vw'}}>{t("receive:TransactionWarning")}</h3>
                     <div className={classNames(css.hlx_wallet_box)}>
                       {/* Address generate */} 
                       <div className={css.hlx_iconLeft}>
                           <Button
                             className="icon_hover"
-                            style={{ marginLeft : "1vw" }}
+                            style={{ marginLeft : "10vw" }}
                             variant="backgroundNone"
                             loading={isGeneratingReceiveAddress}
                             onClick={this.onGeneratePress}
@@ -310,6 +314,36 @@ console.log('adresss',password);
                           " "
                         )}
                       </div>
+                      <div className={css.hlx_iconRight}>
+                          {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
+                            <Clipboard
+                              text={receiveAddress}
+                              title={t("receive:addressCopied")}
+                              success={t("receive:addressCopiedExplanation")}
+                            >
+                              <Button
+                                className="icon_hover"
+                                variant="backgroundNone"
+                                // loading={isGeneratingReceiveAddress}
+                                // onClick={this.onGeneratePress}
+                              >
+                                {/* <Icon icon="receive" size={55} /> */}
+                                <br />
+                                {t("receive:copyAddress")} <span> > </span>
+                              </Button>
+                            </Clipboard>
+                          ) : (
+                            <Button
+                              className="icon_hover"
+                              variant="backgroundNone"
+                              // loading={isGeneratingReceiveAddress}
+                            >
+                              {/* <Icon icon="receive" size={55} /> */}
+                              <br />
+                              {t("receive:copyAddress")} <span> > </span>
+                            </Button>
+                          )}
+                        </div>
                       <div className={classNames(css.addbottom)}>
                         <hr/>
                       </div>
@@ -328,7 +362,7 @@ console.log('adresss',password);
                           </Button>
                         </div> */}
                          <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                        <div className={css.hlx_iconRight}>
+                        {/* <div className={css.hlx_iconRight}>
                           {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
                             <Clipboard
                               text={receiveAddress}
@@ -357,12 +391,22 @@ console.log('adresss',password);
                               {t("receive:copyAddress")} <span> > </span>
                             </Button>
                           )}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
-                    <div className={classNames(css.hlx_wallet_addr)}></div>
-                  </div>
-                </div>
+                    </div>
+                 
+                    <div className="col-lg-12">
+                    <h3 style={{fontSize:'16px', marginLeft:'71vw',marginTop:'-47vw'}}>
+                      {t("receive:Address")}
+                   </h3>
+                    <h3 style={{fontSize:'16px', marginLeft:'68vw'}}>{t("receive:Overviewstatus")}</h3><br/>
+                    <h3  style={{fontSize:'16px', marginLeft:'68vw', marginTop:'-2vw'}}>{t("receive:AddressStatus")}</h3><br/>
+                    <div className={classNames(css.hlx_wallet_addr)}>
+                          <Address></Address>
+                    </div>
+                    </div>
+              </div>
               </div>
             </div>
           </div>
