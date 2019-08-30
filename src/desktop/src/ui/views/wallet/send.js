@@ -26,7 +26,7 @@ import { generateAlert } from "actions/alerts";
 import Checksum from "ui/components/checksum";
 import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
-import ProgressBar from 'ui/components/Progress';
+import ProgressBar from 'ui/components/progress';
 import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
 class Send extends React.PureComponent {
   static propTypes = {

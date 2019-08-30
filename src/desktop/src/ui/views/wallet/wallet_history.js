@@ -64,87 +64,111 @@ class WalletHistory extends React.PureComponent {
     return (
       <div>
         <section className={css.home}>
-          <Top disp={"block"} history={this.props.history} />
+          {/* <Top disp={"block"} history={this.props.history} /> */}
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3 style={{ marginLeft: "25vw" }}>
-                      Transaction History<span>.</span>
-                    </h3>
-                    <h6 style={{ marginLeft: "28vw" }}>
-                      Access and manage your Transaction
-                    </h6>
-                    <div
-                      className={classNames(css.main_div)}
-                      style={{ height: "12%" }}
-                    >
-                      {/* <div className={classNames(css.Left_div)}>
-                                                <ul>
-                                                    <li className={classNames(css.list, (this.state.active == 'li0' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li0')}>ALL</li>
-                                                    <li className={classNames(css.list, (this.state.active == 'li1' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li1')}><a className={classNames(css.list_anchor)} href="#">SENT</a></li>
-                                                    <li className={classNames(css.list, (this.state.active == 'li2' ? css.active : ''))} onClick={this.handleActive.bind(this, 'li2')}><a className={classNames(css.list_anchor)} href="#">RECEIVED</a></li>
-                                                </ul>
-                                            </div>
-                                            <div className={classNames(css.right_div)}>
-                                                <div className={classNames(css.input_group)}>
-                                                    <input type="text" name="name" className={classNames(css.search_text)} placeholder="Search Transaction" />
-                                                    <button className={classNames(css.bts)} variant="backgroundNone" type=""> <FontAwesomeIcon style={{ verticalAlign: "-1.125em", marginLeft: "-140px" }} icon={faSearch} /></button>
-                                                </div>
-                                            </div> */}
-
-                      <List
-                        updateAccount={() => this.updateAccount()}
-                        setItem={item =>
-                          item !== null
-                            ? history.push(`/wallet/history/${item}`)
-                            : history.push("/wallet/history")
-                        }
-                        currentItem={subroute}
-                        style= {{ height: "20vw" }}
-                      />
-
-                      {/* <table className={classNames(css.table)}> */}
-                      {/* <tbody>
-                                                    <tr style={{ borderTop: '5px solid #D1721E' }}>
-                                                        <td><span className={classNames(css.icon)}><i className={classNames(css.fa)} aria-hidden="true"></i></span>
-                                                            <div className={classNames(css.pending)}>Pending</div>
-                                                            <div>December 27 @ 23:58</div></td>
-                                                        <td><div>To:Lorem Ipsum is simply dummy text of the printing </div>
-                                                            <div>From:Lorem Ipsum is simply dummy text of the printing </div></td> */}
-                      {/* <td>Add Description</td> */}
-                      {/* <td><button type="button" className={classNames(css.btn_pending)}>14.0r mHLX </button></td>
-                                                    </tr>
-                                                    <tr >
-                                                        <td><span ></span>
-                                                            <div className={classNames(css.sends)}>Send</div>
-                                                            <div>December 27 @ 23:58</div></td>
-                                                        <td><div>To:Lorem Ipsum is simply dummy text of the printing </div>
-                                                            <div>From:Lorem Ipsum is simply dummy text of the printing </div></td> */}
-                      {/* <td>Add Description</td> */}
-                      {/* <td><button type="button" className={classNames(css.btn_send)}>14.0r mHLX</button></td>
-                                                    </tr>
-                                                    <tr >
-                                                        <td><span></span>
-                                                            <div className={classNames(css.recvd)}>Received</div>
-                                                            <div>December 27 @ 23:58</div></td>
-                                                        <td><div>To:Lorem Ipsum is simply dummy text of the printing </div>
-                                                            <div>From:Lorem Ipsum is simply dummy text of the printing </div></td> */}
-                      {/* <td>Add Description</td> */}
-                      {/* <td><button type="button" className={classNames(css.btn_recvd)}>14.0r mHLX</button></td>
-                                                    </tr>
-                                                </tbody> */}
-
-                      {/* </table> */}
+                  <h3 className={css.heading}>TRANSACTION HISTORY</h3>
+                <div className={css.search}><p className={css.search_text}>Type to search...</p></div>
+                <div className={css.search}><p className={css.sort_text}>Sort by</p></div>
+            <div className={css.column_sent}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>SENT</h4>
+                        <h6>OKT.09.2019 - 02:35 PM</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
                     </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:Order#21767</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={css.sent}>-14,07 mHLX</span>
+                    </div>
+                </div>
+
+                <div className={css.column_receive}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>RECEIVED</h4>
+                        <h6>OKT.09.2019 - 02:35 PM</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:Order#21767</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={css.receive}>-14,07 mHLX</span>
+                    </div>
+                </div>
+
+                <div className={css.column_sent}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>SENT</h4>
+                        <h6>OKT.09.2019 - 02:35 PM</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:Order#21767</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={css.sent}>-14,07 mHLX</span>
+                    </div>
+                </div>
+
+                <div className={css.column_receive}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>RECEIVED</h4>
+                        <h6>OKT.09.2019 - 02:35 PM</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:Order#21767</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={css.receive}>-14,07 mHLX</span>
+                    </div>
+                </div>
+
+                <div className={css.column_sent}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>SENT</h4>
+                        <h6>OKT.09.2019 - 02:35 PM</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:Order#21767</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={css.sent}>-14,07 mHLX</span>
+                    </div>
+                </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <footer className={classNames(css.footer_bx)}></footer>
+       
       </div>
     );
   }
