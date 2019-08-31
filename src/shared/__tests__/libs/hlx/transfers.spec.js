@@ -1431,22 +1431,22 @@ describe("libs: helix/transfers", () => {
     // it('should return true for valid bundle with correct (ascending) transactions order', () => {
     //     expect(isBundle(newValueAttachedTransaction)).to.equal(true);
     // });
-    // it('should return false for invalid bundle with incorrect (descending) transactions order', () => {
-    //     expect(
-    //         isBundle(
-    //             // Transactions are in ascending order by default so reverse them.
-    //             map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) }))
-    //                 .slice()
-    //                 .reverse(),
-    //         ),
-    //     ).to.equal(false);
-    // });
-    // it('should return false for invalid bundle with correct (ascending) transactions order', () => {
-    //     expect(
-    //         isBundle(
-    //             map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) })),
-    //         ),
-    //     ).to.equal(false);
-    // });
+    it('should return false for invalid bundle with incorrect (descending) transactions order', () => {
+        expect(
+            isBundle(
+                // Transactions are in ascending order by default so reverse them.
+                map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) }))
+                    .slice()
+                    .reverse(),
+            ),
+        ).to.equal(false);
+    });
+    it('should return false for invalid bundle with correct (ascending) transactions order', () => {
+        expect(
+            isBundle(
+                map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) })),
+            ),
+        ).to.equal(false);
+    });
   });
 });
