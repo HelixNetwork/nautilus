@@ -71,8 +71,13 @@ class WalletHistory extends React.PureComponent {
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
                   <h3 className={css.heading}>TRANSACTION HISTORY</h3>
-                <div className={css.search}><p className={css.search_text}>Type to search...</p></div>
-                <div className={css.search}><p className={css.sort_text}>Sort by</p></div>
+                <div className={css.search}><input type="text" className={css.search_text} placeholder="Type text here..." /></div>
+                <div className={css.search}><select className={css.sort_text} placeholder="Sort by">
+                  <option value="all">All</option>
+                  <option value="sent">Sent</option>
+                  <option value="receive">Receive</option>
+                  <option value="pending">Pending</option>
+                  </select></div>
             <div className={css.column_sent}>
                     <div className={css.column_cnt}>
                         <h4 className={css.sent_heading}>SENT</h4>

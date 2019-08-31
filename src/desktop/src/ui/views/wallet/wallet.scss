@@ -292,8 +292,9 @@
     margin-top: -3px;
     width: 189px;
     outline: 0;
-    margin-left:256px;
     margin-bottom:-41px;
+    margin-left: 0px !important;
+    margin-top: -40px !important;
   }
   .bts{
     width:2px;
@@ -2078,6 +2079,7 @@ margin-right: 16px;
   margin-top: -58px !important;
   margin-bottom: -58px !important;
   margin-left: 35px !important;
+  font-size: 14px !important;
 }
 
 .search{
@@ -2094,6 +2096,8 @@ margin-right: 16px;
   font-family: Yu Gothic;
   opacity: 0.3;
   font-size: 12px;
+  border: none;
+  background: transparent;
 }
 
 
@@ -2102,13 +2106,19 @@ margin-right: 16px;
   font-family: Yu Gothic;
   opacity: 0.3;
   font-size: 12px;
+  margin-top: 7vw;
+  margin-left: 7vw;
+  margin-bottom: 2vw;
+  background: transparent;
+  border: none;
+  color: gray;
 }
 
 .column_sent {
   float: left;
-  width: 87%;
+  width: 95%;
   padding: 10px;
-  height: 75px;
+  height: 56px;
   margin: 10px 40px 8px 40px;
   background-image: linear-gradient(to right, #661f47, #311846); 
 }
@@ -2121,6 +2131,7 @@ margin-right: 16px;
   font-size: 10px;
   font-family: Helvetica-Bold;
   opacity: 0.8;
+  margin-left: 0px;
 }
 
 .receiver{
@@ -2138,6 +2149,7 @@ margin-right: 16px;
   font-size: 10px;
   font-family: Helvetica-Bold;
   opacity: 0.3;
+  margin-left: 0px;
 }
 
 .fromhash{
@@ -2146,10 +2158,10 @@ margin-right: 16px;
   font-size: 10px;
   font-family: Helvetica-Bold;
   opacity: 0.3;
+  margin-left:0px;
 }
 
 .note{
-  margin-top: -42px;
   padding-left: 9px;
   font-size: 10px;
   font-family: Helvetica-Bold;
@@ -2157,18 +2169,20 @@ margin-right: 16px;
   text-align: center;
   position: absolute;
   margin-top: -22px;
+  margin-left: 0px;
 }
 
 .column_receive {
   float: left;
-  width: 87%;
+  width: 95%;
   padding: 10px;
-  height: 75px;
+  height: 56px;
   margin: 10px 40px 8px 40px;
   background-image: linear-gradient(to right, #152353, #132145); 
 }
 
 .column_receive h6{
+  margin-left: 0px;
   margin-top: 0px;
   padding-left: 9px;
   font-size: 10px;
