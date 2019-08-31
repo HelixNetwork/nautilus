@@ -58,7 +58,7 @@ import {
   EMPTY_TRANSACTION_MESSAGE
 } from "../../../libs/hlx/utils";
 import { IRI_API_VERSION, DEFAULT_MIN_WEIGHT_MAGNITUDE } from "../../../config";
-import { isBundle as bundleValidator } from "@helixnetwork/bundle-validator";
+import bundleValidator from "@helixnetwork/bundle-validator";
 import {
   asTransactionObject,
   asTransactionObjects
@@ -1023,28 +1023,28 @@ describe("libs: helix/transfers", () => {
     });
 
     describe("when any transaction object has an empty hash", () => {
-      // it('should perform proof of work', () => {
-      //     sinon.stub(seedStore, 'performPow').resolves({
-      //         TxBytes: newValueAttachedTransactionBytes,
-      //         transactionObjects: newValueAttachedTransaction,
-      //     });
-      //     const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').yields(null, []);
-      //     const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').yields(null, {
-      //         trunkTransaction: newValueAttachedTransactionBaseTrunk,
-      //         branchTransaction: newValueAttachedTransactionBaseBranch,
-      //     });
-      //     return retryFailedTransaction()(
-      //         map(failedTransactionsWithCorrectTransactionHashes, (tx, idx) =>
-      //             idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_TXBYTES }),
-      //         ),
-      //         seedStore,
-      //     ).then(() => {
-      //         expect(seedStore.performPow.callCount).to.equal(1);
-      //         seedStore.performPow.restore();
-      //         storeAndBroadcast.restore();
-      //         getTransactionToApprove.restore();
-      //     });
-      // });
+      it('should perform proof of work', () => {
+          sinon.stub(seedStore, 'performPow').resolves({
+              TxBytes: newValueAttachedTransactionBytes,
+              transactionObjects: newValueAttachedTransaction,
+          });
+          const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').resolves(null, []);
+          const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').resolves({
+              trunkTransaction: newValueAttachedTransactionBaseTrunk,
+              branchTransaction: newValueAttachedTransactionBaseBranch,
+          });
+          // return retryFailedTransaction()(
+          //     map(failedTransactionsWithCorrectTransactionHashes, (tx, idx) =>
+          //         idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_TXBYTES }),
+          //     ),
+          //     seedStore,
+          // ).then(() => {
+          //     expect(seedStore.performPow.callCount).to.equal(1);
+          //     seedStore.performPow.restore();
+          //     storeAndBroadcast.restore();
+          //     getTransactionToApprove.restore();
+          // });
+      });
     });
   });
 
