@@ -35,7 +35,9 @@ class DashSidebar extends React.PureComponent {
         <div className={classNames(css.sidebar)}>
       <ul className={classNames(css.acco_pg)}>
         
-      <a  className={classNames(css.img_sr1)}>
+      <a style={{marginLeft: '30px',
+    marginBottom: '20px',
+    marginTop: '-20px'}}>
            MENU  
           </a>
           <li className={active == "send" ? css.active : ""}>

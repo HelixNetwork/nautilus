@@ -116,9 +116,7 @@ class Wallet extends React.PureComponent {
     let balance = accumulateBalance(
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
-    console.log("dndfnb", location.pathname)
     const currentKey = location.pathname.split("/")[2] || "/";
-    console.log("currentttt",currentKey);
     if(currentKey =="/"){
       return (
         <div>
