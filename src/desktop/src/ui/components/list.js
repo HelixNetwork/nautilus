@@ -36,7 +36,9 @@ import css from "./list.scss";
 /**
  * Transaction history list component
  */
+
 export class ListComponent extends React.PureComponent {
+ 
   static propTypes = {
     /** Wallet mode */
     mode: PropTypes.string.isRequired,
@@ -87,6 +89,11 @@ export class ListComponent extends React.PureComponent {
     isRetryingFailedTransaction: false,
     transactions: []
   };
+
+  changeFilter(e){
+    console.log(e.target.value);
+    this.switchFilter(e.target.value)
+  }
 
   switchFilter(filter) {
     if (filter === this.state.filter) {
@@ -276,52 +283,43 @@ export class ListComponent extends React.PureComponent {
       : null;
     const isActiveFailed = activeTx && activeTx.broadcasted === false;
 
+    const scrollStyle = {
+      paddingRight: '0px',
+      marginLeft: '-50px',
+      width: '109%',
+    };
     return (
       <React.Fragment>
         <nav className={css.nav}>
-          <ul style={{ listStyleType: "none" }}>
-            {/* <a key="active" onClick={() => this.switchFilter(filter)}>
-                            {t(filter.toLowerCase())} <small>({filteredTransactions.length})</small>
-                            <Icon icon="chevronDown" size={8} />
-                        </a> */}
-            {loaded ? (
-              <li>
-                {filters.map(item => {
+        {/* <div className={css.search}><input type="text" className={css.search_text} placeholder="Type text here..." /></div> */}
+        <div className={css.search}>
+          <div
+              onClick={() => this.setState({ search: "" })}
+              style={{ display: "inline-block", marginLeft: "-110%" }}
+            >
+              <Icon
+                icon={search.length > 0 ? "cross" : "search"}
+                size={search.length > 0 ? 16 : 20}
+              />
+            </div>
+            <input
+              className={css.search_text}
+              value={search}
+              placeholder="Type text here..."
+              onChange={e => this.setState({ search: e.target.value })}
+            />
+            
+          </div>
+          <p className={css.sort_by}>Sort By</p>
+          <div className={css.search}><select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
+                  {filters.map(item => {
                   return (
-                    <a
-                      style={{
-                        display: "inlineBlock",
-                        float: "left",
-                        paddingRight: "1vw"
-                      }}
-                      key={item}
-                      onClick={() => this.switchFilter(item)}
-                      className={classNames(
-                        totals[item] === 0
-                          ? css.disabled
-                          : filter === item
-                          ? css.active
-                          : null
-                      )}
-                    >
-                      {item === "All" ? t("global:all") : t(item.toLowerCase())}{" "}
-                      ({totals[item]})
-                    </a>
-                  );
+                  <option value={item} key={item}>
+                    {item}
+                  </option>)
                 })}
-
-                {/* <div>
-                                    <a
-                                        className={classNames(css.checkbox, hideEmptyTransactions ? css.on : css.off)}
-                                        onClick={() => toggleEmptyTransactions()}
-                                    >
-                                        {t('history:hideZeroBalance')}
-                                    </a>
-                                </div> */}
-              </li>
-            ) : null}
-          </ul>
-
+                </select></div> 
+          
           <a
             onClick={() => updateAccount()}
             className={classNames(
@@ -333,27 +331,11 @@ export class ListComponent extends React.PureComponent {
             <Icon icon="sync" size={24} />
           </a>
 
-          <div className={css.search}>
-            <input
-              // className={css.filled}
-              value={search}
-              placeholder="SEARCH"
-              onChange={e => this.setState({ search: e.target.value })}
-            />
-            <div
-              onClick={() => this.setState({ search: "" })}
-              style={{ display: "inline-block", marginLeft: "-22%" }}
-            >
-              <Icon
-                icon={search.length > 0 ? "cross" : "search"}
-                size={search.length > 0 ? 16 : 20}
-              />
-            </div>
-          </div>
+          
         </nav>
-        {/* <hr /> */}
-        <div className={css.list} style={style}>
-          <Scrollbar>
+        {/* <div className={css.list} style={style}> */}
+
+          <Scrollbar style={scrollStyle}>
             {filteredTransactions.length ? (
               filteredTransactions.map((transaction, key) => {
                 const isReceived = transaction.incoming;
@@ -363,12 +345,35 @@ export class ListComponent extends React.PureComponent {
                   <a
                     key={key}
                     onClick={() => setItem(transaction.bundle)}
-                    className={classNames(
-                      isConfirmed ? css.confirmed : css.pending,
-                      isReceived ? css.received : css.sent
-                    )}
                   >
-                    <div className={css.alt_bg}>
+                    <div className={!isReceived ? css.column_sent:css.column_receive}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>{!isReceived ? 'Sent': 'Receive'}</h4>
+                        <h6>{formatTime(
+                          navigator.language,
+                          detectedTimezone,
+                          convertUnixTimeToJSDate(transaction.timestamp)
+                        )}</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:{transaction.message}</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <p className={css.fromhash}>{transaction.bundle}</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={!isReceived?css.sent:css.receive}>{transaction.transferValue === 0
+                          ? ""
+                          : isReceived
+                          ? "+"
+                          : "-"}
+                        {formatHlx(transaction.transferValue, true, true)}</span>
+                    </div>
+                    </div>
+
+                    {/* <div className={css.alt_bg}>
                       {isReceived ? (
                         <Icon icon="plus" size={14} />
                       ) : (
@@ -398,7 +403,7 @@ export class ListComponent extends React.PureComponent {
                           : "-"}
                         {formatHlx(transaction.transferValue, true, true)}
                       </span>
-                    </div>
+                    </div> */}
                   </a>
                 );
               })
@@ -410,7 +415,7 @@ export class ListComponent extends React.PureComponent {
               </p>
             )}
           </Scrollbar>
-        </div>
+        {/* </div> */}
         <div
           className={classNames(css.popup, activeTx ? css.on : null)}
           onClick={() => setItem(null)}
