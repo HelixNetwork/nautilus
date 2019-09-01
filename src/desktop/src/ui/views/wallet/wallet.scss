@@ -139,14 +139,14 @@
     margin-top: 300px;
   }
   .foo_bxx1 {
-    width: 875px;
+    width: 940px;
     padding: 45px 50px 65px 40px;
     height: 430px;
     position: absolute;
     left: 50%;
     bottom: 28px;
     margin-top: -27px;
-    margin-left: -400px;
+    margin-left: -440px;
     background-color:transparent;
     z-index: 1000;
     border-width: 2px;
@@ -1121,15 +1121,22 @@ margin-right: 16px;
   .sidebar {
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: 180px;
     position: relative;
     top: 70px;
     height: 100%;
     overflow: auto;
+    margin-left: -15px;
   }
 
 .sidebar ul{
   list-style-type: none;
+  margin-left: -10px;
+
+}
+
+.sidebar ul li{
+  margin-left: -13px;    
 }
   
 .sidebar a {
