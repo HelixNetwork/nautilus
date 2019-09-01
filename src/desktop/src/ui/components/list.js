@@ -198,14 +198,10 @@ export class ListComponent extends React.PureComponent {
   }
 
   showMessage(message){
-    try{
-      if(message.indexOf('{')!=-1){
-        return 'Empty';
-      }
+    if(message.indexOf('{')!=-1){
+      return 'Empty';
     }
-    catch(err){
-      return message;
-    }
+    return message;
   }
 
   render() {
@@ -361,11 +357,11 @@ export class ListComponent extends React.PureComponent {
                     <div className={!isReceived?css.column_sent:css.column_receive}>
                     <div className={css.column_cnt}>
                         <h4 className={css.sent_heading}>{!isReceived ? 'SENT': 'RECEIVED'}</h4>
-                        <h6><b>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</b></h6>
+                        <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
                        
                     </div>
                     <div className={css.column_cnt}>
-                        <p className={css.note}>{transaction.message}</p>
+                        <p className={css.note}>{this.showMessage(transaction.message)}</p>
                     </div>
                     <div className={css.column_cnt}>
                         <h4 className={css.sender_heading}>{!isReceived?'Sender':'Receiver'}</h4>
@@ -384,11 +380,11 @@ export class ListComponent extends React.PureComponent {
                       <div className={css.column_pending}>
                     <div className={css.column_cnt}>
                         <h4 className={css.sent_heading}>PENDING</h4>
-                        <h6><b>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</b></h6>
+                        <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
                         
                     </div>
                     <div className={css.column_cnt}>
-                        <p className={css.note}>{JSON.parse(transaction.message).address ? 'Empty':transaction.message}</p>
+                        <p className={css.note}>Add Note:</p>
                     </div>
                     <div className={css.column_cnt}>
                         <h4 className={css.sender_heading}>{!isReceived?'Sending':'Receiving'}</h4>
