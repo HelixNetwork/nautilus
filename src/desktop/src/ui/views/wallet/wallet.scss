@@ -1135,12 +1135,12 @@ margin-right: 16px;
 .sidebar a {
   display: block;
   color: #fff;
-  padding: 16px;
+  padding: 16px 16px 25px 16px;
   text-decoration: none;
 }
  
 .sidebar a.active {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+  border-bottom: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
   color: white;
 }
 
@@ -2242,4 +2242,8 @@ margin-right: 16px;
     font-size: 13px;
     padding: 9px;
     margin-top: 11px;
+}
+
+.sidebar_icon {
+  width: 70%;
 }
