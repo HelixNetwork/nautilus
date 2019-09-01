@@ -306,9 +306,10 @@
     background: transparent;
     border: none;
     color: gray;
+    margin-right: -100px;
   }
   .sort_by{
-    margin-left: 805px;
+    right: 150px;
     width: 66px;
     position: absolute;
     margin-top: 13px;
@@ -330,7 +331,7 @@
   .column_sent h6{
     margin-top: 0px;
     padding-left: 9px;
-    font-size: 10px;
+    font-size: 12px;
     font-family: Helvetica-Bold;
     opacity: 0.8;
     margin-left: 0px;
@@ -359,7 +360,7 @@
     padding-left: 0;
     font-size: 12px;
     font-family: Helvetica-Bold;
-    opacity: 0.3;
+    opacity: 0.6;
     margin-left: -50px;
   }
   
@@ -367,7 +368,7 @@
     padding-left: 9px;
     font-size: 10px;
     font-family: Helvetica-Bold;
-    opacity: 0.3;
+    opacity: 0.6;
     text-align: center;
     position: absolute;
     margin-top: -22px;
@@ -386,7 +387,7 @@
   .column_receive h6{
     margin-top: 0px;
     padding-left: 9px;
-    font-size: 10px;
+    font-size: 12px;
     font-family: Helvetica-Bold;
     opacity: 0.8;
     margin-left: 0px;
@@ -404,7 +405,7 @@
   .column_pending h6{
     margin-top: 0px;
     padding-left: 9px;
-    font-size: 10px;
+    font-size: 12px;
     font-family: Helvetica-Bold;
     opacity: 0.8;
     margin-left: 0px;

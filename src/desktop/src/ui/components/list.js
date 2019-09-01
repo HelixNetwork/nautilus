@@ -5,7 +5,7 @@ import map from "lodash/map";
 import classNames from "classnames";
 import { withI18n } from "react-i18next";
 import { connect } from "react-redux";
-
+import moment from "moment";
 import { generateAlert } from "actions/alerts";
 import { promoteTransaction, retryFailedTransaction } from "actions/transfers";
 import { toggleEmptyTransactions } from "actions/settings";
@@ -197,6 +197,13 @@ export class ListComponent extends React.PureComponent {
     });
   }
 
+  showMessage(message){
+    if(message.indexOf('{')!=-1){
+      return 'Empty';
+    }
+    return message;
+  }
+
   render() {
     const {
       mode,
@@ -288,7 +295,6 @@ export class ListComponent extends React.PureComponent {
       marginLeft: '-50px',
       width: '109%',
     };
-    console.log(filteredTransactions);
     return (
       <React.Fragment>
         <nav className={css.nav}>
@@ -351,15 +357,11 @@ export class ListComponent extends React.PureComponent {
                     <div className={!isReceived?css.column_sent:css.column_receive}>
                     <div className={css.column_cnt}>
                         <h4 className={css.sent_heading}>{!isReceived ? 'SENT': 'RECEIVED'}</h4>
-                        <h6>{formatTime(
-                          navigator.language,
-                          detectedTimezone,
-                          convertUnixTimeToJSDate(transaction.timestamp)
-                        )}</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
+                        <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
+                       
                     </div>
                     <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:</p>
+                        <p className={css.note}>{this.showMessage(transaction.message)}</p>
                     </div>
                     <div className={css.column_cnt}>
                         <h4 className={css.sender_heading}>{!isReceived?'Sender':'Receiver'}</h4>
@@ -378,12 +380,8 @@ export class ListComponent extends React.PureComponent {
                       <div className={css.column_pending}>
                     <div className={css.column_cnt}>
                         <h4 className={css.sent_heading}>PENDING</h4>
-                        <h6>{formatTime(
-                          navigator.language,
-                          detectedTimezone,
-                          convertUnixTimeToJSDate(transaction.timestamp)
-                        )}</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Private</p>
+                        <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
+                        
                     </div>
                     <div className={css.column_cnt}>
                         <p className={css.note}>Add Note:</p>

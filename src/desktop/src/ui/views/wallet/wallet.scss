@@ -139,14 +139,14 @@
     margin-top: 300px;
   }
   .foo_bxx1 {
-    width: 875px;
+    width: 940px;
     padding: 45px 50px 65px 40px;
     height: 430px;
     position: absolute;
     left: 50%;
     bottom: 28px;
     margin-top: -27px;
-    margin-left: -400px;
+    margin-left: -440px;
     background-color:transparent;
     z-index: 1000;
     border-width: 2px;
@@ -1121,26 +1121,33 @@ margin-right: 16px;
   .sidebar {
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: 180px;
     position: relative;
     top: 70px;
     height: 100%;
     overflow: auto;
+    margin-left: -15px;
   }
 
 .sidebar ul{
   list-style-type: none;
+  margin-left: -10px;
+
+}
+
+.sidebar ul li{
+  margin-left: -13px;    
 }
   
 .sidebar a {
   display: block;
   color: #fff;
-  padding: 16px;
+  padding: 16px 16px 25px 16px;
   text-decoration: none;
 }
  
 .sidebar a.active {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+  border-bottom: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
   color: white;
 }
 
@@ -1848,7 +1855,7 @@ margin-right: 16px;
   @media  screen and (min-width: 840px) {
     .img_sr1 {
       float: left;
-      margin: 24px 27px     !important;
+      margin: 24px 32px     !important;
           margin-top: -36px !important;
           
       text-align: center;
@@ -2242,4 +2249,8 @@ margin-right: 16px;
     font-size: 13px;
     padding: 9px;
     margin-top: 11px;
+}
+
+.sidebar_icon {
+  width: 70%;
 }

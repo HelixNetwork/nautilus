@@ -3,14 +3,10 @@ import css from "ui/views/wallet/wallet.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { withI18n } from "react-i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faDownload,
-  faChartLine,
-  faHistory,
- 
-} from "@fortawesome/free-solid-svg-icons";
-import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import Send from "ui/images/svg/send.svg";
+import Receive from "ui/images/svg/receive.svg";
+import Chart from "ui/images/svg/chart.svg";
+import History from "ui/images/svg/history.svg";
 
 import { setAccountInfoDuringSetup } from "actions/accounts";
 import { connect } from "react-redux";
@@ -39,12 +35,14 @@ class DashSidebar extends React.PureComponent {
         <div className={classNames(css.sidebar)}>
       <ul className={classNames(css.acco_pg)}>
         
-      <a  className={classNames(css.img_sr1)}>
+      <a style={{marginLeft: '30px',
+    marginBottom: '20px',
+    marginTop: '-20px'}}>
            MENU  
           </a>
           <li className={active == "send" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/wallet/send")} className={classNames(css.img_sr1)}>
-          <FontAwesomeIcon icon={faPaperPlane} size="3x" />  {t("home:send")} 
+         <img src={Send} alt=" " className={css.sidebar_icon}/> {t("home:send")} 
           </a>
           </li>
        
@@ -52,13 +50,13 @@ class DashSidebar extends React.PureComponent {
        
           <li className={active == "recieve" ? css.active : ""}>  
           <a onClick={() => this.props.history.push("/wallet/receive")} className={classNames(css.img_sr1)}>
-          <FontAwesomeIcon icon={faDownload} size="3x" />  {t("home:receive")}  
+          <img src={Receive} alt=" " className={css.sidebar_icon}/> {t("home:receive")}  
           </a>
           </li>
        
           <li className={active == "chart" ? css.active : ""}>  
           <a onClick={() => this.props.history.push("/wallet/chart")}  className={classNames(css.img_sr1)}>
-          <FontAwesomeIcon icon={faChartLine} size="3x" /> {t("home:chart")} 
+          <img src={Chart} alt=" " className={css.sidebar_icon}/> {t("home:chart")} 
           </a>
    
           </li>
@@ -66,12 +64,12 @@ class DashSidebar extends React.PureComponent {
           <a
             onClick={() => this.props.history.push("/wallet/history")}  className={classNames(css.img_sr1)}
           >
-           <FontAwesomeIcon icon={faHistory} size="3x" /> {t("home:history")} 
+          <img src={History} alt=" " className={css.sidebar_icon}/> {t("home:history")} 
           </a>
           </li>
           <li className={active == "settings" ? css.active : ""}>  
           <a
-            onClick={() => this.props.history.push("/settings/editname")}  className={classNames(css.img_sr1)}
+            onClick={() => this.props.history.push("/settings/editname")}  className={classNames(css.img_sr1)} style={{paddingTop: "50px"}}
           >
             {t("settings:settings")} 
           </a>
