@@ -1386,11 +1386,11 @@ describe("libs: helix/transfers", () => {
     let branchTransaction;
 
     before(() => {
-      // See trunk/branch transactions of newValueAttachedTransaction transaction object with currentIndex 2
+      // See trunk/branch transactions of newValueAttachedTransaction transaction object with currentIndex 3
       trunkTransaction =
-        "009c7c8371e3c8cd5b36a438bb858812bbf308114b8018958075f8b7228df251";
+        "00a0bff09709f4e9c20bbf25851772a725ca86aa0074a37f7238a97438edead6";
       branchTransaction =
-        "009c7c8371e3c8cd5b36a438bb858812bbf308114b8018958075f8b7228df251";
+        "00a0bff09709f4e9c20bbf25851772a725ca86aa0074a37f7238a97438edead6";
     });
 
     it("should return true for bundle with correct trunk/branch assignment", () => {
@@ -1420,17 +1420,17 @@ describe("libs: helix/transfers", () => {
   });
 
   describe("#isBundle", () => {
-    // it('should return true for valid bundle with incorrect (descending) transactions order', () => {
-    //     expect(
-    //         isBundle(
-    //             // Transactions are in ascending order by default so reverse them.
-    //             newValueAttachedTransaction.slice().reverse(),
-    //         ),
-    //     ).to.equal(true);
-    // });
-    // it('should return true for valid bundle with correct (ascending) transactions order', () => {
-    //     expect(isBundle(newValueAttachedTransaction)).to.equal(true);
-    // });
+    it('should return true for valid bundle with incorrect (descending) transactions order', () => {
+        expect(
+            isBundle(
+                // Transactions are in ascending order by default so reverse them.
+                newValueAttachedTransaction.slice().reverse(),
+            ),
+        ).to.equal(true);
+    });
+    it('should return true for valid bundle with correct (ascending) transactions order', () => {
+        expect(isBundle(newValueAttachedTransaction)).to.equal(true);
+    });
     it('should return false for invalid bundle with incorrect (descending) transactions order', () => {
         expect(
             isBundle(
