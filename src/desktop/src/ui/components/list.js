@@ -288,6 +288,7 @@ export class ListComponent extends React.PureComponent {
       marginLeft: '-50px',
       width: '109%',
     };
+    console.log(filteredTransactions);
     return (
       <React.Fragment>
         <nav className={css.nav}>
@@ -346,9 +347,10 @@ export class ListComponent extends React.PureComponent {
                     key={key}
                     onClick={() => setItem(transaction.bundle)}
                   >
-                    <div className={!isReceived ? css.column_sent:css.column_receive}>
+                    {isReceived || isConfirmed ?(
+                    <div className={!isReceived?css.column_sent:css.column_receive}>
                     <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>{!isReceived ? 'Sent': 'Receive'}</h4>
+                        <h4 className={css.sent_heading}>{!isReceived ? 'SENT': 'RECEIVED'}</h4>
                         <h6>{formatTime(
                           navigator.language,
                           detectedTimezone,
@@ -357,10 +359,10 @@ export class ListComponent extends React.PureComponent {
                         <p className={css.from}>From:Account 1 -Marcel Privat</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:{transaction.message}</p>
+                        <p className={css.note}>Add Note:</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Receiver</h4>
+                        <h4 className={css.sender_heading}>{!isReceived?'Sender':'Receiver'}</h4>
                         <p className={css.fromhash}>{transaction.bundle}</p>
                     </div>
                     <div className={css.column_cnt}>
@@ -372,6 +374,34 @@ export class ListComponent extends React.PureComponent {
                         {formatHlx(transaction.transferValue, true, true)}</span>
                     </div>
                     </div>
+                    ): (
+                      <div className={css.column_pending}>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>PENDING</h4>
+                        <h6>{formatTime(
+                          navigator.language,
+                          detectedTimezone,
+                          convertUnixTimeToJSDate(transaction.timestamp)
+                        )}</h6>
+                        <p className={css.from}>From:Account 1 -Marcel Private</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <p className={css.note}>Add Note:</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <h4 className={css.sender_heading}>{!isReceived?'Sending':'Receiving'}</h4>
+                        <p className={css.fromhash}>{transaction.bundle}</p>
+                    </div>
+                    <div className={css.column_cnt}>
+                        <span className={!isReceived?css.sent:css.receive}>{transaction.transferValue === 0
+                          ? ""
+                          : isReceived
+                          ? "+"
+                          : "-"}
+                        {formatHlx(transaction.transferValue, true, true)}</span>
+                    </div>
+                    </div>
+                    )}
 
                     {/* <div className={css.alt_bg}>
                       {isReceived ? (

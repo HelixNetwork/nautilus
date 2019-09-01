@@ -378,20 +378,37 @@
     float: left;
     width: 95%;
     padding: 10px;
-    height: 56px;
+    height: 80px;
     margin: 10px 40px 8px 40px;
     background-image: linear-gradient(to right, #152353, #132145); 
   }
   
   .column_receive h6{
-    margin-left: 0px;
     margin-top: 0px;
     padding-left: 9px;
-    font-size: 17px;
+    font-size: 10px;
     font-family: Helvetica-Bold;
     opacity: 0.8;
+    margin-left: 0px;
+  }
+
+  .column_pending {
+    float: left;
+    width: 95%;
+    padding: 10px;
+    height: 80px;
+    margin: 10px 40px 8px 40px;
+    background-image: linear-gradient(to right, #b18907cb, #7e7c049c); 
   }
   
+  .column_pending h6{
+    margin-top: 0px;
+    padding-left: 9px;
+    font-size: 10px;
+    font-family: Helvetica-Bold;
+    opacity: 0.8;
+    margin-left: 0px;
+  }
   
   .column_cnt{
       width: 23%;
@@ -441,9 +458,9 @@
   .receive{
       background: #1b2b6a;
       float: right;
-      margin-bottom: 0px;
-      font-size: 13px;
-      padding: 9px;
-      margin-top: 11px;
+        margin-bottom: 0px;
+        font-size: 15px;
+        padding: 9px;
+        margin-top: 11px;
   }
   
