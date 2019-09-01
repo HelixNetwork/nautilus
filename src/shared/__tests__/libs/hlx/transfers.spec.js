@@ -1000,27 +1000,27 @@ describe("libs: helix/transfers", () => {
       // });
     });
 
-    describe("when any transaction object has an invalid hash", () => {
-      // it('should perform proof of work', () => {
-      //     sinon.stub(seedStore, 'performPow').resolves({
-      //         TxBytes: newValueAttachedTransactionBytes,
-      //         transactionObjects: newValueAttachedTransaction,
-      //     });
-      //     const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').yields(null, []);
-      //     const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').yields(null, {
-      //         trunkTransaction: newValueAttachedTransactionBaseTrunk,
-      //         branchTransaction: newValueAttachedTransactionBaseBranch,
-      //     });
-      //     return retryFailedTransaction()(failedTransactionsWithIncorrectTransactionHashes, seedStore).then(
-      //         () => {
-      //             expect(seedStore.performPow.callCount).to.equal(1);
-      //             seedStore.performPow.restore();
-      //             storeAndBroadcast.restore();
-      //             getTransactionToApprove.restore();
-      //         },
-      //     );
-      // });
-    });
+    // describe("when any transaction object has an invalid hash", () => {
+    //   it('should perform proof of work', () => {
+    //       sinon.stub(seedStore, 'performPow').resolves({
+    //           txs: newValueAttachedTransactionBytes,
+    //           transactionObjects: newValueAttachedTransaction,
+    //       });
+    //       const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').resolves( []);
+    //       const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').resolves( {
+    //           trunkTransaction: newValueAttachedTransactionBaseTrunk,
+    //           branchTransaction: newValueAttachedTransactionBaseBranch,
+    //       });
+    //       return retryFailedTransaction()(failedTransactionsWithIncorrectTransactionHashes, seedStore).then(
+    //           () => {
+    //               expect(seedStore.performPow.callCount).to.equal(1);
+    //               seedStore.performPow.restore();
+    //               storeAndBroadcast.restore();
+    //               getTransactionToApprove.restore();
+    //           },
+    //       );
+    //   });
+    // });
 
     describe("when any transaction object has an empty hash", () => {
       it('should perform proof of work', () => {
