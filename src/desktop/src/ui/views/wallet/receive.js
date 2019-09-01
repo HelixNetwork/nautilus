@@ -243,7 +243,7 @@ console.log("statusss",spentstatus);
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3 style={{fontSize:'23px'}}>
+                    <h3 style={{fontSize:'23px',marginTop:'-4vw'}}>
                       {t("receive:receiveCoins")}
                       <span>.</span>
                     </h3>
@@ -374,7 +374,7 @@ console.log("statusss",spentstatus);
                     </div>
                  
                     <div className="col-lg-12">
-                    <h3 style={{fontSize:'16px', marginLeft:'69vw',marginTop:'-57vw'}}>
+                    <h3 style={{fontSize:'16px', marginLeft:'69vw',marginTop:'-63vw'}}>
                       {t("receive:Address")}
                    </h3>
                     <h3 style={{fontSize:'16px', marginLeft:'68vw'}}>{t("receive:Overviewstatus")}</h3><br/>
@@ -387,8 +387,6 @@ console.log("statusss",spentstatus);
                             <div> Used</div>
                           ):(<div>Ready</div>)};
                          </div>
-
-                         >
                          
                         </Scrollbar>
                     </div>
@@ -397,6 +395,7 @@ console.log("statusss",spentstatus);
               </div>
             </div>
           </div>
+          <hr className={css.recieve_hr}/>
         </section>
       </div>
     );

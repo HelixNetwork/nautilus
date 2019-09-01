@@ -1690,31 +1690,32 @@ margin-right: 16px;
 }
 
 .hlx_wallet_box {
-  width:55% ;
+ 
+  width: 55%;
   background-color: #211855;
   border-radius: 5px;
   box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
-  min-height:310px;
+  min-height: 265px;
   min-width: 460px;
   position: absolute;
-  top: 30%;
-  bottom: 3%;
-  left:-349px;
+  top: 14%;
+  bottom: 22%;
+  left: -349px;
   right: 0;
   margin: auto;
-  z-index:1000;
+  z-index: 1000;
   padding: 5px 0px 10px 0px;
 }
 .hlx_wallet_addr {
-  width: 28%;
+  width: 26%;
   background-color: #1D1B46;
   border-radius: 5px;
   box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
   min-height: 310px;
   min-width: 100px;
   position: absolute;
-  top: 41%;
-  bottom: 6%;
+  top: 29%;
+  bottom: 22%;
   left: 732px;
   right: 0;
   margin: auto;
@@ -2257,4 +2258,11 @@ margin-right: 16px;
   width: 92%;
   height: 13%;
   background-image: linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69));
+}
+.recieve_hr{    
+  position: absolute;
+  top: 577px;
+  width: 73%;
+  left: 256px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(216, 215, 213, 0.75), rgba(0, 0, 0, 0));
 }
