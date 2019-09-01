@@ -71,97 +71,23 @@ class WalletHistory extends React.PureComponent {
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
                   <h3 className={css.heading}>TRANSACTION HISTORY</h3>
-                <div className={css.search}><p className={css.search_text}>Type to search...</p></div>
-                <div className={css.search}><p className={css.sort_text}>Sort by</p></div>
-            <div className={css.column_sent}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>SENT</h4>
-                        <h6>OKT.09.2019 - 02:35 PM</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:Order#21767</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Receiver</h4>
-                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={css.sent}>-14,07 mHLX</span>
-                    </div>
-                </div>
-
-                <div className={css.column_receive}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>RECEIVED</h4>
-                        <h6>OKT.09.2019 - 02:35 PM</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:Order#21767</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Receiver</h4>
-                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={css.receive}>-14,07 mHLX</span>
-                    </div>
-                </div>
-
-                <div className={css.column_sent}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>SENT</h4>
-                        <h6>OKT.09.2019 - 02:35 PM</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:Order#21767</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Receiver</h4>
-                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={css.sent}>-14,07 mHLX</span>
-                    </div>
-                </div>
-
-                <div className={css.column_receive}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>RECEIVED</h4>
-                        <h6>OKT.09.2019 - 02:35 PM</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:Order#21767</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Receiver</h4>
-                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={css.receive}>-14,07 mHLX</span>
-                    </div>
-                </div>
-
-                <div className={css.column_sent}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>SENT</h4>
-                        <h6>OKT.09.2019 - 02:35 PM</h6>
-                        <p className={css.from}>From:Account 1 -Marcel Privat</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:Order#21767</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Receiver</h4>
-                        <p className={css.fromhash}>qv1hbbald95BbnnzrrsbdlsinqAkVcte43</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={css.sent}>-14,07 mHLX</span>
-                    </div>
-                </div>
+                {/* <div className={css.search}><input type="text" className={css.search_text} placeholder="Type text here..." /></div>
+                <div className={css.search}><select className={css.sort_text} placeholder="Sort by">
+                  <option value="all">All</option>
+                  <option value="sent">Sent</option>
+                  <option value="receive">Receive</option>
+                  <option value="pending">Pending</option>
+                  </select></div> */}
+                  <List
+                        updateAccount={() => this.updateAccount()}
+                        setItem={item =>
+                          item !== null
+                            ? history.push(`/wallet/history/${item}`)
+                            : history.push("/wallet/history")
+                        }
+                        currentItem={subroute}
+                        style= {{ height: "20vw" }}
+                      />
                   </div>
                 </div>
               </div>
