@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 import Dashboard from "ui/views/wallet/dashboard";
 import img from "ui/images/svg/send.svg";
-import img1 from "ui/images/svg/recieve.svg";
+import img1 from "ui/images/svg/receive.svg";
 import img2 from "ui/images/svg/chart.svg";
 import img3 from "ui/images/svg/history.svg";
 import css from "./wallet.scss";
