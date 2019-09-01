@@ -9,7 +9,7 @@ import reduce from "lodash/reduce";
 import filter from "lodash/filter";
 import transform from "lodash/transform";
 import { createSelector } from "reselect";
-import { accumulateBalance, getLatestAddress } from "../libs/hlx/addresses";
+import { accumulateBalance, getLatestAddress ,preserveAddressLocalSpendStatus} from "../libs/hlx/addresses";
 import { getSeedIndexFromState } from "./global";
 
 /**

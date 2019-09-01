@@ -26,12 +26,12 @@ export default class QR extends React.PureComponent {
                 {cells.map((row, rowIndex) => {
                     return row.map((cell, cellIndex) => (
                         <rect
-                            height={1}
-                            key={cellIndex}
-                            style={{ fill: cell ? 'white' : 'none' }}
-                            width={1}
-                            x={cellIndex}
-                            y={rowIndex}
+                        height={1}
+                        key={cellIndex}
+                        style={{ fill: cell ? '#ffffff' : 'none' }}
+                        width={1}
+                        x={cellIndex}
+                        y={rowIndex}
                         />
                     ));
                 })}

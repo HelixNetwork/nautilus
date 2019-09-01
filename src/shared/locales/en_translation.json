@@ -315,7 +315,11 @@
     "generateAnAddressExplanation": "Please generate an address before using this function.",
     "generateAddressInformation": "Generate a new deposit address every time you wish to receive HELIX",
     "receiveCoins": "Receive HLX ",
-    "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
+    "irrevocableTransactionWarning": "Please note that recieving fund requires",
+    "TransactionWarning": "generating a reciever address!",
+    "Address":"ADDRESS HISTORY",
+    "Overviewstatus": "Overview of your generated",
+    "AddressStatus": "address and their status!"
   },
   "saveYourSeed": {
     "saveYourSeed": "Back up your seed",

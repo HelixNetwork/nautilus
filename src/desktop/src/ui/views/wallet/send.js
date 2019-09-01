@@ -6,7 +6,7 @@ import images from "ui/images/ic1.png";
 import TopBar from "./topBar";
 import DashSidebar from 'ui/components/dash_sidebar';
 import PropTypes from "prop-types";
-import ic1 from "ui/images/send_bt_white.png";
+import ic1 from "ui/images/send.svg";
 import { withI18n } from "react-i18next";
 import SeedStore from "libs/seed";
 import Modal from "ui/components/modal/Modal";
