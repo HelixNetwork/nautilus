@@ -395,10 +395,13 @@ class Receive extends React.PureComponent {
                         <Scrollbar >
                         {
                             addresses.map(value=>{
-                          return <div className={classNames(css.addressbox)} key={value.address}>
-                            {value.address}
-                            {value.spent==true?(<div> Used</div>):(<div>Ready</div>)}
+                          return (<div>
+                            <div className={classNames(css.addressbox)} key={value.address}>
+                            {value.address}</div>
+                            <div>
+                            {value.spent==true?(<div> Used</div>):(<div>Ready</div>)}</div>
                             </div>
+                          );
                             })
                         }
                          

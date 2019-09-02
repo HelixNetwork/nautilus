@@ -22,12 +22,6 @@ class Charts extends React.PureComponent {
     return (
       <div>
         <section className={css.home}>
-          <Top
-            bal={"none"}
-            main={"block"}
-            user={"block"}
-            history={this.props.history}
-          />
      
             <div className="container">
               <div className="row">
