@@ -102,7 +102,7 @@ class AdvancedSettings extends React.PureComponent {
             <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
               {t("pow:feeless")} {t("pow:localOrRemote")}
             </p>
-            <hr />
+           
             <h3 style={{ marginLeft: "29vw", marginTop: "2vw" }}>
               {t("settings:reset")}
             </h3>
@@ -152,32 +152,32 @@ class AdvancedSettings extends React.PureComponent {
                 }}
               />
             ) : (
-              <Confirm
-                isOpen={resetConfirm}
-                category="negative"
-                content={{
-                  title: t("walletResetConfirmation:cannotUndo"),
-                  message: (
-                    <Trans i18nKey="walletResetConfirmation:warning">
-                      <React.Fragment>
+                <Confirm
+                  isOpen={resetConfirm}
+                  category="negative"
+                  content={{
+                    title: t("walletResetConfirmation:cannotUndo"),
+                    message: (
+                      <Trans i18nKey="walletResetConfirmation:warning">
                         <React.Fragment>
-                          All of your wallet data including your{" "}
+                          <React.Fragment>
+                            All of your wallet data including your{" "}
+                          </React.Fragment>
+                          <strong>seeds, password,</strong>
+                          <React.Fragment>and </React.Fragment>
+                          <strong>other account information</strong>
+                          <React.Fragment> will be lost.</React.Fragment>
                         </React.Fragment>
-                        <strong>seeds, password,</strong>
-                        <React.Fragment>and </React.Fragment>
-                        <strong>other account information</strong>
-                        <React.Fragment> will be lost.</React.Fragment>
-                      </React.Fragment>
-                    </Trans>
-                  ),
-                  cancel: t("cancel"),
-                  confirm: t("settings:reset")
-                }}
-                onCancel={() => this.setState({ resetConfirm: false })}
-                countdown={resetCountdown}
-                onConfirm={() => this.resetWallet()}
-              />
-            )}
+                      </Trans>
+                    ),
+                    cancel: t("cancel"),
+                    confirm: t("settings:reset")
+                  }}
+                  onCancel={() => this.setState({ resetConfirm: false })}
+                  countdown={resetCountdown}
+                  onConfirm={() => this.resetWallet()}
+                />
+              )}
             <div className={classNames(css.spe_bx)}></div>
           </div>
         </Scrollbar>

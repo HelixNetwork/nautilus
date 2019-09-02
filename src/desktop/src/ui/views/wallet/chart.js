@@ -22,32 +22,35 @@ class Charts extends React.PureComponent {
     return (
       <div>
         <section className={css.home}>
-          <Top
-            bal={"none"}
-            main={"block"}
-            user={"block"}
-            history={this.props.history}
-          />
-          <div className={classNames(css.pg1_foo3)}>
+     
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3>
+                    {/* <h5>
                       Overview HLX chart<span>.</span>
-                    </h3>
-                    <div className={classNames(css.sseed_box2, css.sec_bxc)}>
-                      <div className={classNames(css.boder)}></div>
+                    </h5>
+                   
+                      <div className={classNames(css.topRight2)}>
+                        <button style={{ right: "109px" }}>EUR</button>
+                        <h6 >€0.02/mHLX</h6>
+                        <hr/>
+                        <button>24/h</button>
+                      </div>
                       <Chartss />
-                      <div className={classNames(css.boder)}></div>
-                    </div>
+
+                      <div className={classNames(css.topbottom)}>
+                        <hr/>
+                      </div>
+                  */}
+                   <p style={{margin:'205px',marginLeft:'400px'}}>Currently not available</p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+         
         </section>
-        <footer className={classNames(css.footer_bx)}></footer>
+       
       </div>
     );
   }

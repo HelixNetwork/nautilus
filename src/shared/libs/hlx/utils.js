@@ -11,7 +11,7 @@ import size from "lodash/size";
 import cloneDeep from "lodash/cloneDeep";
 import URL from "url-parse";
 import { BigNumber } from "bignumber.js";
-import { txHexToAscii, asciiToTxHex } from "@helixnetwork/converter";
+import { txsToAscii, asciiToTxHex } from "@helixnetwork/converter";
 import { addChecksum, isValidChecksum } from "@helixnetwork/checksum";
 import { isNodeHealthy } from "./extendedApi";
 import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from "../../config";
@@ -63,7 +63,7 @@ export const convertFromBytes = txBytes => {
   const bytesWithoutZero = txBytes.replace(/00+$/, "");
   let message;
   try {
-    message = txHexToAscii(bytesWithoutZero);
+    message = txsToAscii(bytesWithoutZero);
   } catch (err) {
     // Fall back to safe result in case of inconsistent conversion strings
     message = null;
@@ -258,16 +258,6 @@ export const isValidAddress = address => {
   return false;
 };
 
-/**
- * Checks if the last txBit is 0
- *
- * @method isLastBitZero
- * @param {string} address
- *
- * @returns {boolean}
- */
-export const isLastBitZero = address =>
-  !/[ace13579]/.test(address.slice(60, 64));
 
 /**
  * Checks if provided Helix message is valid
@@ -278,7 +268,7 @@ export const isLastBitZero = address =>
  * @returns {boolean}
  */
 export const isValidMessage = message => {
-  return txHexToAscii(asciiToTxHex(message)) === message;
+  return txsToAscii(asciiToTxHex(message)) === message;
 };
 
 /**

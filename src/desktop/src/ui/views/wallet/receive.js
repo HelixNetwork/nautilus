@@ -25,14 +25,15 @@ import {
   addressValidationRequest,
   addressValidationSuccess
 } from "actions/wallet";
-
+import QR from 'ui/components/qr';
 import SeedStore from "libs/seed";
 import { randomTxBytes } from "libs/crypto";
 import Errors from "libs/errors";
 import { indexToChar } from "libs/hlx/converter";
 import { getLatestAddressObject } from "libs/hlx/addresses";
 import { ADDRESS_LENGTH } from "libs/hlx/utils";
-
+import Address from "ui/components/address";
+import Scrollbar from 'ui/components/scrollbar';
 /**
  *
  */
@@ -76,7 +77,8 @@ class Receive extends React.PureComponent {
   state = {
     message: "",
     scramble: new Array(ADDRESS_LENGTH).fill(0),
-    hasSyncedAddress: false
+    hasSyncedAddress: false,
+    spentstatus:""
   };
 
   componentWillReceiveProps(nextProps) {
@@ -133,7 +135,7 @@ class Receive extends React.PureComponent {
       accountName,
       accountMeta
     );
-
+    console.log('seedStroe', seedStore);
     this.props.generateNewAddress(
       seedStore,
       accountName,
@@ -150,7 +152,8 @@ class Receive extends React.PureComponent {
       account,
       history,
       generateAlert,
-      t
+      t,
+      
     } = this.props;
     const seedStore = await new SeedStore[accountMeta.type](
       password,
@@ -220,36 +223,63 @@ class Receive extends React.PureComponent {
     }
   }
 
+  showReady(){
+    const {accountInfo} = this.props;
+
+  }
+
   render() {
     const {
       t,
       receiveAddress,
       isGeneratingReceiveAddress,
-      hadErrorGeneratingNewAddress
+      hadErrorGeneratingNewAddress,
+      accountInfo
     } = this.props;
-    const { message, scramble, hasSyncedAddress } = this.state;
-
+    const { message, scramble, hasSyncedAddress,spentstatus } = this.state;
+    let addresses=[];
+    accountInfo.addressData.map(value=>{
+      const data={
+        address:value.address,
+        spent:value.spent.local
+      }
+      addresses.push(data)
+    });
     return (
       <div>
+        
         <section className={css.home}>
-          <Top
-            bal={"none"}
-            main={"block"}
-            user={"block"}
-            history={this.props.history}
-          />
+         
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3>
+                    <h3 style={{fontSize:'16px',marginLeft:'252px',marginTop:'-5vw'}}>
                       {t("receive:receiveCoins")}
                       <span>.</span>
                     </h3>
-                    <h6>{t("receive:irrevocableTransactionWarning")}</h6>
+                    <h3 style={{fontSize:'14px', marginLeft:'172px',marginTop:'-3vw', opacity:'0.3'}}>{t("receive:irrevocableTransactionWarning")}</h3><br/>
+                    <h3 style={{fontSize:'14px', marginLeft:'200px',marginTop:'-5vw', opacity:'0.3'}}>{t("receive:TransactionWarning")}</h3>
                     <div className={classNames(css.hlx_wallet_box)}>
-                      {/* Address generate */}
+                      {/* Address generate */} 
+                      <div className={css.hlx_iconLeft}>
+                          <Button
+                            className="icon_hover"
+                            style={{ marginLeft : "15vw" }}
+                            variant="backgroundNone"
+                            loading={isGeneratingReceiveAddress}
+                            onClick={this.onGeneratePress}
+                          >
+                            <Icon icon="sync" size={28} />
+                            <br />
+                            <p style={{fontSize: '12px',opacity: '0.3',marginTop: '-5px', width: '120px',marginLeft: '12px'}}>{t("receive:generateNewAddress")}</p>{t("receive:generateNewAddress")} <span> > </span>
+                          </Button>
+                        
+                      
+                      
+                     
+                        </div>
                       <div className={classNames(css.hlx_receive_box)}>
                         {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
                           <div
@@ -278,6 +308,7 @@ class Receive extends React.PureComponent {
                                         </React.Fragment>
                                       );
                                     })}
+                                      
                                   <span style={{ color: "#eaac32" }}>
                                     {receiveAddress
                                       .substring(64, 72)
@@ -294,29 +325,21 @@ class Receive extends React.PureComponent {
                                         );
                                       })}
                                   </span>
+                                 
                                 </div>
+                                <div className={css.hlx_iconHolder}>
+                                       <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
+                                       <p style={{marginTop: '30px',marginLeft: '2px',fontSize: '11px',opacity: '0.3'}}>SHARE QR CODE</p> 
+                                       </div> 
                               </Clipboard>
+                              
                             )}
                           </div>
                         ) : (
                           " "
                         )}
                       </div>
-                      {/* Refresh and Receive Buttons... */}
-                      <div className={css.hlx_iconHolder}>
-                        <div className={css.hlx_iconLeft}>
-                          <Button
-                            className="icon_hover"
-                            variant="backgroundNone"
-                            loading={isGeneratingReceiveAddress}
-                            onClick={this.onGeneratePress}
-                          >
-                            <Icon icon="sync" size={55} />
-                            <br />
-                            {t("receive:generateNewAddress")} <span> > </span>
-                          </Button>
-                        </div>
-                        <div className={css.hlx_iconRight}>
+                      <div className={css.hlx_iconRight}>
                           {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
                             <Clipboard
                               text={receiveAddress}
@@ -329,7 +352,12 @@ class Receive extends React.PureComponent {
                                 // loading={isGeneratingReceiveAddress}
                                 // onClick={this.onGeneratePress}
                               >
-                                <Icon icon="receive" size={55} />
+                      {/* <div className={css.hlx_iconHolder}>
+                      
+                      <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
+                    
+                   </div>          */}
+                    {/* <Icon icon="receive" size={55} /> */}
                                 <br />
                                 {t("receive:copyAddress")} <span> > </span>
                               </Button>
@@ -340,19 +368,52 @@ class Receive extends React.PureComponent {
                               variant="backgroundNone"
                               // loading={isGeneratingReceiveAddress}
                             >
-                              <Icon icon="receive" size={55} />
+                              {/* <Icon icon="receive" size={55} /> */}
                               <br />
                               {t("receive:copyAddress")} <span> > </span>
                             </Button>
                           )}
                         </div>
+                      <div className={classNames(css.addbottom)}>
+                        <hr/>
                       </div>
+                      {/* Refresh and Receive Buttons... */}
+                      {/* <div className={css.hlx_iconHolder}>
+                      
+                         <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
+                      
+                      </div> */}
                     </div>
-                  </div>
-                </div>
+                    </div>
+                 
+                    <div className="col-lg-12">
+                    <h3 style={{fontSize:'16px', marginLeft:'72vw',marginTop:'-61.3vw'}}>
+                      {t("receive:Address")}
+                   </h3>
+                    <h3 style={{fontSize:'14px', marginLeft:'71vw', opacity:'0.3'}}>{t("receive:Overviewstatus")}</h3><br/>
+                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-28px', opacity:'0.3'}}>{t("receive:AddressStatus")}</h3><br/>
+                    <div className={classNames(css.hlx_wallet_addr)}>
+                        <Scrollbar >
+                          
+                        {
+                            addresses.map(value=>{
+                          return (
+                            <div style={{ padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px', overflow:'hidden'}} key={value.address}>
+                              <span style={{ display: 'inline-block',float: 'left', width: '74%'}}>{(value.address).substring(0,30)+'...'}</span> 
+                              <span style={{ width: '18%', float: 'right', display: 'inline-block'}}>  <span className={value.spent==true? css.used_dot:css.ready_dot}></span> {value.spent==true?'Used':'Ready'}</span>
+                              {/* marginLeft:'32px',padding:'5px 10px 5px 14px' */}
+                            </div>
+                          );
+                            })
+                        }
+                        </Scrollbar>
+                    </div>
+                    </div>
+              </div>
               </div>
             </div>
           </div>
+          <hr className={css.recieve_hr}/>
         </section>
       </div>
     );
@@ -369,7 +430,9 @@ const mapStateToProps = state => ({
   accountName: getSelectedAccountName(state),
   accountMeta: getSelectedAccountMeta(state),
   password: state.wallet.password,
-  isValidatingAddress: state.wallet.isValidatingAddress
+  isValidatingAddress: state.wallet.isValidatingAddress,
+  accountInfo: selectAccountInfo(state),
+
 });
 
 const mapDispatchToProps = {

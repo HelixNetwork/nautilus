@@ -111,6 +111,16 @@ export const manuallySyncAccount = (seedStore, accountName, quorum = false) => {
     };
 };
 /**
+ * Dispatch when account is about to be manually synced
+ *
+ * @method manualSyncRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const manualSyncRequest = () => ({
+  type: AccountsActionTypes.MANUAL_SYNC_REQUEST,
+});
+/**
  * Dispatch to update address data for provided account
  *
  * @method updateAddresses
@@ -181,6 +191,7 @@ export const getAccountInfo = (
   withQuorum = false
 ) => {
   return (dispatch, getState) => {
+    console.log(accountName);
     dispatch(accountInfoFetchRequest());
 
     const existingAccountState = selectedAccountStateFactory(accountName)(
@@ -202,6 +213,7 @@ export const getAccountInfo = (
       notificationFn
     )
       .then(({ node, result }) => {
+        console.log(node);
         dispatch(changeNode(node));
         dispatch(accountInfoFetchSuccess(result));
       })

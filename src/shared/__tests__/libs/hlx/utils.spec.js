@@ -7,7 +7,6 @@ import {
   getRandomNodes,
   withRetriesOnDifferentNodes,
   throwIfNodeNotHealthy,
-  isLastBitZero,
   getChecksum
 } from "../../../libs/hlx/utils";
 import {
@@ -17,18 +16,6 @@ import {
 import { hexToBits, bitsToChars } from "../../../libs/hlx/converter";
 
 describe("libs: helix/utils", () => {
-  describe("#isLastBitZero", () => {
-    describe("when the last txBit is 0", () => {
-      it("should return true", () => {
-        expect(isLastBitZero("b".repeat(64))).to.equal(true);
-      });
-    });
-    describe("when the last txBit is not 0", () => {
-      it("should return false", () => {
-        expect(isLastBitZero("a".repeat(64))).to.equal(false);
-      });
-    });
-  });
 
   describe("#convertFromBytes", () => {
     describe("when txBytes passed as an argument contains all zeroes", () => {

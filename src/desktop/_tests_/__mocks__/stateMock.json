@@ -1,0 +1,336 @@
+{
+    "alerts": {
+        "category": "",
+        "title": "",
+        "message": "",
+        "closeInterval": 5500,
+        "notificationLog": []
+    },
+    "marketData": {
+        "currency": "USD",
+        "timeframe": "24h",
+        "chartData": {
+            "USD": {
+                "24h": [
+                    {
+                        "x": 0,
+                        "y": 0.2573,
+                        "time": 1549202400
+                    },
+                    {
+                        "x": 1,
+                        "y": 0.2579,
+                        "time": 1549206000
+                    },
+                    {
+                        "x": 2,
+                        "y": 0.2586,
+                        "time": 1549209600
+                    },
+                    {
+                        "x": 3,
+                        "y": 0.256,
+                        "time": 1549213200
+                    },
+                    {
+                        "x": 4,
+                        "y": 0.2557,
+                        "time": 1549216800
+                    },
+                    {
+                        "x": 5,
+                        "y": 0.2542,
+                        "time": 1549220400
+                    },
+                    {
+                        "x": 6,
+                        "y": 0.2539,
+                        "time": 1549224000
+                    },
+                    {
+                        "x": 7,
+                        "y": 0.252,
+                        "time": 1549227600
+                    },
+                    {
+                        "x": 8,
+                        "y": 0.2549,
+                        "time": 1549231200
+                    },
+                    {
+                        "x": 9,
+                        "y": 0.2547,
+                        "time": 1549234800
+                    },
+                    {
+                        "x": 10,
+                        "y": 0.2542,
+                        "time": 1549238400
+                    },
+                    {
+                        "x": 11,
+                        "y": 0.2539,
+                        "time": 1549242000
+                    },
+                    {
+                        "x": 12,
+                        "y": 0.2533,
+                        "time": 1549245600
+                    },
+                    {
+                        "x": 13,
+                        "y": 0.2538,
+                        "time": 1549249200
+                    },
+                    {
+                        "x": 14,
+                        "y": 0.255,
+                        "time": 1549252800
+                    },
+                    {
+                        "x": 15,
+                        "y": 0.2559,
+                        "time": 1549256400
+                    },
+                    {
+                        "x": 16,
+                        "y": 0.2559,
+                        "time": 1549260000
+                    },
+                    {
+                        "x": 17,
+                        "y": 0.256,
+                        "time": 1549263600
+                    },
+                    {
+                        "x": 18,
+                        "y": 0.2564,
+                        "time": 1549267200
+                    },
+                    {
+                        "x": 19,
+                        "y": 0.2551,
+                        "time": 1549270800
+                    },
+                    {
+                        "x": 20,
+                        "y": 0.2544,
+                        "time": 1549274400
+                    },
+                    {
+                        "x": 21,
+                        "y": 0.2541,
+                        "time": 1549278000
+                    },
+                    {
+                        "x": 22,
+                        "y": 0.2545,
+                        "time": 1549281600
+                    },
+                    {
+                        "x": 23,
+                        "y": 0.2547,
+                        "time": 1549285200
+                    }
+                ],
+                "7d": [],
+                "1m": [],
+                "1h": []
+            }
+        },
+        "mcap": 707946363,
+        "volume": 2971137,
+        "change24h": "-1.09",
+        "usdPrice": 0.2547,
+        "eurPrice": 0.223,
+        "btcPrice": 0.00007332,
+        "ethPrice": 0.002356798457087753
+    },
+    "accounts": {
+        "accountInfoDuringSetup": {
+            "name": "",
+            "usedExistingSeed": false,
+            "meta": {},
+            "completed": false
+        },
+        "onboardingComplete": true,
+        "accountInfo": {
+            "Foo": {
+                "index": 0,
+                "meta": {
+                    "type": "keychain",
+                    "index": null,
+                    "page": null,
+                    "indexAddress": null
+                },
+                "addressData": [
+                    {
+                        "address": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "index": 0,
+                        "balance": 0,
+                        "checksum": "bbbbbbbb",
+                        "spent": {
+                            "remote": true,
+                            "local": false
+                        }
+                    },
+                    {
+                        "address": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                        "index": 1,
+                        "balance": 1000000,
+                        "checksum": "cccccccc",
+                        "spent": {
+                            "remote": false,
+                            "local": false
+                        }
+                    }
+                ],
+                "transactions": [
+                    {
+                        "hash": "0000fa654f5d64b583820138eb57642d78a603db79fee34e9b2b27db3026acac",
+                        "signatureMessageFragment": "abcd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        "address": "9370887f02b41fa9051531ffc8027126cbc68d3971952d0e865eb5b5fe6d2201",
+                        "value": 0,
+                        "obsoleteTag": "000000000000000000000000000000000000000000000000000000000000012a",
+                        "timestamp": 1555408133,
+                        "currentIndex": 0,
+                        "lastIndex": 1,
+                        "tag": "0000000000000000",
+                        "trunkTransaction": "0079fdf28c8c046b4beb25175d1d8fec7d4792267b6835b3775078a466cc43e1",
+                        "branchTransaction": "0079fdf28c8c046b4beb25175d1d8fec7d4792267b6835b3775078a466cc43e1",
+                        "bundle": "19080412572458e46ae78020ce74690d3f90324b85a54b98907cd3148480000c",
+                        "attachmentTimestamp": 1555408141420,
+                        "attachmentTimestampLowerBound": 0,
+                        "attachmentTimestampUpperBound": 3812798742493,
+                        "nonce": "00000000000091c7",
+                        "persistence": true,
+                        "broadcasted": true
+                    }
+                ]
+            }
+        },
+        "tasks": {
+            "Foo": {
+                "displayedSnapshotTransitionGuide": false
+            }
+        }
+    },
+    "settings": {
+        "locale": "en",
+        "node": {
+            "url": "https://foo.bar:443",
+            "pow": false,
+            "token": "",
+            "password": ""
+        },
+        "nodes": [
+            {
+                "url": "https://foo.bar:443",
+                "pow": false,
+                "token": "",
+                "password": ""
+            }
+        ],
+        "customNodes": [],
+        "mode": "Standard",
+        "language": "English (International)",
+        "currency": "USD",
+        "availableCurrencies": ["USD", "EUR"],
+        "conversionRate": 1,
+        "themeName": "Default",
+        "hasRandomizedNode": false,
+        "remotePoW": false,
+        "autoPromotion": true,
+        "lockScreenTimeout": 3,
+        "autoNodeSwitching": false,
+        "versions": {
+            "version": "0.4.6"
+        },
+        "is2FAEnabled": false,
+        "isFingerprintEnabled": false,
+        "acceptedTerms": true,
+        "acceptedPrivacy": true,
+        "hideEmptyTransactions": false,
+        "isTrayEnabled": true,
+        "completedByteTritSweep": true,
+        "deepLinking": true,
+        "notifications": {
+            "general": true,
+            "confirmations": true,
+            "messages": true
+        },
+        "ignoreProxy": false,
+        "quorum": {
+            "size": 4,
+            "enabled": false
+        }
+    },
+    "home": {
+        "childRoute": "balance",
+        "isTopBarActive": false
+    },
+    "keychain": {
+        "isGettingSensitiveInfo": {
+            "receive": {
+                "addressGeneration": false
+            },
+            "send": {
+                "makeTransaction": false
+            }
+        }
+    },
+    "progress": {
+        "lastStepInitializationTime": 1548928907152,
+        "timeTakenByEachStep": [],
+        "activeStepIndex": -1,
+        "activeSteps": []
+    },
+    "wallet": {
+        "ready": true,
+        "password": [
+            229,
+            34,
+            107,
+            56,
+            71,
+            11,
+            182,
+            241,
+            127,
+            92,
+            0,
+            156,
+            41,
+            105,
+            164,
+            24,
+            93,
+            254,
+            1,
+            51,
+            230,
+            65,
+            153,
+            110,
+            234,
+            31,
+            201,
+            159,
+            59,
+            148,
+            64,
+            161
+        ],
+        "seedIndex": 0,
+        "transitionBalance": 0,
+        "transitionAddresses": [],
+        "balanceCheckFlag": false,
+        "deepLinkActive": false,
+        "hasConnection": true,
+        "isValidatingAddress": false,
+        "navStack": [],
+        "shouldUpdate": false,
+        "forceUpdate": false,
+        "isGeneratingReceiveAddress": false
+    }
+}

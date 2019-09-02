@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import { withI18n } from "react-i18next";
 import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
-
+import TopBar from "./topBar";
+import DashSidebar from "ui/components/dash_sidebar";
 import Send from "ui/views/wallet/send";
 import Receive from "ui/views/wallet/receive";
 import Chart from "ui/views/wallet/chart";
@@ -16,12 +17,16 @@ class Dashboard extends React.PureComponent {
   static propTypes = {};
   render() {
     return (
+      <div>
+     
       <Switch>
+      <Route path="/wallet/" component={Send} />
         <Route path="/wallet/send" component={Send} />
         <Route path="/wallet/receive" component={Receive} />
         <Route path="/wallet/chart" component={Chart} />
         <Route path="/wallet/history" component={WalletHistory} />
       </Switch>
+      </div>
     );
   }
 }

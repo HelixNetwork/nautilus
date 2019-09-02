@@ -1,0 +1,19 @@
+.progress {
+    p {
+        line-height: 18px;
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: 6px;
+        margin-left: -15px;
+    }
+
+    &.large {
+        margin-bottom: 38px;
+        small {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    }
+}
+

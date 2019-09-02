@@ -28,6 +28,7 @@
     "seed": "Seed",
     "checksum": "Checksum",
     "back": "Back",
+    "support":"SUPPORT",
     "goBack": "Go back",
     "goBackStep": "Go back a step",
     "done": "Done",
@@ -237,7 +238,8 @@
     "send": "SEND",
     "receive": "RECEIVE",
     "history": "HISTORY",
-    "settings": "SETTINGS"
+    "settings": "SETTINGS",
+    "chart":"CHART"
   },
   "languageSetup": {
     "language": "Language",
@@ -304,7 +306,7 @@
     "copyAddress": "Copy address",
     "addressCopied": "Address copied",
     "addressCopiedExplanation": "Your address has been copied to the clipboard.",
-    "generateNewAddress": "Generate address",
+    "generateNewAddress": "CLICK TO GENERATE",
     "noAddresses": "NO ADDRESSES",
     "spent": "Spent",
     "tag": "Tag",
@@ -312,8 +314,12 @@
     "generateAnAddressTitle": "Generate an address",
     "generateAnAddressExplanation": "Please generate an address before using this function.",
     "generateAddressInformation": "Generate a new deposit address every time you wish to receive HELIX",
-    "receiveCoins": "Receive HLX Coins",
-    "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
+    "receiveCoins": "RECEIVE HLX ",
+    "irrevocableTransactionWarning": "Please note that recieving fund requires",
+    "TransactionWarning": "generating a reciever address!",
+    "Address":"ADDRESS HISTORY",
+    "Overviewstatus": "Overview of your generated",
+    "AddressStatus": "address and their status!"
   },
   "saveYourSeed": {
     "saveYourSeed": "Back up your seed",
@@ -372,7 +378,7 @@
     "addressPasteExplanation": "It looks like you have pasted an address. Make sure that the address matches the one you want to send to.",
     "invalid": "INVALID",
     "swipeToSend": "Swipe to send",
-    "sendCoins": "Send HLX Coins",
+    "sendCoins": "SEND HLX",
     "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!",
     "enterReceiverAddress": "Enter Receiver Address"
   },

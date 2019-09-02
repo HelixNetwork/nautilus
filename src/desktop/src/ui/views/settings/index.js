@@ -45,6 +45,7 @@ class Settings extends React.PureComponent {
     return (
       <div>
         <Top bal={"none"} main={"block"} user={"none"} history={history} />
+   
         <div className="container">
           <div className="col-lg-4">
             <div className={classNames(css.menu_box)}>
