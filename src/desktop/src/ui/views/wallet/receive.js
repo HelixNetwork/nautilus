@@ -391,7 +391,7 @@ class Receive extends React.PureComponent {
                       {t("receive:Address")}
                    </h3>
                     <h3 style={{fontSize:'14px', marginLeft:'71vw', opacity:'0.3'}}>{t("receive:Overviewstatus")}</h3><br/>
-                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-2vw', opacity:'0.3'}}>{t("receive:AddressStatus")}</h3><br/>
+                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-28px', opacity:'0.3'}}>{t("receive:AddressStatus")}</h3><br/>
                     <div className={classNames(css.hlx_wallet_addr)}>
                         <Scrollbar >
                           
