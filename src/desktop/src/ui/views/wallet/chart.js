@@ -27,7 +27,7 @@ class Charts extends React.PureComponent {
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h5>
+                    {/* <h5>
                       Overview HLX chart<span>.</span>
                     </h5>
                    
@@ -42,7 +42,8 @@ class Charts extends React.PureComponent {
                       <div className={classNames(css.topbottom)}>
                         <hr/>
                       </div>
-                 
+                  */}
+                   <p style={{margin:'205px',marginLeft:'400px'}}>Currently not available</p>
                   </div>
                 </div>
               </div>

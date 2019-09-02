@@ -451,10 +451,7 @@ export class ListComponent extends React.PureComponent {
           <div>
             {activeTx ? (
               <div
-                className={classNames(
-                  activeTx.incoming ? css.received : css.sent,
-                  activeTx.persistence ? css.confirmed : css.pending
-                )}
+                className={css.sent}
               >
                 <p>
                   <strong>
