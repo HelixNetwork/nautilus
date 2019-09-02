@@ -92,8 +92,6 @@ class TopBar extends Component {
                             <hr/>
                         </div>
                         <div className={css.topRight1}>
-                                <h6 style={{ opacity: '0.3' }}>#MF_Private</h6>
-                                <br/>
                                 <select
                                 className={css.accountSelect}
                                 onChange={this.changeAccount.bind(this)}
