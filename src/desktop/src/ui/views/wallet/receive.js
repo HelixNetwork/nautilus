@@ -393,18 +393,17 @@ class Receive extends React.PureComponent {
                     <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-2vw'}}>{t("receive:AddressStatus")}</h3><br/>
                     <div className={classNames(css.hlx_wallet_addr)}>
                         <Scrollbar >
+                          
                         {
                             addresses.map(value=>{
-                          return (<div>
-                            <div className={classNames(css.addressbox)} key={value.address}>
-                            {value.address}</div>
-                            <div>
-                            {value.spent==true?(<div> Used</div>):(<div>Ready</div>)}</div>
+                          return (
+                            <div style={{padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px'}} key={value.address}>
+                              <span>{(value.address).substring(0,30)+'...'}</span> 
+                              <span style={{marginLeft:'32px',padding:'5px 10px 5px 14px'}}>{value.spent==true?'Used':'Ready'}</span>
                             </div>
                           );
                             })
                         }
-                         
                         </Scrollbar>
                     </div>
                     </div>

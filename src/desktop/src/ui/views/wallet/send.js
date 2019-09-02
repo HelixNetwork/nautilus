@@ -350,7 +350,7 @@ class Send extends React.PureComponent {
             <div className="container">
               <div className="row">
                 <div className="col-lg-9">
-                  <div className={classNames(css.foo_bxx1)}>
+                  <div className={classNames(css.foo_bxx1)} style={{paddingBottom:'100px'}}>
                     <h5>
                       {t("send:sendCoins")}
                       {/* <span>.</span> */}
