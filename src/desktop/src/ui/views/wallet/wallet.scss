@@ -240,11 +240,12 @@
   }
   .currencyBox{
     position: absolute;
-    left: 15px;
+    left: 50px;
     font-size: 16px;
     background-color: #101c37;
     color:white;
     border: none;
+    margin-top: 13px
   }
   .currencyBox:active{
     color:white
@@ -374,7 +375,7 @@
     height: auto;
     width: 50px;
     padding-bottom: 10px;
-    margin-left: -120px;
+    margin-left: -140px;
     margin-top: 101px;
   }
   .send_bts {
@@ -388,7 +389,7 @@
     font-size: 19px;
     height:28px;
     color: white;
-    margin-left: 492px;
+    margin-left: 475px;
     margin-top: -6px;
   }
   .send_bts:hover {
@@ -635,7 +636,7 @@ padding: 15px;
 }
 .eq{
   color:white;
-  margin-left:510px;
+  margin-left:489px;
 }
 .footer_bx{
 background-color: #dee1e3;

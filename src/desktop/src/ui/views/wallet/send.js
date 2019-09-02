@@ -356,7 +356,7 @@ class Send extends React.PureComponent {
                       {/* <span>.</span> */}
                     </h5>
                     <h6 style={{opacity: '0.3',marginLeft: '250px'}}>{t("send:irrevocableTransactionWarning")}</h6>
-                    <form>
+                    <form style={{marginLeft: '48px'}}>
                       {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
                                             <span className={classNames(css.er2)}>26,74</span>
