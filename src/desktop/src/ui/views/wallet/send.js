@@ -351,11 +351,11 @@ class Send extends React.PureComponent {
               <div className="row">
                 <div className="col-lg-9">
                   <div className={classNames(css.foo_bxx1)} style={{paddingBottom:'100px'}}>
-                    <h5 style={{marginLeft: '471px'}}>
+                    <h5 style={{marginLeft: '494px'}}>
                       {t("send:sendCoins")}
                       {/* <span>.</span> */}
                     </h5>
-                    <h6 style={{opacity: '0.3',marginLeft: '250px'}}>{t("send:irrevocableTransactionWarning")}</h6>
+                    <h6 style={{opacity: '0.3',marginLeft: '275px'}}>{t("send:irrevocableTransactionWarning")}</h6>
                     <form style={{marginLeft: '48px'}}>
                       {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
@@ -502,7 +502,7 @@ class Send extends React.PureComponent {
                     )}
                   </div>
                   {isSending && (
-                    <Modal isOpen={isSending}>
+                    <Modal isOpen={isSending} onClose={isSending}>
                       <ProgressBar progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}
