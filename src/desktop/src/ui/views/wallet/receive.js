@@ -223,16 +223,28 @@ class Receive extends React.PureComponent {
     }
   }
 
+  showReady(){
+    const {accountInfo} = this.props;
+
+  }
+
   render() {
     const {
       t,
       receiveAddress,
       isGeneratingReceiveAddress,
       hadErrorGeneratingNewAddress,
-      
+      accountInfo
     } = this.props;
     const { message, scramble, hasSyncedAddress,spentstatus } = this.state;
-console.log("statusss",spentstatus);
+    let addresses=[];
+    accountInfo.addressData.map(value=>{
+      const data={
+        address:value.address,
+        spent:value.spent.local
+      }
+      addresses.push(data)
+    });
     return (
       <div>
         
@@ -243,18 +255,18 @@ console.log("statusss",spentstatus);
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
-                    <h3 style={{fontSize:'23px',marginTop:'-4vw'}}>
+                    <h3 style={{fontSize:'16px',marginLeft:'252px',marginTop:'-5vw'}}>
                       {t("receive:receiveCoins")}
                       <span>.</span>
                     </h3>
-                    <h3 style={{fontSize:'16px', marginLeft:'136px',marginTop:'-3vw'}}>{t("receive:irrevocableTransactionWarning")}</h3><br/>
-                    <h3 style={{fontSize:'16px', marginLeft:'136px',marginTop:'-5vw'}}>{t("receive:TransactionWarning")}</h3>
+                    <h3 style={{fontSize:'14px', marginLeft:'172px',marginTop:'-3vw'}}>{t("receive:irrevocableTransactionWarning")}</h3><br/>
+                    <h3 style={{fontSize:'14px', marginLeft:'200px',marginTop:'-5vw'}}>{t("receive:TransactionWarning")}</h3>
                     <div className={classNames(css.hlx_wallet_box)}>
                       {/* Address generate */} 
                       <div className={css.hlx_iconLeft}>
                           <Button
                             className="icon_hover"
-                            style={{ marginLeft : "10vw" }}
+                            style={{ marginLeft : "13vw" }}
                             variant="backgroundNone"
                             loading={isGeneratingReceiveAddress}
                             onClick={this.onGeneratePress}
@@ -374,19 +386,21 @@ console.log("statusss",spentstatus);
                     </div>
                  
                     <div className="col-lg-12">
-                    <h3 style={{fontSize:'16px', marginLeft:'69vw',marginTop:'-63vw'}}>
+                    <h3 style={{fontSize:'16px', marginLeft:'72vw',marginTop:'-64vw'}}>
                       {t("receive:Address")}
                    </h3>
-                    <h3 style={{fontSize:'16px', marginLeft:'68vw'}}>{t("receive:Overviewstatus")}</h3><br/>
-                    <h3  style={{fontSize:'16px', marginLeft:'68vw', marginTop:'-2vw'}}>{t("receive:AddressStatus")}</h3><br/>
+                    <h3 style={{fontSize:'14px', marginLeft:'71vw'}}>{t("receive:Overviewstatus")}</h3><br/>
+                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-2vw'}}>{t("receive:AddressStatus")}</h3><br/>
                     <div className={classNames(css.hlx_wallet_addr)}>
                         <Scrollbar >
-                         <div className={classNames(css.addressbox)}>
-                          {receiveAddress}
-                          {spentstatus ==true ? (
-                            <div> Used</div>
-                          ):(<div>Ready</div>)};
-                         </div>
+                        {
+                            addresses.map(value=>{
+                          return <div className={classNames(css.addressbox)} key={value.address}>
+                            {value.address}
+                            {value.spent==true?(<div> Used</div>):(<div>Ready</div>)}
+                            </div>
+                            })
+                        }
                          
                         </Scrollbar>
                     </div>
@@ -412,7 +426,9 @@ const mapStateToProps = state => ({
   accountName: getSelectedAccountName(state),
   accountMeta: getSelectedAccountMeta(state),
   password: state.wallet.password,
-  isValidatingAddress: state.wallet.isValidatingAddress
+  isValidatingAddress: state.wallet.isValidatingAddress,
+  accountInfo: selectAccountInfo(state),
+
 });
 
 const mapDispatchToProps = {

@@ -221,6 +221,11 @@
     border: none;
     text-align: center;
   }
+  .bbx_box1::-webkit-inner-spin-button, 
+  .bbx_box1::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
   .msgBox {
     margin-left: 180px;
     background-image:linear-gradient(to right, #67581f , #3b3237);
@@ -555,17 +560,18 @@ box-shadow: -5px 5px 8px 0px grey;
 }
 
 div .address_div{
-  line-height: 0.88em;
   font-family: monospace;
   font-weight: 700;
   position: absolute;
-  margin-top: 103px;
-  width: 85%;
+  margin-top: 120px;
+  width: 92%;
   height: 20%;
   overflow-wrap: break-word;
-  padding: 10px;
-  letter-spacing: 4.5px;
+  padding: 0px;
+  letter-spacing: 1.5px;
   line-height: 30px;
+  margin-left: -18px;
+  font-size: 21px;
 }
 
 footer,
@@ -705,22 +711,6 @@ margin-right: 16px;
   border-color: #908a8a;
 }
 
-.hlx_wallet_box {
-  width: 714px;
-  background-color: #000b20;
-  border-radius: 5px;
-  box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
-  min-height:310px;
-  min-width: 620px;
-  position: absolute;
-  top: 30%;
-  bottom: 3%;
-  left: 0;
-  right: 0;
-  margin: auto;
-  z-index:1000;
-  padding: 5px 0px 10px 0px;
-}
 
 .hlx_receive_box {
   width: 85%;
@@ -1695,32 +1685,32 @@ margin-right: 16px;
   background-color: #211855;
   border-radius: 5px;
   box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
-  min-height: 265px;
+  min-height: 300px;
   min-width: 460px;
   position: absolute;
   top: 14%;
   bottom: 22%;
-  left: -349px;
+  left: -392px;
   right: 0;
   margin: auto;
   z-index: 1000;
   padding: 5px 0px 10px 0px;
 }
 .hlx_wallet_addr {
-  width: 26%;
-  background-color: #1D1B46;
-  border-radius: 5px;
-  box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
-  min-height: 310px;
-  min-width: 100px;
-  position: absolute;
-  top: 29%;
-  bottom: 22%;
-  left: 732px;
-  right: 0;
-  margin: auto;
-  z-index: 1000;
-  padding: 5px 0px 10px 0px;
+  width: 30%;
+    background-color: #1D1B46;
+    border-radius: 5px;
+    box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
+    min-height: 320px;
+    min-width: 100px;
+    position: absolute;
+    top: 200px;
+    bottom: 22%;
+    left: 762px;
+    right: 0;
+    margin: auto;
+    z-index: 1000;
+    padding: 5px 0px 10px 0px;
 }
 .hlx_receive_box {
   width: 85%;

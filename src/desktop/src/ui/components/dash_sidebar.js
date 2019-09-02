@@ -30,27 +30,26 @@ class DashSidebar extends React.PureComponent {
   render() {
     const { t, active } = this.props;
     
-   
     return (  
         <div className={classNames(css.sidebar)}>
       <ul className={classNames(css.acco_pg)}>
         
-      <a style={{marginLeft: '30px',
-    marginBottom: '20px',
-    marginTop: '-20px'}}>
+          <a style={{marginLeft: '30px',
+          marginBottom: '20px',
+          marginTop: '-20px'}}>
            MENU  
           </a>
-          <li className={active == "send" ? css.active : ""}>
+          <li>
           <a onClick={() => this.props.history.push("/wallet/send")} className={classNames(css.img_sr1)}>
-         <img src={Send} alt=" " className={css.sidebar_icon}/> {t("home:send")} 
+         <img src={active =='send'?Send:Receive} alt=" " className={css.sidebar_icon}/> {t("home:send")} 
           </a>
           </li>
        
      
        
-          <li className={active == "recieve" ? css.active : ""}>  
+          <li>  
           <a onClick={() => this.props.history.push("/wallet/receive")} className={classNames(css.img_sr1)}>
-          <img src={Receive} alt=" " className={css.sidebar_icon}/> {t("home:receive")}  
+          <img src={active == "receive" ? Receive:Send} alt=" " className={css.sidebar_icon}/> {t("home:receive")}  
           </a>
           </li>
        
