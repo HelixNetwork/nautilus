@@ -60,7 +60,13 @@ export default class ProgressBar extends React.PureComponent {
                     <div className={css.bar} style={{ width: `${Math.min(progress, 100)}%` }} />
                     
                 </div> */}
-                <Progress type="circle" percent={Math.min(progress, 100)} status={this.state.color} style={circleProgress}/>
+                <Progress type="circle" percent={Math.min(progress, 100)} status={this.state.color} style={circleProgress} theme={{
+                    default: {
+                        symbol: progress + '%',
+                        trailColor: '#eaac32',
+                        color: '#eaac32'
+                      }
+                }}/>
                 <br/><br/><br/><br/>
                 <br/><br/><br/><br/>
                 {title && <p>{title}</p>}
