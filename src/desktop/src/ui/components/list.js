@@ -391,7 +391,7 @@ export class ListComponent extends React.PureComponent {
                         <p className={css.fromhash}>{transaction.bundle}</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <span className={!isReceived?css.sent:css.receive}>{transaction.transferValue === 0
+                        <span className={css.pending}>{transaction.transferValue === 0
                           ? ""
                           : isReceived
                           ? "+"

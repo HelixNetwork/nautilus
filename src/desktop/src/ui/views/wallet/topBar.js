@@ -82,9 +82,9 @@ class TopBar extends Component {
                 <div className={css.top}>
                     <img src={logo}/>
                         <div className={css.topIn}>    
-                            <h4>BALANCE</h4>
+                            <h4 style={{ marginBottom: '-13px' }}>BALANCE</h4>
                             <br/>
-                            <p>.</p><h6>€0.02/mHLX</h6>
+                            <div> <span className={css.dot}></span><h6 style={{ opacity: '0.3' }}>€0.02/mHLX</h6></div>
                         </div>
                         <div className={css.topBal}>
                             <img src={hlx}/>
@@ -92,7 +92,7 @@ class TopBar extends Component {
                             <hr/>
                         </div>
                         <div className={css.topRight1}>
-                                <h6>#MF_Private</h6>
+                                <h6 style={{ opacity: '0.3' }}>#MF_Private</h6>
                                 <br/>
                                 <select
                                 className={css.accountSelect}
@@ -112,9 +112,9 @@ class TopBar extends Component {
                         </div>
                         <div className={css.topRight}>    
                             
-                            <h4>{accountName.toUpperCase()}</h4>
+                            <h4 style={{ marginBottom: '-13px' }}>{accountName.toUpperCase()}</h4>
                             <br/>
-                            <p>.</p><h6>CONNECTED</h6>
+                             <div> <span className={css.dot}></span><h6 style={{ opacity: '0.3' }}>CONNECTED</h6></div>
                         </div>
                 </div>
                 <hr className={css.topBorder}/>

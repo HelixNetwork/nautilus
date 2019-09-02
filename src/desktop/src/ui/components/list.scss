@@ -319,9 +319,9 @@
   }
   .column_sent {
     float: left;
-    width: 95%;
+    width: 90%;
     padding: 10px;
-    height: 80px;
+    height: 70px;
     margin: 10px 40px 8px 40px;
     background-image: linear-gradient(to right, #661f47, #311846); 
   }
@@ -377,9 +377,9 @@
   
   .column_receive {
     float: left;
-    width: 95%;
+    width: 90%;
     padding: 10px;
-    height: 80px;
+    height: 70px;
     margin: 10px 40px 8px 40px;
     background-image: linear-gradient(to right, #152353, #132145); 
   }
@@ -395,9 +395,9 @@
 
   .column_pending {
     float: left;
-    width: 95%;
+    width: 90%;
     padding: 10px;
-    height: 80px;
+    height: 70px;
     margin: 10px 40px 8px 40px;
     background-image: linear-gradient(to right, #b18907cb, #7e7c049c); 
   }
@@ -430,6 +430,7 @@
     font-size: 15px;
     padding: 9px;
     margin-top: 11px;
+    border-radius: 5px;
   }
   
   .sent_heading{
@@ -463,5 +464,15 @@
         font-size: 15px;
         padding: 9px;
         margin-top: 11px;
+        border-radius: 5px;
   }
   
+  .pending{
+    background: #ad9a1d;
+    float: right;
+      margin-bottom: 0px;
+      font-size: 15px;
+      padding: 9px;
+      margin-top: 11px;
+      border-radius: 5px;
+}

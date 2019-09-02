@@ -6,7 +6,7 @@ import images from "ui/images/ic1.png";
 import TopBar from "./topBar";
 import DashSidebar from 'ui/components/dash_sidebar';
 import PropTypes from "prop-types";
-import ic1 from "ui/images/send.svg";
+import ic1 from "ui/images/svg/send.svg";
 import { withI18n } from "react-i18next";
 import SeedStore from "libs/seed";
 import Modal from "ui/components/modal/Modal";
@@ -351,11 +351,11 @@ class Send extends React.PureComponent {
               <div className="row">
                 <div className="col-lg-9">
                   <div className={classNames(css.foo_bxx1)} style={{paddingBottom:'100px'}}>
-                    <h5>
+                    <h5 style={{marginLeft: '471px'}}>
                       {t("send:sendCoins")}
                       {/* <span>.</span> */}
                     </h5>
-                    <h6>{t("send:irrevocableTransactionWarning")}</h6>
+                    <h6 style={{opacity: '0.3',marginLeft: '250px'}}>{t("send:irrevocableTransactionWarning")}</h6>
                     <form>
                       {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
                                             <span className={classNames(css.er1)}>EUR</span>
@@ -450,7 +450,7 @@ class Send extends React.PureComponent {
                       >
                         <img src={ic1} alt="" />
                       </a>
-                      <h2 className={classNames(css.send_bts_h2)}>
+                      <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3'}}>
                         SEND
                       </h2>
                     </form>

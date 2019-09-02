@@ -139,14 +139,14 @@
     margin-top: 300px;
   }
   .foo_bxx1 {
-    width: 940px;
+    width: 1000px;
     padding: 45px 50px 65px 40px;
     height: 430px;
     position: absolute;
     left: 50%;
     bottom: 28px;
     margin-top: -27px;
-    margin-left: -440px;
+    margin-left: -478px;
     background-color:transparent;
     z-index: 1000;
     border-width: 2px;
@@ -274,7 +274,7 @@
     border: 0;
     border-bottom: 2px solid #e8b349;
     margin-top: 46px;
-    width: 830px;
+    width: 94%;
     outline: 0;
     text-align: center;
     margin-left: 50px;
@@ -380,7 +380,7 @@
   .send_bts {
     display: inline-block;
     margin-top: -83px;
-    margin-left:553px;
+    margin-left: 615px;
     color: #081726;
     transition: all 0.5s;
   }
@@ -388,7 +388,7 @@
     font-size: 19px;
     height:28px;
     color: white;
-    margin-left: 432px;
+    margin-left: 492px;
     margin-top: -6px;
   }
   .send_bts:hover {
@@ -561,17 +561,17 @@ box-shadow: -5px 5px 8px 0px grey;
 
 div .address_div{
   font-family: monospace;
-  font-weight: 700;
+  font-weight: 400;
   position: absolute;
   margin-top: 120px;
-  width: 92%;
+  width: 85%;
   height: 20%;
   overflow-wrap: break-word;
   padding: 0px;
-  letter-spacing: 1.5px;
+  letter-spacing: 4.5px;
   line-height: 30px;
-  margin-left: -18px;
-  font-size: 21px;
+  margin-left: 2px;
+  font-size: 16px;
 }
 
 footer,
@@ -635,7 +635,7 @@ padding: 15px;
 }
 .eq{
   color:white;
-  margin-left:483px;
+  margin-left:510px;
 }
 .footer_bx{
 background-color: #dee1e3;
@@ -1690,10 +1690,9 @@ margin-right: 16px;
 
 .hlx_wallet_box {
  
-  width: 55%;
-  background-color: #211855;
-  border-radius: 5px;
-  box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
+  width: 56%;
+  background-image: linear-gradient(to right, rgb(21, 35, 83), rgb(19, 33, 69));  border-radius: 5px;
+  // box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
   min-height: 300px;
   min-width: 460px;
   position: absolute;
@@ -1706,19 +1705,18 @@ margin-right: 16px;
   padding: 5px 0px 10px 0px;
 }
 .hlx_wallet_addr {
-    width: 30%;
-    border-radius: 5px;
-    box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
-    min-height: 320px;
-    min-width: 100px;
-    position: absolute;
-    top: 200px;
-    bottom: 22%;
-    left: 762px;
-    right: 0;
-    margin: auto;
-    z-index: 1000;
-    padding: 5px 0px 10px 0px;
+  width: 30%;
+  border-radius: 5px;
+  min-height: 355px;
+  min-width: 100px;
+  position: absolute;
+  top: 220px;
+  bottom: 18%;
+  left: 762px;
+  right: 0;
+  margin: auto;
+  z-index: 1000;
+  padding: 5px 0px 10px 0px;
 }
 .hlx_receive_box {
   width: 85%;
@@ -2257,5 +2255,34 @@ margin-right: 16px;
   top: 577px;
   width: 73%;
   left: 256px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(216, 215, 213, 0.75), rgba(0, 0, 0, 0));
+  height: 2px;
+  border: 0;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.ready_dot {
+  float: left;
+  margin-top: 2px;
+  margin-right: 3px;
+  height: 8px;
+  width: 8px;
+  background-color: green;
+  border-radius: 50%;
+}
+.used_dot {
+  float: left;
+  margin-top: 2px;
+  margin-right: 3px;
+  height: 8px;
+  width: 8px;
+  background-color: red;
+  border-radius: 50%;
+}
+.dot {
+  float: left;
+  margin-top: 2px;
+  margin-right: 3px;
+  height: 8px;
+  width: 8px;
+  background-color: green;
+  border-radius: 50%;
 }

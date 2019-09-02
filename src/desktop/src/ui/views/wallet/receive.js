@@ -259,8 +259,8 @@ class Receive extends React.PureComponent {
                       {t("receive:receiveCoins")}
                       <span>.</span>
                     </h3>
-                    <h3 style={{fontSize:'14px', marginLeft:'172px',marginTop:'-3vw'}}>{t("receive:irrevocableTransactionWarning")}</h3><br/>
-                    <h3 style={{fontSize:'14px', marginLeft:'200px',marginTop:'-5vw'}}>{t("receive:TransactionWarning")}</h3>
+                    <h3 style={{fontSize:'14px', marginLeft:'172px',marginTop:'-3vw', opacity:'0.3'}}>{t("receive:irrevocableTransactionWarning")}</h3><br/>
+                    <h3 style={{fontSize:'14px', marginLeft:'200px',marginTop:'-5vw', opacity:'0.3'}}>{t("receive:TransactionWarning")}</h3>
                     <div className={classNames(css.hlx_wallet_box)}>
                       {/* Address generate */} 
                       <div className={css.hlx_iconLeft}>
@@ -389,17 +389,18 @@ class Receive extends React.PureComponent {
                     <h3 style={{fontSize:'16px', marginLeft:'72vw',marginTop:'-64vw'}}>
                       {t("receive:Address")}
                    </h3>
-                    <h3 style={{fontSize:'14px', marginLeft:'71vw'}}>{t("receive:Overviewstatus")}</h3><br/>
-                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-2vw'}}>{t("receive:AddressStatus")}</h3><br/>
+                    <h3 style={{fontSize:'14px', marginLeft:'71vw', opacity:'0.3'}}>{t("receive:Overviewstatus")}</h3><br/>
+                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-2vw', opacity:'0.3'}}>{t("receive:AddressStatus")}</h3><br/>
                     <div className={classNames(css.hlx_wallet_addr)}>
                         <Scrollbar >
                           
                         {
                             addresses.map(value=>{
                           return (
-                            <div style={{padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px'}} key={value.address}>
-                              <span>{(value.address).substring(0,30)+'...'}</span> 
-                              <span style={{marginLeft:'32px',padding:'5px 10px 5px 14px'}}>{value.spent==true?'Used':'Ready'}</span>
+                            <div style={{ padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px', overflow:'hidden'}} key={value.address}>
+                              <span style={{ display: 'inline-block',float: 'left', width: '74%'}}>{(value.address).substring(0,30)+'...'}</span> 
+                              <span style={{ width: '18%', float: 'right', display: 'inline-block'}}>  <span className={value.spent==true? css.used_dot:css.ready_dot}></span> {value.spent==true?'Used':'Ready'}</span>
+                              {/* marginLeft:'32px',padding:'5px 10px 5px 14px' */}
                             </div>
                           );
                             })
