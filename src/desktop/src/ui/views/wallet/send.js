@@ -421,7 +421,7 @@ class Send extends React.PureComponent {
                       className={css.currencyBox}
                       style={{
                         top: '355px',
-                        left: '20px'
+                        left: '55px'
                       }}
                       >
                         NOTE
