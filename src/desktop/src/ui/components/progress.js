@@ -11,8 +11,8 @@ const circleProgress = {
     width:'250px',
     height: '250px',
     position:'absolute !important',
-    top:'-80px',
-    left:'500px',
+    top:'100px',
+    left:'0px',
     border:'none !important'
 }
 export default class ProgressBar extends React.PureComponent {

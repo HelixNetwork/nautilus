@@ -34,11 +34,11 @@ class DashSidebar extends React.PureComponent {
         <div className={classNames(css.sidebar)}>
       <ul className={classNames(css.acco_pg)}>
         
-          <a style={{marginLeft: '30px',marginBottom: '20px',marginTop: '-20px', opacity:'0.3'}}>
+          <p style={{marginLeft: '43px',marginBottom: '20px',marginTop: '-20px', opacity:'0.3'}}>
            MENU  <span style={{ margin: "10px" }}> v </span>
-          </a>
+          </p>
           <li>
-          <a onClick={() => this.props.history.push("/wallet/send")} className={classNames(css.img_sr1)} style={active=="send"?{opacity:'1'}:{opacity:'0.3'}}>
+          <a onClick={() => this.props.history.push("/wallet/send")} className={classNames(css.img_sr1)} style={active=="send"?{opacity:'1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)'}:{opacity:'0.3'}}>
          <img src={Send} alt=" " className={css.sidebar_icon}/> {t("home:send")} 
           </a>
           </li>
@@ -46,20 +46,20 @@ class DashSidebar extends React.PureComponent {
      
        
           <li>  
-          <a onClick={() => this.props.history.push("/wallet/receive")} className={classNames(css.img_sr1)} style={active=="receive"?{opacity:'1'}:{opacity:'0.3'}}>
+          <a onClick={() => this.props.history.push("/wallet/receive")} className={classNames(css.img_sr1)} style={active=="receive"?{opacity:'1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)'}:{opacity:'0.3'}}>
           <img src={Receive} alt=" " className={css.sidebar_icon}/> {t("home:receive")}  
           </a>
           </li>
        
           <li>  
-          <a onClick={() => this.props.history.push("/wallet/chart")}  className={classNames(css.img_sr1)} style={active=="chart"?{opacity:'1'}:{opacity:'0.3'}}>
+          <a onClick={() => this.props.history.push("/wallet/chart")}  className={classNames(css.img_sr1)} style={active=="chart"?{opacity:'1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)'}:{opacity:'0.3'}}>
           <img src={Chart} alt=" " className={css.sidebar_icon}/> {t("home:chart")} 
           </a>
    
           </li>
           <li>  
           <a
-            onClick={() => this.props.history.push("/wallet/history")}  className={classNames(css.img_sr1)} style={active=="history"?{opacity:'1'}:{opacity:'0.3'}}
+            onClick={() => this.props.history.push("/wallet/history")}  className={classNames(css.img_sr1)} style={active=="history"?{opacity:'1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)'}:{opacity:'0.3'}}
           >
           <img src={History} alt=" " className={css.sidebar_icon}/> {t("home:history")} 
           </a>

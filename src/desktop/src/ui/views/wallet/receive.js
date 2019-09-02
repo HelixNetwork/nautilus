@@ -266,14 +266,14 @@ class Receive extends React.PureComponent {
                       <div className={css.hlx_iconLeft}>
                           <Button
                             className="icon_hover"
-                            style={{ marginLeft : "13vw" }}
+                            style={{ marginLeft : "15vw" }}
                             variant="backgroundNone"
                             loading={isGeneratingReceiveAddress}
                             onClick={this.onGeneratePress}
                           >
                             <Icon icon="sync" size={28} />
                             <br />
-                            {t("receive:generateNewAddress")} <span> > </span>
+                            <p style={{fontSize: '12px',opacity: '0.3',marginTop: '-5px', width: '120px',marginLeft: '12px'}}>{t("receive:generateNewAddress")}</p>{t("receive:generateNewAddress")} <span> > </span>
                           </Button>
                         
                       
@@ -329,6 +329,7 @@ class Receive extends React.PureComponent {
                                 </div>
                                 <div className={css.hlx_iconHolder}>
                                        <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
+                                       <p style={{marginTop: '30px',marginLeft: '2px',fontSize: '11px',opacity: '0.3'}}>SHARE QR CODE</p> 
                                        </div> 
                               </Clipboard>
                               

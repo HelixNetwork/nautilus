@@ -306,7 +306,7 @@
     "copyAddress": "Copy address",
     "addressCopied": "Address copied",
     "addressCopiedExplanation": "Your address has been copied to the clipboard.",
-    "generateNewAddress": "Generate address",
+    "generateNewAddress": "CLICK TO GENERATE",
     "noAddresses": "NO ADDRESSES",
     "spent": "Spent",
     "tag": "Tag",
