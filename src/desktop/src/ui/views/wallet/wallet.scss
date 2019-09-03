@@ -249,7 +249,7 @@
     position: absolute;
     left: 50px;
     font-size: 16px;
-    background-color: #101c37;
+    background-color:var(--body-bg);
     color:white;
     border: none;
     margin-top: 13px
@@ -996,7 +996,7 @@ margin-right: 16px;
 .topRight{
   position: absolute;
   top:-21px;
-  right:50px;
+  left:1050px
 }
 
 .topRight1{
@@ -2000,11 +2000,6 @@ margin-right: 16px;
     font-size: 50px;
 }
 
-.topRight{
-  position: absolute;
-  top:-21px;
-  right:50px;
-}
 
 .topRight1{
   position: absolute;
@@ -2057,7 +2052,7 @@ margin-right: 16px;
 
 
 .accountSelect{
-  background: #101c37;
+  background: var(--body-bg);
   border:none;
   color: white !important;
   position: absolute;
@@ -2091,7 +2086,7 @@ margin-right: 16px;
 
 .search_text{
   float: left;
-  padding-left: 40px;
+  padding-left: 45px;
   font-family: Yu Gothic;
   opacity: 0.3;
   font-size: 12px;

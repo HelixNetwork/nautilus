@@ -302,7 +302,7 @@ export class ListComponent extends React.PureComponent {
         <div className={css.search}>
           <div
               onClick={() => this.setState({ search: "" })}
-              style={{ display: "inline-block", marginLeft: "-110%",color:'white',opacity:'0.3' }}
+              style={{ display: "inline-block", marginLeft: "-131%",color:'white',opacity:'0.3', marginTop:'5px' }}
             >
               <Icon
                 icon={search.length > 0 ? "cross" : "search"}
@@ -326,18 +326,6 @@ export class ListComponent extends React.PureComponent {
                   </option>)
                 })}
                 </select></div> 
-          
-          <a
-            onClick={() => updateAccount()}
-            className={classNames(
-              css.refresh,
-              isBusy ? css.busy : null,
-              isLoading ? css.loading : null
-            )}
-          >
-            <Icon icon="sync" size={24} />
-          </a>
-
           
         </nav>
         {/* <div className={css.list} style={style}> */}
@@ -364,7 +352,7 @@ export class ListComponent extends React.PureComponent {
                         <p className={css.note}>{this.showMessage(transaction.message)}</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>{isReceived?'Sender':'Receiver'}</h4>
+                        <h4 className={css.sender_heading}>Hash</h4>
                         <p className={css.fromhash}>{transaction.bundle}</p>
                     </div>
                     <div className={css.column_cnt}>
