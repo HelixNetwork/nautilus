@@ -68,7 +68,7 @@ class Welcome extends React.PureComponent {
   };
 
   render() {
-    const { t } = this.props;
+    const { history, t } = this.props;
     const { step, scrollEnd } = this.state;
     let markdown = "";
     markdown = step === "terms" ? enTermsAndConditions : enPrivacyPolicy;
@@ -78,7 +78,7 @@ class Welcome extends React.PureComponent {
     };
     return (
       <div>
-        <Logos size={20} />
+        <Logos size={20} history={history}/>
         <section className={css.home}>
           {step === "language" ? (
             <React.Fragment>

@@ -84,12 +84,12 @@ class AccountName extends React.PureComponent {
   };
 
   render() {
-    const { t, generateAlert } = this.props;
+    const { history, t, generateAlert } = this.props;
     const { name, isGenerated } = this.state;
 
     return (
       <section className="spage_1">
-        <Logos size={20} />
+        <Logos size={20} history={history}/>
         <div className="container">
           <div className="row">
             <form onSubmit={this.setName}>

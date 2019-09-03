@@ -16,6 +16,9 @@
         cursor: pointer;
         &.empty {
             color: var(--body-alt);
+            margin-top: 16vw;
+            margin-left: 38vw;
+        
         }
         &.disabled {
             color: var(--body-alt);

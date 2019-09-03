@@ -224,7 +224,7 @@ class SeedImport extends React.PureComponent {
     } = this.state;
     return (
       <div>
-        <Logos />
+        <Logos history={history}/>
         <section className="spage_1">
           <div className="container">
             <div className="row">

@@ -130,13 +130,13 @@ class AccountPassword extends React.PureComponent {
   };
 
   render() {
-    const { t } = this.props;
+    const { history, t } = this.props;
     const { isGenerated } = this.state;
     const score = zxcvbn(this.state.password);
 
     return (
       <section>
-        <Logos size={20} />
+        <Logos size={20} history={history}/>
         <form onSubmit={e => this.createAccount(e)}>
           <section>
             <h1>{t("setPassword:choosePassword")}</h1>

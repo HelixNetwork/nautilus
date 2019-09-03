@@ -40,11 +40,11 @@ class Done extends React.PureComponent {
   // };
 
   render() {
-    const { loop, animate, onEnd } = this.props;
+    const { loop, animate,onEnd } = this.props;
     const size = 190;
     const h_size = 120;
 
-    const { t } = this.props;
+    const { history, t } = this.props;
     const defaultOptions = {
       loop: loop,
       autoplay: true,
@@ -55,7 +55,7 @@ class Done extends React.PureComponent {
     };
     return (
       <div>
-        <Logos />
+        <Logos history={history}/>
         <section className="spage_1">
           <div className="container">
             <div className="row">
