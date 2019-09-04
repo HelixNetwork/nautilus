@@ -267,7 +267,6 @@ class SeedGenerate extends React.PureComponent {
   render() {
     const { history, t } = this.props;
     const { progressStrength, ledger } = this.state;
-    console.log(progressStrength);
     const {
       seed1,
       seed2,
