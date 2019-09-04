@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { withI18n } from "react-i18next";
-import image from "ui/images/ex_mark.png";
+import image from "ui/images/danger.svg";
 
 import { setAccountInfoDuringSetup } from "actions/accounts";
 import Button from "ui/components/button";

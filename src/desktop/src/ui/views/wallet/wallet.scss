@@ -36,9 +36,7 @@
     bottom: 85px;
     top:100px;
     margin-left: -350px;
-    background-color: #06182b;
     border-radius: 5px;
-    box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
     z-index: 1000;
   }
   .sseed_box1 h4{
@@ -584,7 +582,6 @@ div .address_div{
 
 footer,
 footer > div {
-  background-color: #dee1e3;
   position: absolute;
   bottom: 0px;
   height: 230px;
@@ -646,7 +643,6 @@ padding: 15px;
   margin-left:489px;
 }
 .footer_bx{
-background-color: #dee1e3;
 position: absolute;
 bottom: 0px;
 height: 550px;
@@ -1554,21 +1550,6 @@ background: #fff;
 box-shadow: -5px 5px 8px 0px grey;
 }
 
-
-footer,
-footer > div {
-  background-color: #dee1e3;
-  position: absolute;
-  bottom: 0px;
-  height: 230px;
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-  overflow: hidden;
-  * {
-    flex: 1;
-  }
-}
 
 .table_box1 {
   width: 124px;

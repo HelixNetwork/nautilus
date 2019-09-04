@@ -50,7 +50,8 @@ class SeedGenerate extends React.PureComponent {
     disableOne: false,
     disableTwo: false,
     disableThree: false,
-    disableFour: false
+    disableFour: false, 
+    progressStrength:0
   };
   componentDidMount() {
     this.frame = 0;
@@ -90,7 +91,8 @@ class SeedGenerate extends React.PureComponent {
       disableOne,
       disableTwo,
       disableThree,
-      disableFour
+      disableFour, 
+      progressStrength
     } = this.state;
 
     const position = e.target.value;
@@ -169,7 +171,8 @@ class SeedGenerate extends React.PureComponent {
       disableOne: boxOneDisable,
       disableTwo: boxTwoDisable,
       disableThree: boxThreeDisable,
-      disableFour: boxFourDisable
+      disableFour: boxFourDisable,
+      progressStrength: progressStrength+6.25
     }));
     this.unscramble();
   };
@@ -263,7 +266,8 @@ class SeedGenerate extends React.PureComponent {
 
   render() {
     const { history, t } = this.props;
-    const { ledger } = this.state;
+    const { progressStrength, ledger } = this.state;
+    console.log(progressStrength);
     const {
       seed1,
       seed2,
@@ -279,7 +283,6 @@ class SeedGenerate extends React.PureComponent {
     } = this.state;
 
     const clicksLeft = 16 - clicks.length;
-
     const { loop, animate, onEnd } = this.props;
 
     const defaultOptions = {
@@ -304,7 +307,7 @@ class SeedGenerate extends React.PureComponent {
                   <span className={classNames(css.text_color)}>.</span>
                 </h1>
                 <h3>
-                  {!existingSeed && clicksLeft > 0 ? (
+                  {/* {!existingSeed && clicksLeft > 0 ? (
                     <Trans
                       i18nKey="newSeedSetup:individualLetterCount"
                       count={clicksLeft}
@@ -317,16 +320,27 @@ class SeedGenerate extends React.PureComponent {
                     </Trans>
                   ) : (
                     <span>&nbsp;</span>
-                  )}
+                  )} */}
+                  Generate randomness by <b>clicking</b> on the characters.
                 </h3>
-              </div>
+                <div className={css.strength}>
+                Strength 
+                <div className={css.progressOuter}>
+                  <div style={{background: '#3f3fb0',width: `${progressStrength}%`,height: '19px'}}>
 
+                  </div>
+                </div>
+              </div>
+              <br/><br/>
+              </div>
+              
               <div
                 className={classNames(
                   css.sseed_box_wrap,
                   css.cre_pgs,
                   css.hlx_box
                 )}
+                style={{marginTop:'10px'}}
               >
                 <div className={css.seed_wrapper}>
                   <div className={css.seed_wrapbox}>

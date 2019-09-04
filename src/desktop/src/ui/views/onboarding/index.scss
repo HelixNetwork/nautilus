@@ -63,7 +63,7 @@ $footer: 350px;
 
   footer,
   footer > div {
-    background-color: #dee1e3;
+    
     position: absolute;
     bottom: 0px;
     height: 210px;
@@ -117,7 +117,7 @@ footer ul {
 }
 
 .active {
-  background-color: #011327;
+  background-color: white;
 }
 
 footer li {
@@ -127,7 +127,7 @@ footer li {
   height: 10px;
   list-style: none;
   border-radius: 100px;
-  background-color: #aeadaf;
+  background: #eaac32;
   position: relative;
 }
 footer li a {
@@ -141,7 +141,6 @@ footer li::after {
   left: 10px;
   width: 24px;
   height: 1px;
-  background-color: #aeadaf;
 }
 
 .done::after {
@@ -192,10 +191,15 @@ footer li::after {
   left: 50%;
   bottom: 209px;
   margin-left: -350px;
-  background-color: #000b20;
   border-radius: 5px;
-  box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
   z-index: 1000;
+  border-width: 2px;
+    border-style: solid;
+    border-image: 
+      linear-gradient(
+        to right, 
+        rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0)
+      ) 1 0%;
 }
 .sseed_box3 {
   width: 400px;
@@ -648,7 +652,7 @@ footer li::after {
   border-radius: -1%;
   border: 0;
   color: white;
-  background-color: #000b20;
+  background-color: var(--body-bg);
   border-bottom: 2px solid #e8b349;
   outline: 0;
   text-align: center;
@@ -794,9 +798,7 @@ footer li::after {
   position: absolute;
   left: 268px;
   bottom: 124px;
-  background-color: #000b20;
   border-radius: 5px;
-  box-shadow: 10px 10px 25px -8px rgba(0, 0, 0, 0.18);
 }
 
 .seed_lottie {
@@ -817,15 +819,22 @@ footer li::after {
 }
 
 .hlx_box {
-  min-height:310px;
-  min-width: 620px;
+  min-height: 325px;
+  min-width: 780px;
   position: absolute;
-  top: 35%;
+  top: 20%;
   bottom: 30%;
   left: 0;
   right: 0;
   margin: auto;
-  padding: 5px 0px 10px 0px;
+  padding: 20px 0px 0px 0px;
+  border-width: 2px;
+    border-style: solid;
+    border-image: 
+      linear-gradient(
+        to right, 
+        rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0)
+      ) 1 0%;
 }
 
 modal_footer{
@@ -837,4 +846,18 @@ modal_footer{
   display: flex;
   align-items: stretch;
   overflow: hidden;
+}
+
+.progressOuter{
+  height:20px;
+  width: 52vw;
+  position: absolute;
+    left: 7vw;
+    top: -1px;
+  background: #101C4A;
+}
+.strength{
+  position: absolute;
+  left: 20vw;
+  top: 108px; 
 }

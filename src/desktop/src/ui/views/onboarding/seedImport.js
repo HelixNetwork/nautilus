@@ -68,14 +68,6 @@ class SeedImport extends React.PureComponent {
     // To do
     e.preventDefault();
     const ch = e.target.value;
-    if (!/([a-f0-9])$/.test(ch)) {
-      return this.props.generateAlert(
-        "error",
-        "Invalid seed",
-        "You have a entered an invalid character in seed.",
-        1000
-      );
-    }
     this.setState({
       seedPhrase: e.target.value
     });
@@ -142,6 +134,14 @@ class SeedImport extends React.PureComponent {
       generateAlert
     } = this.props;
     const { seed, isGenerated, seedPhrase } = this.state;
+    if (!/([a-f0-9])$/.test(seedPhrase)) {
+      return this.props.generateAlert(
+        "error",
+        "Invalid seed",
+        "You have a entered an invalid character in seed.",
+        1000
+      );
+    }
     if (Electron.getOnboardingSeed() == null && seedPhrase != "") {
       for (let i = 0; i < 64; i++) {
         seed.push(charToIndex(seedPhrase[i]));
@@ -238,6 +238,7 @@ class SeedImport extends React.PureComponent {
                 className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}
               >
                 <label>Seed</label>
+                &nbsp;&nbsp;
                 <input
                   type="text"
                   className={classNames(css.sseed_textline)}
@@ -281,7 +282,7 @@ class SeedImport extends React.PureComponent {
                   </Modal>
                 )}
                 <br />
-                <p style={{ marginTop: "13vw", marginLeft: "2vw" }}>
+                <p style={{ marginTop: "17vw", marginLeft: "2vw" }}>
                   <strong>{t("enterSeed:neverShare")}</strong>
                 </p>
               </div>
