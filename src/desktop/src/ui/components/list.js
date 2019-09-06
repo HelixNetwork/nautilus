@@ -202,7 +202,7 @@ export class ListComponent extends React.PureComponent {
       return 'Empty';
     }
     if(message.length > 15){
-      return message.substring(0,10)+"...";
+      return message.substring(0,15)+"...";
     }
     return message;
   }
