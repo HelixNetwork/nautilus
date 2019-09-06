@@ -201,6 +201,9 @@ export class ListComponent extends React.PureComponent {
     if(message.indexOf('{')!=-1){
       return 'Empty';
     }
+    if(message.length > 15){
+      return message.substring(0,10)+"...";
+    }
     return message;
   }
 
@@ -372,7 +375,7 @@ export class ListComponent extends React.PureComponent {
                         
                     </div>
                     <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:</p>
+                        <p className={css.note}>{this.showMessage(transaction.message)}</p>
                     </div>
                     <div className={css.column_cnt}>
                         <h4 className={css.sender_heading}>{isReceived?'Sending':'Receiving'}</h4>
