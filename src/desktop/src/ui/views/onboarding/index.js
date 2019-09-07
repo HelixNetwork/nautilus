@@ -21,7 +21,7 @@ import SecurityEnter from "ui/views/onboarding/accountPassword";
 import Done from "ui/views/onboarding/done";
 import css from "./index.scss";
 import Wallet from "ui/views/wallet/index";
-
+import OnboardingLayout from 'ui/components/onboarding'
 /**
  * Onboarding main router wrapper component
  */
@@ -83,7 +83,7 @@ class Onboarding extends React.PureComponent {
             mountOnEnter
             unmountOnExit
           >
-            <div>
+            <OnboardingLayout>
               <Switch>
                 <Route path="/onboarding/seed-intro" component={SeedIntro} />
                 <Route
@@ -103,7 +103,7 @@ class Onboarding extends React.PureComponent {
                 <Route path="/" component={indexComponent} />
                 <Route path="/wallet" component={Wallet} />
               </Switch>
-            </div>
+            </OnboardingLayout>
           </CSSTransition>
         </TransitionGroup>
         <footer
