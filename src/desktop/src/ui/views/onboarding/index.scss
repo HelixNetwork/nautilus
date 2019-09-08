@@ -764,10 +764,8 @@ footer li::after {
 }
 
 .seed_wrapper {
-  display: grid;
+  display: inline-grid;
   grid-template-columns: 210px 210px 210px 210px;
-  padding-left: 0%;
-  margin-top: 0vw;
   margin-left: -26px;
 }
 
@@ -847,22 +845,18 @@ modal_footer{
 .progressOuter{
   height:20px;
   width: 49vw;
-  position: absolute;
-    left: 7vw;
-    top: -1px;
   background: #101C4A;
 }
 .strength{
-  position: absolute;
-  left: 22vw;
-  top: 108px; 
+  display: inline-grid;
+  grid-template-columns: 210px 210px 210px 210px;
 }
 
 .centerBox{
   padding: 5vw;
   width: 60vw;
   margin-left: 15%;
-  margin-top: 7%;
+  margin-top: 3vw;
   border-width: 3px;
   border-style: solid;
   border-image: 

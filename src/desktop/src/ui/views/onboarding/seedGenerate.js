@@ -13,8 +13,7 @@ import * as animationData from "animations/done.json";
 import { createRandomSeed, randomTxBytes } from "../../../utils/crypto";
 import { indexToChar } from "libs/hlx/converter";
 import { MAX_SEED_LENGTH } from "libs/hlx/utils";
-import { Row } from "react-bootstrap";
-import {Progress} from 'semantic-ui-react'
+import { Row, Col, Form } from "react-bootstrap";
 class SeedGenerate extends React.PureComponent {
   static propTypes = {
     history: PropTypes.shape({
@@ -298,37 +297,27 @@ class SeedGenerate extends React.PureComponent {
       <div>
         <Logos history={history} />
 
-        <Row>
+        <Row style={{ marginTop: '2vw' }}>
           <h1>
             {t("newSeedSetup:generateSeed")}
             <span className={classNames(css.text_color)}>.</span>
           </h1>
-          <h3>
+            <h3>
             Generate randomness by <b>clicking</b> on the characters.
-                </h3>
-          <div className={css.strength}>
-            Strength
-            <Progress percent={progressStrength} indicating />
-           
-          </div>
+            </h3>
+            <Row className={css.strength}>
+            
+             Strength
+              
+              <div className={css.progressOuter}>
+                  <div>
 
+                  </div>
+                </div>
+              
+            </Row>
+            
         </Row>
-
-        {/* {!existingSeed && clicksLeft > 0 ? (
-                    <Trans
-                      i18nKey="newSeedSetup:individualLetterCount"
-                      count={clicksLeft}
-                    >
-                      Press{" "}
-                      <strong className={css.highlight}>
-                        {{ count: clicksLeft }}
-                      </strong>{" "}
-                      more letter to randomise it.
-                    </Trans>
-                  ) : (
-                    <span>&nbsp;</span>
-                  )} */}
-
 
         <Row className={css.centerBox}>
           <div className={css.seed_wrapper}>
@@ -524,7 +513,7 @@ class SeedGenerate extends React.PureComponent {
               </div>
             </div>
           </div>
-      </Row>
+        </Row>
         <Row>
           <Button
             className="navleft"
@@ -543,7 +532,7 @@ class SeedGenerate extends React.PureComponent {
           </Button>
         </Row>
       </div >
-          
+
     );
   }
 }
