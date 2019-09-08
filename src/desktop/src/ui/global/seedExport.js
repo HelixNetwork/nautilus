@@ -16,6 +16,7 @@ import Button from "ui/components/button";
 import css from "./seedExport.scss";
 import Lottie from "react-lottie";
 import * as animationData from "animations/export.json";
+import { Row } from 'react-bootstrap';
 /**
  * SeedVault export component
  */
@@ -159,11 +160,12 @@ export class SeedExportComponent extends PureComponent {
 
     if (step < 4) {
       return (
+        <Row>
         <form
-          className={classNames(css.seedExport, css.step1)}
+          className={classNames(css.step1)}
           onSubmit={this.onStep}
         >
-          <section>
+          <Row>
             <h1>
               <div className={css.backup}>
                 <Lottie
@@ -183,11 +185,11 @@ export class SeedExportComponent extends PureComponent {
               </div>
               {t("seedVault:exportSeedVault")}
             </h1>
-            {step === 1 && <p>{t("seedVault:seedVaultExplanation")}</p>}
-            {step === 2 && <p>{t("seedVault:seedVaultWarning")}</p>}
-            {step === 3 && <p>{t("seedVault:seedVaultKeyExplanation")}</p>}
-          </section>
-          <footer>
+            {step === 1 && <h4>{t("seedVault:seedVaultExplanation")}</h4>}
+            {step === 2 && <h4>{t("seedVault:seedVaultWarning")}</h4>}
+            {step === 3 && <h4>{t("seedVault:seedVaultKeyExplanation")}</h4>}
+          </Row>
+          <Row>
             <Button
               onClick={this.onBackStep}
               variant="backgroundNone"
@@ -202,19 +204,23 @@ export class SeedExportComponent extends PureComponent {
             >
               {t("continue")} <span>></span>
             </Button>
-          </footer>
+          </Row>
+
+
         </form>
+        </Row>
       );
     }
 
     const score = zxcvbn(this.state.password);
 
     return (
+      <Row>
       <form
-        className={classNames(css.seedExport, css.step2)}
+        className={classNames(css.step2)}
         onSubmit={this.exportSeed}
       >
-        <section>
+        <Row>
           <h1>
             <div className={css.backup}>
               <Lottie
@@ -253,8 +259,8 @@ export class SeedExportComponent extends PureComponent {
               onChange={value => this.setState({ passwordConfirm: value })}
             />
           </div>
-        </section>
-        <footer>
+        </Row>
+        <Row>
           <Button
             onClick={this.onBackStep}
             variant="backgroundNone"
@@ -269,8 +275,9 @@ export class SeedExportComponent extends PureComponent {
           >
             {t("export")} <span>></span>
           </Button>
-        </footer>
+        </Row>
       </form>
+      </Row>
     );
   }
 }

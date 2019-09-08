@@ -132,7 +132,7 @@ class Dropzone extends React.Component {
     return (
       <React.Fragment>
         <div className={classNames(css.filebox)} onClick={this.open}>
-          <h5 style={{ position: "absolute" }}>
+          <h5>
             <img style={{ width: "86px" }} src={shield} alt="" /> <br />
             <span style={{ fontSize: "14px" }}>
               {t("seedVault:dropInstructions")}

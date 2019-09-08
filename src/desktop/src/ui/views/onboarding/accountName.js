@@ -13,6 +13,7 @@ import css from "./index.scss";
 import Logos from "ui/components/logos";
 import { MAX_ACC_LENGTH } from "libs/crypto";
 import SeedStore from "libs/seed";
+import {Row} from 'react-bootstrap'
 
 class AccountName extends React.PureComponent {
   static propTypes = {
@@ -88,50 +89,49 @@ class AccountName extends React.PureComponent {
     const { name, isGenerated } = this.state;
 
     return (
-      <section className="spage_1">
-        <Logos size={20} history={history}/>
-        <div className="container">
-          <div className="row">
-            <form onSubmit={this.setName}>
-              <div className="col-lg-12">
-                <h1>
-                  {t("setSeedName:setAccountName")}
-                  <span className={classNames(css.text_color)}>.</span>
-                </h1>
-              </div>
-              <div
-                className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}
-              >
-                <h4 style={{ marginTop: "8vw" }}>
-                  {t("setSeedName:letsAddName")}
-                </h4>
-                <Input
-                  value={name}
-                  focus
-                  label={t("addAdditionalSeed:accountName")}
-                  onChange={value => this.setState({ name: value })}
-                />
-              </div>
-              <div className={css.onboard_btn}>
-                <Button
-                  className="navleft"
-                  variant="backgroundNone"
-                  to={`/onboarding/seed-${isGenerated ? "generate" : "import"}`}
-                >
-                  {t("global:goBack")} <span>></span>
-                </Button>
-                <Button
-                  type="submit"
-                  className="navright"
-                  variant="backgroundNone"
-                >
-                  {t("global:confirm")} <span>></span>
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
+      <div>
+        <Logos size={20} history={history} />
+        <form onSubmit={this.setName}>
+          <Row>
+            <h1>
+              {t("setSeedName:setAccountName")}
+              <span className={classNames(css.text_color)}>.</span>
+            </h1>
+          </Row>
+          <Row className={css.centerBox}>
+            <h4 style={{ marginTop: "4vw", marginBottom:'4vw' }}>
+              {t("setSeedName:letsAddName")}
+            </h4>
+            <Input
+              value={name}
+              focus
+              label={t("addAdditionalSeed:accountName")}
+              onChange={value => this.setState({ name: value })}
+            />
+          </Row>
+
+          <Row>
+            <Button
+              className="navleft"
+              variant="backgroundNone"
+              to={`/onboarding/seed-${isGenerated ? "generate" : "import"}`}
+            >
+              {t("global:goBack")} <span>></span>
+            </Button>
+            <Button
+              type="submit"
+              className="navright"
+              variant="backgroundNone"
+            >
+              {t("global:confirm")} <span>></span>
+            </Button>
+          </Row>
+
+
+        </form>
+      </div>
+
+
     );
   }
 }

@@ -295,8 +295,6 @@ class SeedGenerate extends React.PureComponent {
 
     return (
       <div>
-        <Logos history={history} />
-
         <Row style={{ marginTop: '2vw' }}>
           <h1>
             {t("newSeedSetup:generateSeed")}

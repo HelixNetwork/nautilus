@@ -844,12 +844,13 @@ modal_footer{
 
 .progressOuter{
   height:20px;
-  width: 49vw;
+  width: 37vw;
   background: #101C4A;
 }
 .strength{
   display: inline-grid;
-  grid-template-columns: 210px 210px 210px 210px;
+  grid-template-columns: 150px 210px 210px 210px;
+  margin-left: 3%;
 }
 
 .centerBox{
@@ -861,4 +862,38 @@ modal_footer{
   border-style: solid;
   border-image: 
   linear-gradient(to right, rgba(250, 192, 0, 0.25), rgba(250, 192, 0, 0.75), rgba(250, 192, 0, 0.25)) 1 0%;
+}
+
+.centerBox h5{
+  font-size: 20px;
+}
+
+.centerBox h6{
+  font-size: 17px;
+}
+
+.centerBox1{
+  padding: 2vw 5vw 2vw 5vw;
+  width: 60vw;
+  margin-left: 15%;
+  margin-top: 3vw;
+  border-width: 3px;
+  border-style: solid;
+  border-image: 
+  linear-gradient(to right, rgba(250, 192, 0, 0.25), rgba(250, 192, 0, 0.75), rgba(250, 192, 0, 0.25)) 1 0%;
+}
+
+.centerBox1 h6{
+  font-size: 15px;
+}
+
+.seedInput{
+  text-align: center;
+  width: 40vw;
+  height: 20px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  background: transparent;
+  color: white;
+
 }

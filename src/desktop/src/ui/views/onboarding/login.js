@@ -19,6 +19,7 @@ import { hash, authorize } from "libs/crypto";
 import { setPassword, clearWalletData } from "actions/wallet";
 
 import css from "./index.scss";
+import { Row } from 'react-bootstrap'
 
 class Login extends React.PureComponent {
   static propTypes = {
@@ -239,36 +240,33 @@ class Login extends React.PureComponent {
       );
     }
     return (
-      <section className="spage_1">
-        <Logos />
-        <div className="container">
-          <div className="row">
-            <div className={classNames(css.sseed_box, css.cre_pgs)}>
-              <form onSubmit={e => this.doLogin(e)}>
-                <h5>
-                  {t("login:enterPassword")}
-                  <span className={classNames(css.text_color)}>.</span>{" "}
-                </h5>
-                <input
-                  type="password"
-                  value={this.state.password}
-                  label={t("password")}
-                  name="password"
-                  onChange={e => this.setPassword(e.target.value)}
-                  className={classNames(css.sseed_textline)}
-                ></input>
-                <br />
-                <br />
-                <Button type="submit">{t("login:login")}</Button>
-              </form>
-            </div>
-            {complete ? (
-              <React.Fragment></React.Fragment>
-            ) : (
+      <div>
+        <Row className={css.centerBox} style={{marginTop:'10vw'}}>
+          <form onSubmit={e => this.doLogin(e)}>
+            <h5>
+              {t("login:enterPassword")}
+              <span className={classNames(css.text_color)}>.</span>{" "}
+            </h5>
+            <input
+              type="password"
+              value={this.state.password}
+              label={t("password")}
+              name="password"
+              onChange={e => this.setPassword(e.target.value)}
+              className={classNames(css.sseed_textline)}
+            ></input>
+            <br />
+            <br />
+            <Button type="submit">{t("login:login")}</Button>
+          </form>
+        </Row>
+
+        <Row>
+          {complete ? (
+            <React.Fragment></React.Fragment>
+          ) : (
               <React.Fragment>
                 <Button
-                  style={{ top: "440px", left: "550px" }}
-                  className="navleft"
                   variant="backgroundNone"
                   onClick={() => this.stepForward("seed-verify")}
                 >
@@ -276,9 +274,9 @@ class Login extends React.PureComponent {
                 </Button>
               </React.Fragment>
             )}
-          </div>
-        </div>
-      </section>
+        </Row>
+
+      </div>
     );
   }
 }

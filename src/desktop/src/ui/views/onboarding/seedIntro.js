@@ -39,8 +39,7 @@ class SeedIntro extends React.PureComponent {
 
     return (
       <div>
-        <Logos size={20} history={history} />
-        <Row style={{marginTop:'5vw'}}>
+        <Row style={{marginTop:'3vw'}}>
           <h1>
             {t("walletSetup:doYouNeedASeed")}
             <span className={classNames(css.text_color)}>

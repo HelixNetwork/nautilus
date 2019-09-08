@@ -83,7 +83,7 @@ class Onboarding extends React.PureComponent {
             mountOnEnter
             unmountOnExit
           >
-            <OnboardingLayout>
+            <OnboardingLayout history={history}>
               <Switch>
                 <Route path="/onboarding/seed-intro" component={SeedIntro} />
                 <Route
