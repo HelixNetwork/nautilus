@@ -313,12 +313,13 @@ export const promoteTransaction = (
         )
       );
     })
-    .then(hash => {
+    .then(hash => {  
+      const txHash = asTransactionObject(hash[0]).hash;      
       dispatch(
         generateAlert(
           "success",
           i18next.t("global:promoted"),
-          i18next.t("global:promotedExplanation", { hash })
+          i18next.t("global:promotedExplanation", { hash:txHash })
         )
       );
 

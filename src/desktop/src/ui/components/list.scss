@@ -16,6 +16,9 @@
         cursor: pointer;
         &.empty {
             color: var(--body-alt);
+            margin-top: 16vw;
+            margin-left: 38vw;
+        
         }
         &.disabled {
             color: var(--body-alt);
@@ -285,7 +288,7 @@
   
   .search_text{
     float: left;
-    padding-left: 75px;
+    padding-left: 45px;
     font-family: Yu Gothic;
     opacity: 2.3;
     font-size: 17px;
@@ -301,12 +304,12 @@
     font-family: Yu Gothic;
     opacity: 0.3;
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 8px;
     margin-bottom: 2vw;
-    background: black;
+    background: var(--body-bg);
     border: none;
     color: white;
-    margin-right: -100px;
+    margin-right: -110px;
   }
   .sort_by{
     right: 150px;
@@ -458,8 +461,8 @@
   }
   
   .receive{
-      background: #1b2b6a;
-      float: right;
+        background: #1b2b6a;
+        float: right;
         margin-bottom: 0px;
         font-size: 15px;
         padding: 9px;
@@ -468,11 +471,11 @@
   }
   
   .pending{
-    background: #ad9a1d;
-    float: right;
-      margin-bottom: 0px;
-      font-size: 15px;
-      padding: 9px;
-      margin-top: 11px;
-      border-radius: 5px;
+        background: #968725;
+        float: right;
+        margin-bottom: 0px;
+        font-size: 15px;
+        padding: 9px;
+        margin-top: 11px;
+        border-radius: 5px;
 }

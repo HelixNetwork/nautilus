@@ -49,7 +49,7 @@ class Viewaddress extends React.PureComponent {
             {t("accountManagement:viewAddresses")}
           </h5>
           <Scrollbar style={{height: "88%"}}>
-        <div classname={classNames(css.set_bxac)}>
+        <div className={classNames(css.set_bxac)}>
           <div className={css.scroll}>
            
               <ul className={css.addresses} style={{ marginLeft: "100px", paddingTop: "0px" }}>

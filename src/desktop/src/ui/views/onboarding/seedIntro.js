@@ -35,11 +35,11 @@ class SeedIntro extends React.PureComponent {
   }
 
   render() {
-    const { t } = this.props;
+    const { history, t } = this.props;
 
     return (
       <div>
-        <Logos size={20} />
+        <Logos size={20} history={history}/>
 
         <section className="spage_1">
           <div className="container">

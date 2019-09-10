@@ -262,7 +262,7 @@ class SeedGenerate extends React.PureComponent {
   };
 
   render() {
-    const { t } = this.props;
+    const { history, t } = this.props;
     const { ledger } = this.state;
     const {
       seed1,
@@ -293,7 +293,7 @@ class SeedGenerate extends React.PureComponent {
 
     return (
       <div>
-        <Logos />
+        <Logos history={history}/>
 
         <section className="spage_1">
           <div className="container">

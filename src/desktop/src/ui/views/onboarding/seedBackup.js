@@ -35,7 +35,7 @@ class SeedBackup extends React.PureComponent {
     this.props.history.push(`/onboarding/${route}`);
   }
   render() {
-    const { loop, t } = this.props;
+    const { loop, history, t } = this.props;
     const { exportVisible, onboardingname, seed } = this.state;
     const defaultOptions = {
       loop: loop,
@@ -48,7 +48,7 @@ class SeedBackup extends React.PureComponent {
 
     return (
       <div>
-        <Logos size={20} />
+        <Logos size={20} history={history}/>
 
         <section className="spage_1">
           <div className="container">

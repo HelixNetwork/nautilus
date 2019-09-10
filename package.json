@@ -4,6 +4,7 @@
   "private": true,
   "description": "Desktop wallet for Helix",
   "license": "Apache-2.0 OR EPL-2.0",
+  "author": "Helix Foundation",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/netobjex/wallet.git"

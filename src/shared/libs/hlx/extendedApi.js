@@ -193,8 +193,6 @@ const promoteTransaction = (settings, seedStore) => (
   const cached = {
     txs: []
   };
-console.log("Inside promote txs",hash);
-
   return isPromotable(settings)(hash)
     .then(() => prepareTransfers(settings)(transfer.address, [transfer]))
     .then(txs => {
