@@ -654,8 +654,8 @@ export const performSequentialPow = (
   branchTransaction,
   minWeightMagnitude
 ) => {
-  const transactionObjects = map(txs, transactionTxBytes =>
-    assign({}, asTransactionObject(transactionTxBytes), {
+  const transactionObjects = map(txs, transactionTxs =>
+    assign({}, asTransactionObject(transactionTxs), {
       attachmentTimestamp: Date.now(),
       attachmentTimestampLowerBound: 0,
       attachmentTimestampUpperBound: (Math.pow(3, 27) - 1) / 2
@@ -686,16 +686,16 @@ export const performSequentialPow = (
           branchTransaction: index ? trunkTransaction : branchTransaction
         });
 
-        const transactionTxByteString = asTransactionStrings(
+        const transactionTxsString = asTransactionStrings(
           withParentTransactions
         );
 
-        return powFn(transactionTxByteString, minWeightMagnitude)
+        return powFn(transactionTxsString, minWeightMagnitude)
           .then(nonce => {
             // TODO check this padding with reference to this change
             // https://github.com/HelixNetwork/helix-lib/blob/d4cb0a9681d21750f1c559f1bf47a73cff263e53/packages/transaction-converter/src/index.ts#L111
             nonce = nonce+ "0".repeat(48);
-            const txsWithNonce = transactionTxByteString
+            const txsWithNonce = transactionTxsString
               .substr(0, TRANSACTION_BYTES_SIZE - nonce.length)
               .concat(nonce);
 
@@ -729,11 +729,11 @@ export const retryFailedTransaction = settings => (
   transactionObjects,
   seedStore
 ) => {
-  const convertToTxBytes = tx => asTransactionStrings(tx);
+  const convertToTxs = tx => asTransactionStrings(tx);
 
   const cached = {
     transactionObjects: cloneDeep(transactionObjects),
-    txs: map(transactionObjects, convertToTxBytes)
+    txs: map(transactionObjects, convertToTxs)
   };
 
   const isInvalidTransactionHash = ({ hash }) =>
