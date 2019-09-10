@@ -122,8 +122,7 @@ class Wallet extends React.PureComponent {
           <TopBar
           history={history}
           />
-       
-                <DashSidebar disp={"none"} history={history} active={currentKey} />
+       <DashSidebar disp={"none"} history={history} active={currentKey} />
              
                 <Switch>
       <Route path="/wallet/" component={Send} />
@@ -142,8 +141,7 @@ class Wallet extends React.PureComponent {
       <TopBar
       history={history}
       />
-   
-            <DashSidebar disp={"none"} history={history} active={currentKey} />
+      <DashSidebar disp={"none"} history={history} active={currentKey} />
       <Switch>
      
         <Route path="/wallet/send" component={Send} />
