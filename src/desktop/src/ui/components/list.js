@@ -378,7 +378,7 @@ export class ListComponent extends React.PureComponent {
                         <p className={css.note}>{this.showMessage(transaction.message)}</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>{isReceived?'Sending':'Receiving'}</h4>
+                        <h4 className={css.sender_heading}>Hash</h4>
                         <p className={css.fromhash}>{transaction.bundle}</p>
                     </div>
                     <div className={css.column_cnt}>
