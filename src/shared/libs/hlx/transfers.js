@@ -588,13 +588,13 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 };
 
 /**
- *   Performs proof of work and updates TxBytes and transaction objects with nonce.
+ *   Performs proof of work and updates txs and transaction objects with nonce.
  *
  *   @method performPow
  *
  *   @param {function} powFn
  *   @param {function} digestFn
- *   @param {array} TxBytes
+ *   @param {array} txs
  *   @param {string} trunkTransaction
  *   @param {string} branchTransaction
  *   @param {number} [minWeightMagnitude = 14]
@@ -605,7 +605,7 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 export const performPow = (
   powFn,
   digestFn,
-  TxBytes,
+  txs,
   trunkTransaction,
   branchTransaction,
   minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -620,11 +620,11 @@ export const performPow = (
   }
 
   return batchedPow
-    ? powFn(TxBytes, trunkTransaction, branchTransaction, minWeightMagnitude)
+    ? powFn(txs, trunkTransaction, branchTransaction, minWeightMagnitude)
     : performSequentialPow(
         powFn,
         digestFn,
-        TxBytes,
+        txs,
         branchTransaction,
         trunkTransaction,
         minWeightMagnitude
