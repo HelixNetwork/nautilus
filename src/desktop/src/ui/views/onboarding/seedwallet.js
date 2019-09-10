@@ -25,10 +25,10 @@ class SeedWallet extends React.PureComponent {
   }
 
   render() {
-    const { t } = this.props;
+    const { history, t } = this.props;
     return (
       <section className="spage_1">
-        <Logos size={20} />
+        <Logos size={20} history={history}/>
         <div className="container">
           <div className="row">
             <div className="col-lg-12">

@@ -1,3 +1,10 @@
+@font-face {
+  font-family: Yu Gothic;
+  src: url(../../fonts/yugothib.ttf);
+}
+.body{
+  font-family:Yu Gothic;
+}
 .top_sec1 {
     width: 100%;
     min-height: 50px;
@@ -242,7 +249,7 @@
     position: absolute;
     left: 50px;
     font-size: 16px;
-    background-color: #101c37;
+    background-color:var(--body-bg);
     color:white;
     border: none;
     margin-top: 13px
@@ -989,7 +996,7 @@ margin-right: 16px;
 .topRight{
   position: absolute;
   top:-21px;
-  right:50px;
+  left:1050px
 }
 
 .topRight1{
@@ -1137,19 +1144,15 @@ margin-right: 16px;
 .sidebar a {
   display: block;
   color: #fff;
-  padding: 31px 16px 12px 16px;
+  padding: 10px 16px 20px 16px;
+  margin-top: -23px !important;
   text-decoration: none;
 }
 
 
 .sidebar a:hover:not(.active) {
-  border-bottom: 2px solid;
-    border-image: 
-      linear-gradient(
-        to bottom, 
-        rgba(0, 0, 0, 0), rgba(216, 215, 213, 0.75), rgba(0, 0, 0, 0)
-      ) 1 100%;
-  color: white;
+  border-bottom: 2px solid #eaac32;
+  opacity: 1 !important;
 }
 
 div.content {
@@ -1993,11 +1996,6 @@ margin-right: 16px;
     font-size: 50px;
 }
 
-.topRight{
-  position: absolute;
-  top:-21px;
-  right:50px;
-}
 
 .topRight1{
   position: absolute;
@@ -2050,7 +2048,7 @@ margin-right: 16px;
 
 
 .accountSelect{
-  background: #101c37;
+  background: var(--body-bg);
   border:none;
   color: white !important;
   position: absolute;
@@ -2084,7 +2082,7 @@ margin-right: 16px;
 
 .search_text{
   float: left;
-  padding-left: 40px;
+  padding-left: 45px;
   font-family: Yu Gothic;
   opacity: 0.3;
   font-size: 12px;

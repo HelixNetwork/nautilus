@@ -135,7 +135,6 @@ class Receive extends React.PureComponent {
       accountName,
       accountMeta
     );
-    console.log('seedStroe', seedStore);
     this.props.generateNewAddress(
       seedStore,
       accountName,
