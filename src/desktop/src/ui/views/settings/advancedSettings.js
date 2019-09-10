@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { clearVault } from "libs/crypto";
 import { reinitialise as reinitialiseStorage } from "database";
 import { getEncryptionKey, ALIAS_REALM } from "utils/realm";
-import { changePowSettings } from "actions/settings";
+import { changePowSettings,  changeAutoPromotionSettings } from "actions/settings";
 import { generateAlert } from "actions/alerts";
 import Button from "ui/components/button";
 import Confirm from "ui/components/modal/Confirm";
@@ -28,6 +28,7 @@ class AdvancedSettings extends React.PureComponent {
     t: PropTypes.func.isRequired,
     changePowSettings: PropTypes.func.isRequired,
     generateAlert: PropTypes.func.isRequired,
+    changeAutoPromotionSettings: PropTypes.func.isRequired,
     wallet: PropTypes.object,
     settings: PropTypes.object.isRequired
   };
@@ -83,7 +84,7 @@ class AdvancedSettings extends React.PureComponent {
   };
 
   render() {
-    const { t, settings, wallet, changePowSettings } = this.props;
+    const { t, settings, wallet, changePowSettings, changeAutoPromotionSettings } = this.props;
     const { resetConfirm, resetCountdown } = this.state;
 
     return (
@@ -99,10 +100,19 @@ class AdvancedSettings extends React.PureComponent {
               on={t("pow:remote")}
               off={t("pow:local")}
             />
+            <hr className={classNames(css.setinghr)}/>
             <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
               {t("pow:feeless")} {t("pow:localOrRemote")}
             </p>
-           
+           <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
+                                <Toggle
+                                    checked={settings.autoPromotion}
+                                    onChange={() => changeAutoPromotionSettings()}
+                                    on={t('enabled')}
+                                    off={t('disabled')}
+                                />
+                                <p>{t('advancedSettings:autoPromotionExplanation')}</p>
+                
             <h3 style={{ marginLeft: "29vw", marginTop: "2vw" }}>
               {t("settings:reset")}
             </h3>
@@ -125,7 +135,7 @@ class AdvancedSettings extends React.PureComponent {
             >
               {t("settings:reset")}
             </Button>
-
+            <hr className={classNames(css.setinghr)}/>
             {wallet && wallet.ready ? (
               <ModalPassword
                 isOpen={resetConfirm}
@@ -192,7 +202,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   generateAlert,
-  changePowSettings
+  changePowSettings,
+  changeAutoPromotionSettings
 };
 export default connect(
   mapStateToProps,
