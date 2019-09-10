@@ -326,8 +326,6 @@ export const promoteTransaction = (
       return dispatch(promoteTransactionSuccess());
     })
     .catch(err => {
-      console.log("Promote err",err);
-      
       if (err.message === Errors.BUNDLE_NO_LONGER_VALID) {
         dispatch(
           generateAlert(

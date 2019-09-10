@@ -91,7 +91,6 @@ export class ListComponent extends React.PureComponent {
   };
 
   changeFilter(e){
-    console.log(e.target.value);
     this.switchFilter(e.target.value)
   }
 
