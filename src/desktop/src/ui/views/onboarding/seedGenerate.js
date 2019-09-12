@@ -10,7 +10,7 @@ import Lottie from "react-lottie";
 import Icon from "ui/components/icon";
 import * as animationData from "animations/done.json";
 
-import { createRandomSeed, randomTxBytes } from "../../../utils/crypto";
+import { createRandomSeed, randomTxBytes } from "libs/crypto";
 import { indexToChar } from "libs/hlx/converter";
 import { MAX_SEED_LENGTH } from "libs/hlx/utils";
 import { Row, Col, Form } from "react-bootstrap";
