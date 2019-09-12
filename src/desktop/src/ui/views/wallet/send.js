@@ -50,7 +50,7 @@ class Send extends React.PureComponent {
     message: "Test",
     openModal: false,
     selectedCurrency:'EUR',
-    selectedHlx:'h',
+    selectedHlx:'mHLX',
     conversionRate:1,
     progress:''
   };
@@ -207,21 +207,21 @@ class Send extends React.PureComponent {
     let {txamount,selectedHlx} = this.state;
     let hlxamount = e.target.value;
     let base = 0;
-    if(selectedHlx=="h"){
+    if(selectedHlx=="HLX"){
       base=1;
       
     }
-    else if(selectedHlx=="Kh"){
+    else if(selectedHlx=="kHLX"){
       base=1000;
     }
-    else if(selectedHlx=="Mh"){
+    else if(selectedHlx=="mHLX"){
       base=1000000;
     }
-    else if(selectedHlx=="Gh")
+    else if(selectedHlx=="gHLX")
     {
       base=1000000000;
     }
-    else if(e.target.value=="Th")
+    else if(e.target.value=="tHLX")
     {
       base=1000000000000;
     }
@@ -265,20 +265,20 @@ class Send extends React.PureComponent {
   hlxChange(e){
     let {txamount,hlxamount} = this.state
     let base = 0;
-    if(e.target.value=="h"){
+    if(e.target.value=="HLX"){
       base=1;
     }
-    else if(e.target.value=="Kh"){
+    else if(e.target.value=="kHLX"){
       base=1000;
     }
-    else if(e.target.value=="Mh"){
+    else if(e.target.value=="mHLX"){
       base=1000000;
     }
-    else if(e.target.value=="Gh")
+    else if(e.target.value=="gHLX")
     {
       base=1000000000;
     }
-    else if(e.target.value=="Th")
+    else if(e.target.value=="tHLX")
     {
       base=1000000000000;
     }
@@ -394,13 +394,14 @@ class Send extends React.PureComponent {
                                         </div> */}
                       <div>
                       <select
+                      defaultValue={"mHLX"}
                       className={css.currencyBox}
                       onChange={this.hlxChange.bind(this)}
                       >
-                        <option value="h">h</option>
-                        <option value="Kh">Kh</option>
-                        <option value="Mh">Mh</option>
-                        <option value="Gh">Gh</option>
+                        <option value="HLX">HLX</option>
+                        <option value="kHLX">kHLX</option>
+                        <option value="mHLX">mHLX</option>
+                        <option value="gHLX">gHLX</option>
                       </select>
                       <input
                         value={hlxamount}
