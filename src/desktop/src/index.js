@@ -9,7 +9,7 @@ import { MemoryRouter as Router } from "react-router";
 import i18next from "libs/i18next";
 import store from "store";
 import Index from "ui/index";
-import { getEncryptionKey } from "utils/realm";
+import { getEncryptionKey } from "libs/realm";
 import { initialise as initialiseStorage } from "database";
 import { updateSchema } from "database/schemas";
 import { assignAccountIndexIfNecessary } from "actions/accounts";

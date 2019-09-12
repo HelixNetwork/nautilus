@@ -10,7 +10,7 @@ import { setPassword } from "actions/wallet";
 import { generateAlert } from "actions/alerts";
 
 import SeedStore from "libs/seed";
-import { hash, initKeychain, initVault } from "../../../libs/crypto";
+import { hash, initKeychain, initVault } from "libs/crypto";
 import { passwordReasons } from "libs/password";
 
 import Logos from "ui/components/logos";

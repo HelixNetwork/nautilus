@@ -6,7 +6,7 @@ import { withI18n, Trans } from "react-i18next";
 import { connect } from "react-redux";
 import { clearVault } from "libs/crypto";
 import { reinitialise as reinitialiseStorage } from "database";
-import { getEncryptionKey, ALIAS_REALM } from "utils/realm";
+import { getEncryptionKey, ALIAS_REALM } from "libs/realm";
 import { changePowSettings,  changeAutoPromotionSettings } from "actions/settings";
 import { generateAlert } from "actions/alerts";
 import Button from "ui/components/button";
