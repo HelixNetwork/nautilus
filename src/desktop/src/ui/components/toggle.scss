@@ -32,28 +32,30 @@
             cursor: pointer;
             color: var(--body);
             &:first-child {
-                padding-right: 70px;
+                padding-right: 148px;
                 position: relative;
                 color: var(--primary);
                 &:after {
                     content: '';
-                    width: 50px;
-                    height: 20px;
+                    width: 124px;
+                    height: 25px;
                     position: absolute;
-                    top: 0px;
+                    // background-color:  rgb(28, 3, 59);;
+                    top: -3px;
                     right: 10px;
                     border-radius: 15px;
                     border: 1px solid var(--body);
                 }
                 &:before {
-                    content: '';
-                    width: 16px;
-                    height: 16px;
+                    content: "";
+                    width: 40px;
+                    height: 18px;
                     position: absolute;
-                    top: 2px;
-                    right: 42px;
+                    top: 1px;
+                    right: 91px;
+                    // background-color:  rgb(95, 15, 192);
                     border-radius: 9px;
-                    border: 1px solid var(--body);
+                    border: 0px solid var(--body);
                     background: none;
                     transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
                 }

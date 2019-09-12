@@ -242,6 +242,50 @@ export const currencyDataFetchSuccess = payload => {
 };
 
 /**
+ * Makes an API call for checking if attachToTangle is enabled on the selected IRI node
+ * and changes auto promotion configuration for wallet
+ *
+ * @method changeAutoPromotionSettings
+ *
+ * @returns {function}
+ */
+export function changeAutoPromotionSettings() {
+  return (dispatch, getState) => {
+      const settings = getState().settings;
+      if (!settings.autoPromotion) {
+          allowsRemotePow(settings.node).then((hasRemotePow) => {
+              if (!hasRemotePow) {
+                  return dispatch(
+                      generateAlert(
+                          'error',
+                          i18next.t('global:attachToTangleUnavailable'),
+                          i18next.t('global:attachToTangleUnavailableExplanationShort'),
+                          10000,
+                      ),
+                  );
+              }
+              dispatch(setAutoPromotion(!settings.autoPromotion));
+              dispatch(
+                  generateAlert(
+                      'success',
+                      i18next.t('autoPromotion:autoPromotionUpdated'),
+                      i18next.t('autoPromotion:autoPromotionUpdatedExplanation'),
+                  ),
+              );
+          });
+      } else {
+          dispatch(setAutoPromotion(!settings.autoPromotion));
+          dispatch(
+              generateAlert(
+                  'success',
+                  i18next.t('autoPromotion:autoPromotionUpdated'),
+                  i18next.t('autoPromotion:autoPromotionUpdatedExplanation'),
+              ),
+          );
+      }
+  };
+}
+/**
  * Fetch currency information (conversion rates) for wallet
  *
  * @method getCurrencyData

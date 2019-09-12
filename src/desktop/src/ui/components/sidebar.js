@@ -30,11 +30,11 @@ class Sidebar extends React.PureComponent {
             {t("settings:language")}
           </a>
         </li>
-        {/* <li className={active == "node" ? css.active : ""}>
+        <li className={active == "node" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/settings/node")}>
             {t("global:node")}
           </a>
-        </li> */}
+        </li>
         <li className={active == "theme" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/settings/theme")}>
             {t("settings:theme")}
@@ -45,6 +45,7 @@ class Sidebar extends React.PureComponent {
             {t("settings:currency")}
           </a>
         </li>
+        
         {wallet.ready && (
           <React.Fragment>
             <li className={active == "editname" ? css.active : ""}>
