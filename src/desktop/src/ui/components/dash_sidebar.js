@@ -66,9 +66,9 @@ class DashSidebar extends React.PureComponent {
           </li>
           <li>  
           <a
-            onClick={() => this.props.history.push("/settings/editname")}  className={classNames(css.img_sr1)} style={{paddingTop: "50px", opacity:"0.3"}}
+            onClick={() => this.props.history.push("/settings/editname")}  className={classNames(css.img_sr1)} style={{paddingTop: "20px", opacity:"0.3"}}
           >
-            {t("settings:settings")} 
+            {t("home:settings")} 
           </a>
         </li>
         <li>  

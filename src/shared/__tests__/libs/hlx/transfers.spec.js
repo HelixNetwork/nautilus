@@ -57,8 +57,8 @@ import {
   EMPTY_TRANSACTION_HEX,
   EMPTY_TRANSACTION_MESSAGE
 } from "../../../libs/hlx/utils";
-import { IRI_API_VERSION } from "../../../config";
-import { isBundle as bundleValidator } from "@helixnetwork/bundle-validator";
+import { IRI_API_VERSION, DEFAULT_MIN_WEIGHT_MAGNITUDE } from "../../../config";
+import bundleValidator from "@helixnetwork/bundle-validator";
 import {
   asTransactionObject,
   asTransactionObjects
@@ -851,16 +851,16 @@ describe("libs: helix/transfers", () => {
 
     describe("when first (powFn) & second (digestFn) arguments are functions", () => {
       describe("when batchedPow is true", () => {
-        // it('should call proof-of-work function with txBytes, trunk, branch and minWeightMagnitude', () => {
-        //     const powFn = sinon.stub();
-        //     powFn.resolves([]);
-        //     return performPow(powFn, () => Promise.resolve(), ['foo'], '0'.repeat(64), '3'.repeat(64)).then(
-        //         () =>
-        //             expect(powFn.calledOnceWithExactly(['foo'], '0'.repeat(64), '3'.repeat(64), 14)).to.equal(
-        //                 true,
-        //             ),
-        //     );
-        // });
+        it('should call proof-of-work function with txBytes, trunk, branch and minWeightMagnitude', () => {
+            const powFn = sinon.stub();
+            powFn.resolves([]);
+            return performPow(powFn, () => Promise.resolve(), ['foo'], '0'.repeat(64), '3'.repeat(64)).then(
+                () =>
+                    expect(powFn.calledOnceWithExactly(['foo'], '0'.repeat(64), '3'.repeat(64), DEFAULT_MIN_WEIGHT_MAGNITUDE)).to.equal(
+                        true,
+                    ),
+            );
+        });
       });
     });
   });
@@ -872,15 +872,15 @@ describe("libs: helix/transfers", () => {
     let branchTransaction;
 
     const nonces = [
-      "N9UIMZQVDYWLXWGHLELNRCUUPMP",
-      "SLSJJSDPDTDSKEVCBVPMWDNOLAH",
-      "K9JXMYPREJZGUFFSANKRNPOMAGR"
+      "000000000000bb85",
+      "0000000000000956",
+      "000000000001a499"
     ];
 
     beforeEach(() => {
       powFn = () => {
         let calledTimes = 0;
-
+        
         return () => {
           const promise = Promise.resolve(nonces[calledTimes]);
           calledTimes += 1;
@@ -892,61 +892,61 @@ describe("libs: helix/transfers", () => {
       digestFn = txBytes => Promise.resolve(asTransactionObject(txBytes).hash);
 
       trunkTransaction =
-        "LLJWVVZFXF9ZGFSBSHPCD9HOIFBCLXGRV9XWSQDTGOMSRGQQIVFVZKHLKTJJVFMXQTZVPNRNAQEPA9999";
+        "0000e436394c1ac0da8248a4150f5dbbb6f0ceb32956cd26295439b112b08d74";
       branchTransaction =
-        "GSHUHUWAUUGQHHNAPRDPDJRKZFJNIAPFNTVAHZPUNDJWRHZSZASOERZURXZVEHN9OJVS9QNRGSJE99999";
+        "00000c47f133162fa1586d80c41fa5bc7e84925c7a304dfa1f4707c8777b3e90";
     });
 
-    // it('should sort transaction objects in ascending order by currentIndex', () => {
-    //     const fn = performSequentialPow(
-    //         powFn(),
-    //         digestFn,
-    //         newValueTransactionBytes.slice().reverse(),
-    //         trunkTransaction,
-    //         branchTransaction,
-    //         14,
-    //     );
+    it('should sort transaction objects in ascending order by currentIndex', () => {
+        const fn = performSequentialPow(
+            powFn(),
+            digestFn,
+            newValueTransactionBytes.slice().reverse(),
+            trunkTransaction,
+            branchTransaction,
+            DEFAULT_MIN_WEIGHT_MAGNITUDE,
+        );
 
-    //     return fn.then(({ transactionObjects }) => {
-    //         transactionObjects.map((tx, idx) => expect(tx.currentIndex).to.equal(idx));
-    //     });
-    // });
+        return fn.then(({ transactionObjects }) => {
+            transactionObjects.map((tx, idx) => expect(tx.currentIndex).to.equal(idx));
+        });
+    });
 
-    // it('should assign generated nonce', () => {
-    //     const fn = performSequentialPow(
-    //         powFn(),
-    //         digestFn,
-    //         newValueTransactionBytes.slice().reverse(),
-    //         trunkTransaction,
-    //         branchTransaction,
-    //         14,
-    //     );
-    //     return fn.then(({ transactionObjects }) => {
-    //         transactionObjects.map((tx, idx) => expect(tx.nonce).to.equal(nonces.slice().reverse()[idx]));
-    //     });
-    // });
+    it('should assign generated nonce', () => {
+        const fn = performSequentialPow(
+            powFn(),
+            digestFn,
+            newValueTransactionBytes.slice().reverse(),
+            trunkTransaction,
+            branchTransaction,
+            DEFAULT_MIN_WEIGHT_MAGNITUDE,
+        );
+        return fn.then(({ transactionObjects }) => {
+            transactionObjects.map((tx, idx) => expect(tx.nonce).to.equal(nonces.slice().reverse()[idx]));
+        });
+    });
 
-    // it('should set correct bundle sequence', () => {
-    //     const fn = performSequentialPow(
-    //         powFn(),
-    //         digestFn,
-    //         newValueTransactionBytes.slice().reverse(),
-    //         trunkTransaction,
-    //         branchTransaction,
-    //         14,
-    //     );
+    it('should set correct bundle sequence', () => {
+        const fn = performSequentialPow(
+            powFn(),
+            digestFn,
+            newValueTransactionBytes.slice().reverse(),
+            trunkTransaction,
+            branchTransaction,
+            DEFAULT_MIN_WEIGHT_MAGNITUDE,
+        );
 
-    //     return fn.then(({ transactionObjects }) => {
-    //         expect(transactionObjects[0].trunkTransaction).to.equal(transactionObjects[1].hash);
-    //         expect(transactionObjects[0].branchTransaction).to.equal(trunkTransaction);
+        return fn.then(({ transactionObjects }) => {
+            expect(transactionObjects[0].trunkTransaction).to.equal(transactionObjects[1].hash);
+            expect(transactionObjects[0].branchTransaction).to.equal(trunkTransaction);
 
-    //         expect(transactionObjects[1].trunkTransaction).to.equal(transactionObjects[2].hash);
-    //         expect(transactionObjects[1].branchTransaction).to.equal(trunkTransaction);
+            expect(transactionObjects[1].trunkTransaction).to.equal(transactionObjects[2].hash);
+            expect(transactionObjects[1].branchTransaction).to.equal(trunkTransaction);
 
-    //         expect(transactionObjects[2].trunkTransaction).to.equal(trunkTransaction);
-    //         expect(transactionObjects[2].branchTransaction).to.equal(branchTransaction);
-    //     });
-    // });
+            expect(transactionObjects[2].trunkTransaction).to.equal(trunkTransaction);
+            expect(transactionObjects[2].branchTransaction).to.equal(branchTransaction);
+        });
+    });
   });
 
   describe("#constructBundlesFromTransactions", () => {
@@ -1000,51 +1000,51 @@ describe("libs: helix/transfers", () => {
       // });
     });
 
-    describe("when any transaction object has an invalid hash", () => {
-      // it('should perform proof of work', () => {
-      //     sinon.stub(seedStore, 'performPow').resolves({
-      //         TxBytes: newValueAttachedTransactionBytes,
-      //         transactionObjects: newValueAttachedTransaction,
-      //     });
-      //     const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').yields(null, []);
-      //     const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').yields(null, {
-      //         trunkTransaction: newValueAttachedTransactionBaseTrunk,
-      //         branchTransaction: newValueAttachedTransactionBaseBranch,
-      //     });
-      //     return retryFailedTransaction()(failedTransactionsWithIncorrectTransactionHashes, seedStore).then(
-      //         () => {
-      //             expect(seedStore.performPow.callCount).to.equal(1);
-      //             seedStore.performPow.restore();
-      //             storeAndBroadcast.restore();
-      //             getTransactionToApprove.restore();
-      //         },
-      //     );
-      // });
-    });
+    // describe("when any transaction object has an invalid hash", () => {
+    //   it('should perform proof of work', () => {
+    //       sinon.stub(seedStore, 'performPow').resolves({
+    //           txs: newValueAttachedTransactionBytes,
+    //           transactionObjects: newValueAttachedTransaction,
+    //       });
+    //       const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').resolves( []);
+    //       const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').resolves( {
+    //           trunkTransaction: newValueAttachedTransactionBaseTrunk,
+    //           branchTransaction: newValueAttachedTransactionBaseBranch,
+    //       });
+    //       return retryFailedTransaction()(failedTransactionsWithIncorrectTransactionHashes, seedStore).then(
+    //           () => {
+    //               expect(seedStore.performPow.callCount).to.equal(1);
+    //               seedStore.performPow.restore();
+    //               storeAndBroadcast.restore();
+    //               getTransactionToApprove.restore();
+    //           },
+    //       );
+    //   });
+    // });
 
     describe("when any transaction object has an empty hash", () => {
-      // it('should perform proof of work', () => {
-      //     sinon.stub(seedStore, 'performPow').resolves({
-      //         TxBytes: newValueAttachedTransactionBytes,
-      //         transactionObjects: newValueAttachedTransaction,
-      //     });
-      //     const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').yields(null, []);
-      //     const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').yields(null, {
-      //         trunkTransaction: newValueAttachedTransactionBaseTrunk,
-      //         branchTransaction: newValueAttachedTransactionBaseBranch,
-      //     });
-      //     return retryFailedTransaction()(
-      //         map(failedTransactionsWithCorrectTransactionHashes, (tx, idx) =>
-      //             idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_TXBYTES }),
-      //         ),
-      //         seedStore,
-      //     ).then(() => {
-      //         expect(seedStore.performPow.callCount).to.equal(1);
-      //         seedStore.performPow.restore();
-      //         storeAndBroadcast.restore();
-      //         getTransactionToApprove.restore();
-      //     });
-      // });
+      it('should perform proof of work', () => {
+          sinon.stub(seedStore, 'performPow').resolves({
+              txs: newValueAttachedTransactionBytes,
+              transactionObjects: newValueAttachedTransaction,
+          });
+          const storeAndBroadcast = sinon.stub(helix, 'storeAndBroadcast').resolves([]);
+          const getTransactionToApprove = sinon.stub(helix, 'getTransactionsToApprove').resolves({
+              trunkTransaction: newValueAttachedTransactionBaseTrunk,
+              branchTransaction: newValueAttachedTransactionBaseBranch,
+          });
+          return retryFailedTransaction()(
+              map(failedTransactionsWithCorrectTransactionHashes, (tx, idx) =>
+                  idx % 2 === 0 ? tx : Object.assign({}, tx, { hash: EMPTY_HASH_TXBYTES }),
+              ),
+              seedStore,
+          ).then(() => {
+              expect(seedStore.performPow.callCount).to.equal(1);
+              seedStore.performPow.restore();
+              storeAndBroadcast.restore();
+              getTransactionToApprove.restore();
+          });
+      });
     });
   });
 
@@ -1386,11 +1386,11 @@ describe("libs: helix/transfers", () => {
     let branchTransaction;
 
     before(() => {
-      // See trunk/branch transactions of newValueAttachedTransaction transaction object with currentIndex 2
+      // See trunk/branch transactions of newValueAttachedTransaction transaction object with currentIndex 3
       trunkTransaction =
-        "009c7c8371e3c8cd5b36a438bb858812bbf308114b8018958075f8b7228df251";
+        "00a0bff09709f4e9c20bbf25851772a725ca86aa0074a37f7238a97438edead6";
       branchTransaction =
-        "009c7c8371e3c8cd5b36a438bb858812bbf308114b8018958075f8b7228df251";
+        "00a0bff09709f4e9c20bbf25851772a725ca86aa0074a37f7238a97438edead6";
     });
 
     it("should return true for bundle with correct trunk/branch assignment", () => {
@@ -1420,33 +1420,33 @@ describe("libs: helix/transfers", () => {
   });
 
   describe("#isBundle", () => {
-    // it('should return true for valid bundle with incorrect (descending) transactions order', () => {
-    //     expect(
-    //         isBundle(
-    //             // Transactions are in ascending order by default so reverse them.
-    //             newValueAttachedTransaction.slice().reverse(),
-    //         ),
-    //     ).to.equal(true);
-    // });
-    // it('should return true for valid bundle with correct (ascending) transactions order', () => {
-    //     expect(isBundle(newValueAttachedTransaction)).to.equal(true);
-    // });
-    // it('should return false for invalid bundle with incorrect (descending) transactions order', () => {
-    //     expect(
-    //         isBundle(
-    //             // Transactions are in ascending order by default so reverse them.
-    //             map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) }))
-    //                 .slice()
-    //                 .reverse(),
-    //         ),
-    //     ).to.equal(false);
-    // });
-    // it('should return false for invalid bundle with correct (ascending) transactions order', () => {
-    //     expect(
-    //         isBundle(
-    //             map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) })),
-    //         ),
-    //     ).to.equal(false);
-    // });
+    it('should return true for valid bundle with incorrect (descending) transactions order', () => {
+        expect(
+            isBundle(
+                // Transactions are in ascending order by default so reverse them.
+                newValueAttachedTransaction.slice().reverse(),
+            ),
+        ).to.equal(true);
+    });
+    it('should return true for valid bundle with correct (ascending) transactions order', () => {
+        expect(isBundle(newValueAttachedTransaction)).to.equal(true);
+    });
+    it('should return false for invalid bundle with incorrect (descending) transactions order', () => {
+        expect(
+            isBundle(
+                // Transactions are in ascending order by default so reverse them.
+                map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) }))
+                    .slice()
+                    .reverse(),
+            ),
+        ).to.equal(false);
+    });
+    it('should return false for invalid bundle with correct (ascending) transactions order', () => {
+        expect(
+            isBundle(
+                map(newValueAttachedTransaction, (transaction) => ({ ...transaction, bundle: '0'.repeat(64) })),
+            ),
+        ).to.equal(false);
+    });
   });
 });

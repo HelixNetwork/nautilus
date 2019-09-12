@@ -91,7 +91,6 @@ export class ListComponent extends React.PureComponent {
   };
 
   changeFilter(e){
-    console.log(e.target.value);
     this.switchFilter(e.target.value)
   }
 
@@ -200,6 +199,9 @@ export class ListComponent extends React.PureComponent {
   showMessage(message){
     if(message.indexOf('{')!=-1){
       return 'Empty';
+    }
+    if(message.length > 15){
+      return message.substring(0,15)+"...";
     }
     return message;
   }
@@ -372,10 +374,10 @@ export class ListComponent extends React.PureComponent {
                         
                     </div>
                     <div className={css.column_cnt}>
-                        <p className={css.note}>Add Note:</p>
+                        <p className={css.note}>{this.showMessage(transaction.message)}</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>{isReceived?'Sending':'Receiving'}</h4>
+                        <h4 className={css.sender_heading}>Hash</h4>
                         <p className={css.fromhash}>{transaction.bundle}</p>
                     </div>
                     <div className={css.column_cnt}>

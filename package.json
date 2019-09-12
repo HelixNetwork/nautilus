@@ -1,9 +1,10 @@
 {
   "name": "helix-wallet",
-  "version": "0.2.0-alpha.0",
+  "version": "0.2.0-alpha.2",
   "private": true,
   "description": "Desktop wallet for Helix",
   "license": "Apache-2.0 OR EPL-2.0",
+  "author": "Helix Foundation",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/netobjex/wallet.git"

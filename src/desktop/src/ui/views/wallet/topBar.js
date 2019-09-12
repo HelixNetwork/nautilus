@@ -67,7 +67,6 @@ class TopBar extends Component {
           accountName,
           accountMeta
         );
-        console.log(seedStore);
         getAccountInfo(seedStore, accountName, Electron.notify);
         history.push("/wallet/");
       };

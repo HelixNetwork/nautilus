@@ -123,6 +123,7 @@ class Changepassword extends React.PureComponent {
             <Password
               style={{ marginTop: "-2vw" }}
               type="text"
+              label=""
               value={passwordCurrent}
               onChange={value => this.setState({ passwordCurrent: value })}
               className={classNames(css.ssetting_textline)}
@@ -135,6 +136,7 @@ class Changepassword extends React.PureComponent {
             <Password
               style={{ marginTop: "-2vw" }}
               type="text"
+              label=""
               showScore
               value={passwordNew}
               onChange={value => this.setState({ passwordNew: value })}
@@ -148,6 +150,7 @@ class Changepassword extends React.PureComponent {
             <Password
               style={{ marginTop: "-2vw" }}
               type="text"
+              label=""
               value={passwordConfirm}
               onChange={value => this.setState({ passwordConfirm: value })}
               className={classNames(css.ssetting_textline)}
