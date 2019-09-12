@@ -315,8 +315,8 @@
     "generateAnAddressExplanation": "Please generate an address before using this function.",
     "generateAddressInformation": "Generate a new deposit address every time you wish to receive HELIX",
     "receiveCoins": "RECEIVE HLX ",
-    "irrevocableTransactionWarning": "Please note that recieving fund requires",
-    "TransactionWarning": "generating a reciever address!",
+    "irrevocableTransactionWarning": "Please note that receiving fund requires",
+    "TransactionWarning": "generating a receiver address!",
     "Address":"ADDRESS HISTORY",
     "Overviewstatus": "Overview of your generated",
     "AddressStatus": "address and their status!"
