@@ -1,4 +1,4 @@
-import electron, { ipcMain as ipc, app, protocol, shell, Tray } from "electron";
+import electron, { ipcMain as ipc, app, protocol, shell, Tray, dialog } from "electron";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS
@@ -96,8 +96,23 @@ function createWindow() {
       : `file://${path.join(__dirname, "/index.html")}`;
   windows.main = new BrowserWindow(windowOptions);
   windows.main.setTitle(require("./package.json").productName);
+
+  windows.main.on('unresponsive', () => {
+    const options = {
+      type: 'info',
+      title: 'Wallet Process Hanging',
+      message: 'This process is hanging.',
+      buttons: ['Reload', 'Close']
+    }
+
+    dialog.showMessageBox(options, (index) => {
+      if (index === 0)   windows.main.reload()
+      else   windows.main.closed()
+    })
+  })
   windows.main.loadURL(url);
   windows.main.on("closed", () => (windows.main = null));
+
 
   /**
    * Add right click context menu for input elements
