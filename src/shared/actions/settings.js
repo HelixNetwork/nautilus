@@ -91,6 +91,25 @@ export const changeNode = payload => (dispatch, getState) => {
     changeHelixNode(payload);
   }
 };
+
+/**
+ * Dispatch to change wallet's active node
+ *
+ * @method setNode
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {string} }}
+ */
+export const setNode = (payload) => {
+  Wallet.updateNode(payload.url);
+
+  return {
+      type: SettingsActionTypes.SET_NODE,
+      payload,
+  };
+};
+
+
 /**
  * Makes an API call for checking if attachToTangle is enabled on the selected IRI node
  * and changes proof of work configuration for wallet
