@@ -1,18 +1,10 @@
-import electron, { ipcMain as ipc, app, protocol, shell, Tray, dialog } from "electron";
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS
-} from "electron-devtools-installer";
+import electron, { app,  shell, dialog } from "electron";
 import electronSettings from "electron-settings";
 import { initMenu, contextMenu } from "./native/menu.js";
 const BrowserWindow = electron.BrowserWindow;
 
 const path = require("path");
-const url = require("url");
-const isDev = require("electron-is-dev");
 const devMode = process.env.NODE_ENV === "development";
-
-let mainWindow;
 
 /**
  * Expose Garbage Collector flag for manual trigger after seed usage
@@ -35,10 +27,6 @@ const paths = {
   assets: path.resolve(devMode ? __dirname : app.getAppPath(), "assets"),
   preload: path.resolve(devMode ? __dirname : app.getAppPath(), "dist")
 };
-
-let tray = null;
-
-let windowSizeTimer = null;
 
 /**
  * Define wallet windows
@@ -101,7 +89,7 @@ function createWindow() {
     const options = {
       type: 'info',
       title: 'Wallet Process Hanging',
-      message: 'This process is hanging.',
+      message: 'Something Went Wrong.',
       buttons: ['Reload', 'Close']
     }
 
