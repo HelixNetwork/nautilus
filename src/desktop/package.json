@@ -140,7 +140,7 @@
       ]
     },
     "win": {
-      "publisherName": "",
+      "publisherName": "Helix Foundation",
       "target": "nsis"
     },
     "linux": {
@@ -148,7 +148,7 @@
         "AppImage"
       ],
       "desktop": {
-        "Name": "Helix",
+        "Name": "Helix Wallet",
         "Comment": "Desktop wallet for Helix",
         "Categories": "Office;Network;Finance"
       }
