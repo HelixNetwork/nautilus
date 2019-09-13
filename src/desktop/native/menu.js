@@ -1,11 +1,15 @@
 import { app, Menu, ipcMain, dialog, shell } from "electron";
 import { autoUpdater } from "electron-updater";
 
+//  Wallet Application Menu
+ 
 const state = {
   authorised: false,
   enabled: true
 };
 let language = {
+  devTool: "Toggle Developer Tools",
+  reLoad:"Reload Wallet",
   about: "About Helix",
   errorLog: "Error log",
   checkUpdate: "Check for Updates",
@@ -15,7 +19,7 @@ let language = {
   viewSeed: "View seed",
   viewAddresses: "View addresses",
   tools: "Tools",
-  newAccount: "Add new account",
+  newAccount: "Add new accounsudo kill -9 $(sudo lsof -t -i:9001)t",
   language: "Language",
   node: "Node",
   currency: "Currency",
@@ -364,12 +368,42 @@ export const initMenu = (app, getWindowFunc) => {
       });
     }
 
+    // Tools
+    template.push({
+      label: language.tools,
+      submenu: [
+        {
+          label: "Reload Wallet",
+          click: () =>{
+             const mainWindow = getWindow("main");
+             mainWindow.webContents.reload()
+            },
+            enabled: state.enabled
+        },
+        {
+          type: "separator"
+        },
+        {
+          label: "Toggle Dev Tools",
+          click: () =>{
+             const mainWindow = getWindow("main");
+             mainWindow.webContents.openDevTools()
+            },
+            enabled: state.enabled,
+        }
+      ]
+    });
+
+// Help Menu
     template.push({
       label: language.help,
       submenu: [
         {
           label: `${app.getName()} ${language.help}`,
           click: () => shell.openExternal('https://t.me/helixfoundation'),
+        },
+        {
+          type: "separator"
         }
       ]
     });
