@@ -1,5 +1,6 @@
-import { app, Menu, ipcMain, dialog, shell } from "electron";
+import { app, Menu, ipcMain, dialog, shell, clipboard } from "electron";
 import { autoUpdater } from "electron-updater";
+import os from "os";
 
 //  Wallet Application Menu
  
@@ -404,6 +405,31 @@ export const initMenu = (app, getWindowFunc) => {
         },
         {
           type: "separator"
+        },
+        {
+          label:"Wallet Info",
+          click: () =>  {
+          const electronVersion = process.versions.electron;
+          const node = process.versions.node;
+          const appVersion = app.getVersion();
+          const date = new Date();
+          const description = `Version:${appVersion}\nElectron:${electronVersion}\nNode:${node}\n`+
+          `Date:${date}\nOS:${os.platform+os.release+os.arch}`;
+          dialog.showMessageBox(
+            {
+              type: "info",
+              title: "Helix Network Wallet",
+              message:"Helix Wallet",
+              detail: description,
+              buttons:["Copy","Ok"]
+            },
+            buttonIndex => {
+              if (buttonIndex === 0) {
+                clipboard.writeText(description);
+              }
+            }
+          )
+          }
         }
       ]
     });
