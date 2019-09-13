@@ -160,7 +160,7 @@ export const initMenu = (app, getWindowFunc) => {
         submenu: [
           {
             label: language.about,
-            click: () => navigate("about"),
+            click: () => shell.openExternal('https://hlx.ai'),
             enabled: state.enabled
           },
           {
