@@ -407,7 +407,7 @@ export const initMenu = (app, getWindowFunc) => {
           type: "separator"
         },
         {
-          label:"Wallet Info",
+          label:"Version",
           click: () =>  {
           const electronVersion = process.versions.electron;
           const node = process.versions.node;
