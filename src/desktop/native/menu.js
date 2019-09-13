@@ -369,9 +369,7 @@ export const initMenu = (app, getWindowFunc) => {
       submenu: [
         {
           label: `${app.getName()} ${language.help}`,
-          click: function() {
-            shell.openExternal("");
-          }
+          click: () => shell.openExternal('https://t.me/helixfoundation'),
         }
       ]
     });
