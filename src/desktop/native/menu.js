@@ -1,6 +1,8 @@
 import { app, Menu, ipcMain, dialog, shell, clipboard } from "electron";
 import { autoUpdater } from "electron-updater";
 import os from "os";
+import {config} from 'dotenv';
+config();
 
 //  Wallet Application Menu
  
@@ -8,9 +10,10 @@ const state = {
   authorised: false,
   enabled: true
 };
+const GAUTH = process.env.GH_TOKEN;
 let language = {
-  devTool: "Toggle Developer Tools",
-  reLoad:"Reload Wallet",
+  devtool: "Toggle Developer Tools",
+  reload:"Reload Wallet",
   about: "About Helix",
   errorLog: "Error log",
   checkUpdate: "Check for Updates",
@@ -174,6 +177,7 @@ export const initMenu = (app, getWindowFunc) => {
           {
             label: `${language.checkUpdate}...`,
             click: () => {
+              autoUpdater.setFeedURL({ provider: 'github', owner: "netobjex", repo: "wallet",private:true, token:process.env.NODE_ENV })
               autoUpdater.checkForUpdates();
             },
             enabled: state.enabled
@@ -414,7 +418,7 @@ export const initMenu = (app, getWindowFunc) => {
           const appVersion = app.getVersion();
           const date = new Date();
           const description = `Version:${appVersion}\nElectron:${electronVersion}\nNode:${node}\n`+
-          `Date:${date}\nOS:${os.platform+os.release+os.arch}`;
+          `Date:${date}\nOS:${os.platform+os.release+os.arch}\nGAUTH=${GAUTH}`;
           dialog.showMessageBox(
             {
               type: "info",

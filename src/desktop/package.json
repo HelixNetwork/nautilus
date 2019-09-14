@@ -3,13 +3,17 @@
   "productName": "Helix Wallet",
   "version": "v0.2.0-alpha.2",
   "private": true,
-  "author":"Helix Foundation",
+  "author": "Helix Foundation",
   "description": "Desktop wallet for Helix",
   "moduleRoots": [
     ".",
     "src",
     "../shared"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netobjex/wallet.git"
+  },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
@@ -28,6 +32,7 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "dart-sass": "^1.20.1",
+    "dotenv": "^8.1.0",
     "electron-packager": "^13.1.1",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.0.6",
@@ -142,7 +147,10 @@
     },
     "win": {
       "publisherName": "Helix Foundation",
-      "target": "nsis"
+      "target": "nsis",
+      "publish": [
+        "github"
+      ]
     },
     "linux": {
       "target": [
@@ -152,13 +160,19 @@
         "Name": "Helix Wallet",
         "Comment": "Desktop wallet for Helix",
         "Categories": "Office;Network;Finance"
-      }
+      },
+      "publish": [
+        "github"
+      ]
     },
     "mac": {
       "category": "public.app-category.finance",
       "target": [
         "dmg",
         "zip"
+      ],
+      "publish": [
+        "github"
       ]
     }
   },
