@@ -1,11 +1,16 @@
-import { app, Menu, ipcMain, dialog, shell } from "electron";
+import { app, Menu, ipcMain, dialog, shell, clipboard } from "electron";
 import { autoUpdater } from "electron-updater";
+import os from "os";
 
+//  Wallet Application Menu
+ 
 const state = {
   authorised: false,
   enabled: true
 };
 let language = {
+  devTool: "Toggle Developer Tools",
+  reLoad:"Reload Wallet",
   about: "About Helix",
   errorLog: "Error log",
   checkUpdate: "Check for Updates",
@@ -15,7 +20,7 @@ let language = {
   viewSeed: "View seed",
   viewAddresses: "View addresses",
   tools: "Tools",
-  newAccount: "Add new account",
+  newAccount: "Add new accounsudo kill -9 $(sudo lsof -t -i:9001)t",
   language: "Language",
   node: "Node",
   currency: "Currency",
@@ -160,7 +165,7 @@ export const initMenu = (app, getWindowFunc) => {
         submenu: [
           {
             label: language.about,
-            click: () => navigate("about"),
+            click: () => shell.openExternal('https://hlx.ai'),
             enabled: state.enabled
           },
           {
@@ -364,13 +369,66 @@ export const initMenu = (app, getWindowFunc) => {
       });
     }
 
+    // Tools
+    template.push({
+      label: language.tools,
+      submenu: [
+        {
+          label: "Reload Wallet",
+          click: () =>{
+             const mainWindow = getWindow("main");
+             mainWindow.webContents.reload()
+            },
+            enabled: state.enabled
+        },
+        {
+          type: "separator"
+        },
+        {
+          label: "Toggle Dev Tools",
+          click: () =>{
+             const mainWindow = getWindow("main");
+             mainWindow.webContents.openDevTools()
+            },
+            enabled: state.enabled,
+        }
+      ]
+    });
+
+// Help Menu
     template.push({
       label: language.help,
       submenu: [
         {
           label: `${app.getName()} ${language.help}`,
-          click: function() {
-            shell.openExternal("");
+          click: () => shell.openExternal('https://t.me/helixfoundation'),
+        },
+        {
+          type: "separator"
+        },
+        {
+          label:"Version",
+          click: () =>  {
+          const electronVersion = process.versions.electron;
+          const node = process.versions.node;
+          const appVersion = app.getVersion();
+          const date = new Date();
+          const description = `Version:${appVersion}\nElectron:${electronVersion}\nNode:${node}\n`+
+          `Date:${date}\nOS:${os.platform+os.release+os.arch}`;
+          dialog.showMessageBox(
+            {
+              type: "info",
+              title: "Helix Network Wallet",
+              message:"Helix Wallet",
+              detail: description,
+              buttons:["Copy","Ok"]
+            },
+            buttonIndex => {
+              if (buttonIndex === 0) {
+                clipboard.writeText(description);
+              }
+            }
+          )
           }
         }
       ]

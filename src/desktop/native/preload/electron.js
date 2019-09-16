@@ -30,8 +30,6 @@ let locales = {
   confirmedOut: "Outgoing {{value}} transaction was confirmed at {{account}}"
 };
 
-import HelixTangled from "../helixTangled";
-
 /**
  * Global Electron helper for native support
  */
