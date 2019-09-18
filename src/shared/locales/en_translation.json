@@ -415,6 +415,7 @@
     "nodeSettings": "Node settings",
     "account": "Account settings",
     "accountName": "Account name",
+    "remotequorum":"Remote Quorum",
     "logout": "Log out",
     "reset": "Reset wallet",
     "syncingComplete": "Syncing complete",

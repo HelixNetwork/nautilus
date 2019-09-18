@@ -94,25 +94,26 @@ class AdvancedSettings extends React.PureComponent {
             <h3 style={{ marginLeft: "25vw", marginTop: "0vw" }}>
               {t("pow:powUpdated")}
             </h3>
+          
+            <hr className={classNames(css.setinghr)}/>
+            <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
+              {t("pow:feeless")} {t("pow:localOrRemote")}
+            </p>
             <Toggle
               checked={settings.remotePoW}
               onChange={() => changePowSettings()}
               on={t("pow:remote")}
               off={t("pow:local")}
             />
-            <hr className={classNames(css.setinghr)}/>
-            <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
-              {t("pow:feeless")} {t("pow:localOrRemote")}
-            </p>
            <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
+                               
+                                <p>{t('advancedSettings:autoPromotionExplanation')}</p>
                                 <Toggle
                                     checked={settings.autoPromotion}
                                     onChange={() => changeAutoPromotionSettings()}
                                     on={t('enabled')}
                                     off={t('disabled')}
                                 />
-                                <p>{t('advancedSettings:autoPromotionExplanation')}</p>
-                
             <h3 style={{ marginLeft: "29vw", marginTop: "2vw" }}>
               {t("settings:reset")}
             </h3>
@@ -130,7 +131,7 @@ class AdvancedSettings extends React.PureComponent {
             <Button
               variant="negative"
               className="small"
-              style={{ marginLeft: "28vw", marginTop: "7vw" }}
+              style={{ marginLeft: "28vw", marginTop: "7vw" ,backgroundColor:"rgb(28, 3, 59)"}}
               onClick={this.confirmReset}
             >
               {t("settings:reset")}

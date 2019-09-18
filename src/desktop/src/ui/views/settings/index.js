@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import Top from "../../components/topbar";
 import Sidebar from "../../components/sidebar";
 import SettingsLanguage from "ui/views/settings/language";
-import SettingsNode from "ui/views/settings/node";
+import NodeSettings from "ui/views/settings/node";
 import Currency from "ui/views/settings/currency";
 import SettingsTheme from "ui/views/settings/themesetting";
 import AccountName from "ui/views/settings/editName";
@@ -18,6 +18,7 @@ import Changepassword from "ui/views/settings/changepassword";
 import SettingsMode from "ui/views/settings/mode";
 import Snapshot from "ui/views/settings/snapshot";
 import AdvancedSettings from "ui/views/settings/advancedSettings";
+import RemoteNode from "ui/views/settings/RemoteQuarum";
 import { getAccountNamesFromState } from "selectors/accounts";
 import Button from "ui/components/button";
 
@@ -65,11 +66,12 @@ class Settings extends React.PureComponent {
                         path="/settings/language"
                         component={SettingsLanguage}
                       />
-                      <Route path="/settings/node" component={SettingsNode} />
+                      <Route path="/settings/node" component={NodeSettings} />
                       <Route path="/settings/currency" component={Currency} />
                       <Route path="/settings/theme" component={SettingsTheme} />
                       <Route path="/settings/viewseed" component={Viewseed} />
                       <Route path="/settings/address" component={Viewaddress} />
+                      <Route path="/settings/remotequorum" component={RemoteNode}/>
                       <Route
                         path="/settings/password"
                         component={Changepassword}

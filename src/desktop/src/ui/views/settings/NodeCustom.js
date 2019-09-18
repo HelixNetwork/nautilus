@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import withNodeData from 'containers/settings/Node';
 
-import Button from 'ui/components/Button';
-import Icon from 'ui/components/Icon';
-import Scrollbar from 'ui/components/Scrollbar';
+import Button from 'ui/components/button';
+import Icon from 'ui/components/icon';
+import Scrollbar from 'ui/components/scrollbar';
 import Modal from 'ui/components/modal/Modal';
-import Text from 'ui/components/input/Text';
+import Text from 'ui/components/input/text';
 
-import css from './index.scss';
+import css from './settings.scss';
 
 /**
  * Custom node management component

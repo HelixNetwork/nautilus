@@ -90,7 +90,7 @@ p {
   float: right;
 }
 .foo_bxx12 {
-  width: 66%;
+  width: 75%;
   min-height: 465px;
   background-color: rgb(66, 13, 134);
   position: absolute;
@@ -127,7 +127,7 @@ p {
   border-radius: -1%;
   border: 0;
   color: white;
-  background-color: #06182b;
+  background-color: var(--body);
   border-bottom: 2px solid #e8b349;
   outline: 0;
   text-align: center;
