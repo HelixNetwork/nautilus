@@ -111,6 +111,7 @@
     },
     "extends": null,
     "files": [
+      "assets/",
       "./dist/**/*",
       "./build/**/*",
       "./node_modules/**/*",
