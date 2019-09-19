@@ -577,48 +577,49 @@ const isNodeHealthy = settings => {
   const cached = {
     latestMilestone: EMPTY_HASH_TXBYTES
   };
-
   return getNodeInfo(settings)()
-    .then(
-      ({
-        appVersion,
-        latestMilestone,
-        latestMilestoneIndex,
-        latestSolidSubtangleMilestone,
-        latestSolidSubtangleMilestoneIndex
-      }) => {
-        if (
-          ["rc", "beta", "alpha"].some(
-            el => appVersion.toLowerCase().indexOf(el) > -1
-          )
-        ) {
-          throw new Error(Errors.UNSUPPORTED_NODE);
-        }
-        cached.latestMilestone = latestMilestone;
-        if (
-          (cached.latestMilestone === latestSolidSubtangleMilestone ||
-            latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <=
-              latestSolidSubtangleMilestoneIndex) &&
-          cached.latestMilestone !== EMPTY_HASH_TXBYTES
-        ) {
-          return getTransactionStrings(settings)([
-            cached.latestMilestone
-          ]).catch(err =>{ throw new Error(err)});
-        }
+    .then(() => true);
+}
+      
+      // ({
+      //   appVersion,
+      //   latestMilestone,
+      //   latestMilestoneIndex,
+      //   latestSolidSubtangleMilestone,
+      //   latestSolidSubtangleMilestoneIndex
+      // }) => {
+      //   if (
+      //     ["rc", "beta", "alpha"].some(
+      //       el => appVersion.toLowerCase().indexOf(el) > -1
+      //     )
+      //   ) {
+      //     throw new Error(Errors.UNSUPPORTED_NODE);
+      //   }
+      //   cached.latestMilestone = latestMilestone;
+      //   if (
+      //     (cached.latestMilestone === latestSolidSubtangleMilestone ||
+      //       latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <=
+      //         latestSolidSubtangleMilestoneIndex) &&
+      //     cached.latestMilestone !== EMPTY_HASH_TXBYTES
+//         ) {
+//           return getTransactionStrings(settings)([
+//             cached.latestMilestone
+//           ]).catch(err =>{ throw new Error(err)});
+//         }
 
-        throw new Error(Errors.NODE_NOT_SYNCED);
-      }
-    )
-    .then(txs => {
-      // TODO
-      const { timestamp } = asTransactionObject(
-        head(txs),
-        cached.latestMilestone
-      );
+//         throw new Error(Errors.NODE_NOT_SYNCED);
+//       }
+//     )
+//     .then(txs => {
+//       // TODO
+//       const { timestamp } = asTransactionObject(
+//         head(txs),
+//         cached.latestMilestone
+//       );
 
-      return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
-    });
-};
+//       return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
+//     });
+// };
 
 /**
  * Helix isPromotable.
