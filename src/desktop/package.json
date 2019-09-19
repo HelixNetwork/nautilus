@@ -21,7 +21,7 @@
     "@helixnetwork/sha3": "^1.0.0-alpha.6",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.6",
     "@helixnetwork/validators": "^1.0.0-alpha.6",
-    "argon2": "^0.24.0",
+    "argon2": "rihardsgravis/node-argon2#prebuild-release",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
