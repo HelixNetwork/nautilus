@@ -69,33 +69,33 @@ autoUpdater.autoDownload = false;
 /**
  * On update error event callback
  */
-autoUpdater.on("error", error => {
-  const mainWindow = getWindow("main");
+autoUpdater.on('error', () => {
+  const mainWindow = getWindow('main');
   if (mainWindow) {
-    mainWindow.webContents.send("update.progress", false);
+      mainWindow.webContents.send('update.progress', false);
   }
   dialog.showErrorBox(
-    language.updates.errorRetrievingUpdateData,
-    error === null ? "unknown" : (error.stack || error).toString()
+      language.updates.errorRetrievingUpdateData,
+      language.updates.errorRetrievingUpdateDataExplanation,
   );
 });
 
 /**
  * On update available event callback
  */
-autoUpdater.on("update-available", () => {
+autoUpdater.on('update-available', () => {
   dialog.showMessageBox(
-    {
-      type: "info",
-      title: language.updates.newVersionAvailable,
-      message: language.updates.newVersionAvailableExplanation,
-      buttons: [language.yes, language.no]
-    },
-    buttonIndex => {
-      if (buttonIndex === 0) {
-        autoUpdater.downloadUpdate();
-      }
-    }
+      {
+          type: 'info',
+          title: language.updates.newVersionAvailable,
+          message: language.updates.newVersionAvailableExplanation,
+          buttons: [language.yes, language.no],
+      },
+      (buttonIndex) => {
+          if (buttonIndex === 0) {
+              autoUpdater.downloadUpdate();
+          }
+      },
   );
 });
 
@@ -113,31 +113,31 @@ autoUpdater.on("update-not-available", () => {
 /**
  * On update ready to install event callback
  */
-autoUpdater.on("update-downloaded", () => {
-  const mainWindow = getWindow("main");
+autoUpdater.on('update-downloaded', () => {
+  const mainWindow = getWindow('main');
   if (mainWindow) {
-    mainWindow.webContents.send("update.progress", false);
+      mainWindow.webContents.send('update.progress', false);
   }
   dialog.showMessageBox(
-    {
-      title: language.updates.installUpdate,
-      message: language.updates.installUpdateExplanation
-    },
-    () => {
-      setImmediate(() => {
-        const mainWindow = getWindow("main");
-        mainWindow.removeAllListeners("close");
-        app.removeAllListeners("window-all-closed");
-        autoUpdater.quitAndInstall();
-      });
-    }
+      {
+          title: language.updates.installUpdate,
+          message: language.updates.installUpdateExplanation,
+      },
+      () => {
+          setTimeout(() => {
+              const mainWindow = getWindow('main');
+              mainWindow.removeAllListeners('close');
+              app.removeAllListeners('window-all-closed');
+              autoUpdater.quitAndInstall();
+          }, 0);
+      },
   );
 });
 
-autoUpdater.on("download-progress", progressObj => {
-  const mainWindow = getWindow("main");
+autoUpdater.on('download-progress', (progressObj) => {
+  const mainWindow = getWindow('main');
   if (mainWindow) {
-    mainWindow.webContents.send("update.progress", progressObj);
+      mainWindow.webContents.send('update.progress', progressObj);
   }
 });
 
