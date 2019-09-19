@@ -34,7 +34,7 @@ const FatalError = ({ error, history }) => {
         <form>
           <h1>Cannot connect to Secret Service API</h1>
           <p>
-            Please check that you are not running Helix as <strong>root</strong>{" "}
+            Please check that you are not running Nautilus as <strong>root</strong>{" "}
             user
             <br /> and the <strong>gnome-keyring-daemon</strong> process is
             running.
@@ -54,7 +54,7 @@ const FatalError = ({ error, history }) => {
         <form>
           <h1>Cannot start wallet</h1>
           <p>
-            The database Helix uses (Realm) is currently incompatible with
+            The database Nautilus uses (Realm) is currently incompatible with
             Windows OS usernames that contain non-Latin characters. We are
             working on a fix.
           </p>
@@ -75,7 +75,7 @@ const FatalError = ({ error, history }) => {
           <h1>Missing security dependencies</h1>
           <p>
             Your Linux distribution is missing libsecret library that is
-            required for Helix to securely store and retrieve sensitive
+            required for Nautilus to securely store and retrieve sensitive
             information.
           </p>
           <p>
@@ -113,18 +113,18 @@ const FatalError = ({ error, history }) => {
     ) {
       return (
         <form className={css.tutorial}>
-          <h1>Newer Helix version data found</h1>
+          <h1>Newer Nautilus version data found</h1>
           <p>
-            Helix found data installed by a newer version of Helix which is
+          Nautilus found data installed by a newer version of Nautilus which is
             incompatible with version <strong>{settings.version}</strong>.{" "}
-            <a href="#">Download the latest version</a> or update Helix now.
+            <a href="#">Download the latest version</a> or update Nautilus now.
           </p>
           <Button
             type="button"
             variant="primary"
             onClick={() => Electron.autoUpdate()}
           >
-            Update Helix now
+            Update Nautilus now
           </Button>
         </form>
       );
@@ -133,7 +133,7 @@ const FatalError = ({ error, history }) => {
     if (error === "Found old data") {
       return (
         <form className={css.tutorial}>
-          <h1>Windows 7 incompatible Helix data found</h1>
+          <h1>Windows 7 incompatible Nautilus data found</h1>
           <p>
             Incompatible wallet data was found used by the wallet version{" "}
             <strong>0.4.6</strong> or older.
