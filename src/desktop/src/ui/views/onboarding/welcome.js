@@ -14,7 +14,7 @@ import Logos from "ui/components/logos";
 import css from "./welcome.scss";
 import classNames from "classnames";
 /**
- * Helix Welcome Screen component
+ * Nautilus Welcome Screen component
  */
 class Welcome extends React.PureComponent {
   static propTypes = {

@@ -1,6 +1,6 @@
 {
   "name": "wallet",
-  "productName": "Helix Wallet",
+  "productName": "Nautilus Wallet",
   "version": "v0.2.0-alpha.2",
   "private": true,
   "author":"Helix Foundation",
@@ -101,9 +101,9 @@
   },
   "main": "dist/main.js",
   "build": {
-    "productName": "Helix Wallet",
+    "productName": "Nautilus Wallet",
     "artifactName": "${name}-${version}.${ext}",
-    "appId": "ai.helix.wallet",
+    "appId": "ai.nautilus.wallet",
     "asar": true,
     "directories": {
       "buildResources": "./assets",
@@ -145,7 +145,7 @@
       "deleteAppDataOnUninstall": true
     },
     "win": {
-      "publisherName": "Helix Foundation",
+      "publisherName": "Nautilus Foundation",
       "target": "nsis"
     },
     "linux": {
@@ -153,7 +153,7 @@
         "AppImage"
       ],
       "desktop": {
-        "Name": "Helix Wallet",
+        "Name": "Nautilus Wallet",
         "Comment": "Desktop wallet for Helix",
         "Categories": "Office;Network;Finance"
       }
