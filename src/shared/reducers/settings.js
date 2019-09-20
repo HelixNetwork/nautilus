@@ -17,6 +17,14 @@ export const initialState = {
    * Sets the remote POW
    */
   remotePoW: false,
+    /*
+     * Desktop: Use system proxy settings
+     */
+    ignoreProxy: false,
+     /**
+     * Determines if polling should auto promote unconfirmed transactions
+     */
+    autoPromotion: true,
   /**
    * List of IRI nodes
    */
@@ -89,6 +97,11 @@ const settingsReducer = (state = initialState, action) => {
         ...state,
         remotePoW: action.payload
       };
+      case SettingsActionTypes.SET_AUTO_PROMOTION:
+            return {
+                ...state,
+                autoPromotion: action.payload,
+            };
     case SettingsActionTypes.UPDATE_THEME:
       return {
         ...state,
@@ -114,6 +127,19 @@ const settingsReducer = (state = initialState, action) => {
         ...state,
         autoNodeList: action.payload
       };
+      case SettingsActionTypes.SET_PROXY:
+        return {
+            ...state,
+            ignoreProxy: action.payload,
+        };
+        case SettingsActionTypes.SET_NOTIFICATIONS:
+          return {
+              ...state,
+              notifications: {
+                  ...state.notifications,
+                  [action.payload.type]: action.payload.enabled,
+              },
+          };
   }
   return state;
 };

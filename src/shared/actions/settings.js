@@ -12,6 +12,7 @@ import {  quorum } from '../libs/hlx/index';
 import { allowsRemotePow } from "../libs/hlx/extendedApi";
 import get from "lodash/get";
 import keys from "lodash/keys";
+
 /**
  * Change wallet's active language
  *
@@ -86,7 +87,7 @@ export const acceptPrivacy = () => {
  * @returns {{type: {string}, payload: {object} }}
  */
 export const setNotifications = (payload) => {
-  Wallet.updateNotificationsSetting(payload);
+  // Wallet.updateNotificationsSetting(payload);
 
   return {
       type: SettingsActionTypes.SET_NOTIFICATIONS,
@@ -102,11 +103,12 @@ export const setNotifications = (payload) => {
  * @returns {{type: {string}, payload: {boolean} }}
  */
 export const setProxy = (payload) => {
-  Wallet.updateIgnoreProxySetting(payload);
-
+  // Wallet.updateIgnoreProxySetting(payload);
+console.log("values be like",payload);
   return {
       type: SettingsActionTypes.SET_PROXY,
       payload,
+      
   };
 };
 

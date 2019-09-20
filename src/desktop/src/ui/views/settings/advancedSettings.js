@@ -7,7 +7,10 @@ import { connect } from "react-redux";
 import { clearVault } from "libs/crypto";
 import { reinitialise as reinitialiseStorage } from "database";
 import { getEncryptionKey, ALIAS_REALM } from "libs/realm";
-import { changePowSettings,  changeAutoPromotionSettings , setNotifications, setProxy } from "actions/settings";
+import { changePowSettings,
+          changeAutoPromotionSettings, 
+          setNotifications, 
+          setProxy } from "actions/settings";
 import { generateAlert } from "actions/alerts";
 import Button from "ui/components/button";
 import Confirm from "ui/components/modal/Confirm";
@@ -30,7 +33,7 @@ class AdvancedSettings extends React.PureComponent {
     changePowSettings: PropTypes.func.isRequired,
     notificationLog: PropTypes.array.isRequired,
     setNotifications: PropTypes.func.isRequired,
-
+    setProxy: PropTypes.func.isRequired,
     generateAlert: PropTypes.func.isRequired,
     changeAutoPromotionSettings: PropTypes.func.isRequired,
     wallet: PropTypes.object,
@@ -45,14 +48,15 @@ class AdvancedSettings extends React.PureComponent {
       clearInterval(this.interval);
     }
   }
-     /**
-     * Enable/disable global system proxy bypass
-     * @returns {undefined}
-     */
-    setProxy = () => {
-      const enabled = !this.props.settings.ignoreProxy;
-      Electron.setStorage('ignore-proxy', enabled);
-      this.props.setProxy(enabled);
+  /**
+  * Enable/disable global system proxy bypass
+  * @returns {undefined}
+  */
+  setProxy = () => {
+    const enabled = !this.props.settings.ignoreProxy;
+    Electron.setStorage('ignore-proxy', enabled);
+    this.props.setProxy(enabled);
+    console.log("setting node proxy");
   };
 
   //reset wallet
@@ -98,9 +102,16 @@ class AdvancedSettings extends React.PureComponent {
   };
 
   render() {
-    const { t, settings, wallet, changePowSettings, changeAutoPromotionSettings , setNotifications } = this.props;
+    const { t, 
+      settings, 
+      wallet, 
+      changePowSettings, 
+      changeAutoPromotionSettings, 
+      setNotifications ,
+    } = this.props;
     const { resetConfirm, resetCountdown } = this.state;
-    
+console.log("changePOWSettingssssss#####",changePowSettings);
+console.log("setnotifications",setNotifications);
     return (
       <div className={classNames(css.foo_bxx12)}>
         <Scrollbar>
@@ -108,8 +119,8 @@ class AdvancedSettings extends React.PureComponent {
             <h3 style={{ marginLeft: "25vw", marginTop: "0vw" }}>
               {t("pow:powUpdated")}
             </h3>
-          
-            <hr className={classNames(css.setinghr)}/>
+
+            <hr className={classNames(css.setinghr)} />
             <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
               {t("pow:feeless")} {t("pow:localOrRemote")}
             </p>
@@ -119,55 +130,57 @@ class AdvancedSettings extends React.PureComponent {
               on={t("pow:remote")}
               off={t("pow:local")}
             />
-           <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
-                               
-                                <p>{t('advancedSettings:autoPromotionExplanation')}</p>
-                                <Toggle
-                                    checked={settings.autoPromotion}
-                                    onChange={() => changeAutoPromotionSettings()}
-                                    on={t('enabled')}
-                                    off={t('disabled')}
-                                />
-            <h3>{t('notifications:notifications')}</h3>
-                                <Toggle
-                                    checked={settings.notifications.general}
-                                    onChange={() =>
-                                        setNotifications({ type: 'general', enabled: !settings.notifications.general })
-                                    }
-                                    on={t('enabled')}
-                                    off={t('disabled')}
-                                />
-                                <Checkbox
-                                    disabled={!settings.notifications.general}
-                                    checked={settings.notifications.confirmations}
-                                    label={t('notifications:typeConfirmations')}
-                                    className="small"
-                                    onChange={(value) => setNotifications({ type: 'confirmations', enabled: value })}
-                                />
-                                <Checkbox
-                                    disabled={!settings.notifications.general}
-                                    checked={settings.notifications.messages}
-                                    label={t('notifications:typeMessages')}
-                                    className="small"
-                                    onChange={(value) => setNotifications({ type: 'messages', enabled: value })}
-                                />
-                                <hr className={classNames(css.setinghr)}/>
-                                <p>{t('notifications:notificationExplanation')}</p>
-                                <React.Fragment>
-                            <h3>{t('proxy:proxy')}</h3>
-                            <Toggle
-                                checked={!settings.ignoreProxy}
-                                onChange={this.setProxy}
-                                on={t('enabled')}
-                                off={t('disabled')}
-                            />
-                            <p>{t('proxy:proxyExplanation')}</p>
-                            <hr />
-                        </React.Fragment>
-                        <hr className={classNames(css.setinghr)}/>
+            <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
+
+            <p>{t('advancedSettings:autoPromotionExplanation')}</p>
+            <Toggle
+              checked={settings.autoPromotion}
+              onChange={() => changeAutoPromotionSettings()}
+              on={t('enabled')}
+              off={t('disabled')}
+            />
+            <h3 style={{ marginLeft: "27vw" }}>{t('notifications:notifications')}</h3>
+            <Toggle
+              checked={settings.notifications.general}
+              onChange={() =>
+                setNotifications({ type: 'general', enabled: !settings.notifications.general })
+              }
+              on={t('enabled')}
+              off={t('disabled')}
+            />
+            <Checkbox
+              disabled={!settings.notifications.general}
+              checked={settings.notifications.confirmations}
+              label={t('notifications:typeConfirmations')}
+              className="small"
+              onChange={(value) => setNotifications({ type: 'confirmations', enabled: value })}
+            />
+            <Checkbox
+              disabled={!settings.notifications.general}
+              checked={settings.notifications.messages}
+              label={t('notifications:typeMessages')}
+              className="small"
+              onChange={(value) => setNotifications({ type: 'messages', enabled: value })}
+            />
+            
+            <p style={{ marginLeft: "19vw", marginTop: "2vw" }}>{t('notifications:notificationExplanation')}</p>
+            <hr className={classNames(css.setinghr1)} />
+            <React.Fragment>
+              <h3 style={{ marginLeft: "27vw" }}>{t('proxy:proxy')}</h3>
+              <Toggle
+                checked={!settings.ignoreProxy}
+                onChange={this.setProxy}
+                on={t('enabled')}
+                off={t('disabled')}
+              />
+              <p>{t('proxy:proxyExplanation')}</p>
+             
+            </React.Fragment>
+            <hr className={classNames(css.setinghr2)} />
             <h3 style={{ marginLeft: "29vw", marginTop: "2vw" }}>
               {t("settings:reset")}
             </h3>
+            <hr className={classNames(css.setinghr3)} />
             <Trans i18nKey="walletResetConfirmation:warning">
               <React.Fragment>
                 <React.Fragment>
@@ -182,12 +195,12 @@ class AdvancedSettings extends React.PureComponent {
             <Button
               variant="negative"
               className="small"
-              style={{ marginLeft: "28vw", marginTop: "7vw" ,backgroundColor:"rgb(28, 3, 59)"}}
+              style={{ marginLeft: "28vw", marginTop: "7vw", backgroundColor: "rgb(28, 3, 59)" }}
               onClick={this.confirmReset}
             >
               {t("settings:reset")}
             </Button>
-            <hr className={classNames(css.setinghr)}/>
+            
             {wallet && wallet.ready ? (
               <ModalPassword
                 isOpen={resetConfirm}
