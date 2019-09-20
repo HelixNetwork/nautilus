@@ -172,7 +172,7 @@ class AccountPassword extends React.PureComponent {
                 isGenerated ? "seed-import" : "account-name"
                 }`}
             >
-              {t("global:goBack")} <span>></span>
+            <span>&lt;</span>  {t("global:goBack")} 
             </Button>
             <Button
               type="submit"
