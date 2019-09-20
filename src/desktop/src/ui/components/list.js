@@ -319,6 +319,16 @@ export class ListComponent extends React.PureComponent {
             />
             
           </div>
+          <a
+            onClick={() => updateAccount()}
+            className={classNames(
+              css.refresh,
+              isBusy ? css.busy : null,
+              isLoading ? css.loading : null
+            )}
+          >
+            <Icon icon="sync" size={24} />
+          </a>
           <p className={css.sort_by}>Sort By</p>
           <div className={css.search}><select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
                   {filters.map(item => {
@@ -327,7 +337,9 @@ export class ListComponent extends React.PureComponent {
                     {item}
                   </option>)
                 })}
-                </select></div> 
+                </select>
+                </div> 
+
           
         </nav>
         {/* <div className={css.list} style={style}> */}
@@ -343,7 +355,7 @@ export class ListComponent extends React.PureComponent {
                     key={key}
                     onClick={() => setItem(transaction.bundle)}
                   >
-                    {isReceived || isConfirmed ?(
+                    {isConfirmed ?(
                     <div className={!isReceived?css.column_sent:css.column_receive}>
                     <div className={css.column_cnt}>
                         <h4 className={css.sent_heading}>{!isReceived ? 'SENT': 'RECEIVED'}</h4>

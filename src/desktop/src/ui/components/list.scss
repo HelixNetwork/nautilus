@@ -103,9 +103,13 @@
 .refresh {
     display: block;
     text-align: center;
+    margin-right: 0;
+    margin-left: 36vw !important;
+    color: white !important;
+    opacity: 0.3 !important;
 
     &:hover {
-        color: var(--input-bg);
+        opacity: 1 !important;
     }
 
     &.busy {
@@ -309,7 +313,7 @@
     background: var(--body-bg);
     border: none;
     color: white;
-    margin-right: -110px;
+    margin-right: 0px;
   }
   .sort_by{
     right: 150px;
