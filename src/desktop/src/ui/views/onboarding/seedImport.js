@@ -263,7 +263,7 @@ class SeedImport extends React.PureComponent {
                   variant="backgroundNone"
                   className="modal_navleft"
                 >
-                  Cancel <span>></span>
+               <span>&lt;</span>   Cancel 
                 </Button>
                 <Button
                   onClick={this.onSubmit.bind(this)}
@@ -286,7 +286,7 @@ class SeedImport extends React.PureComponent {
             variant="backgroundNone"
             to={`/onboarding/seed-${isGenerated ? "backup" : "intro"}`}
           >
-            {t("global:goBack")} <span>></span>
+          <span>&lt;</span>  {t("global:goBack")} 
           </Button>
           <Button
             className="navright"

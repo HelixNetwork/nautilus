@@ -1,6 +1,6 @@
 {
   "name": "wallet",
-  "productName": "Helix Wallet",
+  "productName": "Nautilus Wallet",
   "version": "v0.2.0-alpha.2",
   "private": true,
   "author": "Helix Foundation",
@@ -25,7 +25,7 @@
     "@helixnetwork/sha3": "^1.0.0-alpha.6",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.6",
     "@helixnetwork/validators": "^1.0.0-alpha.6",
-    "argon2": "^0.24.0",
+    "argon2": "rihardsgravis/node-argon2#prebuild-release",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
@@ -105,9 +105,9 @@
   },
   "main": "dist/main.js",
   "build": {
-    "productName": "Helix Wallet",
+    "productName": "Nautilus Wallet",
     "artifactName": "${name}-${version}.${ext}",
-    "appId": "ai.helix.wallet",
+    "appId": "ai.nautilus.wallet",
     "asar": true,
     "directories": {
       "buildResources": "./assets",
@@ -115,6 +115,7 @@
     },
     "extends": null,
     "files": [
+      "assets/",
       "./dist/**/*",
       "./build/**/*",
       "./node_modules/**/*",
@@ -144,8 +145,11 @@
         }
       ]
     },
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "win": {
-      "publisherName": "Helix Foundation",
+      "publisherName": "Nautilus Foundation",
       "target": "nsis",
       "publish": [
         "github"
@@ -156,7 +160,7 @@
         "AppImage"
       ],
       "desktop": {
-        "Name": "Helix Wallet",
+        "Name": "Nautilus Wallet",
         "Comment": "Desktop wallet for Helix",
         "Categories": "Office;Network;Finance"
       },

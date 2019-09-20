@@ -116,7 +116,7 @@ class AccountName extends React.PureComponent {
               variant="backgroundNone"
               to={`/onboarding/seed-${isGenerated ? "generate" : "import"}`}
             >
-              {t("global:goBack")} <span>></span>
+             <span>&lt;</span> {t("global:goBack")} 
             </Button>
             <Button
               type="submit"

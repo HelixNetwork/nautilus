@@ -141,7 +141,7 @@
     "isYourBalanceCorrect": "Is your balance correct?",
     "ifYourBalanceIsNotCorrect": "If your balance is not correct, it is likely that you are using a pre-snapshot seed.",
     "headToAdvancedSettingsForTransition": "Head to Advanced Settings and perform a Snapshot Transition.",
-    "usingHelixWalletWithKeePass": "Using Helix Wallet with Keepass2Android",
+    "usingHelixWalletWithKeePass": "Using Nautilus Wallet with Keepass2Android",
     "signedTxBytesBroadcastErrorExplanation": "There was a network error while broadcasting your transaction.",
     "broadcastError": "Could not broadcast transfer",
     "addressesAlreadySpentFrom": "One or more of the addresses have already been spent from.",

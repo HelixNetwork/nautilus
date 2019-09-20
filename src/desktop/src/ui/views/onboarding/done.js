@@ -93,7 +93,7 @@ class Done extends React.PureComponent {
               this.props.history.push("/onboarding/seed-import")
             }
           >
-            {t("global:goBack")} <span>></span>
+          <span>&lt;</span>  {t("global:goBack")} 
           </Button>
           <Button
             className="navright"
