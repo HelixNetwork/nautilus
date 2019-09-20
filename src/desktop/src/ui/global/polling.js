@@ -54,7 +54,7 @@ class Polling extends React.PureComponent {
         /** @ignore */
         setPollFor: PropTypes.func.isRequired,
         /** @ignore */
-        marketData: PropTypes.object.isRequired,
+        // marketData: PropTypes.object.isRequired,
         /** @ignore */
         fetchMarketData: PropTypes.func.isRequired,
         /** @ignore */
@@ -90,14 +90,14 @@ class Polling extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        const { marketData, isPollingMarketData } = this.props;
+        // const { marketData, isPollingMarketData } = this.props;
 
-        /**
-         * Send updated marketData to Tray application
-         */
-        if (prevProps.isPollingMarketData && !isPollingMarketData) {
-            Electron.storeUpdate(JSON.stringify({ marketData }));
-        }
+        // /**
+        //  * Send updated marketData to Tray application
+        //  */
+        // if (prevProps.isPollingMarketData && !isPollingMarketData) {
+        //     Electron.storeUpdate(JSON.stringify({ marketData }));
+        // }
     }
 
     componentWillUnmount() {
@@ -144,13 +144,14 @@ class Polling extends React.PureComponent {
 
         const dict = {
             promotion: this.promote,
-            marketData: this.props.fetchMarketData,
+            // marketData: this.props.fetchMarketData,
             price: this.props.fetchPrice,
             chartData: this.props.fetchChartData,
             nodeList: this.props.fetchNodeList,
             accountInfo: this.fetchLatestAccountInfo,
             broadcast: this.retryFailedTransaction,
         };
+console.log("Service===",service);
 
         dict[service] ? dict[service]() : this.props.setPollFor(this.props.allPollingServices[0]);
     };
@@ -177,7 +178,6 @@ class Polling extends React.PureComponent {
             const bundleHashes = keys(failedBundleHashes);
             const bundleForRetry = head(bundleHashes);
             const { name, type } = failedBundleHashes[bundleForRetry];
-
             const seedStore = await new SeedStore[type](password, name);
 
             this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
@@ -201,6 +201,7 @@ class Polling extends React.PureComponent {
                 const bundleHashToPromote = bundleHashes[random(size(bundleHashes) - 1)];
 
                 const { accountName } = unconfirmedBundleTails[bundleHashToPromote];
+console.log("AccountType===", selectedAccountType);
 
                 const seedStore = await new SeedStore[selectedAccountType](password, name);
 
@@ -238,7 +239,7 @@ const mapStateToProps = (state) => ({
     isRetryingFailedTransaction: state.ui.isRetryingFailedTransaction,
     failedBundleHashes: getFailedBundleHashes(state),
     password: state.wallet.password,
-    marketData: state.marketData,
+    // marketData: state.marketData,
 });
 
 const mapDispatchToProps = {
