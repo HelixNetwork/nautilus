@@ -47,7 +47,8 @@ export const I18N_LOCALES = ["en", "ml","gr"];
 
 export const I18N_LOCALE_LABELS = [
   "English (International)",
-  "മലയാളം - Malayalam"
+  "മലയാളം - Malayalam",
+  "German"
 ];
 
 /**
