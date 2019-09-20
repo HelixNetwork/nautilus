@@ -11,7 +11,7 @@ const state = {
 let language = {
   devTool: "Toggle Developer Tools",
   reLoad:"Reload Wallet",
-  about: "About Helix",
+  about: "About Nautilus",
   errorLog: "Error log",
   checkUpdate: "Check for Updates",
   settings: "Settings",
@@ -51,13 +51,13 @@ let language = {
   updates: {
     errorRetrievingUpdateData: "Error retrieving update data",
     noUpdatesAvailable: "No updates available",
-    noUpdatesAvailableExplanation: "You have the latest version of Helix!",
+    noUpdatesAvailableExplanation: "You have the latest version of Nautilus Wallet!",
     newVersionAvailable: "New version available",
     newVersionAvailableExplanation:
-      "A new Helix version is available. Do you want to update now?",
+      "A new Nautilus version is available. Do you want to update now?",
     installUpdate: "Install update and restart",
     installUpdateExplanation:
-      "Download complete, Helix will now restart to install the update"
+      "Download complete, Nautilus will now restart to install the update"
   }
 };
 
@@ -418,8 +418,8 @@ export const initMenu = (app, getWindowFunc) => {
           dialog.showMessageBox(
             {
               type: "info",
-              title: "Helix Network Wallet",
-              message:"Helix Wallet",
+              title: "Nautilus Wallet",
+              message:"Nautilus Wallet",
               detail: description,
               buttons:["Copy","Ok"]
             },
