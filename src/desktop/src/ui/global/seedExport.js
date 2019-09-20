@@ -195,7 +195,7 @@ export class SeedExportComponent extends PureComponent {
               variant="backgroundNone"
               className="modal_navleft"
             >
-              {t("goBack")} <span>></span>
+           <span>&lt;</span> {t("goBack")} 
             </Button>
             <Button
               type="submit"
@@ -266,7 +266,7 @@ export class SeedExportComponent extends PureComponent {
             variant="backgroundNone"
             className="modal_navleft"
           >
-            {t("goBack")} <span>></span>
+           <span>&lt;</span> {t("goBack")} 
           </Button>
           <Button
             type="submit"
