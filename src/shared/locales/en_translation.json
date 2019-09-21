@@ -807,7 +807,7 @@
     "sweepErrorExplanation": "Something went wrong while unlocking your funds. Trying again.",
     "warningTitle": "Warning: Locked funds detected",
     "explanation": "Nautilus Desktop version 0.3.4 contained a bug that can temporarily lock funds. This affects a small number of users that performed transactions with 0.3.4.",
-    "explanationAccounts": "Locked funds have been detected on your accounts: {{accounts}}. Helix will now automatically recover your funds, by moving them to a new address.",
+    "explanationAccounts": "Locked funds have been detected on your accounts: {{accounts}}. Nautilus will now automatically recover your funds, by moving them to a new address.",
     "proceed": "Proceed to Recovery",
     "sweepConfirmation": "You are about to sweep {{amount}} to the address {{address}}. Account: {{accountName}}, address index: {{index}}",
     "sweepConfirmationTitle": "Sweep confirmation"
@@ -838,7 +838,7 @@
     "transactionTitle": "Scroll through and approve the transaction on your Ledger",
     "transactionExplanation": "Use your Ledger device to approve the outgoing transaction.",
     "applicationTitle": "Open Ledger Nautilus app",
-    "applicationExplanation": "Go to your Ledger and open the Nautilus app to continue using Helix.",
+    "applicationExplanation": "Go to your Ledger and open the Nautilus app to continue using Nautilus.",
     "cannotSendZeroValueTitle": "Cannot send zero value transfer",
     "cannotSendZeroValueExplanation": "Cannot send zero value transfers with a Ledger device.",
     "ledgerDisconnectedTitle": "Ledger device disconnected",
