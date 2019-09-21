@@ -174,7 +174,7 @@ class Keychain extends SeedStoreCore {
   };
 
   /**
-   * Placeholder for Helix Wallet compatibillity
+   * Placeholder for Nautilus Wallet compatibillity
    * @returns {boolean}
    */
   validateAddress = () => {
