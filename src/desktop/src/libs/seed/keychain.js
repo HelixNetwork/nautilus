@@ -20,7 +20,8 @@ class Keychain extends SeedStoreCore {
     super();
 
     return (async () => {
-      this.key = key.slice(0);
+        this.key = key.slice(0);
+      
       if (accountId) {
         this.accountId = await sha256(`${ACC_PREFIX}-${accountId}`);
       }

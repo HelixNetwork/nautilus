@@ -58,10 +58,10 @@ class Send extends React.PureComponent {
 
   validateInputs = e => {
     e.preventDefault();
-
     this.setState({
       openModal: validateInputs()
     });
+    
   };
 
   confirmTransfer = async () => {
