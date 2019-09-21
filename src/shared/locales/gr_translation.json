@@ -459,7 +459,7 @@
     "walletSetup": {
       "seed": "seed",
       "okay": "Okay. Lassen Sie uns Ihr Wallet einrichten.!",
-      "doYouNeedASeed": "Müssen Sie einen neuen erstellen?",
+      "doYouNeedASeed": "Müssen Sie einen neuen erstellen",
       "seedExplanation": "Ihr HELIX-Seed ist der Hauptschlüssel zu Ihrem Geld. Er ist 81 Zeichen lang und verwendet nur die Buchstaben A-Z oder die Zahl 9.",
       "noIHaveOne": "Nein, ich habe eine.",
       "yesINeedASeed": "Ja, ich brauche einen Seed.",
