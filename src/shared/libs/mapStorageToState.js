@@ -3,7 +3,7 @@ import filter from "lodash/filter";
 import map from "lodash/map";
 import transform from "lodash/transform";
 import { Account, Node, Wallet } from "../database";
-import { DEFAULT_NODE } from "../config";
+import { DEFAULT_NODE, DEFAULT_NODES } from "../config";
 
 /**
  * Map persisted state to redux state
@@ -58,7 +58,7 @@ export const mapStorageToState = () => {
     },
     settings: assign({}, settings, {
       node: find(nodes, { url: settings.node }) || DEFAULT_NODE,
-      nodes: map(nodes, ({ url, pow, token, password }) => ({
+      nodes: DEFAULT_NODES||map(nodes, ({ url, pow, token, password }) => ({
         url,
         pow,
         token,

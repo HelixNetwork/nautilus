@@ -1,7 +1,6 @@
 import { SettingsActionTypes } from "../actions/types";
-import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE } from "../config";
+import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE, NODES_WITH_POW_ENABLED } from "../config";
 import { availableCurrencies } from "../libs/currency";
-
 export const initialState = {
   /**
    * Selected locale for wallet
@@ -113,6 +112,28 @@ const settingsReducer = (state = initialState, action) => {
       return {
         ...state,
         autoNodeList: action.payload
+      };
+    case SettingsActionTypes.SET_NODELIST:
+      return {
+        ...state,
+        nodes: action.payload,
+      };
+    case SettingsActionTypes.ADD_CUSTOM_NODE_SUCCESS:
+      return {
+        ...state,
+        node: action.payload,
+        nodes: union(state.nodes, [action.payload]),
+        customNodes: state.nodes.includes(action.payload)
+          ? state.customNodes
+          : union(state.customNodes, [action.payload]),
+      };
+    case SettingsActionTypes.REMOVE_CUSTOM_NODE:
+      return {
+        ...state,
+        nodes: state.customNodes.includes(action.payload)
+          ? state.nodes.filter((node) => node !== action.payload)
+          : state.nodes,
+        customNodes: state.customNodes.filter((node) => node !== action.payload),
       };
   }
   return state;

@@ -854,5 +854,21 @@
     "applicationNotInitialisedExplanation": "Reopen the Nautilus app on your Ledger device, accept the informational warning and try again.",
     "udevError": "Could not communicate with Ledger device",
     "udevErrorExplanation": "Nautilus could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
-  }
+  },
+  "nodeSettings": {
+    "automaticNodeManagement": "Automatic node management",
+    "addCustomNodes": "Add custom nodes",
+    "autoNodeList": "Use remote node list",
+    "nodeAutoswitching": "Primary node autoswitching",
+    "primaryNode": "Primary node",
+    "enableQuorum": "Enable quorum",
+    "quorumSize": "Quorum size",
+    "noCustomNodes": "No custom nodes",
+    "mustAddCustomNodes": "You must add at least one custom node before disabling the remote node list.",
+    "nodeEnoughNodesTitle": "Not enough nodes",
+    "nodeEnoughNodesExplanation": "There are not enough nodes to enable quorum.",
+    "nodeEnoughNodesExplanationCustomNodes": "Add more custom nodes or enable the remote node list.",
+    "nodeSettingsUpdatedTitle": "Node settings updated",
+    "nodeSettingsUpdatedExplanation": "You have successfully updated your node settings."
+}
 }

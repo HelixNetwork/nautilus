@@ -35,7 +35,7 @@ export const QuorumConfigSchema = {
   properties: {
     size: {
       type: "int",
-      default: 1
+      default: QUORUM_SIZE
     },
     enabled: {
       type: "bool",

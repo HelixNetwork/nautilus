@@ -12,6 +12,9 @@ import {  quorum } from '../libs/hlx/index';
 import { allowsRemotePow } from "../libs/hlx/extendedApi";
 import get from "lodash/get";
 import keys from "lodash/keys";
+import { throwIfNodeNotHealthy } from '../libs/hlx/utils';
+import Errors from "../libs/errors";
+
 /**
  * Change wallet's active language
  *
@@ -148,9 +151,9 @@ export function setFullNode(node, addingCustomNode = false) {
       throwIfNodeNotHealthy(node)
           .then(() => allowsRemotePow(node))
           .then((hasRemotePow) => {
-              // Change IOTA provider on the global iota instance
+              // Change Helix provider on the global helix instance
               if (!addingCustomNode) {
-                  changeIotaNode(assign({}, node, { provider: node.url }));
+                  changeHelixNode(assign({}, node, { provider: node.url }));
               }
 
               // Update node in redux store
@@ -274,6 +277,41 @@ export const setRemotePoW = payload => {
     payload
   };
 };
+
+/**
+ * Dispatch when a network call is about to be made for checking health of newly added IRI node
+ *
+ * @method addCustomNodeRequest
+ *
+ * @returns {{type: {string} }}
+ */
+const addCustomNodeRequest = () => ({
+  type: SettingsActionTypes.ADD_CUSTOM_NODE_REQUEST,
+});
+
+/**
+* Dispatch when the newly added custom node is healthy (synced)
+*
+* @method addCustomNodeSuccess
+* @param {string} payload
+*
+* @returns {{type: {string}, payload: {string} }}
+*/
+const addCustomNodeSuccess = (payload) => ({
+  type: SettingsActionTypes.ADD_CUSTOM_NODE_SUCCESS,
+  payload,
+});
+
+/**
+* Dispatch when an error occurs during health check for newly added custom node
+*
+* @method addCustomNodeError
+*
+* @returns {{type: {string} }}
+*/
+const addCustomNodeError = () => ({
+  type: SettingsActionTypes.ADD_CUSTOM_NODE_ERROR,
+});
 
 /**
  * Dispatch to set a randomly selected node as the active node for wallet

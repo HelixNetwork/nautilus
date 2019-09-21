@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import withNodeData from 'containers/settings/Node';
 
+import { withI18n, Trans } from "react-i18next";
+import { connect } from "react-redux";
 import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
 import Scrollbar from 'ui/components/scrollbar';
@@ -14,30 +16,52 @@ import css from './settings.scss';
 /**
  * Custom node management component
  */
-const NodeCustom = ({ customNodes, loading, onClose, removeCustomNode, setNode, t }) => {
-    const [url, setUrl] = useState('');
-    // const [token, setToken] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [authVisible, setAuthVisible] = useState(false);
+class NodeCustom extends React.PureComponent {
+    static propTypes = {
+        customNodes: PropTypes.array.isRequired,
+        loading: PropTypes.bool.isRequired,
+        onClose: PropTypes.func.isRequired,
+        setNode: PropTypes.func.isRequired,
+        t: PropTypes.func.isRequired,
+    };
 
-    useEffect(() => {
-        setUrl('');
-    }, [customNodes]);
+    state={
+        url:'',
+        token:'',
+        password:'',
+        authVisible:false
+    }
 
-    const addNode = (e) => {
+    addNode = (e) => {
+        const {url} = this.state;
+        
         if (e) {
             e.preventDefault();
         }
-        setNode({ url, token: '', password: '' }, true);
+        this.props.setNode({ url, token: '', password: '' }, true);
     };
 
-    return (
-        <Modal variant="fullscreen" isOpen onClose={onClose}>
-            <section className={css.nodeCustom}>
-                <form onSubmit={addNode}>
-                    <fieldset>
-                        <Text value={url} disabled={loading} label={t('addCustomNode:customNode')} onChange={setUrl} />
-                        {/*
+    setUrl(e){
+        this.setState({
+            url:e
+        });
+    }
+
+    render() {
+        const { customNodes, loading, onClose, removeCustomNode, t } = this.props;
+        // const [url, setUrl] = useState('');
+        // const [token, setToken] = useState('');
+        // const [password, setPassword] = useState('');
+        // const [authVisible, setAuthVisible] = useState(false);
+
+
+        return (
+            <Modal variant="fullscreen" isOpen onClose={onClose}>
+                <section className={css.nodeCustom}>
+                    <form onSubmit={this.addNode.bind(this)}>
+                        <fieldset>
+                            <Text value={this.state.url} disabled={loading} label={t('addCustomNode:customNode')} onChange={this.setUrl.bind(this)} />
+                            {/*
                     // Temporary disable authorisation entry #https://github.com/iotaledger/trinity-wallet/pull/1654
                     authVisible ? (
                         <Fragment>
@@ -49,45 +73,40 @@ const NodeCustom = ({ customNodes, loading, onClose, removeCustomNode, setNode, 
                             <Icon icon="plusAlt" size={10} /> {t('addCustomNode:addAuthKey')}
                         </a>
                     )*/}
-                    </fieldset>
-                    <hr />
-                    {customNodes.length ? (
-                        <ul>
-                            <Scrollbar>
-                                {customNodes.map(({ url }) => (
-                                    <li key={url}>
-                                        <strong>{url}</strong>
-                                        <a onClick={() => removeCustomNode(url)}>
-                                            <Icon icon="cross" size={16} />
-                                        </a>
-                                    </li>
-                                ))}
-                            </Scrollbar>
-                        </ul>
-                    ) : (
-                        <p>{t('nodeSettings:noCustomNodes')}</p>
-                    )}
-                </form>
-            </section>
-            <footer>
-                <Button onClick={onClose} className="square" variant="dark">
-                    {t('back')}
-                </Button>
-                <Button loading={loading} onClick={addNode} className="square" variant="primary">
-                    {t('addCustomNode')}
-                </Button>
-            </footer>
-        </Modal>
-    );
+                        </fieldset>
+                        <hr />
+                        {customNodes.length ? (
+                            <ul>
+                                <Scrollbar>
+                                    {customNodes.map(({ url }) => (
+                                        <li key={url}>
+                                            <strong>{url}</strong>
+                                            <a onClick={() => removeCustomNode(url)}>
+                                                <Icon icon="cross" size={16} />
+                                            </a>
+                                        </li>
+                                    ))}
+                                </Scrollbar>
+                            </ul>
+                        ) : (
+                                <p>{t('nodeSettings:noCustomNodes')}</p>
+                            )}
+
+                    <Button onClick={onClose} className="square" variant="dark">
+                        {t('back')}
+                    </Button>
+                    <Button loading={loading} onClick={this.addNode.bind(this)} className="square" variant="primary">
+                        {t('addCustomNode')}
+                    </Button>
+                    </form>
+                </section>
+                
+            </Modal>
+        );
+    }
 };
 
-NodeCustom.propTypes = {
-    customNodes: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    removeCustomNode: PropTypes.func.isRequired,
-    setNode: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
-};
-
-export default withNodeData(NodeCustom);
+export default connect(
+    null,
+    null
+)(withI18n()(NodeCustom));

@@ -312,6 +312,8 @@ class Send extends React.PureComponent {
     })
   }
 
+  
+
   render() {
     const { accountMeta, balance, loop, currencies, isSending, progress, t } = this.props;
     const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
