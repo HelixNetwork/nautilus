@@ -518,7 +518,7 @@ class SeedGenerate extends React.PureComponent {
             variant="backgroundNone"
             onClick={this.onRequestPrevious}
           >
-            {t("global:goBack")} <span>></span>
+          <span>&lt;</span>  {t("global:goBack")}
           </Button>
           <Button
             disabled={clicksLeft > 0}
