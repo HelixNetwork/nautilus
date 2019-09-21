@@ -490,6 +490,21 @@ class Wallet {
       Wallet.latestSettings.availableCurrencies = availableCurrencies;
     });
   }
+
+  /**
+     * Updates wallet's node.
+     *
+     * @method updateNode
+     *
+     * @param {string} payload
+     */
+    static updateNode(payload) {
+      console.log(payload);
+      realm.write(() => {
+          Wallet.latestSettings.node = payload;
+      });
+  }
+
 }
 
 /**

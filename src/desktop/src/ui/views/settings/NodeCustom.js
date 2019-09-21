@@ -92,10 +92,10 @@ class NodeCustom extends React.PureComponent {
                                 <p>{t('nodeSettings:noCustomNodes')}</p>
                             )}
 
-                    <Button className="navleft" onClick={onClose} style={ {marginTop:'9vw'}}  variant="dark">
+                    <Button className="navleft" onClick={onClose} style={ {marginTop:'9vw',fontSize:'12px',minWidth:'140px'}}  variant="dark">
                         {t('back')}
                     </Button>
-                    <Button  className="navright" loading={loading} onClick={this.addNode.bind(this)}  variant="primary">
+                    <Button  className="navright" loading={loading} onClick={this.addNode.bind(this)} style={ {marginTop:'9vw',fontSize:'12px', minWidth:'90px'}}  variant="primary">
                         {t('addCustomNode')}
                     </Button>
                     </form>

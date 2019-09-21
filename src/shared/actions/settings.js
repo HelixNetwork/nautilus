@@ -107,7 +107,7 @@ export const changeNode = payload => (dispatch, getState) => {
  * @returns {{type: {string}, payload: {string} }}
  */
 export const setNode = (payload) => {
-  Wallet.updateNode(payload.url);
+  Wallet.updateNode(payload);
 
   return {
       type: SettingsActionTypes.SET_NODE,
@@ -153,10 +153,8 @@ export function setFullNode(node, addingCustomNode = false) {
       throwIfNodeNotHealthy(node)
           .then(() => allowsRemotePow(node))
           .then((hasRemotePow) => {
-            console.log(hasRemotePow);
               // Change Helix provider on the global helix instance
               if (!addingCustomNode) {
-                  console.log(node);
                   changeHelixNode(assign({}, node, { provider: node.url }));
               }
 
@@ -282,6 +280,28 @@ export const setRemotePoW = payload => {
     payload
   };
 };
+
+/**
+ * Dispatch when a network call is about to be made for checking node's health during node change operation
+ *
+ * @method setNodeRequest
+ *
+ * @returns {{type: {string} }}
+ */
+const setNodeRequest = () => ({
+  type: SettingsActionTypes.SET_NODE_REQUEST,
+});
+
+/**
+* Dispatch when an error occurs while checking node's health during node change operation
+*
+* @method setNodeError
+*
+* @returns {{type: {string} }}
+*/
+const setNodeError = () => ({
+  type: SettingsActionTypes.SET_NODE_ERROR,
+});
 
 /**
  * Dispatch when a network call is about to be made for checking health of newly added IRI node

@@ -261,7 +261,6 @@ class NodeSettings extends React.PureComponent {
         const { customNodes, generateAlert, nodes, settings, actions, t } = this.props;
         const { loading } = this.state;
         const {showCustomNodes, autoNodeList, autoNodeSelection, nodeAutoSwitch, quorumEnabled, quorumSize, primaryNode} = this.state;
-        console.log(primaryNode);
         if (showCustomNodes) {
             return <NodeCustom loading={loading} customNodes={customNodes} setNode={this.changeNode} removeCustomNode={this.removeCustomNode} onClose={this.setshowCustomNodes.bind(this,false)} />;
         }
@@ -272,7 +271,7 @@ class NodeSettings extends React.PureComponent {
             <div className={classNames(css.foo_bxx12)}>
                 <div className={classNames(css.nodebox)} >
                 <form>
-                    
+                    <Scrollbar>
                         <article>
                             <Toggle
                                 inline={t('nodeSettings:automaticNodeManagement')}
@@ -341,12 +340,13 @@ class NodeSettings extends React.PureComponent {
                             primaryNode.password === settings.node.password
                         }
                         type="submit"
+                        style={{marginLeft: '178px'}}
                         onClick={this.saveSettings}
                     >
                         {t('global:save')}
                     </Button>
                  
-                
+                    </Scrollbar>
                 
             </form>
           </div>
