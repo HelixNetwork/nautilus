@@ -28,6 +28,7 @@ import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 import ProgressBar from 'ui/components/progress';
 import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
+import {MAX_NOTE_LENGTH} from '../../../constants';
 class Send extends React.PureComponent {
   static propTypes = {
     /** @ignore */
@@ -428,12 +429,13 @@ class Send extends React.PureComponent {
                         NOTE
                       </span>
                       <input className={css.msgBox}
-                      style={{
-                        marginLeft: "50px",
-                        color: "white"
-                      }}
-                      placeholder="Enter note" 
-                      onChange={this.msgChange.bind(this)}/>
+                        style={{
+                          marginLeft: "50px",
+                          color: "white"
+                        }}
+                        placeholder="Enter note"
+                        maxLength={MAX_NOTE_LENGTH}
+                        onChange={this.msgChange.bind(this)}/>
                       </div>
                       <input
                         id="recipient-address"
