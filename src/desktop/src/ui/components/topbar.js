@@ -86,7 +86,7 @@ class Top extends React.PureComponent {
             <React.Fragment>
               <span
                 style={{ float: "right", cursor: "pointer" }}
-                onClick={() => this.props.history.push("/onboarding/login")}
+                onClick={() => this.props.history.push("/onboarding/welcome")}
               >
                 <Icon icon="cross" size={18} />
               </span>
