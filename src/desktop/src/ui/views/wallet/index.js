@@ -45,6 +45,7 @@ import {
 } from "libs/hlx/utils";
 import DashSidebar from "ui/components/dash_sidebar";
 import axios from "axios";
+import Polling from 'ui/global/polling';
 /**
  * Wallet functionallity router wrapper component
  */
@@ -122,7 +123,7 @@ class Wallet extends React.PureComponent {
           <TopBar
           history={history}
           />
-       <DashSidebar disp={"none"} history={history} active={currentKey} />
+       <DashSidebar disp={"none"} history={history} active={'send'} />
              
                 <Switch>
       <Route path="/wallet/" component={Send} />
@@ -138,6 +139,7 @@ class Wallet extends React.PureComponent {
     }
     return(
       <div>
+      <Polling />
       <TopBar
       history={history}
       />
