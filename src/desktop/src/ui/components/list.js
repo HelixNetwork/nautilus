@@ -169,7 +169,6 @@ export class ListComponent extends React.PureComponent {
   }
 
   getAccountTransactions = accountData => {
-    console.log(accountData);
     const addresses = map(
       accountData.addressData,
       addressData => addressData.address
@@ -215,15 +214,11 @@ export class ListComponent extends React.PureComponent {
   
     
     const { accountInfo, password, accountName, accountMeta } = this.props;
-console.log("AccountName==",accountName);
-
     const seedStore = await new SeedStore[accountMeta.type](
       password,
       accountName,
       accountMeta
     );
-console.log("Seedstore===",seedStore);
-console.log(accountInfo);
     this.props.getAccountInfo(
       seedStore,
       accountName,
@@ -237,7 +232,6 @@ console.log(accountInfo);
   updateTx(){
     
     const tx = this.getAccountTransactions(this.props.accountInfo);
-    console.log(tx);
     this.setState({
       transactions:tx
     })
@@ -246,7 +240,6 @@ console.log(accountInfo);
   componentDidUpdate(){
     const {transactions} = this.state;
     const tx = this.getAccountTransactions(this.props.accountInfo);
-    console.log(tx);
     if(tx.length>transactions.length){
     this.setState({
       transactions:tx
@@ -276,7 +269,6 @@ console.log(accountInfo);
       transactions,
       search
     } = this.state;
-    console.log(transactions);
     const filters = ["All", "Sent", "Received", "Pending"];
 
     const totals = {
@@ -345,8 +337,6 @@ console.log(accountInfo);
       marginLeft: '-50px',
       width: '109%',
     };
-
-    console.log("UIFetch===", this.props.ui.isFetchingAccountInfo);
     
 
     return (

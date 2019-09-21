@@ -151,7 +151,6 @@ class Polling extends React.PureComponent {
             accountInfo: this.fetchLatestAccountInfo,
             broadcast: this.retryFailedTransaction,
         };
-console.log("Service===",service);
 
         dict[service] ? dict[service]() : this.props.setPollFor(this.props.allPollingServices[0]);
     };
@@ -201,7 +200,6 @@ console.log("Service===",service);
                 const bundleHashToPromote = bundleHashes[random(size(bundleHashes) - 1)];
 
                 const { accountName } = unconfirmedBundleTails[bundleHashToPromote];
-console.log("AccountType===", selectedAccountType);
 
                 const seedStore = await new SeedStore[selectedAccountType](password, name);
 
