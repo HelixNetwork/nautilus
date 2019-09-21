@@ -9,7 +9,7 @@ export const DEFAULT_NODE = __TEST__
       password: ""
     }
   : {
-      url: "https://node1.hlxtest.net:8087",
+      url: "https://hlxtest.net:8087",
       // url:'http://13.234.122.84:8087',
       pow: true,
       token: "",
