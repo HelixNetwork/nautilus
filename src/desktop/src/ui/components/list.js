@@ -76,7 +76,10 @@ export class ListComponent extends React.PureComponent {
     /** @ignore */
     password: PropTypes.object.isRequired,
         /** @ignore */
-    style: PropTypes.object
+    style: PropTypes.object,
+    /** @ignore */
+    ui: PropTypes.object.isRequired
+
   };
 
   state = {
@@ -297,6 +300,10 @@ export class ListComponent extends React.PureComponent {
       marginLeft: '-50px',
       width: '109%',
     };
+
+    console.log("UIFetch===", this.props.ui.isFetchingAccountInfo);
+    
+
     return (
       <React.Fragment>
         <nav className={css.nav}>
@@ -319,13 +326,10 @@ export class ListComponent extends React.PureComponent {
             />
             
           </div>
+          {/* Should be changed to isLoading and isBusy */}
           <a
             onClick={() => updateAccount()}
-            className={classNames(
-              css.refresh,
-              isBusy ? css.busy : null,
-              isLoading ? css.loading : null
-            )}
+            className={classNames(css.refresh, (this.props.ui.isSyncing || this.props.ui.isSendingTransfer || this.props.ui.isAttachingToTangle || this.props.ui.isTransitioning) ? css.busy : null, this.props.ui.isFetchingAccountInfo ? css.loading : null)}
           >
             <Icon icon="sync" size={24} />
           </a>

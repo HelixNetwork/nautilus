@@ -114,7 +114,7 @@
 
     &.busy {
         pointer-events: none;
-        color: var(--body-alt);
+        color: black;
     }
 
     &.loading {
@@ -123,6 +123,11 @@
     }
 }
 
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 
 .popup {
