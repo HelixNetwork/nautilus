@@ -308,6 +308,7 @@ const sendTransfer = settings => (
   depth = DEFAULT_DEPTH,
   minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE
 ) => {
+  // return console.log(settings);
   const cached = {
     txs: [],
     transactionObjects: []
@@ -316,6 +317,7 @@ const sendTransfer = settings => (
   return seedStore
     .prepareTransfers(settings)(transfers, options)
     .then(txs => {
+      
       cached.txs = txs;
       return getTransactionsToApprove(settings)({}, depth);
     })

@@ -1,6 +1,7 @@
 import { SettingsActionTypes } from "../actions/types";
 import { DEFAULT_NODE, DEFAULT_NODES, QUORUM_SIZE, NODES_WITH_POW_ENABLED } from "../config";
 import { availableCurrencies } from "../libs/currency";
+import unionBy from "lodash/unionBy";
 export const initialState = {
   /**
    * Selected locale for wallet
@@ -118,23 +119,16 @@ const settingsReducer = (state = initialState, action) => {
         ...state,
         nodes: action.payload,
       };
-    case SettingsActionTypes.ADD_CUSTOM_NODE_SUCCESS:
-      return {
-        ...state,
-        node: action.payload,
-        nodes: union(state.nodes, [action.payload]),
-        customNodes: state.nodes.includes(action.payload)
-          ? state.customNodes
-          : union(state.customNodes, [action.payload]),
-      };
+      case SettingsActionTypes.ADD_CUSTOM_NODE_SUCCESS:
+        return {
+            ...state,
+            customNodes: unionBy(state.customNodes, [action.payload], 'url'),
+        };
     case SettingsActionTypes.REMOVE_CUSTOM_NODE:
-      return {
-        ...state,
-        nodes: state.customNodes.includes(action.payload)
-          ? state.nodes.filter((node) => node !== action.payload)
-          : state.nodes,
-        customNodes: state.customNodes.filter((node) => node !== action.payload),
-      };
+        return {
+            ...state,
+            customNodes: state.customNodes.filter((node) => node.url !== action.payload),
+        };
   }
   return state;
 };

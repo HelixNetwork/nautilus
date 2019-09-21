@@ -238,7 +238,8 @@ class Node {
    * @method addCustomNode
    * @param {string} url Node URL
    */
-  static addCustomNode(url, pow) {
+  static addCustomNode(payload) {
+    const { url, pow} = payload;
     realm.write(() => {
       realm.create("Node", {
         url,
@@ -448,10 +449,24 @@ class Wallet {
   }
 
   static updateQuorumConfig(payload) {
+    console.log(payload);
     const existingConfig = Wallet.latestData.quorum;
     realm.write(() => {
       Wallet.latestData.quorum = assign({}, existingConfig, payload);
     });
+  }
+
+    /**
+     * Updates autoNodeList setting
+     *
+     * @method updateAutoNodeListSetting
+     *
+     * @param {boolean} payload
+     */
+    static updateAutoNodeListSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.autoNodeList = payload;
+      });
   }
 
   static updateCurrencyData(payload) {

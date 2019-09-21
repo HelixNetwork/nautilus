@@ -59,7 +59,7 @@ class NodeCustom extends React.PureComponent {
             <Modal variant="fullscreen" isOpen onClose={onClose}>
                 <section className={css.nodeCustom}>
                     <form onSubmit={this.addNode.bind(this)}>
-                        <fieldset>
+                       
                             <Text value={this.state.url} disabled={loading} label={t('addCustomNode:customNode')} onChange={this.setUrl.bind(this)} />
                             {/*
                     // Temporary disable authorisation entry #https://github.com/iotaledger/trinity-wallet/pull/1654
@@ -73,8 +73,8 @@ class NodeCustom extends React.PureComponent {
                             <Icon icon="plusAlt" size={10} /> {t('addCustomNode:addAuthKey')}
                         </a>
                     )*/}
-                        </fieldset>
-                        <hr />
+                   
+                   
                         {customNodes.length ? (
                             <ul>
                                 <Scrollbar>
@@ -92,10 +92,10 @@ class NodeCustom extends React.PureComponent {
                                 <p>{t('nodeSettings:noCustomNodes')}</p>
                             )}
 
-                    <Button onClick={onClose} className="square" variant="dark">
+                    <Button className="navleft" onClick={onClose} style={ {marginTop:'9vw'}}  variant="dark">
                         {t('back')}
                     </Button>
-                    <Button loading={loading} onClick={this.addNode.bind(this)} className="square" variant="primary">
+                    <Button  className="navright" loading={loading} onClick={this.addNode.bind(this)}  variant="primary">
                         {t('addCustomNode')}
                     </Button>
                     </form>

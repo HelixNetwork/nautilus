@@ -72,7 +72,7 @@ class TopBar extends Component {
       };
 
     render() { 
-        const {accountInfo, accountNames, accountName, history} = this.props;
+        const {accountInfo, accountNames, accountName, seedIndex, history} = this.props;
         let balance = accumulateBalance(
             accountInfo.addressData.map(addressdata => addressdata.balance)
           );
@@ -91,9 +91,11 @@ class TopBar extends Component {
                             <hr/>
                         </div>
                         <div className={css.topRight1}>
+
                                 <select
                                 className={css.accountSelect}
                                 onChange={this.changeAccount.bind(this)}
+                                value={JSON.stringify({accountName:accountName,index:seedIndex})}
                                 >
                                     
                                     {accountNames.map((account, index) => {

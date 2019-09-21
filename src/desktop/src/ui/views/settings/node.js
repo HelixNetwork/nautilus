@@ -151,10 +151,10 @@ class NodeSettings extends React.PureComponent {
         }
 
         // Only allow HTTPS nodes
-        if (!isValidHttpsUrl(nodeSelected.url)) {
-            generateAlert('error', t('nodeMustUseHTTPS'), t('nodeMustUseHTTPSExplanation'));
-            return;
-        }
+        // if (!isValidHttpsUrl(nodeSelected.url)) {
+        //     generateAlert('error', t('nodeMustUseHTTPS'), t('nodeMustUseHTTPSExplanation'));
+        //     return;
+        // }
 
         const hasDefaultHttpsPort = endsWith(nodeSelected.url, ':443');
 
@@ -268,9 +268,9 @@ class NodeSettings extends React.PureComponent {
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-            <div cllassname={classNames(css.set_bxac)}>
+                <div className={classNames(css.nodebox)} >
                 <form>
-                    <Scrollbar>
+                    
                         <article>
                             <Toggle
                                 inline={t('nodeSettings:automaticNodeManagement')}
@@ -282,7 +282,7 @@ class NodeSettings extends React.PureComponent {
                                 {t('nodeSettings:addCustomNodes')}
                             </Button>
 
-                            <hr />
+                        
                             <Toggle
                                 disabled={autoNodeSelection}
                                 inline={t('nodeSettings:autoNodeList')}
@@ -290,7 +290,7 @@ class NodeSettings extends React.PureComponent {
                                 onChange={this.updateAutoNodeList.bind(this)}
                             />
 
-                            <hr />
+                           
                             <Toggle
                                 disabled={autoNodeSelection}
                                 inline={t('nodeSettings:nodeAutoswitching')}
@@ -309,7 +309,7 @@ class NodeSettings extends React.PureComponent {
                                 />
                             )}
 
-                            <hr />
+                           
                             <Toggle
                                 disabled={autoNodeSelection}
                                 inline={t('nodeSettings:enableQuorum')}
@@ -327,7 +327,7 @@ class NodeSettings extends React.PureComponent {
                             />
                         </article>
                         <Button
-                        className="square"
+                       
                         loading={loading}
                         disabled={
                             autoNodeList === settings.autoNodeList &&
@@ -343,11 +343,11 @@ class NodeSettings extends React.PureComponent {
                     >
                         {t('global:save')}
                     </Button>
-                    </Scrollbar>
+                 
                 
                 
             </form>
-            </div>
+          </div>
             </div>
         );
     }

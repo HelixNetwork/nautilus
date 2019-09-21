@@ -9,8 +9,8 @@ export const DEFAULT_NODE = __TEST__
       password: ""
     }
   : {
-      // url: "https://hlxtest.net:8087",
-      url:'http://13.234.122.84:8087',
+      url: "https://hlxtest.net:8087",
+      // url:'http://13.234.122.84:8087',
       pow: true,
       token: "",
       password: ""
@@ -27,8 +27,8 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-  'http://13.234.122.84:8087',
-  // "https://hlxtest.net:8087",
+  // 'http://13.234.122.84:8087',
+  "https://hlxtest.net:8087",
   "https://node1.hlxtest.net:8087",
   "https://node2.hlxtest.net:8087",
   "https://node3.hlxtest.net:8087"

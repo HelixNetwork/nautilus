@@ -21,6 +21,7 @@ export const mapStorageToState = () => {
     errorLog,
     accountInfoDuringSetup
   } = Wallet.latestDataAsPlainObject;
+  console.log(settings);
   const nodes = Node.getDataAsArray();
   return {
     accounts: {

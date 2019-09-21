@@ -1,6 +1,6 @@
 import i18next from "../libs/i18next";
-import { Wallet } from "../database";
-import { getSelectedNodeFromState } from "../selectors/global";
+import { Wallet,Node } from "../database";
+import { getSelectedNodeFromState, getNodesFromState, getCustomNodesFromState } from "../selectors/global";
 import { changeHelixNode } from "../libs/hlx";
 import { SettingsActionTypes } from "../actions/types";
 import {
@@ -12,6 +12,8 @@ import {  quorum } from '../libs/hlx/index';
 import { allowsRemotePow } from "../libs/hlx/extendedApi";
 import get from "lodash/get";
 import keys from "lodash/keys";
+import assign from "lodash/assign";
+import unionBy from "lodash/unionBy";
 import { throwIfNodeNotHealthy } from '../libs/hlx/utils';
 import Errors from "../libs/errors";
 
@@ -151,8 +153,10 @@ export function setFullNode(node, addingCustomNode = false) {
       throwIfNodeNotHealthy(node)
           .then(() => allowsRemotePow(node))
           .then((hasRemotePow) => {
+            console.log(hasRemotePow);
               // Change Helix provider on the global helix instance
               if (!addingCustomNode) {
+                  console.log(node);
                   changeHelixNode(assign({}, node, { provider: node.url }));
               }
 
@@ -202,6 +206,7 @@ export function setFullNode(node, addingCustomNode = false) {
               }
           })
           .catch((err) => {
+            console.log(err);
               dispatch(dispatcher.error());
 
               if (get(err, 'message') === Errors.NODE_NOT_SYNCED) {
@@ -297,10 +302,14 @@ const addCustomNodeRequest = () => ({
 *
 * @returns {{type: {string}, payload: {string} }}
 */
-const addCustomNodeSuccess = (payload) => ({
+const addCustomNodeSuccess = (payload) => {
+  Node.addCustomNode(payload);
+  return {
+
   type: SettingsActionTypes.ADD_CUSTOM_NODE_SUCCESS,
   payload,
-});
+}
+};
 
 /**
 * Dispatch when an error occurs during health check for newly added custom node
@@ -520,6 +529,26 @@ export const toggleEmptyTransactions = () => {
     type: SettingsActionTypes.TOGGLE_EMPTY_TRANSACTIONS
   };
 };
+
+/**
+ * Dispatch to update autoNodeList setting
+ *
+ * @method updateAutoNodeListSetting
+ * @param {boolean} payload
+ *
+ * @returns {{type: {string}, payload: {boolean} }}
+ */
+export const updateAutoNodeListSetting = (payload) => {
+  // Update autoNodeList setting in realm
+  Wallet.updateAutoNodeListSetting(payload);
+
+  // Update autoNodeList setting in redux
+  return {
+      type: SettingsActionTypes.UPDATE_AUTO_NODE_LIST_SETTING,
+      payload,
+  };
+};
+
 /**
  * Dispatch to change autoNodeList setting
  *
@@ -594,6 +623,7 @@ export const updateQuorumConfig = (payload) => {
  * @returns {{type: {string}, payload: {string} }}
  */
 export const removeCustomNode = (payload) => {
+ 
   Node.delete(payload);
 
   return {
