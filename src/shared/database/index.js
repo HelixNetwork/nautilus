@@ -456,6 +456,19 @@ class Wallet {
     });
   }
 
+  /**
+     * Updates node auto-switch setting
+     *
+     * @method updateNodeAutoSwitchSetting
+     *
+     * @param {boolean} payload
+     */
+    static updateNodeAutoSwitchSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.nodeAutoSwitch = payload;
+      });
+  }
+
     /**
      * Updates autoNodeList setting
      *

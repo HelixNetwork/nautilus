@@ -107,7 +107,7 @@ class NodeSettings extends React.PureComponent {
     };
 
     updateAutoNodeList = () => {
-        const {autoNodeList} = this.state;
+        const {autoNodeList, quorumSize} = this.state;
         const {customNodes, generateAlert, t} = this.props;
         if (autoNodeList && customNodes.length < 1) {
             generateAlert('error', t('nodeSettings:noCustomNodes'), t('nodeSettings:mustAddCustomNodes'));
@@ -250,7 +250,8 @@ class NodeSettings extends React.PureComponent {
         })
     }
 
-    setPrimaryNode(node){
+    setPrimaryNode(e){
+        const node = {url:e,pow:true,token:'',password:''}
         this.setState({
             primaryNode:node
         });
@@ -260,6 +261,7 @@ class NodeSettings extends React.PureComponent {
         const { customNodes, generateAlert, nodes, settings, actions, t } = this.props;
         const { loading } = this.state;
         const {showCustomNodes, autoNodeList, autoNodeSelection, nodeAutoSwitch, quorumEnabled, quorumSize, primaryNode} = this.state;
+        console.log(primaryNode);
         if (showCustomNodes) {
             return <NodeCustom loading={loading} customNodes={customNodes} setNode={this.changeNode} removeCustomNode={this.removeCustomNode} onClose={this.setshowCustomNodes.bind(this,false)} />;
         }
@@ -302,9 +304,9 @@ class NodeSettings extends React.PureComponent {
                                     label={t('nodeSettings:primaryNode')}
                                     disabled={autoNodeSelection}
                                     value={primaryNode.url}
-                                    onChange={(url) => setPrimaryNode(availableNodes.find((node) => node.url === url))}
+                                    onChange={this.setPrimaryNode.bind(this)}
                                     options={availableNodes.map(({ url }) => {
-                                        return { value: url };
+                                        return { value: url,label:url};
                                     })}
                                 />
                             )}
