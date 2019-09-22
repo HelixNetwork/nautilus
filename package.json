@@ -7,7 +7,7 @@
   "author": "Helix Foundation",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/netobjex/wallet.git"
+    "url": "git+https://github.com/HelixNetwork/nautilus.git"
   },
   "main": "index.js",
   "scripts": {
