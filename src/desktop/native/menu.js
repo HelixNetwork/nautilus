@@ -79,8 +79,6 @@ autoUpdater.on('error', (err) => {
   // if (mainWindow) {
   //     mainWindow.webContents.send('update.progress', false);
   // }
-  console.log(err);
-  
   dialog.showErrorBox(
       language.updates.errorRetrievingUpdateData,
       language.updates.errorRetrievingUpdateDataExplanation+err,
@@ -91,8 +89,6 @@ autoUpdater.on('error', (err) => {
  * On update available event callback
  */
 autoUpdater.on('update-available', () => {
-  console.log("update available");
-  
   dialog.showMessageBox(
       {
           type: 'info',
@@ -112,8 +108,6 @@ autoUpdater.on('update-available', () => {
  * On update not available event callback
  */
 autoUpdater.on("update-not-available", () => {
-  console.log("update not available");
-  
   dialog.showMessageBox({
     title: language.updates.noUpdatesAvailable,
     message: language.updates.noUpdatesAvailableExplanation,
@@ -129,8 +123,6 @@ autoUpdater.on('update-downloaded', () => {
   // if (mainWindow) {
   //     mainWindow.webContents.send('update.progress', false);
   // }   
-  console.log("update downloaded");
-  
   dialog.showMessageBox(
       {
           title: language.updates.installUpdate,
@@ -152,8 +144,6 @@ autoUpdater.on('download-progress', (progressObj) => {
   // // if (mainWindow) {
   // //     mainWindow.webContents.send('update.progress', progressObj);
   // // }
-  console.log("update on progress",progressObj);
-  
 });
 
 /**
