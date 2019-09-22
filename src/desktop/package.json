@@ -160,7 +160,7 @@
       "deleteAppDataOnUninstall": true
     },
     "win": {
-      "publisherName": "Nautilus Foundation",
+      "publisherName": "Helix Foundation",
       "target": "nsis"
     },
     "linux": {
