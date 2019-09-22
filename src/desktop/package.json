@@ -164,6 +164,7 @@
       "target": "nsis"
     },
     "linux": {
+      "category": "public.app-category.finance",
       "target": [
         "AppImage"
       ]
