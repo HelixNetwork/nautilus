@@ -168,12 +168,18 @@ const findTransactions = settings => args =>
  *
  * @returns {function(array): Promise<array>}
  */
-const getLatestInclusion = (settings, withQuorum = false) => hashes =>
+
+ // Recheck This Sachu, Should Adapt with finality updates
+const getLatestInclusion = (settings, withQuorum = false) => (hashes) =>
   withQuorum
-    ? quorum.getLatestInclusion(hashes).catch(err => {throw new Error (err)})
-    : getHelixInstance(settings, getApiTimeout("getInclusionStates"))
-        .getLatestInclusion(hashes)
-        .catch(err =>{ throw new Error(err)});
+    ? quorum.getLatestInclusion(hashes).catch((err) => {throw new Error (err);})
+    : quorum.getLatestInclusion(hashes).catch((err) => {throw new Error (err);})
+    
+    // getHelixInstance(settings, getApiTimeout("getInclusionStates"))
+    //     .getLatestInclusion(hashes)
+    //     .catch(err =>{ throw new Error(err)});
+    
+
 
 /**
  * Helix promoteTransaction with an option to perform PoW locally
