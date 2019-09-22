@@ -10,6 +10,7 @@ import filter from "lodash/filter";
 import transform from "lodash/transform";
 import { createSelector } from "reselect";
 import { accumulateBalance, getLatestAddress ,preserveAddressLocalSpendStatus} from "../libs/hlx/addresses";
+import { categoriseInclusionStatesByBundleHash, mapNormalisedTransactions } from '../libs/hlx/transfers';
 import { getSeedIndexFromState } from "./global";
 
 /**
@@ -190,4 +191,89 @@ export const getBalanceForSelectedAccount = createSelector(
     accumulateBalance(
       map(account.addressData, addressObject => addressObject.balance)
     )
+);
+
+/**
+ *   Selects promotable (unconfirmed & value) bundles from accounts reducer state object.
+ *   Uses getAccountInfoFromState selector for slicing accounts state from the state object.
+ *
+ *   @method getPromotableBundlesFromState
+ *   @param {object} state
+ *   @returns {object}
+ **/
+export const getPromotableBundlesFromState = createSelector(
+  // Select information about all stored accounts
+  getAccountInfoFromState,
+  (state) => {
+      return transform(
+          state,
+          (acc, accountState, accountName) => {
+              const promotableTailTransactions = filter(
+                  accountState.transactions,
+                  (transaction) =>
+                      transaction.currentIndex === 0 &&
+                      // Ignore zero value transactions for auto promotion
+                      transaction.value !== 0 &&
+                      // Ignore failed transactions for auto promotion because they weren't successully broadcasted
+                      transaction.broadcasted === true,
+              );
+
+              // Pick unconfirmed bundle hashes
+              const promotableBundleHashes = pickBy(
+                  categoriseInclusionStatesByBundleHash(
+                      promotableTailTransactions,
+                      map(promotableTailTransactions, (transaction) => transaction.persistence),
+                  ),
+                  (state) => state === false,
+              );
+
+              // Set each bundle hash with account name for auto promotion
+              each(promotableBundleHashes, (_, bundleHash) => {
+                  acc[bundleHash] = { accountName };
+              });
+          },
+          {},
+      );
+  },
+);
+
+/**
+ *   Selects account name for currently selected account.
+ *
+ *   @method getSelectedAccountType
+ *   @param {object} state
+ *   @returns {string}
+ **/
+export const getSelectedAccountType = createSelector(
+  selectAccountInfo,
+  (account) => get(account, 'meta.type') || 'keychain',
+);
+
+/**
+ *   Gets bundle hashes for failed transactions and categorises them by account name & type
+ *
+ *   @method getFailedBundleHashes
+ *   @param {object} state
+ *   @returns {object}
+ **/
+export const getFailedBundleHashes = createSelector(
+  getAccountInfoFromState,
+  (accountInfo) =>
+      transform(
+          accountInfo,
+          (acc, info, accountName) => {
+              const failedTransactions = filter(
+                  info.transactions,
+                  (transaction) => transaction.broadcasted === false && !transaction.fatalErrorOnRetry,
+              );
+
+              each(failedTransactions, (transaction) => {
+                  acc[transaction.bundle] = {
+                      name: accountName,
+                      type: info.meta.type,
+                  };
+              });
+          },
+          {},
+      ),
 );
