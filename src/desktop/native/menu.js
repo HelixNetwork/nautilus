@@ -1,7 +1,12 @@
 import { app, Menu, ipcMain, dialog, shell, clipboard } from "electron";
+import logger from "electron-log";
 import { autoUpdater } from "electron-updater";
 import os from "os";
 //  Wallet Application Menu
+
+
+autoUpdater.logger = logger
+autoUpdater.logger["transports"].file.level = "info"
  
 const state = {
   authorised: false,
@@ -70,10 +75,12 @@ autoUpdater.autoDownload = false;
  * On update error event callback
  */
 autoUpdater.on('error', (err) => {
-  const mainWindow = getWindow('main');
+  // const mainWindow = getWindow('main');
   // if (mainWindow) {
   //     mainWindow.webContents.send('update.progress', false);
   // }
+  console.log(err);
+  
   dialog.showErrorBox(
       language.updates.errorRetrievingUpdateData,
       language.updates.errorRetrievingUpdateDataExplanation+err,
@@ -84,6 +91,8 @@ autoUpdater.on('error', (err) => {
  * On update available event callback
  */
 autoUpdater.on('update-available', () => {
+  console.log("update available");
+  
   dialog.showMessageBox(
       {
           type: 'info',
@@ -103,6 +112,8 @@ autoUpdater.on('update-available', () => {
  * On update not available event callback
  */
 autoUpdater.on("update-not-available", () => {
+  console.log("update not available");
+  
   dialog.showMessageBox({
     title: language.updates.noUpdatesAvailable,
     message: language.updates.noUpdatesAvailableExplanation,
@@ -114,10 +125,12 @@ autoUpdater.on("update-not-available", () => {
  * On update ready to install event callback
  */
 autoUpdater.on('update-downloaded', () => {
-  const mainWindow = getWindow('main');
+  // const mainWindow = getWindow('main');
   // if (mainWindow) {
   //     mainWindow.webContents.send('update.progress', false);
   // }   
+  console.log("update downloaded");
+  
   dialog.showMessageBox(
       {
           title: language.updates.installUpdate,
@@ -125,9 +138,9 @@ autoUpdater.on('update-downloaded', () => {
       },
       () => {
           setTimeout(() => {
-              const mainWindow = getWindow('main');
-              mainWindow.removeAllListeners('close');
-              app.removeAllListeners('window-all-closed');
+              // const mainWindow = getWindow('main');
+              // mainWindow.removeAllListeners('close');
+              // app.removeAllListeners('window-all-closed');
               autoUpdater.quitAndInstall();
           }, 0);
       },
@@ -135,10 +148,12 @@ autoUpdater.on('update-downloaded', () => {
 });
 
 autoUpdater.on('download-progress', (progressObj) => {       
-  const mainWindow = getWindow('main');
-  // if (mainWindow) {
-  //     mainWindow.webContents.send('update.progress', progressObj);
-  // }
+  // const mainWindow = getWindow('main');
+  // // if (mainWindow) {
+  // //     mainWindow.webContents.send('update.progress', progressObj);
+  // // }
+  console.log("update on progress",progressObj);
+  
 });
 
 /**
