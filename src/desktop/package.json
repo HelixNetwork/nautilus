@@ -85,6 +85,9 @@
     "compile:linux": "./node_modules/.bin/electron-builder --linux --x64",
     "compile:mac": "./node_modules/.bin/cross-env electron-builder --mac --x64",
     "compile:win": "./node_modules/.bin/electron-builder --win --x64",
+    "publish:linux": "./node_modules/.bin/electron-builder --linux --x64 -p always",
+    "publish:mac": "./node_modules/.bin/cross-env electron-builder --mac --x64 -p always",
+    "publish:win":   "./node_modules/.bin/electron-builder --win --x64 -p always",
     "auditjs": "./../../node_modules/.bin/auditjs -n -l error -w whitelist.json",
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
     "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl"
@@ -113,6 +116,13 @@
     "directories": {
       "buildResources": "./assets",
       "output": "./out"
+    },
+    "publish": {
+      "provider": "s3",
+      "bucket": "nautiluswallet",
+      "region ": "ap-south-1",
+      "endpoint ": "https://nautiluswallet.s3.ap-south-1.amazonaws.com",
+      "channel": "latest"
     },
     "extends": null,
     "files": [
@@ -151,34 +161,20 @@
     },
     "win": {
       "publisherName": "Nautilus Foundation",
-      "target": "nsis",
-      "publish": [
-        "github"
-      ]
+      "target": "nsis"
     },
     "linux": {
       "target": [
         "AppImage"
-      ],
-      "desktop": {
-        "Name": "Nautilus Wallet",
-        "Comment": "Desktop wallet for Helix",
-        "Categories": "Office;Network;Finance"
-      },
-      "publish": [
-        "github"
-      ]
-    },
-    "mac": {
-      "category": "public.app-category.finance",
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "publish": [
-        "github"
       ]
     }
+  },
+  "mac": {
+    "category": "public.app-category.finance",
+    "target": [
+      "dmg",
+      "zip"
+    ]
   },
   "homepage": "./",
   "devDependencies": {

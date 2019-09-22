@@ -12,7 +12,7 @@ const state = {
   authorised: false,
   enabled: true
 };
-const GTOKEN="";
+//const GTOKEN="";
 let language = {
   devTool: "Toggle Developer Tools",
   reLoad:"Reload Wallet",
@@ -189,7 +189,7 @@ export const initMenu = (app, getWindowFunc) => {
           {
             label: `${language.checkUpdate}...`,
             click: () => {
-              autoUpdater.setFeedURL({ provider: 'github', owner: "netobjex", repo: "wallet",private:true, token:GTOKEN })
+              //autoUpdater.setFeedURL({ provider: 'github', owner: "netobjex", repo: "wallet",private:true, token:GTOKEN })
               autoUpdater.checkForUpdates();
             },
             enabled: state.enabled
@@ -478,7 +478,7 @@ export const initMenu = (app, getWindowFunc) => {
     });
 
     ipcMain.on("updates.check", () => {
-      autoUpdater.setFeedURL({ provider: 'github', owner: "netobjex", repo: "wallet",private:true, token:GTOKEN });
+     // autoUpdater.setFeedURL({ provider: 'github', owner: "netobjex", repo: "wallet",private:true, token:GTOKEN });
       autoUpdater.checkForUpdates();
     });
 
