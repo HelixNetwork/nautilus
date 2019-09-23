@@ -1,13 +1,18 @@
 import { app, Menu, ipcMain, dialog, shell, clipboard } from "electron";
+import logger from "electron-log";
 import { autoUpdater } from "electron-updater";
 import os from "os";
-
 //  Wallet Application Menu
+
+
+autoUpdater.logger = logger
+autoUpdater.logger["transports"].file.level = "info"
  
 const state = {
   authorised: false,
   enabled: true
 };
+
 let language = {
   devTool: "Toggle Developer Tools",
   reLoad:"Reload Wallet",
@@ -69,33 +74,33 @@ autoUpdater.autoDownload = false;
 /**
  * On update error event callback
  */
-autoUpdater.on("error", error => {
-  const mainWindow = getWindow("main");
-  if (mainWindow) {
-    mainWindow.webContents.send("update.progress", false);
-  }
+autoUpdater.on('error', (err) => {
+  // const mainWindow = getWindow('main');
+  // if (mainWindow) {
+  //     mainWindow.webContents.send('update.progress', false);
+  // }
   dialog.showErrorBox(
-    language.updates.errorRetrievingUpdateData,
-    error === null ? "unknown" : (error.stack || error).toString()
+      language.updates.errorRetrievingUpdateData,
+      language.updates.errorRetrievingUpdateDataExplanation+err,
   );
 });
 
 /**
  * On update available event callback
  */
-autoUpdater.on("update-available", () => {
+autoUpdater.on('update-available', () => {
   dialog.showMessageBox(
-    {
-      type: "info",
-      title: language.updates.newVersionAvailable,
-      message: language.updates.newVersionAvailableExplanation,
-      buttons: [language.yes, language.no]
-    },
-    buttonIndex => {
-      if (buttonIndex === 0) {
-        autoUpdater.downloadUpdate();
-      }
-    }
+      {
+          type: 'info',
+          title: language.updates.newVersionAvailable,
+          message: language.updates.newVersionAvailableExplanation,
+          buttons: [language.yes, language.no],
+      },
+      (buttonIndex) => {
+          if (buttonIndex === 0) {
+              autoUpdater.downloadUpdate();
+          }
+      },
   );
 });
 
@@ -113,32 +118,32 @@ autoUpdater.on("update-not-available", () => {
 /**
  * On update ready to install event callback
  */
-autoUpdater.on("update-downloaded", () => {
-  const mainWindow = getWindow("main");
-  if (mainWindow) {
-    mainWindow.webContents.send("update.progress", false);
-  }
+autoUpdater.on('update-downloaded', () => {
+  // const mainWindow = getWindow('main');
+  // if (mainWindow) {
+  //     mainWindow.webContents.send('update.progress', false);
+  // }   
   dialog.showMessageBox(
-    {
-      title: language.updates.installUpdate,
-      message: language.updates.installUpdateExplanation
-    },
-    () => {
-      setImmediate(() => {
-        const mainWindow = getWindow("main");
-        mainWindow.removeAllListeners("close");
-        app.removeAllListeners("window-all-closed");
-        autoUpdater.quitAndInstall();
-      });
-    }
+      {
+          title: language.updates.installUpdate,
+          message: language.updates.installUpdateExplanation,
+      },
+      () => {
+          setTimeout(() => {
+              // const mainWindow = getWindow('main');
+              // mainWindow.removeAllListeners('close');
+              // app.removeAllListeners('window-all-closed');
+              autoUpdater.quitAndInstall();
+          }, 0);
+      },
   );
 });
 
-autoUpdater.on("download-progress", progressObj => {
-  const mainWindow = getWindow("main");
-  if (mainWindow) {
-    mainWindow.webContents.send("update.progress", progressObj);
-  }
+autoUpdater.on('download-progress', (progressObj) => {       
+  // const mainWindow = getWindow('main');
+  // // if (mainWindow) {
+  // //     mainWindow.webContents.send('update.progress', progressObj);
+  // // }
 });
 
 /**
@@ -414,7 +419,7 @@ export const initMenu = (app, getWindowFunc) => {
           const appVersion = app.getVersion();
           const date = new Date();
           const description = `Version:${appVersion}\nElectron:${electronVersion}\nNode:${node}\n`+
-          `Date:${date}\nOS:${os.platform+os.release+os.arch}`;
+          `Date:${date}\nOS:${os.platform+os.release+os.arch}\n`;
           dialog.showMessageBox(
             {
               type: "info",

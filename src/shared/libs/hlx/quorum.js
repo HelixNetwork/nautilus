@@ -96,10 +96,10 @@ const determineQuorumResult = (validResults, quorumSize) => {
  **/
 const fallbackToSafeResult = method => {
   const allowedMethodsMap = {
-    wereAddressesSpentFrom: true,
-    getInclusionStates: false,
+    "wereAddressesSpentFrom": true,
+    "getInclusionStates": false,
     "getBalances:balances": "0",
-    "getNodeInfo:latestSolidSubtangleMilestone": EMPTY_HASH_TXBYTES
+    "getNodeInfo:latestSolidRoundHash": EMPTY_HASH_TXBYTES
   };
 
   if (!includes(keys(allowedMethodsMap), method)) {
@@ -193,7 +193,7 @@ const findSyncedNodes = (
  * wereAddressesSpentFrom: prepare a quorum result for spend status of each address.
  * getBalances:balances: prepare a quorum result for balance of each address.
  * getInclusionStates: prepare a quorum result for inclusion state of each tail transaction hash.
- * getNodeInfo:latestSolidSubtangleMilestone: prepare a quorum result for latestSolidSubtangleMilestone of each quorum node.
+ * getNodeInfo:latestSolidRoundHash: prepare a quorum result for latestSolidRoundHash of each quorum node.
  *
  * @method prepareQuorumResults
  *
@@ -246,7 +246,7 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
         const [tips] = requestArgs.slice(-1);
         return { references: [tips], balances };
       };
-    case "getNodeInfo:latestSolidSubtangleMilestone":
+    case "getNodeInfo:latestSolidRoundHash":
       return (...args) => {
         const [results, ...restArgs] = args;
 
@@ -254,18 +254,18 @@ const prepareQuorumResults = (method, quorumSize, ...requestArgs) => {
           map(results, result =>
             isUndefined(result)
               ? undefined
-              : [result.latestSolidSubtangleMilestone]
+              : [result.latestSolidRoundHash]
           ),
           // #prepare expects a requestPayloadSize argument
-          // Since there is no payload for getNodeInfo endpoint and we're only interested in getting a quorum for latestSolidSubtangleMilestone
+          // Since there is no payload for getNodeInfo endpoint and we're only interested in getting a quorum for latestSolidRoundHash
           // Pass requestPayloadSize -> size([latestSolidSubtanleMilestone]) which is basically 1
           // This will also ensure that the quorum result is of size 1
           ...map(restArgs, (arg, idx) => (idx === 0 ? 1 : arg))
         );
 
-        const [latestSolidSubtangleMilestone] = preparedResults;
+        const [latestSolidRoundHash] = preparedResults;
 
-        return latestSolidSubtangleMilestone;
+        return latestSolidRoundHash;
       };
     default:
       return () => {
@@ -418,8 +418,8 @@ export default function Quorum(config) {
           );
     },
     /**
-     * First performs a quorum for latestSolidSubtangleMilestone.
-     * If quorum (for latestSolidSubtangleMilestone) is achieved then performs a quorum for getLatestInclusion api endpoint
+     * First performs a quorum for latestSolidRoundHash.
+     * If quorum (for latestSolidRoundHash) is achieved then performs a quorum for getLatestInclusion api endpoint
      * Otherwise, raises an exception.
      *
      * @method getLatestInclusion
@@ -432,25 +432,25 @@ export default function Quorum(config) {
         ? Promise.resolve([])
         : findSyncedNodesIfNecessary().then(syncedNodes =>
             getQuorum(quorumSize)(
-              "getNodeInfo:latestSolidSubtangleMilestone",
+              "getNodeInfo:latestSolidRoundHash",
               syncedNodes
             )
-              // If nodes cannot agree on the latestSolidSubtangleMilestone
+              // If nodes cannot agree on the latestSolidRoundHash
               // No need to proceed further.
               .then(rejectIfEmptyHasTxBytes)
-              .then(latestSolidSubtangleMilestone =>
+              .then(latestSolidRoundHash =>
                 getQuorum(quorumSize)(
                   "getInclusionStates",
                   syncedNodes,
                   hashes,
-                  [latestSolidSubtangleMilestone]
+                  [latestSolidRoundHash]
                 )
               )
           );
     },
     /**
-     * First performs a quorum for latestSolidSubtangleMilestone.
-     * If quorum (for latestSolidSubtangleMilestone) is achieved then performs a quorum for getBalances api endpoint
+     * First performs a quorum for latestSolidRoundHash.
+     * If quorum (for latestSolidRoundHash) is achieved then performs a quorum for getBalances api endpoint
      * Otherwise, raises an exception.
      *
      * @method getBalances
@@ -464,19 +464,19 @@ export default function Quorum(config) {
         ? Promise.resolve([])
         : findSyncedNodesIfNecessary().then(syncedNodes =>
             getQuorum(quorumSize)(
-              "getNodeInfo:latestSolidSubtangleMilestone",
+              "getNodeInfo:latestSolidRoundHash",
               syncedNodes
             )
-              // If nodes cannot agree on the latestSolidSubtangleMilestone
+              // If nodes cannot agree on the latestSolidRoundHash
               // No need to proceed further.
               .then(rejectIfEmptyHasTxBytes)
-              .then(latestSolidSubtangleMilestone =>
+              .then(latestSolidRoundHash =>
                 getQuorum(quorumSize)(
                   "getBalances:balances",
                   syncedNodes,
                   addresses,
                   threshold,
-                  [latestSolidSubtangleMilestone]
+                  [latestSolidRoundHash]
                 )
               )
           );
