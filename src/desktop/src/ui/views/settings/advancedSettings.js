@@ -120,7 +120,7 @@ console.log("setnotifications",setNotifications);
               {t("pow:powUpdated")}
             </h3>
 
-            <hr className={classNames(css.setinghr)} />
+            {/* <hr className={classNames(css.setinghr)} /> */}
             <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
               {t("pow:feeless")} {t("pow:localOrRemote")}
             </p>
@@ -132,7 +132,7 @@ console.log("setnotifications",setNotifications);
             />
             <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
 
-            <p>{t('advancedSettings:autoPromotionExplanation')}</p>
+            <p className={css.p_style}>{t('advancedSettings:autoPromotionExplanation')}</p>
             <Toggle
               checked={settings.autoPromotion}
               onChange={() => changeAutoPromotionSettings()}
@@ -164,7 +164,7 @@ console.log("setnotifications",setNotifications);
             />
             
             <p style={{ marginLeft: "19vw", marginTop: "2vw" }}>{t('notifications:notificationExplanation')}</p>
-            <hr className={classNames(css.setinghr1)} />
+            {/* <hr className={classNames(css.setinghr1)} /> */}
             <React.Fragment>
               <h3 style={{ marginLeft: "27vw" }}>{t('proxy:proxy')}</h3>
               <Toggle
@@ -173,16 +173,16 @@ console.log("setnotifications",setNotifications);
                 on={t('enabled')}
                 off={t('disabled')}
               />
-              <p>{t('proxy:proxyExplanation')}</p>
+              <p className={css.p_style}>{t('proxy:proxyExplanation')}</p>
              
             </React.Fragment>
-            <hr className={classNames(css.setinghr2)} />
+            {/* <hr className={classNames(css.setinghr2)} /> */}
             <h3 style={{ marginLeft: "29vw", marginTop: "2vw" }}>
               {t("settings:reset")}
             </h3>
-            <hr className={classNames(css.setinghr3)} />
+            {/* <hr className={classNames(css.setinghr3)} /> */}
             <Trans i18nKey="walletResetConfirmation:warning">
-              <React.Fragment>
+              <p className={css.p_style}>
                 <React.Fragment>
                   All of your wallet data including your{" "}
                 </React.Fragment>
@@ -190,12 +190,12 @@ console.log("setnotifications",setNotifications);
                 <React.Fragment>and </React.Fragment>
                 <strong>other account information</strong>
                 <React.Fragment> will be lost.</React.Fragment>
-              </React.Fragment>
+              </p>
             </Trans>
             <Button
               variant="negative"
-              className="small"
-              style={{ marginLeft: "28vw", marginTop: "7vw", backgroundColor: "rgb(28, 3, 59)" }}
+              className="reset_button"
+              style={{ marginLeft: "26vw", marginTop: "2vw", backgroundColor: "#182051" }}
               onClick={this.confirmReset}
             >
               {t("settings:reset")}

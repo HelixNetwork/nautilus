@@ -462,6 +462,18 @@ class Wallet {
       Wallet.latestSettings.availableCurrencies = availableCurrencies;
     });
   }
+
+  /**
+     * Updates auto-promotion setting.
+     *
+     * @method updateAutoPromotionSetting
+     * @param {boolean} payload
+     */
+    static updateAutoPromotionSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.autoPromotion = payload;
+      });
+  }
 }
 
 /**
