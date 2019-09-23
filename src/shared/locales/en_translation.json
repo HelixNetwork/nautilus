@@ -116,7 +116,7 @@
     "checkForUpdates": "Check for Updates",
     "account": "Account",
     "changeNode": "Change Node",
-    "addCustomNode": "Add nodes",
+    "addCustomNode": "Add custom node",
     "nodeMustUseHTTPS": "Invalid node (non HTTPS)",
     "nodeMustUseHTTPSExplanation": "Only custom nodes using HTTPS are allowed.",
     "nodeDuplicated": "Duplicated node",
