@@ -18,7 +18,6 @@ import Changepassword from "ui/views/settings/changepassword";
 import SettingsMode from "ui/views/settings/mode";
 import Snapshot from "ui/views/settings/snapshot";
 import AdvancedSettings from "ui/views/settings/advancedSettings";
-import RemoteNode from "ui/views/settings/RemoteQuarum";
 import { getAccountNamesFromState } from "selectors/accounts";
 import Button from "ui/components/button";
 
@@ -71,7 +70,6 @@ class Settings extends React.PureComponent {
                       <Route path="/settings/theme" component={SettingsTheme} />
                       <Route path="/settings/viewseed" component={Viewseed} />
                       <Route path="/settings/address" component={Viewaddress} />
-                      <Route path="/settings/remotequorum" component={RemoteNode}/>
                       <Route
                         path="/settings/password"
                         component={Changepassword}

@@ -21,8 +21,8 @@ export const mapStorageToState = () => {
     errorLog,
     accountInfoDuringSetup
   } = Wallet.latestDataAsPlainObject;
-  console.log(settings);
   const nodes = Node.getDataAsArray();
+
   return {
     accounts: {
       accountInfoDuringSetup,
@@ -58,8 +58,10 @@ export const mapStorageToState = () => {
       )
     },
     settings: assign({}, settings, {
-      node: find(nodes, { url: settings.node }) || DEFAULT_NODE,
-      nodes: DEFAULT_NODES||map(nodes, ({ url, pow, token, password }) => ({
+      node: nodes.find(obj => {
+        return obj.url === settings.node;
+      })|| DEFAULT_NODE,
+      nodes: map(nodes, ({ url, pow, token, password }) => ({
         url,
         pow,
         token,

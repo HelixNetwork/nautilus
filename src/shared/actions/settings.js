@@ -107,13 +107,16 @@ export const changeNode = payload => (dispatch, getState) => {
  * @returns {{type: {string}, payload: {string} }}
  */
 export const setNode = (payload) => {
-  Wallet.updateNode(payload);
+  Wallet.updateNode(payload.url);
 
   return {
       type: SettingsActionTypes.SET_NODE,
       payload,
   };
 };
+
+
+
 /**
  * Makes an API call to check if a node is healthy/active and then changes the selected node for wallet
  *
@@ -204,7 +207,6 @@ export function setFullNode(node, addingCustomNode = false) {
               }
           })
           .catch((err) => {
-            console.log(err);
               dispatch(dispatcher.error());
 
               if (get(err, 'message') === Errors.NODE_NOT_SYNCED) {
@@ -600,6 +602,7 @@ export const changeAutoNodeListSetting = (payload) => (dispatch, getState) => {
  */
 export const updateNodeAutoSwitchSetting = (payload) => {
   // Update auto node switching setting in realm
+ 
   Wallet.updateNodeAutoSwitchSetting(payload);
 
   // Update auto node switching setting in redux store

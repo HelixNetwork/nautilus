@@ -129,6 +129,11 @@ const settingsReducer = (state = initialState, action) => {
             ...state,
             customNodes: state.customNodes.filter((node) => node.url !== action.payload),
         };
+    case SettingsActionTypes.SET_NODE:
+      return {
+          ...state,
+          node: action.payload,
+      };
   }
   return state;
 };

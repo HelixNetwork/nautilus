@@ -55,8 +55,8 @@ class NodeSettings extends React.PureComponent {
         loading: this.props.isChangingNode || this.props.isCheckingCustomNode,
         autoNodeSelection: defaultSettings.autoNodeList === this.props.settings.autoNodeList &&
             defaultSettings.nodeAutoSwitch === this.props.settings.nodeAutoSwitch &&
-            defaultSettings.quorum.enabled === this.props.settings.quorumEnabled &&
-            defaultSettings.quorum.size === this.props.settings.quorumSize &&
+            defaultSettings.quorum.enabled === this.props.settings.quorum.enabled &&
+            defaultSettings.quorum.size === this.props.settings.quorum.size &&
             defaultSettings.node.url === this.props.settings.node.url,
         autoNodeList: this.props.settings.autoNodeList,
         nodeAutoSwitch: this.props.settings.nodeAutoSwitch,
@@ -81,6 +81,7 @@ class NodeSettings extends React.PureComponent {
 
     // }
 
+  
     updateQuorumEnabled = () => {
         const {quorumEnabled, autoNodeList, quorumSize} = this.state;
         const {nodes, customNodes, generateAlert,t} = this.props;
@@ -251,10 +252,18 @@ class NodeSettings extends React.PureComponent {
     }
 
     setPrimaryNode(e){
-        const node = {url:e,pow:true,token:'',password:''}
-        this.setState({
-            primaryNode:node
-        });
+        if(typeof(e)=="object"){
+            this.setState({
+                primaryNode:e
+            });
+        }
+        else{
+            this.setState({
+                primaryNode:{url:e,pow:true,token:'',password:''}
+            });
+            
+        }
+        
     }
 
     render() {
@@ -266,12 +275,15 @@ class NodeSettings extends React.PureComponent {
         }
 
         const availableNodes = unionBy(customNodes, autoNodeList && nodes, nodeAutoSwitch && [DEFAULT_NODE], 'url');
+       
 
         return (
             <div className={classNames(css.foo_bxx12)}>
+                 <Scrollbar>
                 <div className={classNames(css.nodebox)} >
+               
                 <form>
-                    <Scrollbar>
+                   
                         <article>
                             <Toggle
                                 inline={t('nodeSettings:automaticNodeManagement')}
@@ -346,10 +358,12 @@ class NodeSettings extends React.PureComponent {
                         {t('global:save')}
                     </Button>
                  
-                    </Scrollbar>
+                   
                 
             </form>
+           
           </div>
+          </Scrollbar>
             </div>
         );
     }

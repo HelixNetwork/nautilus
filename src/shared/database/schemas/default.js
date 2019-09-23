@@ -218,9 +218,12 @@ export const WalletSettingsSchema = {
      */
     notifications: "NotificationsSettings",
     /**
-     * Selected IRI node for wallet.
-     */
-    node: "Node",
+       * Selected IRI node for wallet.
+       */
+    node: {
+      type: 'string',
+      default: DEFAULT_NODE.url,
+    },
 
     completedMigration: {
       type: "bool",
@@ -392,8 +395,7 @@ export const NodeSchema = {
   primaryKey: "url",
   properties: {
     url: {
-      type:"string",
-      default:DEFAULT_NODE.url
+      type: "string"
     }, // Node URL
     // Whether the node was added by the user
     custom: {

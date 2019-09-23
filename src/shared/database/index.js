@@ -449,10 +449,9 @@ class Wallet {
   }
 
   static updateQuorumConfig(payload) {
-    console.log(payload);
-    const existingConfig = Wallet.latestData.quorum;
+    const existingConfig = Wallet.latestSettings.quorum;
     realm.write(() => {
-      Wallet.latestData.quorum = assign({}, existingConfig, payload);
+      Wallet.latestSettings.quorum = assign({}, existingConfig, payload);
     });
   }
 
@@ -499,7 +498,6 @@ class Wallet {
      * @param {string} payload
      */
     static updateNode(payload) {
-      console.log(payload);
       realm.write(() => {
           Wallet.latestSettings.node = payload;
       });

@@ -45,11 +45,6 @@ class Sidebar extends React.PureComponent {
             {t("settings:currency")}
           </a>
         </li>
-        <li className={active == "remotequorum" ? css.active : ""}>
-          <a onClick={() => this.props.history.push("/settings/remotequorum")}>
-            {t("settings:remotequorum")}
-          </a>
-        </li>
         {wallet.ready && (
           <React.Fragment>
             <li className={active == "editname" ? css.active : ""}>

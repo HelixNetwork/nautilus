@@ -34,7 +34,6 @@ export const quorum = new Quorum({
  * @returns {void}
  */
 export const changeHelixNode = NODE_URI => {
-  console.log(NODE_URI);
   helixAPI = composeAPI({
     provider: NODE_URI,
     timeout:DEFAULT_NODE_REQUEST_TIMEOUT
