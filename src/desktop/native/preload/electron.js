@@ -15,8 +15,8 @@ let onboardingGenerated = false;
 let onboardingName = null;
 
 const KEYTAR_SERVICE = remote.app.isPackaged
-  ? "Helix wallet"
-  : "Helix wallet (dev)";
+  ? "Nautilus wallet"
+  : "Nautilus wallet (dev)";
 
 const capitalize = string => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();

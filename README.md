@@ -1,4 +1,4 @@
-# Helix Wallet
+# Nautilus Wallet
 ```
 WALLET IS IN ACTIVE DEVELOPMENT. CODE IS NOT OPTIMIZED FOR PRODUCTION.
 ```
@@ -74,4 +74,15 @@ yarn run compile:linux
 # For mac, You should be on mac OS
 yarn run compile:mac
 ```
+## Guidelines For Branches
+
+We use the following conventions for branches used for development.
+``
+- bugfix/description
+- features/feature-name
+- features/feature-area/feature-name
+- hotfix/description
+
+Develop your features and fix bugs based off development branch. Git branches are inexpensive to create and maintain, so even small fixes and changes should have their own feature branch.
+``
 

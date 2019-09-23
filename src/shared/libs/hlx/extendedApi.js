@@ -168,12 +168,18 @@ const findTransactions = settings => args =>
  *
  * @returns {function(array): Promise<array>}
  */
-const getLatestInclusion = (settings, withQuorum = false) => hashes =>
+
+ // Recheck This Sachu, Should Adapt with finality updates
+const getLatestInclusion = (settings, withQuorum = false) => (hashes) =>
   withQuorum
-    ? quorum.getLatestInclusion(hashes).catch(err => {throw new Error (err)})
-    : getHelixInstance(settings, getApiTimeout("getInclusionStates"))
-        .getLatestInclusion(hashes)
-        .catch(err =>{ throw new Error(err)});
+    ? quorum.getLatestInclusion(hashes).catch((err) => {throw new Error (err);})
+    : quorum.getLatestInclusion(hashes).catch((err) => {throw new Error (err);})
+    
+    // getHelixInstance(settings, getApiTimeout("getInclusionStates"))
+    //     .getLatestInclusion(hashes)
+    //     .catch(err =>{ throw new Error(err)});
+    
+
 
 /**
  * Helix promoteTransaction with an option to perform PoW locally
@@ -573,19 +579,15 @@ const getTransactionStrings = settings => hashes =>
  *
  * @returns {Promise}
  */
-const isNodeHealthy = settings => {
-  const cached = {
-    latestMilestone: EMPTY_HASH_TXBYTES
-  };
 
+ // Finality Update Sync Check
+const isNodeHealthy = settings => {
   return getNodeInfo(settings)()
     .then(
       ({
         appVersion,
-        latestMilestone,
-        latestMilestoneIndex,
-        latestSolidSubtangleMilestone,
-        latestSolidSubtangleMilestoneIndex
+        currentRoundIndex,
+        latestSolidRoundIndex,
       }) => {
         if (
           ["rc", "beta", "alpha"].some(
@@ -594,30 +596,13 @@ const isNodeHealthy = settings => {
         ) {
           throw new Error(Errors.UNSUPPORTED_NODE);
         }
-        cached.latestMilestone = latestMilestone;
-        if (
-          (cached.latestMilestone === latestSolidSubtangleMilestone ||
-            latestMilestoneIndex - MAX_MILESTONE_FALLBEHIND <=
-              latestSolidSubtangleMilestoneIndex) &&
-          cached.latestMilestone !== EMPTY_HASH_TXBYTES
-        ) {
-          return getTransactionStrings(settings)([
-            cached.latestMilestone
-          ]).catch(err =>{ throw new Error(err)});
-        }
-
+        // if(currentRoundIndex === latestSolidRoundIndex+1)
+        // {
+          return true;
+        // }
         throw new Error(Errors.NODE_NOT_SYNCED);
       }
     )
-    .then(txs => {
-      // TODO
-      const { timestamp } = asTransactionObject(
-        head(txs),
-        cached.latestMilestone
-      );
-
-      return isWithinMinutes(timestamp * 1000, 5 * MAX_MILESTONE_FALLBEHIND);
-    });
 };
 
 /**

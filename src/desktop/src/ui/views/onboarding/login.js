@@ -270,7 +270,7 @@ class Login extends React.PureComponent {
                   variant="backgroundNone"
                   onClick={() => this.stepForward("seed-verify")}
                 >
-                  {t("global:goBack")} <span>></span>
+               <span>&lt;</span>   {t("global:goBack")} 
                 </Button>
               </React.Fragment>
             )}

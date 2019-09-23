@@ -975,66 +975,35 @@ margin-right: 16px;
 }
 
 .topRight h6{
-  position: absolute;
-  left: 9px;
-  top: 22px;
   font-size: 9px;
+  opacity: 0.3;
 }
 
-.topRight p{
-    position: relative;
-    left: -94px;
-    top: -140px;
-    color: green;
-    font-size: 50px;
+.topRight h4{
+  margin-bottom:-30px;
+  margin-top: 40px;
+  
 }
 
 .topRight{
-  position: absolute;
-  top:-21px;
-  right:100px
-}
+    list-style-type: none;
+    float: right;
+    display: grid;
+    grid-template-columns: 120px 140px;
+    margin-top: -40px;
 
-.topRight1{
-  position: absolute;
-  top:-40px;
-  right:180px;
-  width:100px;
-}
-
-.topRight1 h4{
-  position: absolute;
-  top:18px;
-  
-}
-.topRight2{
-  position: absolute;
-  top:92px;
-  right:180px;
-  width:100px;
-}
-.topRight2 h6{
-  position: absolute;
-  top:2px;
-  right:11px;
 
 }
-.topRight2 button{
-  position: absolute;
-  top:2px;
-  right:-39px;
-  border-color:rgba(216, 215, 213, 0.75);
-  background-color: #1A1B3C;
-}
-.topRight2 hr{
-  position: absolute;
-  top: 18px;
-  left: -8px;
-  width: 100px;
+
+.topRight hr{
+  margin-top:10px;
+  margin-left: -15px;
+  width: 120px;
   border: 0;
   height: 2px;
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
 }
+
 .topbottom hr{
   position: absolute;
   top: 388px;
@@ -1044,15 +1013,7 @@ margin-right: 16px;
   height: 2px;
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
 }
-.topRight1 hr{
-  position: absolute;
-  top: 55px;
-  left: -8px;
-  width: 100px;
-  border: 0;
-  height: 2px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
-}
+
 
 .topBorder{
   position: absolute;
@@ -1970,44 +1931,6 @@ margin-right: 16px;
   height: 2px;
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
 }
-.topRight h6{
-  position: absolute;
-  left: 9px;
-  top: 22px;
-  font-size: 9px;
-}
-
-.topRight p{
-    position: relative;
-    left: -94px;
-    top: -140px;
-    color: green;
-    font-size: 50px;
-}
-
-
-.topRight1{
-  position: absolute;
-  top:-39px;
-  right:180px;
-  width:100px;
-}
-
-.topRight1 h4{
-  position: absolute;
-  top:18px;
-  
-}
-
-.topRight1 hr{
-  position: absolute;
-  top: 50px;
-  left: -8px;
-  width: 100px;
-  border: 0;
-  height: 2px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
-}
 
 .topBorder{
   position: absolute;
@@ -2040,8 +1963,7 @@ margin-right: 16px;
   background: var(--body-bg);
   border:none;
   color: white !important;
-  position: absolute;
-  top:38px;
+  margin-top: 40px;
   outline: none;
 }
 

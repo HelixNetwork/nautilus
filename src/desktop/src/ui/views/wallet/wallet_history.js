@@ -41,22 +41,8 @@ class WalletHistory extends React.PureComponent {
     });
   }
 
-  updateAccount = async () => {
-    const { password, accountName, accountMeta } = this.props;
+  
 
-    const seedStore = await new SeedStore[accountMeta.type](
-      password,
-      accountName,
-      accountMeta
-    );
-
-    this.props.getAccountInfo(
-      seedStore,
-      accountName,
-      Electron.notify,
-      true // Sync with quorum enabled
-    );
-  };
   render() {
     const { t, history, location } = this.props;
     const subroute = location.pathname.split("/")[3] || null;

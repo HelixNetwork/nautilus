@@ -33,6 +33,7 @@ import Icon from "ui/components/icon";
 import Scrollbar from "ui/components/scrollbar";
 import Button from "ui/components/button";
 import css from "./list.scss";
+import { getAccountInfo } from "actions/accounts";
 /**
  * Transaction history list component
  */
@@ -76,7 +77,10 @@ export class ListComponent extends React.PureComponent {
     /** @ignore */
     password: PropTypes.object.isRequired,
         /** @ignore */
-    style: PropTypes.object
+    style: PropTypes.object,
+    /** @ignore */
+    ui: PropTypes.object.isRequired
+
   };
 
   state = {
@@ -196,6 +200,7 @@ export class ListComponent extends React.PureComponent {
     });
   }
 
+ 
   showMessage(message){
     if(message.indexOf('{')!=-1){
       return 'Empty';
@@ -205,13 +210,49 @@ export class ListComponent extends React.PureComponent {
     }
     return message;
   }
+  updateAccount = async () => {
+  
+    
+    const { accountInfo, password, accountName, accountMeta } = this.props;
+    const seedStore = await new SeedStore[accountMeta.type](
+      password,
+      accountName,
+      accountMeta
+    );
+    this.props.getAccountInfo(
+      seedStore,
+      accountName,
+      Electron.notify,
+      true // Sync with quorum enabled
+    );
+    
+    
+  };
+
+  updateTx(){
+    
+    const tx = this.getAccountTransactions(this.props.accountInfo);
+    this.setState({
+      transactions:tx
+    })
+  }
+
+  componentDidUpdate(){
+    const {transactions} = this.state;
+    const tx = this.getAccountTransactions(this.props.accountInfo);
+    if(tx.length>transactions.length){
+    this.setState({
+      transactions:tx
+    })
+  }
+  }
+
 
   render() {
     const {
       mode,
       hideEmptyTransactions,
       toggleEmptyTransactions,
-      updateAccount,
       setItem,
       currentItem,
       t,
@@ -228,7 +269,6 @@ export class ListComponent extends React.PureComponent {
       transactions,
       search
     } = this.state;
-
     const filters = ["All", "Sent", "Received", "Pending"];
 
     const totals = {
@@ -297,6 +337,8 @@ export class ListComponent extends React.PureComponent {
       marginLeft: '-50px',
       width: '109%',
     };
+    
+
     return (
       <React.Fragment>
         <nav className={css.nav}>
@@ -319,6 +361,13 @@ export class ListComponent extends React.PureComponent {
             />
             
           </div>
+          {/* Should be changed to isLoading and isBusy */}
+          <a
+            onClick={()=>{this.updateAccount();this.updateTx()}}
+            className={classNames(css.refresh, (this.props.ui.isSyncing || this.props.ui.isSendingTransfer || this.props.ui.isAttachingToTangle || this.props.ui.isTransitioning) ? css.busy : null, this.props.ui.isFetchingAccountInfo ? css.loading : null)}
+          >
+            <Icon icon="sync" size={24} />
+          </a>
           <p className={css.sort_by}>Sort By</p>
           <div className={css.search}><select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
                   {filters.map(item => {
@@ -327,7 +376,9 @@ export class ListComponent extends React.PureComponent {
                     {item}
                   </option>)
                 })}
-                </select></div> 
+                </select>
+                </div> 
+
           
         </nav>
         {/* <div className={css.list} style={style}> */}
@@ -343,10 +394,10 @@ export class ListComponent extends React.PureComponent {
                     key={key}
                     onClick={() => setItem(transaction.bundle)}
                   >
-                    {isReceived || isConfirmed ?(
-                    <div className={!isReceived?css.column_sent:css.column_receive}>
+                    {isConfirmed ?(
+                    <div className={isReceived?css.column_receive:css.column_sent}>
                     <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>{!isReceived ? 'SENT': 'RECEIVED'}</h4>
+                        <h4 className={css.sent_heading}>{isReceived ? 'RECEIVED': 'SENT'}</h4>
                         <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
                        
                     </div>
@@ -358,7 +409,7 @@ export class ListComponent extends React.PureComponent {
                         <p className={css.fromhash}>{transaction.bundle}</p>
                     </div>
                     <div className={css.column_cnt}>
-                        <span className={!isReceived?css.sent:css.receive}>{transaction.transferValue === 0
+                        <span className={isReceived?css.receive:css.sent}>{transaction.transferValue === 0
                           ? ""
                           : isReceived
                           ? "+"
@@ -534,14 +585,15 @@ const mapStateToProps = state => ({
   mode: state.settings.mode,
   ui: state.ui,
   hideEmptyTransactions: state.settings.hideEmptyTransactions,
-  password: state.wallet.password
+  password: state.wallet.password,
 });
 
 const mapDispatchToProps = {
   toggleEmptyTransactions,
   promoteTransaction,
   retryFailedTransaction,
-  generateAlert
+  generateAlert,
+  getAccountInfo
 };
 
 export default connect(
