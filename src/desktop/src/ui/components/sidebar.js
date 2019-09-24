@@ -83,7 +83,7 @@ class Sidebar extends React.PureComponent {
           <a
             onClick={() => this.props.history.push("/settings/accountsetting")}
           >
-            {t("settings:account")}{" "}
+            {t("settings:advanced")}{" "}
           </a>
         </li>
       </ul>

@@ -83,6 +83,39 @@ export const acceptPrivacy = () => {
 };
 
 /**
+ * Dispatch to set if native notifications are enabled
+ *
+ * @method setNotifications
+ * @param {{type: {string}, enabled: {boolean}}}} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const setNotifications = (payload) => {
+  Wallet.updateNotificationsSetting(payload);
+
+  return {
+      type: SettingsActionTypes.SET_NOTIFICATIONS,
+      payload,
+  };
+};
+/**
+ * Dispatch to update proxy settings
+ *
+ * @method setProxy
+ * @param {boolean} payload
+ *
+ * @returns {{type: {string}, payload: {boolean} }}
+ */
+export const setProxy = (payload) => {
+  Wallet.updateIgnoreProxySetting(payload);
+  return {
+      type: SettingsActionTypes.SET_PROXY,
+      payload,
+      
+  };
+};
+
+/**
  * Dispatch to change selected IRI node
  *
  * @method changeNode

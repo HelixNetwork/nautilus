@@ -219,7 +219,7 @@
     "passwordTooShortExplanation": "Your password must be at least {{minLength}} characters. It is currently {{currentLength}} characters long. Please try again.",
     "passwordMismatch": "Passwords do not match",
     "passwordMismatchExplanation": "The passwords you have entered do not match. Please try again.",
-    "anEncryptedCopy": "This is your main wallet password. You will use it to log in.",
+    "anEncryptedCopy": "This is your account password. You will use it to log in.",
     "retypePassword": "Retype Password"
   },
   "copyToClipboard": {
@@ -775,7 +775,7 @@
   "terms": {
     "termsAndConditions": "Terms & Conditions",
     "accept": "I accept",
-    "readAllToContinue": "Please read the full text"
+    "readAllToContinue": "Please read all the points carefully"
   },
   "privacyPolicy": {
     "privacyPolicy": "Privacy Policy",

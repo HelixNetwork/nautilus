@@ -195,3 +195,10 @@
     color:black;
   }
 }
+.reset_button{
+ color: white;
+ opacity: 0.6;
+ &:hover{
+  opacity: 1;
+}
+}

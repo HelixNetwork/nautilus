@@ -62,7 +62,7 @@ class Currency extends React.PureComponent {
           />
 
           <Button
-            style={{ marginLeft: "26vw", marginTop: "4vw" }}
+            style={{ marginLeft: "31vw", marginTop: "4vw" }}
             loading={isFetchingCurrencyData}
             type="submit"
           >
