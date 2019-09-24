@@ -96,7 +96,9 @@ class SeedGenerate extends React.PureComponent {
       progressStrength
     } = this.state;
 
+    if(!clicks.includes(e.target.value)){
     const position = e.target.value;
+  
     const newClicks =
       clicks.indexOf(position) < 0 ? clicks.concat([position]) : clicks;
     const newSeed = seed.slice(0);
@@ -176,6 +178,8 @@ class SeedGenerate extends React.PureComponent {
       progressStrength: progressStrength + 6.25
     }));
     this.unscramble();
+  }
+  
   };
 
   /**
@@ -308,8 +312,8 @@ class SeedGenerate extends React.PureComponent {
             
              Strength
               
-              <div className={css.progressOuter}>
-                  <div>
+              <div className={classNames(css.progressOuter,progressStrength===100?css.progressSuccess:'')}>
+                  <div className={classNames(css.progressInner,progressStrength===100?css.progressSuccess:'')} style={{width:`${progressStrength}%`}}>
 
                   </div>
                 </div>
