@@ -130,6 +130,7 @@ console.log("setnotifications",setNotifications);
               on={t("pow:remote")}
               off={t("pow:local")}
             />
+            {/* <hr className={classNames(css.setinghr)}/> */}
             <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
 
             <p className={css.p_style}>{t('advancedSettings:autoPromotionExplanation')}</p>
@@ -139,6 +140,7 @@ console.log("setnotifications",setNotifications);
               on={t('enabled')}
               off={t('disabled')}
             />
+              {/* <hr className={classNames(css.setinghr)}/> */}
             <h3 style={{ marginLeft: "27vw" }}>{t('notifications:notifications')}</h3>
             <Toggle
               checked={settings.notifications.general}
