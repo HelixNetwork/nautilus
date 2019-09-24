@@ -152,10 +152,10 @@ class NodeSettings extends React.PureComponent {
         }
 
         // Only allow HTTPS nodes
-        // if (!isValidHttpsUrl(nodeSelected.url)) {
-        //     generateAlert('error', t('nodeMustUseHTTPS'), t('nodeMustUseHTTPSExplanation'));
-        //     return;
-        // }
+        if (!isValidHttpsUrl(nodeSelected.url)) {
+            generateAlert('error', t('nodeMustUseHTTPS'), t('nodeMustUseHTTPSExplanation'));
+            return;
+        }
 
         const hasDefaultHttpsPort = endsWith(nodeSelected.url, ':443');
 
