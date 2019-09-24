@@ -846,10 +846,21 @@ modal_footer{
   height:20px;
   width: 37vw;
   background: #101C4A;
+  border:1px solid #eaac32;
+  border-radius: 10px;
+}
+.progressInner{
+  background: #eaac32;
+  height: 20px;
+  border-radius: 10px;
+}
+.progressSuccess{
+  background: green;
+  border:1px solid green;
 }
 .strength{
   display: inline-grid;
-  grid-template-columns: 150px 210px 210px 210px;
+  grid-template-columns: 100px 210px 210px 130px;
   margin-left: 3%;
 }
 
