@@ -46,6 +46,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@helixnetwork/core": "^1.0.0-alpha.2",
     "@ljharb/eslint-config": "^13.1.1",
+    "electron-log": "^3.0.8",
     "electron-packager": "^13.1.1",
     "eslint-config-react-app": "^4.0.1",
     "express": "^4.17.1",

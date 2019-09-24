@@ -90,7 +90,7 @@ p {
   float: right;
 }
 .foo_bxx12 {
-  width: 66%;
+  width: 75%;
   min-height: 465px;
   background-color: rgb(66, 13, 134);
   position: absolute;
@@ -127,7 +127,7 @@ p {
   border-radius: -1%;
   border: 0;
   color: white;
-  background-color: #06182b;
+  background-color: var(--body);
   border-bottom: 2px solid #e8b349;
   outline: 0;
   text-align: center;
@@ -151,4 +151,32 @@ p {
       max-width: 560px;
       padding: 120px 20px;
   }
+}
+.nodebox{
+
+  width: 60%;
+  margin-left: 15vw;
+}
+.navleft {
+  cursor: pointer;
+  float: left;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  left: 12%;
+}
+
+
+.navright {
+  cursor: pointer;
+  float: right;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  top: 115px;
+  right: 14%;
 }

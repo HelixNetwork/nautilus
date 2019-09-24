@@ -45,7 +45,6 @@ class Sidebar extends React.PureComponent {
             {t("settings:currency")}
           </a>
         </li>
-        
         {wallet.ready && (
           <React.Fragment>
             <li className={active == "editname" ? css.active : ""}>

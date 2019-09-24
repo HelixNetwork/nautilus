@@ -238,7 +238,8 @@ class Node {
    * @method addCustomNode
    * @param {string} url Node URL
    */
-  static addCustomNode(url, pow) {
+  static addCustomNode(payload) {
+    const { url, pow} = payload;
     realm.write(() => {
       realm.create("Node", {
         url,
@@ -448,10 +449,36 @@ class Wallet {
   }
 
   static updateQuorumConfig(payload) {
-    const existingConfig = Wallet.latestData.quorum;
+    const existingConfig = Wallet.latestSettings.quorum;
     realm.write(() => {
-      Wallet.latestData.quorum = assign({}, existingConfig, payload);
+      Wallet.latestSettings.quorum = assign({}, existingConfig, payload);
     });
+  }
+
+  /**
+     * Updates node auto-switch setting
+     *
+     * @method updateNodeAutoSwitchSetting
+     *
+     * @param {boolean} payload
+     */
+    static updateNodeAutoSwitchSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.nodeAutoSwitch = payload;
+      });
+  }
+
+    /**
+     * Updates autoNodeList setting
+     *
+     * @method updateAutoNodeListSetting
+     *
+     * @param {boolean} payload
+     */
+    static updateAutoNodeListSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.autoNodeList = payload;
+      });
   }
 
   static updateCurrencyData(payload) {
@@ -462,6 +489,20 @@ class Wallet {
       Wallet.latestSettings.availableCurrencies = availableCurrencies;
     });
   }
+
+  /**
+     * Updates wallet's node.
+     *
+     * @method updateNode
+     *
+     * @param {string} payload
+     */
+    static updateNode(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.node = payload;
+      });
+  }
+
 }
 
 /**
