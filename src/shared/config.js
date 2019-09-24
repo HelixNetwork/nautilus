@@ -9,13 +9,11 @@ export const DEFAULT_NODE = __TEST__
       password: ""
     }
   : {
-      url: "https://hlxtest.net:8087",
-      // url:'http://13.234.122.84:8087',
+      url: "https://wallet.hlxtest.net:8085",
       pow: true,
       token: "",
       password: ""
     };
-// url: 'https://hlxtest.net:8087',
 export const NODES_WITH_POW_DISABLED = [
   // 'https://hlxtest.net:8087',
 ].map(url => ({
@@ -27,11 +25,10 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-  // 'http://13.234.122.84:8087',
-  "https://wallet.hlxtest.net:8087",
-  "https://node1.hlxtest.net:8087",
-  "https://node2.hlxtest.net:8087",
-  "https://node3.hlxtest.net:8087"
+  "https://wallet,hlxtest.net:8085"
+  "https://relayer1.hlxtest.net:8087",
+  "https://relayer2.hlxtest.net:8087",
+  "https://relayer3.hlxtest.net:8087",
 ].map(url => ({
   url,
   pow: true,
