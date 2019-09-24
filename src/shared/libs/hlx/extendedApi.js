@@ -598,10 +598,10 @@ const isNodeHealthy = settings => {
         ) {
           throw new Error(Errors.UNSUPPORTED_NODE);
         }
-        // if(currentRoundIndex === latestSolidRoundIndex+1)
-        // {
+        if(currentRoundIndex === latestSolidRoundIndex+1)
+        {
           return true;
-        // }
+        }
         throw new Error(Errors.NODE_NOT_SYNCED);
       }
     )
