@@ -168,6 +168,33 @@
   }
 }
 
+.log_navleft {
+  float: left;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  top:2px; 
+  left: 20%;
+  &:hover{
+    color:black;
+  }
+}
+
+.log_navright {
+  float: right;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  top:2px; 
+  right: 20%;
+  &:hover{
+    color:black;
+  }
+}
 .reset_button{
  color: white;
  opacity: 0.6;
