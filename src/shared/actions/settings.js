@@ -91,7 +91,7 @@ export const acceptPrivacy = () => {
  * @returns {{type: {string}, payload: {object} }}
  */
 export const setNotifications = (payload) => {
-  // Wallet.updateNotificationsSetting(payload);
+  Wallet.updateNotificationsSetting(payload);
 
   return {
       type: SettingsActionTypes.SET_NOTIFICATIONS,
@@ -107,8 +107,7 @@ export const setNotifications = (payload) => {
  * @returns {{type: {string}, payload: {boolean} }}
  */
 export const setProxy = (payload) => {
-  // Wallet.updateIgnoreProxySetting(payload);
-console.log("values be like",payload);
+  Wallet.updateIgnoreProxySetting(payload);
   return {
       type: SettingsActionTypes.SET_PROXY,
       payload,
