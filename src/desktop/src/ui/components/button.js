@@ -30,7 +30,10 @@ export default class Button extends React.PureComponent {
       "navleft",
       "navright",
       "modal_navleft",
-      "modal_navright"
+      "modal_navright",
+      "log_navleft",
+      "log_navright",
+      "reset_button"
     ]),
     loading: PropTypes.bool
   };

@@ -56,6 +56,7 @@ class SeedGenerate extends React.PureComponent {
   componentDidMount() {
     this.frame = 0;
     this.unscramble();
+    this.generateNewSeed();
   }
 
   componentWillUnmount() {
@@ -323,7 +324,6 @@ class SeedGenerate extends React.PureComponent {
               <div
                 className={css.seed_lotbox}
                 style={{ width: "100%", height: "100%" }}
-                onClick={this.generateNewSeed}
                 style={{ display: this.state.viewReload }}
               >
                 <Lottie
