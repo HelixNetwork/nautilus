@@ -18,7 +18,7 @@ p {
   padding: 0;
   margin-top: 100px;
   margin-bottom: 40px;
-  margin-left: 50px;
+  margin-left: 30px;
   
 
 }
@@ -34,7 +34,7 @@ p {
   color: #e8b349;
 }
 .set_bxac {
-  margin-top: 100px;
+  margin-top: 0px;
 }
 .set_bxac h5 {
   margin-left: 2px;
@@ -90,13 +90,13 @@ p {
   float: right;
 }
 .foo_bxx12 {
-  width: 75%;
+  width: 79.5%;
   min-height: 465px;
-  background-color: rgb(66, 13, 134);
+  background-color: #420d86;
   position: absolute;
-  top: 95px;
+  top: 65px;
   bottom: 38px;
-  left: 320px;
+  left: 265px;
   padding-inline-start: 50px;
   padding-inline-end: 50px;
   padding-block-start: 10px;
@@ -114,6 +114,33 @@ p {
 .setinghr {
   position: absolute;
   top: 245px;
+  left: 50px;
+  width: 777px;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.setinghr1 {
+  position: absolute;
+  top: 486px;
+  left: 50px;
+  width: 777px;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.setinghr2 {
+  position: absolute;
+  top: 703px;
+  left: 50px;
+  width: 777px;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(250, 192, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.setinghr3 {
+  position: absolute;
+  top: 908px;
   left: 50px;
   width: 777px;
   border: 0;
@@ -152,10 +179,14 @@ p {
       padding: 120px 20px;
   }
 }
+
+.p_style {
+  margin-top: 2vw !important;
+}
 .nodebox{
 
   width: 60%;
-  margin-left: 15vw;
+  margin-left: 10vw;
 }
 .navleft {
   cursor: pointer;

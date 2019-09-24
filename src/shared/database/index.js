@@ -491,7 +491,17 @@ class Wallet {
   }
 
   /**
-     * Updates wallet's node.
+     * Updates auto-promotion setting.
+     *
+     * @method updateAutoPromotionSetting
+     * @param {boolean} payload
+     */
+    static updateAutoPromotionSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.autoPromotion = payload;
+      });
+  }
+     /* Updates wallet's node.
      *
      * @method updateNode
      *
@@ -500,6 +510,32 @@ class Wallet {
     static updateNode(payload) {
       realm.write(() => {
           Wallet.latestSettings.node = payload;
+      });
+  }
+
+  /**
+     * Updates notifications configuration.
+     *
+     * @method updateNotificationsSetting
+     * @param {object} payload
+     */
+    static updateNotificationsSetting(payload) {
+      const { type, enabled } = payload;
+
+      realm.write(() => {
+          Wallet.latestSettings.notifications[type] = enabled;
+      });
+  }
+
+  /**
+     * Updates system proxy settings.
+     *
+     * @method updateIgnoreProxySetting
+     * @param {object} payload
+     */
+    static updateIgnoreProxySetting(enabled) {
+      realm.write(() => {
+          Wallet.latestSettings.ignoreProxy = enabled;
       });
   }
 
