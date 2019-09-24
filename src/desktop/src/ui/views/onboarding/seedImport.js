@@ -255,7 +255,7 @@ class SeedImport extends React.PureComponent {
                 <PasswordInput
                   focus
                   value={this.state.password}
-                  label="Password"
+                  label="Keystore Password"
                   showValid
                   onChange={value => {
                     this.setState({ password: value });
