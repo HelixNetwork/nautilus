@@ -116,11 +116,13 @@
     "checkForUpdates": "Check for Updates",
     "account": "Account",
     "changeNode": "Change Node",
-    "addCustomNode": "Add Custom Node",
+    "addCustomNode": "Add custom node",
     "nodeMustUseHTTPS": "Invalid node (non HTTPS)",
     "nodeMustUseHTTPSExplanation": "Only custom nodes using HTTPS are allowed.",
     "nodeDuplicated": "Duplicated node",
     "nodeDuplicatedExplanation": "The custom node is already listed.",
+    "customNodeAdded": "Custom node added",
+    "customNodeAddedExplanation": "You have successfully added {{nodeAddress}} as a custom node.",
     "nodeAutoChanged": "Auto-switched node",
     "nodeAutoChangedExplanation": "Switched to new node {{- nodeAddress}} as selected node is offline.",
     "touchSensor": "Touch the fingerprint sensor",
@@ -854,5 +856,24 @@
     "applicationNotInitialisedExplanation": "Reopen the Nautilus app on your Ledger device, accept the informational warning and try again.",
     "udevError": "Could not communicate with Ledger device",
     "udevErrorExplanation": "Nautilus could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
-  }
+  },
+  "nodeSettings": {
+    "automaticNodeManagement": "Automatic node management",
+    "addCustomNodes": "Add nodes",
+    "autoNodeList": "Use default node list",
+    "nodeAutoswitching": "Autoselect primary node",
+    "primaryNode": "Primary node",
+    "enableQuorum": "Enable quorum",
+    "quorumSize": "Quorum size",
+    "noCustomNodes": "No custom nodes",
+    "mustAddCustomNodes": "You must add at least one custom node before disabling the remote node list.",
+    "nodeEnoughNodesTitle": "Not enough nodes",
+    "nodeEnoughNodesExplanation": "There are not enough nodes to enable quorum.",
+    "nodeEnoughNodesExplanationCustomNodes": "Add more custom nodes or enable the remote node list.",
+    "nodeSettingsUpdatedTitle": "Node settings updated",
+    "nodeSettingsUpdatedExplanation": "You have successfully updated your node settings.",
+    "outsourcePow": "Outsource proof of work",
+    "autoSelectPowNode": "Autoselect proof of work node",
+    "nodeForPow": "Proof of work node"
+}
 }

@@ -183,3 +183,31 @@ p {
 .p_style {
   margin-top: 2vw !important;
 }
+.nodebox{
+
+  width: 60%;
+  margin-left: 15vw;
+}
+.navleft {
+  cursor: pointer;
+  float: left;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  left: 12%;
+}
+
+
+.navright {
+  cursor: pointer;
+  float: right;
+  font-weight: bold;
+  color: #7d7c7d;
+  font-size: 20px;
+  transition: all 0.5s;
+  text-decoration: none;
+  top: 115px;
+  right: 14%;
+}

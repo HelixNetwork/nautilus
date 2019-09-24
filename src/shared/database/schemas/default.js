@@ -35,7 +35,7 @@ export const QuorumConfigSchema = {
   properties: {
     size: {
       type: "int",
-      default: 1
+      default: QUORUM_SIZE
     },
     enabled: {
       type: "bool",
@@ -218,11 +218,11 @@ export const WalletSettingsSchema = {
      */
     notifications: "NotificationsSettings",
     /**
-     * Selected IRI node for wallet.
-     */
+       * Selected IRI node for wallet.
+       */
     node: {
-      type: "string",
-      default: DEFAULT_NODE.url
+      type: 'string',
+      default: DEFAULT_NODE.url,
     },
 
     completedMigration: {
@@ -394,7 +394,9 @@ export const NodeSchema = {
   name: "Node",
   primaryKey: "url",
   properties: {
-    url: "string", // Node URL
+    url: {
+      type: "string"
+    }, // Node URL
     // Whether the node was added by the user
     custom: {
       type: "bool",

@@ -81,6 +81,7 @@ class SeedImport extends React.PureComponent {
       );
       this.setState({
         importBuffer: null
+        
       });
 
       if (!seed || !seed.length) {
@@ -98,7 +99,8 @@ class SeedImport extends React.PureComponent {
         seed: seed[0].seed,
         seedPhrase: seedSequence,
         hidePass: "none",
-        importVisible: false
+        importVisible: false,
+        password:""
       });
     } catch (err) {
       Electron.setOnboardingSeed(null);
@@ -117,7 +119,8 @@ class SeedImport extends React.PureComponent {
     this.setState({
       importBuffer: null,
       hidePass: "none",
-      seedPhrase: ""
+      seedPhrase: "",
+      password:""
     });
   }
 
