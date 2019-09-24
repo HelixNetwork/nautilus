@@ -9,7 +9,7 @@ export const DEFAULT_NODE = __TEST__
       password: ""
     }
   : {
-      url: "https://wallet.hlxtest.net:8085",
+      url: "https://hlxtest.net:8085",
       pow: true,
       token: "",
       password: ""
@@ -25,10 +25,10 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-  "https://wallet,hlxtest.net:8085"
+  "https://hlxtest.net:8085",
   "https://relayer1.hlxtest.net:8087",
   "https://relayer2.hlxtest.net:8087",
-  "https://relayer3.hlxtest.net:8087",
+  "https://relayer3.hlxtest.net:8087"
 ].map(url => ({
   url,
   pow: true,
