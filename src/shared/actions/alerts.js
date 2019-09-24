@@ -72,7 +72,7 @@ export const generateAccountInfoErrorAlert = err => dispatch => {
     generateAlert(
       "error",
       i18next.t("global:invalidResponse"),
-      i18next.t("global:invalidResponseFetchingAccount")+err,
+      i18next.t("global:invalidResponseFetchingAccount") + err,
       9000
     )
   );
