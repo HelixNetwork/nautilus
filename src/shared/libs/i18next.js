@@ -12,7 +12,8 @@ i18n.use(reactI18nextModule).init(
       ar: require("../locales/en_translation.json"),
       ml: require("../locales/ml_translation.json"),
       da: require("../locales/en_translation.json"),
-      de: require("../locales/en_translation.json")
+      de: require("../locales/en_translation.json"),
+      gr:require("../locales/gr_translation.json"),
     },
     interpolation: {
       escapeValue: false,

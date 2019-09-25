@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import Top from "../../components/topbar";
 import Sidebar from "../../components/sidebar";
 import SettingsLanguage from "ui/views/settings/language";
-import SettingsNode from "ui/views/settings/node";
+import NodeSettings from "ui/views/settings/node";
 import Currency from "ui/views/settings/currency";
 import SettingsTheme from "ui/views/settings/themesetting";
 import AccountName from "ui/views/settings/editName";
@@ -65,7 +65,7 @@ class Settings extends React.PureComponent {
                         path="/settings/language"
                         component={SettingsLanguage}
                       />
-                      <Route path="/settings/node" component={SettingsNode} />
+                      <Route path="/settings/node" component={NodeSettings} />
                       <Route path="/settings/currency" component={Currency} />
                       <Route path="/settings/theme" component={SettingsTheme} />
                       <Route path="/settings/viewseed" component={Viewseed} />

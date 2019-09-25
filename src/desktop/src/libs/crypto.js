@@ -1,5 +1,6 @@
 /* global Electron */
 import { ALIAS_REALM } from "libs/realm";
+import { MAX_SEED_LENGTH } from "libs/hlx/utils";
 
 export const ACC_MAIN = "Helix";
 // Maximum allowed account title
@@ -26,6 +27,14 @@ export const randomTxBytes = (size, max = 256) => {
   }
 
   return Array.from(txBytes);
+};
+/**
+ * Create random seed
+ * @param {number} length - Random seed length
+ * @returns {array} Random txByte array seed
+ */
+export const createRandomSeed = (length = MAX_SEED_LENGTH) => {
+  return randomTxBytes(length, 27);
 };
 
 /**

@@ -8,7 +8,7 @@ import { getCurrencySymbol, formatMonetaryValue } from "libs/currency";
 import Icon from "ui/components/icon";
 import css from "./input.scss";
 
-const units = ["i", "Ki", "Mi", "Gi", "Ti", "$"];
+const units = ["HLX", "kHLX", "mHLX", "gHLX", "tHLX", "$"];
 const decimals = [0, 3, 6, 9, 12, 2];
 
 /**
@@ -43,7 +43,7 @@ export default class AmountInput extends React.PureComponent {
   };
 
   state = {
-    unit: "Mi",
+    unit: "mHLX",
     value: 0,
     helix: 0
   };
@@ -95,18 +95,18 @@ export default class AmountInput extends React.PureComponent {
     let multiplier = 1;
     const target = unit || this.state.unit;
     switch (target) {
-      case "i":
+      case "HLX":
         break;
-      case "Ki":
+      case "kHLX":
         multiplier = 1000;
         break;
-      case "Mi":
+      case "mHLX":
         multiplier = 1000000;
         break;
-      case "Gi":
+      case "gHLX":
         multiplier = 1000000000;
         break;
-      case "Ti":
+      case "tHLX":
         multiplier = 1000000000000;
         break;
       case "$":

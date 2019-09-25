@@ -14,6 +14,7 @@ import { indexToChar, charToIndex } from "libs/hlx/converter";
 import { MAX_SEED_LENGTH } from "libs/hlx/utils";
 import Modal from "ui/components/modal/Modal";
 import SeedStore from "libs/seed";
+import {Row} from 'react-bootstrap'
 
 class SeedImport extends React.PureComponent {
   static propTypes = {
@@ -68,14 +69,6 @@ class SeedImport extends React.PureComponent {
     // To do
     e.preventDefault();
     const ch = e.target.value;
-    if (!/([a-f0-9])$/.test(ch)) {
-      return this.props.generateAlert(
-        "error",
-        "Invalid seed",
-        "You have a entered an invalid character in seed.",
-        1000
-      );
-    }
     this.setState({
       seedPhrase: e.target.value
     });
@@ -88,6 +81,7 @@ class SeedImport extends React.PureComponent {
       );
       this.setState({
         importBuffer: null
+        
       });
 
       if (!seed || !seed.length) {
@@ -105,7 +99,8 @@ class SeedImport extends React.PureComponent {
         seed: seed[0].seed,
         seedPhrase: seedSequence,
         hidePass: "none",
-        importVisible: false
+        importVisible: false,
+        password:""
       });
     } catch (err) {
       Electron.setOnboardingSeed(null);
@@ -124,7 +119,8 @@ class SeedImport extends React.PureComponent {
     this.setState({
       importBuffer: null,
       hidePass: "none",
-      seedPhrase: ""
+      seedPhrase: "",
+      password:""
     });
   }
 
@@ -142,6 +138,14 @@ class SeedImport extends React.PureComponent {
       generateAlert
     } = this.props;
     const { seed, isGenerated, seedPhrase } = this.state;
+    if (!/([a-f0-9])$/.test(seedPhrase)) {
+      return this.props.generateAlert(
+        "error",
+        "Invalid seed",
+        "You have a entered an invalid character in seed.",
+        1000
+      );
+    }
     if (Electron.getOnboardingSeed() == null && seedPhrase != "") {
       for (let i = 0; i < 64; i++) {
         seed.push(charToIndex(seedPhrase[i]));
@@ -224,87 +228,79 @@ class SeedImport extends React.PureComponent {
     } = this.state;
     return (
       <div>
-        <Logos history={history}/>
-        <section className="spage_1">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <h1>
-                  {t("seedReentry:enterYourSeed")}
-                  <span className={classNames(css.text_color)}>.</span>
-                </h1>
-              </div>
-              <div
-                className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}
-              >
-                <label>Seed</label>
+        <Row style={{marginTop:'5vw'}}>
+          <h1>{t("seedReentry:enterYourSeed")}
+            <span className={classNames(css.text_color)}>.</span>
+          </h1>
+        </Row>
+
+        <Row className={css.centerBox1}>
                 <input
-                  type="text"
-                  className={classNames(css.sseed_textline)}
-                  value={seedPhrase}
-                  onChange={this.onSeedChange.bind(this)}
-                ></input>
-                <br />
-                <br />
-                <Dropzone style={{ marginTop: "2vw" }} onDrop={this.onDrop} />
-                {importBuffer && (
-                  <Modal
-                    variant="confirm"
-                    isOpen={importVisible}
-                    onClose={() => this.setState({ importVisible: false })}
-                  >
-                    <form style={{ top: "-30px", left: "350px" }}>
-                      <PasswordInput
-                        focus
-                        value={this.state.password}
-                        label="Password"
-                        showValid
-                        onChange={value => {
-                          this.setState({ password: value });
-                        }}
-                      />
-                      <Button
-                        onClick={this.goBack.bind(this)}
-                        variant="backgroundNone"
-                        className="modal_navleft"
-                      >
-                        Cancel <span>></span>
-                      </Button>
-                      <Button
-                        onClick={this.onSubmit.bind(this)}
-                        variant="backgroundNone"
-                        className="modal_navright"
-                      >
-                        Import Seed <span>></span>
-                      </Button>
-                    </form>
-                  </Modal>
-                )}
-                <br />
-                <p style={{ marginTop: "13vw", marginLeft: "2vw" }}>
-                  <strong>{t("enterSeed:neverShare")}</strong>
-                </p>
-              </div>
-              <div className={css.onboard_btn}>
+            type="text"
+            value={seedPhrase}
+            onChange={this.onSeedChange.bind(this)}
+            placeholder="Seed"
+            className={css.seedInput}
+          ></input>
+          <br />
+          <br />
+          <Dropzone onDrop={this.onDrop} />
+          {importBuffer && (
+            <Modal
+              variant="confirm"
+              isOpen={importVisible}
+              onClose={() => this.setState({ importVisible: false })}
+            >
+              <form style={{ top: "-30px", left: "350px" }}>
+                <PasswordInput
+                  focus
+                  value={this.state.password}
+                  label="Keystore Password"
+                  showValid
+                  onChange={value => {
+                    this.setState({ password: value });
+                  }}
+                />
                 <Button
-                  className="navleft"
+                  onClick={this.goBack.bind(this)}
                   variant="backgroundNone"
-                  to={`/onboarding/seed-${isGenerated ? "backup" : "intro"}`}
+                  className="modal_navleft"
                 >
-                  {t("global:goBack")} <span>></span>
+               <span>&lt;</span>   Cancel 
                 </Button>
                 <Button
-                  className="navright"
+                  onClick={this.onSubmit.bind(this)}
                   variant="backgroundNone"
-                  disabled={seedPhrase == ""}
-                  onClick={this.setSeed}
+                  className="modal_navright"
                 >
-                  {t("global:confirm")} <span>></span>
+                  Import Seed <span>></span>
                 </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+              </form>
+            </Modal>
+          )}
+          <br />
+          <h3>
+            <strong>{t("enterSeed:neverShare")}</strong>
+          </h3>
+        </Row>
+        <Row>
+          <Button
+            className="navleft"
+            variant="backgroundNone"
+            to={`/onboarding/seed-${isGenerated ? "backup" : "intro"}`}
+          >
+          <span>&lt;</span>  {t("global:goBack")} 
+          </Button>
+          <Button
+            className="navright"
+            variant="backgroundNone"
+            disabled={seedPhrase == ""}
+            onClick={this.setSeed}
+          >
+            {t("global:confirm")} <span>></span>
+          </Button>
+        </Row>
+
       </div>
     );
   }

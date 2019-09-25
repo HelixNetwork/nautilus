@@ -40,6 +40,7 @@ import {
 import { syncAccount } from "../libs/hlx/accounts";
 import { forceTransactionPromotion } from "./transfers";
 import {
+  DEFAULT_NODES,
   DEFAULT_NODE as defaultNodes,
   NODES_WITH_POW_DISABLED as defaultNodesWithPowEnabled,
   NODES_WITH_POW_ENABLED as defaultNodesWithPowDisabled,
@@ -342,63 +343,39 @@ export const fetchPrice = () => {
  *
  * @method fetchNodeList
  *
- * @param {boolean} chooseRandomNode
  * @returns {function}
  */
-export const fetchNodeList = (chooseRandomNode = false) => {
+export const fetchNodeList = () => {
   return (dispatch, getState) => {
-    dispatch(fetchNodeListRequest());
+      dispatch(fetchNodeListRequest());
 
-    const setRandomNode = nodesList => {
-      if (chooseRandomNode) {
-        const node = getRandomNodes(nodesList);
-        dispatch(setRandomlySelectedNode(node));
-        changeHelixNode(node);
-      }
-    };
+      let nodes = DEFAULT_NODES;
+      fetchRemoteNodes()
+          .then((remoteNodes) => {
+              // If there is a successful response, keep a union of (new nodes returned from the endpoint, default hardcoded nodes)
+              if (isArray(remoteNodes) && remoteNodes.length) {
+                  nodes = unionBy(nodes, remoteNodes, 'url');
+              } else {
+                  // Otherwise, fallback to existing nodes
+                  nodes = getNodesFromState(getState());
+              }
 
-    fetchRemoteNodes()
-      .then(remoteNodes => {
-        if (remoteNodes.length) {
-          const remoteNodesWithPowEnabled = remoteNodes
-            .filter(node => node.pow)
-            .map(nodeWithPoWEnabled => nodeWithPoWEnabled.node);
+              // Update nodes on global quorum instance
+              quorum.setNodes(
+                  unionBy(getCustomNodesFromState(getState()), getState().settings.autoNodeList && nodes, 'url'),
+              );
 
-          // A temporary addition
-          // Only choose a random node with PoW enabled.
-          setRandomNode(remoteNodesWithPowEnabled);
-
-          const nodes = [
-            ...map(defaultNodesWithPowEnabled, url => ({ url, pow: true })),
-            ...map(defaultNodesWithPowDisabled, url => ({ url, pow: false }))
-          ];
-
-          const unionNodes = unionBy(
-            nodes,
-            map(remoteNodes, node => ({ url: node.node, pow: node.pow })),
-            "url"
-          );
-
-          // Set quorum nodes
-          quorum.setNodes(
-            union(
-              map(unionNodes, node => node.url),
-              getCustomNodesFromState(getState())
-            )
-          );
-
-          dispatch(setNodeList(unionNodes));
-        }
-
-        dispatch(fetchNodeListSuccess());
-      })
-      .catch(() => {
-        setRandomNode(defaultNodes);
-        dispatch(fetchNodeListError());
-      });
+              dispatch(setNodeList(nodes));
+              dispatch(fetchNodeListSuccess());
+          })
+          .catch(() => {
+            // TODO(mahi):remove this after updating NODE_REMOTE_LIST 
+              nodes = unionBy(nodes, getState().settings.nodes, 'url');
+              dispatch(setNodeList(nodes));
+              dispatch(fetchNodeListError());
+          });
   };
 };
-
 /**
  * Fetch data points for time series price information
  *

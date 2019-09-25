@@ -28,6 +28,7 @@ import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 import ProgressBar from 'ui/components/progress';
 import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
+import {MAX_NOTE_LENGTH} from '../../../constants';
 class Send extends React.PureComponent {
   static propTypes = {
     /** @ignore */
@@ -50,17 +51,17 @@ class Send extends React.PureComponent {
     message: "Test",
     openModal: false,
     selectedCurrency:'EUR',
-    selectedHlx:'h',
+    selectedHlx:'mHLX',
     conversionRate:1,
     progress:''
   };
 
   validateInputs = e => {
     e.preventDefault();
-
     this.setState({
       openModal: validateInputs()
     });
+    
   };
 
   confirmTransfer = async () => {
@@ -207,21 +208,21 @@ class Send extends React.PureComponent {
     let {txamount,selectedHlx} = this.state;
     let hlxamount = e.target.value;
     let base = 0;
-    if(selectedHlx=="h"){
+    if(selectedHlx=="HLX"){
       base=1;
       
     }
-    else if(selectedHlx=="Kh"){
+    else if(selectedHlx=="kHLX"){
       base=1000;
     }
-    else if(selectedHlx=="Mh"){
+    else if(selectedHlx=="mHLX"){
       base=1000000;
     }
-    else if(selectedHlx=="Gh")
+    else if(selectedHlx=="gHLX")
     {
       base=1000000000;
     }
-    else if(e.target.value=="Th")
+    else if(e.target.value=="tHLX")
     {
       base=1000000000000;
     }
@@ -265,20 +266,20 @@ class Send extends React.PureComponent {
   hlxChange(e){
     let {txamount,hlxamount} = this.state
     let base = 0;
-    if(e.target.value=="h"){
+    if(e.target.value=="HLX"){
       base=1;
     }
-    else if(e.target.value=="Kh"){
+    else if(e.target.value=="kHLX"){
       base=1000;
     }
-    else if(e.target.value=="Mh"){
+    else if(e.target.value=="mHLX"){
       base=1000000;
     }
-    else if(e.target.value=="Gh")
+    else if(e.target.value=="gHLX")
     {
       base=1000000000;
     }
-    else if(e.target.value=="Th")
+    else if(e.target.value=="tHLX")
     {
       base=1000000000000;
     }
@@ -310,6 +311,8 @@ class Send extends React.PureComponent {
       });
     })
   }
+
+  
 
   render() {
     const { accountMeta, balance, loop, currencies, isSending, progress, t } = this.props;
@@ -394,13 +397,14 @@ class Send extends React.PureComponent {
                                         </div> */}
                       <div>
                       <select
+                      defaultValue={"mHLX"}
                       className={css.currencyBox}
                       onChange={this.hlxChange.bind(this)}
                       >
-                        <option value="h">h</option>
-                        <option value="Kh">Kh</option>
-                        <option value="Mh">Mh</option>
-                        <option value="Gh">Gh</option>
+                        <option value="HLX">HLX</option>
+                        <option value="kHLX">kHLX</option>
+                        <option value="mHLX">mHLX</option>
+                        <option value="gHLX">gHLX</option>
                       </select>
                       <input
                         value={hlxamount}
@@ -427,12 +431,13 @@ class Send extends React.PureComponent {
                         NOTE
                       </span>
                       <input className={css.msgBox}
-                      style={{
-                        marginLeft: "50px",
-                        color: "white"
-                      }}
-                      placeholder="Enter note" 
-                      onChange={this.msgChange.bind(this)}/>
+                        style={{
+                          marginLeft: "50px",
+                          color: "white"
+                        }}
+                        placeholder="Enter note"
+                        maxLength={MAX_NOTE_LENGTH}
+                        onChange={this.msgChange.bind(this)}/>
                       </div>
                       <input
                         id="recipient-address"
@@ -502,7 +507,7 @@ class Send extends React.PureComponent {
                     )}
                   </div>
                   {isSending && (
-                    <Modal isOpen={isSending} onClose={isSending}>
+                    <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
                       <ProgressBar progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}

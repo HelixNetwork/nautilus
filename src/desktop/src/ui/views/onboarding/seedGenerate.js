@@ -10,10 +10,10 @@ import Lottie from "react-lottie";
 import Icon from "ui/components/icon";
 import * as animationData from "animations/done.json";
 
-import { createRandomSeed, randomTxBytes } from "../../../utils/crypto";
+import { createRandomSeed, randomTxBytes } from "libs/crypto";
 import { indexToChar } from "libs/hlx/converter";
 import { MAX_SEED_LENGTH } from "libs/hlx/utils";
-
+import { Row, Col, Form } from "react-bootstrap";
 class SeedGenerate extends React.PureComponent {
   static propTypes = {
     history: PropTypes.shape({
@@ -50,11 +50,13 @@ class SeedGenerate extends React.PureComponent {
     disableOne: false,
     disableTwo: false,
     disableThree: false,
-    disableFour: false
+    disableFour: false,
+    progressStrength: 0
   };
   componentDidMount() {
     this.frame = 0;
     this.unscramble();
+    this.generateNewSeed();
   }
 
   componentWillUnmount() {
@@ -90,10 +92,13 @@ class SeedGenerate extends React.PureComponent {
       disableOne,
       disableTwo,
       disableThree,
-      disableFour
+      disableFour,
+      progressStrength
     } = this.state;
 
+    if(!clicks.includes(e.target.value)){
     const position = e.target.value;
+  
     const newClicks =
       clicks.indexOf(position) < 0 ? clicks.concat([position]) : clicks;
     const newSeed = seed.slice(0);
@@ -169,9 +174,12 @@ class SeedGenerate extends React.PureComponent {
       disableOne: boxOneDisable,
       disableTwo: boxTwoDisable,
       disableThree: boxThreeDisable,
-      disableFour: boxFourDisable
+      disableFour: boxFourDisable,
+      progressStrength: progressStrength + 6.25
     }));
     this.unscramble();
+  }
+  
   };
 
   /**
@@ -245,7 +253,7 @@ class SeedGenerate extends React.PureComponent {
   //     this.props.history.goBack();
   // }
 
-  viewseed(index) {}
+  viewseed(index) { }
   saveAccountName = () => {
     const { history } = this.props;
     const { seed } = this.state;
@@ -263,7 +271,7 @@ class SeedGenerate extends React.PureComponent {
 
   render() {
     const { history, t } = this.props;
-    const { ledger } = this.state;
+    const { progressStrength, ledger } = this.state;
     const {
       seed1,
       seed2,
@@ -279,7 +287,6 @@ class SeedGenerate extends React.PureComponent {
     } = this.state;
 
     const clicksLeft = 16 - clicks.length;
-
     const { loop, animate, onEnd } = this.props;
 
     const defaultOptions = {
@@ -293,256 +300,241 @@ class SeedGenerate extends React.PureComponent {
 
     return (
       <div>
-        <Logos history={history}/>
+        <Row style={{ marginTop: '2vw' }}>
+          <h1>
+            {t("newSeedSetup:generateSeed")}
+            <span className={classNames(css.text_color)}>.</span>
+          </h1>
+            <h3>
+            Generate randomness by <b>clicking</b> on the characters.
+            </h3>
+            <Row className={css.strength}>
+            
+             Strength
+              
+              <div className={classNames(css.progressOuter,progressStrength===100?css.progressSuccess:'')}>
+                  <div className={classNames(css.progressInner,progressStrength===100?css.progressSuccess:'')} style={{width:`${progressStrength}%`}}>
 
-        <section className="spage_1">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <h1>
-                  {t("newSeedSetup:generateSeed")}
-                  <span className={classNames(css.text_color)}>.</span>
-                </h1>
-                <h3>
-                  {!existingSeed && clicksLeft > 0 ? (
-                    <Trans
-                      i18nKey="newSeedSetup:individualLetterCount"
-                      count={clicksLeft}
-                    >
-                      Press{" "}
-                      <strong className={css.highlight}>
-                        {{ count: clicksLeft }}
-                      </strong>{" "}
-                      more letter to randomise it.
-                    </Trans>
-                  ) : (
-                    <span>&nbsp;</span>
-                  )}
-                </h3>
-              </div>
-
-              <div
-                className={classNames(
-                  css.sseed_box_wrap,
-                  css.cre_pgs,
-                  css.hlx_box
-                )}
-              >
-                <div className={css.seed_wrapper}>
-                  <div className={css.seed_wrapbox}>
-                    <div
-                      className={css.seed_lotbox}
-                      style={{ width: "100%", height: "100%" }}
-                      onClick={this.generateNewSeed}
-                      style={{ display: this.state.viewReload }}
-                    >
-                      <Lottie
-                        className={classNames(css.seed_lottie)}
-                        options={defaultOptions}
-                        eventListeners={[
-                          {
-                            eventName: "complete",
-                            callback: () => {
-                              if (typeof onEnd === "function") {
-                                onEnd();
-                              }
-                            }
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div
-                      className={css.seed}
-                      style={{ display: this.state.viewSeed }}
-                    >
-                      {seed1.map((txByte, index) => {
-                        const offset = scramble[index];
-
-                        const letter =
-                          offset > 0
-                            ? indexToChar(offset)
-                            : indexToChar(txByte);
-                        return (
-                          <button
-                            onClick={this.updateLetter}
-                            key={`${index}${letter}`}
-                            value={index}
-                            disabled={disableOne}
-                            style={{ opacity: 1 - offset / 255 }}
-                          >
-                            {letter}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div
-                    className={css.seed_wrapbox}
-                    style={{ display: this.state.displaySeedTwo }}
-                  >
-                    <div
-                      className={css.seed_lotbox}
-                      style={{ width: "100%", height: "100%" }}
-                      style={{ display: this.state.viewReloadBlockTwo }}
-                    >
-                      <Lottie
-                        className={classNames(css.seed_lottie)}
-                        options={defaultOptions}
-                        eventListeners={[
-                          {
-                            eventName: "complete",
-                            callback: () => {
-                              if (typeof onEnd === "function") {
-                                onEnd();
-                              }
-                            }
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div
-                      className={css.seed}
-                      style={{ display: this.state.viewSeedTwo }}
-                    >
-                      {seed2.map((txByte, index) => {
-                        const offset = scramble[index + 16];
-                        const letter =
-                          offset > 0
-                            ? indexToChar(offset)
-                            : indexToChar(txByte);
-                        return (
-                          <button
-                            onClick={this.updateLetter}
-                            key={`${16 + index}${letter}`}
-                            value={16 + index}
-                            disabled={disableTwo}
-                            style={{ opacity: 1 - offset / 255 }}
-                          >
-                            {letter}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div
-                    className={css.seed_wrapbox}
-                    style={{ display: this.state.displaySeedThree }}
-                  >
-                    <div
-                      className={css.seed_lotbox}
-                      style={{ width: "100%", height: "100%" }}
-                      style={{ display: this.state.viewReloadBlockThree }}
-                    >
-                      <Lottie
-                        className={classNames(css.seed_lottie)}
-                        options={defaultOptions}
-                        eventListeners={[
-                          {
-                            eventName: "complete",
-                            callback: () => {
-                              if (typeof onEnd === "function") {
-                                onEnd();
-                              }
-                            }
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div
-                      className={css.seed}
-                      style={{ display: this.state.viewSeedThree }}
-                    >
-                      {seed3.map((txByte, index) => {
-                        const offset = scramble[index + 32];
-                        const letter =
-                          offset > 0
-                            ? indexToChar(offset)
-                            : indexToChar(txByte);
-                        return (
-                          <button
-                            onClick={this.updateLetter}
-                            key={`${32 + index}${letter}`}
-                            value={32 + index}
-                            disabled={disableThree}
-                            style={{ opacity: 1 - offset / 255 }}
-                          >
-                            {letter}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div
-                    className={css.seed_wrapbox}
-                    style={{ display: this.state.displaySeedFour }}
-                  >
-                    <div
-                      className={css.seed_lotbox}
-                      style={{ width: "100%", height: "100%" }}
-                      style={{ display: this.state.viewReloadBlockFour }}
-                    >
-                      <Lottie
-                        className={classNames(css.seed_lottie)}
-                        options={defaultOptions}
-                        eventListeners={[
-                          {
-                            eventName: "complete",
-                            callback: () => {
-                              if (typeof onEnd === "function") {
-                                onEnd();
-                              }
-                            }
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div
-                      className={css.seed}
-                      style={{ display: this.state.viewSeedFour }}
-                    >
-                      {seed4.map((txByte, index) => {
-                        const offset = scramble[index + 48];
-                        const letter =
-                          offset > 0
-                            ? indexToChar(offset)
-                            : indexToChar(txByte);
-                        return (
-                          <button
-                            onClick={this.updateLetter}
-                            key={`${48 + index}${letter}`}
-                            value={48 + index}
-                            disabled={disableFour}
-                            style={{ opacity: 1 - offset / 255 }}
-                          >
-                            {letter}
-                          </button>
-                        );
-                      })}
-                    </div>
                   </div>
                 </div>
+              
+            </Row>
+            
+        </Row>
+
+        <Row className={css.centerBox}>
+          <div className={css.seed_wrapper}>
+            <div className={css.seed_wrapbox}>
+              <div
+                className={css.seed_lotbox}
+                style={{ width: "100%", height: "100%" }}
+                style={{ display: this.state.viewReload }}
+              >
+                <Lottie
+                  className={classNames(css.seed_lottie)}
+                  options={defaultOptions}
+                  eventListeners={[
+                    {
+                      eventName: "complete",
+                      callback: () => {
+                        if (typeof onEnd === "function") {
+                          onEnd();
+                        }
+                      }
+                    }
+                  ]}
+                />
               </div>
-              <div className={css.onboard_btn}>
-                <Button
-                  className="navleft"
-                  variant="backgroundNone"
-                  onClick={this.onRequestPrevious}
-                >
-                  {t("global:goBack")} <span>></span>
-                </Button>
-                <Button
-                  disabled={clicksLeft > 0}
-                  className="navright"
-                  variant="backgroundNone"
-                  onClick={this.saveAccountName}
-                >
-                  {t("global:continue")} <span>></span>{" "}
-                </Button>
+              <div
+                className={css.seed}
+                style={{ display: this.state.viewSeed }}
+              >
+                {seed1.map((txByte, index) => {
+                  const offset = scramble[index];
+
+                  const letter =
+                    offset > 0
+                      ? indexToChar(offset)
+                      : indexToChar(txByte);
+                  return (
+                    <button
+                      onClick={this.updateLetter}
+                      key={`${index}${letter}`}
+                      value={index}
+                      disabled={disableOne}
+                      style={{ opacity: 1 - offset / 255 }}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div
+              className={css.seed_wrapbox}
+              style={{ display: this.state.displaySeedTwo }}
+            >
+              <div
+                className={css.seed_lotbox}
+                style={{ width: "100%", height: "100%" }}
+                style={{ display: this.state.viewReloadBlockTwo }}
+              >
+                <Lottie
+                  className={classNames(css.seed_lottie)}
+                  options={defaultOptions}
+                  eventListeners={[
+                    {
+                      eventName: "complete",
+                      callback: () => {
+                        if (typeof onEnd === "function") {
+                          onEnd();
+                        }
+                      }
+                    }
+                  ]}
+                />
+              </div>
+              <div
+                className={css.seed}
+                style={{ display: this.state.viewSeedTwo }}
+              >
+                {seed2.map((txByte, index) => {
+                  const offset = scramble[index + 16];
+                  const letter =
+                    offset > 0
+                      ? indexToChar(offset)
+                      : indexToChar(txByte);
+                  return (
+                    <button
+                      onClick={this.updateLetter}
+                      key={`${16 + index}${letter}`}
+                      value={16 + index}
+                      disabled={disableTwo}
+                      style={{ opacity: 1 - offset / 255 }}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div
+              className={css.seed_wrapbox}
+              style={{ display: this.state.displaySeedThree }}
+            >
+              <div
+                className={css.seed_lotbox}
+                style={{ width: "100%", height: "100%" }}
+                style={{ display: this.state.viewReloadBlockThree }}
+              >
+                <Lottie
+                  className={classNames(css.seed_lottie)}
+                  options={defaultOptions}
+                  eventListeners={[
+                    {
+                      eventName: "complete",
+                      callback: () => {
+                        if (typeof onEnd === "function") {
+                          onEnd();
+                        }
+                      }
+                    }
+                  ]}
+                />
+              </div>
+              <div
+                className={css.seed}
+                style={{ display: this.state.viewSeedThree }}
+              >
+                {seed3.map((txByte, index) => {
+                  const offset = scramble[index + 32];
+                  const letter =
+                    offset > 0
+                      ? indexToChar(offset)
+                      : indexToChar(txByte);
+                  return (
+                    <button
+                      onClick={this.updateLetter}
+                      key={`${32 + index}${letter}`}
+                      value={32 + index}
+                      disabled={disableThree}
+                      style={{ opacity: 1 - offset / 255 }}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div
+              className={css.seed_wrapbox}
+              style={{ display: this.state.displaySeedFour }}
+            >
+              <div
+                className={css.seed_lotbox}
+                style={{ width: "100%", height: "100%" }}
+                style={{ display: this.state.viewReloadBlockFour }}
+              >
+                <Lottie
+                  className={classNames(css.seed_lottie)}
+                  options={defaultOptions}
+                  eventListeners={[
+                    {
+                      eventName: "complete",
+                      callback: () => {
+                        if (typeof onEnd === "function") {
+                          onEnd();
+                        }
+                      }
+                    }
+                  ]}
+                />
+              </div>
+              <div
+                className={css.seed}
+                style={{ display: this.state.viewSeedFour }}
+              >
+                {seed4.map((txByte, index) => {
+                  const offset = scramble[index + 48];
+                  const letter =
+                    offset > 0
+                      ? indexToChar(offset)
+                      : indexToChar(txByte);
+                  return (
+                    <button
+                      onClick={this.updateLetter}
+                      key={`${48 + index}${letter}`}
+                      value={48 + index}
+                      disabled={disableFour}
+                      style={{ opacity: 1 - offset / 255 }}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
-        </section>
-      </div>
+        </Row>
+        <Row>
+          <Button
+            className="navleft"
+            variant="backgroundNone"
+            onClick={this.onRequestPrevious}
+          >
+          <span>&lt;</span>  {t("global:goBack")}
+          </Button>
+          <Button
+            disabled={clicksLeft > 0}
+            className="navright"
+            variant="backgroundNone"
+            onClick={this.saveAccountName}
+          >
+            {t("global:continue")} <span>></span>{" "}
+          </Button>
+        </Row>
+      </div >
+
     );
   }
 }

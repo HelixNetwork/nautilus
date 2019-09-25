@@ -32,28 +32,30 @@
             cursor: pointer;
             color: var(--body);
             &:first-child {
-                padding-right: 70px;
+                padding-right: 148px;
                 position: relative;
-                color: var(--primary);
+                color: white;
                 &:after {
                     content: '';
-                    width: 50px;
-                    height: 20px;
+                    width: 124px;
+                    height: 25px;
                     position: absolute;
-                    top: 0px;
+                    background-color:  #182051;
+                    top: -3px;
                     right: 10px;
                     border-radius: 15px;
-                    border: 1px solid var(--body);
+                    border: 0px solid var(--body);
                 }
                 &:before {
-                    content: '';
-                    width: 16px;
-                    height: 16px;
+                    content: "";
+                    width: 40px;
+                    height: 18px;
                     position: absolute;
-                    top: 2px;
-                    right: 42px;
+                    top: 1px;
+                    right: 91px;
+                   background-color:  #182051;
                     border-radius: 9px;
-                    border: 1px solid var(--body);
+                    border: 0px solid var(--body);
                     background: none;
                     transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
                 }
@@ -61,15 +63,22 @@
         }
         &.active {
             span:first-child:before {
-                background: var(--primary);
-                border: 1px solid var(--primary);
+                // background: var(--primary);
+                background:  #3b3ca8;
+                border: 0px solid var(--primary);
+                z-index: 1;
+
+               
             }
         }
         &.on {
             span {
                 color: var(--primary);
                 &:first-child {
-                    color: var(--body);
+                   opacity:'1';
+                   border-bottom:'1px solid rgba(250, 192, 0, 0.75)';
+                   opacity:'0.3';
+                    // color: var(--body);
                     &:before {
                         right: 12px;
                     }

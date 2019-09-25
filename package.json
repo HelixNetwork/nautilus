@@ -1,13 +1,13 @@
 {
-  "name": "helix-wallet",
-  "version": "0.2.0-alpha.0",
+  "name": "nautilus-wallet",
+  "version": "0.2.0-alpha.2",
   "private": true,
   "description": "Desktop wallet for Helix",
   "license": "Apache-2.0 OR EPL-2.0",
   "author": "Helix Foundation",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/netobjex/wallet.git"
+    "url": "git+https://github.com/HelixNetwork/nautilus.git"
   },
   "main": "index.js",
   "scripts": {
@@ -46,6 +46,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@helixnetwork/core": "^1.0.0-alpha.2",
     "@ljharb/eslint-config": "^13.1.1",
+    "electron-log": "^3.0.8",
     "electron-packager": "^13.1.1",
     "eslint-config-react-app": "^4.0.1",
     "express": "^4.17.1",

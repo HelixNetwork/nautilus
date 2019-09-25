@@ -10,7 +10,7 @@ import { setPassword } from "actions/wallet";
 import { generateAlert } from "actions/alerts";
 
 import SeedStore from "libs/seed";
-import { hash, initKeychain, initVault } from "../../../libs/crypto";
+import { hash, initKeychain, initVault } from "libs/crypto";
 import { passwordReasons } from "libs/password";
 
 import Logos from "ui/components/logos";
@@ -18,6 +18,7 @@ import PasswordInput from "ui/components/input/password";
 import css from "./index.scss";
 import classNames from "classnames";
 import Button from "ui/components/button";
+import { Row } from 'react-bootstrap'
 
 class AccountPassword extends React.PureComponent {
   static propTypes = {
@@ -136,51 +137,53 @@ class AccountPassword extends React.PureComponent {
 
     return (
       <section>
-        <Logos size={20} history={history}/>
+        <Logos size={20} history={history} />
         <form onSubmit={e => this.createAccount(e)}>
-          <section>
+
+          <Row>
             <h1>{t("setPassword:choosePassword")}</h1>
             <span>{t("setPassword:anEncryptedCopy")}</span>
-            <div
-              className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}
-            >
-              <PasswordInput
-                style={{ marginTop: "3vw" }}
-                focus
-                value={this.state.password}
-                label={t("password")}
-                showScore
-                showValid
-                onChange={value => this.setState({ password: value })}
-              />
-              <PasswordInput
-                value={this.state.passwordConfirm}
-                label={t("setPassword:retypePassword")}
-                showValid
-                disabled={score.score < 4}
-                match={this.state.password}
-                onChange={value => this.setState({ passwordConfirm: value })}
-              />
-            </div>
-            <div className={css.onboard_btn}>
-              <Button
-                className="navleft"
-                variant="backgroundNone"
-                to={`/onboarding/${
-                  isGenerated ? "seed-import" : "account-name"
+          </Row>
+          <Row className={css.centerBox1}>
+            <PasswordInput
+              style={{ marginTop: "3vw" }}
+              focus
+              value={this.state.password}
+              label={t("password")}
+              showScore
+              showValid
+              onChange={value => this.setState({ password: value })}
+            />
+            <PasswordInput
+              value={this.state.passwordConfirm}
+              label={t("setPassword:retypePassword")}
+              showValid
+              disabled={score.score < 4}
+              match={this.state.password}
+              onChange={value => this.setState({ passwordConfirm: value })}
+            />
+          </Row>
+
+          <Row>
+            <Button
+              className="navleft"
+              variant="backgroundNone"
+              to={`/onboarding/${
+                isGenerated ? "seed-import" : "account-name"
                 }`}
-              >
-                {t("global:goBack")} <span>></span>
-              </Button>
-              <Button
-                type="submit"
-                className="navright"
-                variant="backgroundNone"
-              >
-                {t("global:confirm")} <span>></span>
-              </Button>
-            </div>
-          </section>
+            >
+            <span>&lt;</span>  {t("global:goBack")} 
+            </Button>
+            <Button
+              type="submit"
+              className="navright"
+              variant="backgroundNone"
+            >
+              {t("global:confirm")} <span>></span>
+            </Button>
+          </Row>
+
+
         </form>
       </section>
     );

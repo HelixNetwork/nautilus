@@ -1,14 +1,19 @@
 {
-  "name": "wallet",
-  "productName": "Helix Wallet",
-  "version": "0.2.0-alpha.1",
+  "name": "nautilus-wallet",
+  "productName": "Nautilus Wallet",
+  "version": "v0.2.0-alpha.2",
   "private": true,
+  "author": "Helix Foundation",
   "description": "Desktop wallet for Helix",
   "moduleRoots": [
     ".",
     "src",
     "../shared"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelixNetwork/nautilus.git"
+  },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
@@ -20,13 +25,14 @@
     "@helixnetwork/sha3": "^1.0.0-alpha.6",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.6",
     "@helixnetwork/validators": "^1.0.0-alpha.6",
-    "argon2": "^0.24.0",
+    "argon2": "rihardsgravis/node-argon2#prebuild-release",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "dart-sass": "^1.20.1",
+    "electron-log": "^3.0.8",
     "electron-packager": "^13.1.1",
     "electron-settings": "^3.2.0",
     "electron-updater": "^4.0.6",
@@ -44,6 +50,7 @@
     "qr.js": "^0.0.0",
     "rc-progress": "^2.5.2",
     "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.12",
     "react-charts": "^2.0.0-alpha.12",
     "react-dom": "^16.8.6",
     "react-i18next": "^9.0.10",
@@ -60,6 +67,7 @@
     "redux-freeze": "^0.1.7",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "semantic-ui-react": "^0.88.0",
     "typescript": "^3.4.5",
     "url-loader": "^1.1.2",
     "wait-on": "^3.2.0",
@@ -77,6 +85,9 @@
     "compile:linux": "./node_modules/.bin/electron-builder --linux --x64",
     "compile:mac": "./node_modules/.bin/cross-env electron-builder --mac --x64",
     "compile:win": "./node_modules/.bin/electron-builder --win --x64",
+    "publish:linux": "./node_modules/.bin/electron-builder --linux --x64 -p always",
+    "publish:mac": "./node_modules/.bin/cross-env electron-builder --mac --x64 -p always",
+    "publish:win":   "./node_modules/.bin/electron-builder --win --x64 -p always",
     "auditjs": "./../../node_modules/.bin/auditjs -n -l error -w whitelist.json",
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
     "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl"
@@ -98,16 +109,24 @@
   },
   "main": "dist/main.js",
   "build": {
-    "productName": "Helix Wallet",
+    "productName": "Nautilus Wallet",
     "artifactName": "${name}-${version}.${ext}",
-    "appId": "ai.helix.wallet",
+    "appId": "ai.nautilus.wallet",
     "asar": true,
     "directories": {
       "buildResources": "./assets",
       "output": "./out"
     },
+    "publish": {
+      "provider": "s3",
+      "bucket": "nautiluswallet",
+      "region ": "ap-south-1",
+      "endpoint ": "https://nautiluswallet.s3.ap-south-1.amazonaws.com",
+      "channel": "latest"
+    },
     "extends": null,
     "files": [
+      "assets/",
       "./dist/**/*",
       "./build/**/*",
       "./node_modules/**/*",
@@ -137,27 +156,26 @@
         }
       ]
     },
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "win": {
-      "publisherName": "",
+      "publisherName": "Helix Foundation",
       "target": "nsis"
     },
     "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "desktop": {
-        "Name": "Helix",
-        "Comment": "Desktop wallet for Helix",
-        "Categories": "Office;Network;Finance"
-      }
-    },
-    "mac": {
       "category": "public.app-category.finance",
       "target": [
-        "dmg",
-        "zip"
+        "AppImage"
       ]
     }
+  },
+  "mac": {
+    "category": "public.app-category.finance",
+    "target": [
+      "dmg",
+      "zip"
+    ]
   },
   "homepage": "./",
   "devDependencies": {

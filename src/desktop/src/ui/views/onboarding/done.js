@@ -11,6 +11,7 @@ import Logos from "ui/components/logos";
 import Lottie from "react-lottie";
 import { setPassword } from "actions/wallet";
 import * as animationData from "animations/done.json";
+import {Row} from 'react-bootstrap'
 
 class Done extends React.PureComponent {
   static propTypes = {
@@ -40,7 +41,7 @@ class Done extends React.PureComponent {
   // };
 
   render() {
-    const { loop, animate,onEnd } = this.props;
+    const { loop, animate, onEnd } = this.props;
     const size = 190;
     const h_size = 120;
 
@@ -55,67 +56,60 @@ class Done extends React.PureComponent {
     };
     return (
       <div>
-        <Logos history={history}/>
-        <section className="spage_1">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <h1 className={classNames(css.head_h1)}>
-                  {t("onboardingComplete:allDone")}
-                  <span className={classNames(css.text_color)}>!</span>
-                </h1>
-              </div>
-              <div className={classNames(css.sseed_box, css.cre_pgs)}>
-                {/* <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1> */}
-                <Lottie
-                  className={classNames(css.lott)}
-                  width={size}
-                  height={h_size}
-                  options={defaultOptions}
-                  eventListeners={[
-                    {
-                      eventName: "complete",
-                      callback: () => {
-                        if (typeof onEnd === "function") {
-                          onEnd();
-                        }
-                      }
-                    }
-                  ]}
-                />
-                <h6>{t("onboardingComplete:walletReady")}</h6>
-                <div className={classNames(css.icon_secs)}>
-                  <div className={classNames(css.img_sr, css.img_sr_imgss1)}>
-                    <img src="" alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className={css.onboard_nav}>
-                <Button
-                  className="navleft"
-                  variant="backgroundNone"
-                  onClick={() =>
-                    this.props.history.push("/onboarding/seed-import")
+        <Logos history={history} />
+        <Row style={{ marginTop: '5vw' }}>
+          <h1 className={classNames(css.head_h1)}>
+            {t("onboardingComplete:allDone")}
+            <span className={classNames(css.text_color)}>!</span>
+          </h1>
+        </Row>
+
+        <Row className={css.centerBox1}>
+          <Lottie
+            className={classNames(css.lott)}
+            width={size}
+            height={h_size}
+            options={defaultOptions}
+            eventListeners={[
+              {
+                eventName: "complete",
+                callback: () => {
+                  if (typeof onEnd === "function") {
+                    onEnd();
                   }
-                >
-                  {t("global:goBack")} <span>></span>
-                </Button>
-                <Button
-                  className="navright"
-                  variant="backgroundNone"
-                  onClick={() => {
-                    setPassword({});
-                    this.props.history.push("/onboarding/login");
-                  }}
-                >
-                  {t("login:login")} <span>></span>
-                </Button>
-                {/* <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >{t('login:login')} <span>></span></Button> */}
-              </div>
-            </div>
-          </div>
-        </section>
+                }
+              }
+            ]}
+          />
+          <h6>{t("onboardingComplete:walletReady")}</h6>
+        </Row>
+        {/* <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1> */}
+
+        <Row>
+          <Button
+            className="navleft"
+            variant="backgroundNone"
+            onClick={() =>
+              this.props.history.push("/onboarding/seed-import")
+            }
+          >
+          <span>&lt;</span>  {t("global:goBack")} 
+          </Button>
+          <Button
+            className="navright"
+            variant="backgroundNone"
+            onClick={() => {
+              setPassword({});
+              this.props.history.push("/onboarding/login");
+            }}
+          >
+            {t("login:login")} <span>></span>
+          </Button>
+        </Row>
+
+        {/* <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >{t('login:login')} <span>></span></Button> */}
       </div>
+            
     );
   }
 }

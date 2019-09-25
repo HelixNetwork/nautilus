@@ -134,9 +134,9 @@ class Account {
         addressData: isEmpty(data.addressData)
           ? existingData.addressData
           : preserveAddressLocalSpendStatus(
-              map(existingData.addressData, data => assign({}, data)),
-              data.addressData
-            )
+            map(existingData.addressData, data => assign({}, data)),
+            data.addressData
+          )
       });
 
       realm.create("Account", updatedData, true);
@@ -238,7 +238,8 @@ class Node {
    * @method addCustomNode
    * @param {string} url Node URL
    */
-  static addCustomNode(url, pow) {
+  static addCustomNode(payload) {
+    const { url, pow } = payload;
     realm.write(() => {
       realm.create("Node", {
         url,
@@ -401,6 +402,17 @@ class Wallet {
     });
   }
 
+  /**
+ * Clears error log.
+ *
+ * @method clearErrorLog
+ */
+  static clearErrorLog() {
+    realm.write(() => {
+      Wallet.latestData.errorLog = [];
+    });
+  }
+
   static setOnboardingComplete() {
     realm.write(() => {
       Wallet.latestData.onboardingComplete = true;
@@ -448,9 +460,35 @@ class Wallet {
   }
 
   static updateQuorumConfig(payload) {
-    const existingConfig = Wallet.latestData.quorum;
+    const existingConfig = Wallet.latestSettings.quorum;
     realm.write(() => {
-      Wallet.latestData.quorum = assign({}, existingConfig, payload);
+      Wallet.latestSettings.quorum = assign({}, existingConfig, payload);
+    });
+  }
+
+  /**
+     * Updates node auto-switch setting
+     *
+     * @method updateNodeAutoSwitchSetting
+     *
+     * @param {boolean} payload
+     */
+  static updateNodeAutoSwitchSetting(payload) {
+    realm.write(() => {
+      Wallet.latestSettings.nodeAutoSwitch = payload;
+    });
+  }
+
+  /**
+   * Updates autoNodeList setting
+   *
+   * @method updateAutoNodeListSetting
+   *
+   * @param {boolean} payload
+   */
+  static updateAutoNodeListSetting(payload) {
+    realm.write(() => {
+      Wallet.latestSettings.autoNodeList = payload;
     });
   }
 
@@ -462,6 +500,56 @@ class Wallet {
       Wallet.latestSettings.availableCurrencies = availableCurrencies;
     });
   }
+
+  /**
+     * Updates auto-promotion setting.
+     *
+     * @method updateAutoPromotionSetting
+     * @param {boolean} payload
+     */
+    static updateAutoPromotionSetting(payload) {
+      realm.write(() => {
+          Wallet.latestSettings.autoPromotion = payload;
+      });
+  }
+     /* Updates wallet's node.
+     *
+     * @method updateNode
+     *
+     * @param {string} payload
+     */
+  static updateNode(payload) {
+    realm.write(() => {
+      Wallet.latestSettings.node = payload;
+    });
+  }
+
+  /**
+     * Updates notifications configuration.
+     *
+     * @method updateNotificationsSetting
+     * @param {object} payload
+     */
+    static updateNotificationsSetting(payload) {
+      const { type, enabled } = payload;
+
+      realm.write(() => {
+          Wallet.latestSettings.notifications[type] = enabled;
+      });
+  }
+
+  /**
+     * Updates system proxy settings.
+     *
+     * @method updateIgnoreProxySetting
+     * @param {object} payload
+     */
+    static updateIgnoreProxySetting(enabled) {
+      realm.write(() => {
+          Wallet.latestSettings.ignoreProxy = enabled;
+      });
+  }
+
 }
 
 /**
@@ -528,7 +616,7 @@ const initialise = getEncryptionKeyPromise => {
     try {
       hasVersionZeroRealmAtDeprecatedPath =
         Realm.schemaVersion(getDeprecatedStoragePath(0), encryptionKey) !== -1;
-    } catch (error) {}
+    } catch (error) { }
 
     const versionZeroConfig = {
       encryptionKey,
@@ -547,7 +635,7 @@ const initialise = getEncryptionKeyPromise => {
 
     try {
       Realm.deleteFile(versionZeroConfig);
-    } catch (error) {}
+    } catch (error) { }
 
     const schemasSize = size(schemas);
     realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
