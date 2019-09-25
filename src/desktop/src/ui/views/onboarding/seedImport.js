@@ -81,6 +81,7 @@ class SeedImport extends React.PureComponent {
       );
       this.setState({
         importBuffer: null
+        
       });
 
       if (!seed || !seed.length) {
@@ -98,7 +99,8 @@ class SeedImport extends React.PureComponent {
         seed: seed[0].seed,
         seedPhrase: seedSequence,
         hidePass: "none",
-        importVisible: false
+        importVisible: false,
+        password:""
       });
     } catch (err) {
       Electron.setOnboardingSeed(null);
@@ -117,7 +119,8 @@ class SeedImport extends React.PureComponent {
     this.setState({
       importBuffer: null,
       hidePass: "none",
-      seedPhrase: ""
+      seedPhrase: "",
+      password:""
     });
   }
 
@@ -252,7 +255,7 @@ class SeedImport extends React.PureComponent {
                 <PasswordInput
                   focus
                   value={this.state.password}
-                  label="Password"
+                  label="Keystore Password"
                   showValid
                   onChange={value => {
                     this.setState({ password: value });
@@ -263,7 +266,7 @@ class SeedImport extends React.PureComponent {
                   variant="backgroundNone"
                   className="modal_navleft"
                 >
-                  Cancel <span>></span>
+               <span>&lt;</span>   Cancel 
                 </Button>
                 <Button
                   onClick={this.onSubmit.bind(this)}
@@ -286,7 +289,7 @@ class SeedImport extends React.PureComponent {
             variant="backgroundNone"
             to={`/onboarding/seed-${isGenerated ? "backup" : "intro"}`}
           >
-            {t("global:goBack")} <span>></span>
+          <span>&lt;</span>  {t("global:goBack")} 
           </Button>
           <Button
             className="navright"

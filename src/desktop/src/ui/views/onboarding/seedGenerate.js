@@ -56,6 +56,7 @@ class SeedGenerate extends React.PureComponent {
   componentDidMount() {
     this.frame = 0;
     this.unscramble();
+    this.generateNewSeed();
   }
 
   componentWillUnmount() {
@@ -95,7 +96,9 @@ class SeedGenerate extends React.PureComponent {
       progressStrength
     } = this.state;
 
+    if(!clicks.includes(e.target.value)){
     const position = e.target.value;
+  
     const newClicks =
       clicks.indexOf(position) < 0 ? clicks.concat([position]) : clicks;
     const newSeed = seed.slice(0);
@@ -175,6 +178,8 @@ class SeedGenerate extends React.PureComponent {
       progressStrength: progressStrength + 6.25
     }));
     this.unscramble();
+  }
+  
   };
 
   /**
@@ -307,8 +312,8 @@ class SeedGenerate extends React.PureComponent {
             
              Strength
               
-              <div className={css.progressOuter}>
-                  <div>
+              <div className={classNames(css.progressOuter,progressStrength===100?css.progressSuccess:'')}>
+                  <div className={classNames(css.progressInner,progressStrength===100?css.progressSuccess:'')} style={{width:`${progressStrength}%`}}>
 
                   </div>
                 </div>
@@ -323,7 +328,6 @@ class SeedGenerate extends React.PureComponent {
               <div
                 className={css.seed_lotbox}
                 style={{ width: "100%", height: "100%" }}
-                onClick={this.generateNewSeed}
                 style={{ display: this.state.viewReload }}
               >
                 <Lottie
@@ -518,7 +522,7 @@ class SeedGenerate extends React.PureComponent {
             variant="backgroundNone"
             onClick={this.onRequestPrevious}
           >
-            {t("global:goBack")} <span>></span>
+          <span>&lt;</span>  {t("global:goBack")}
           </Button>
           <Button
             disabled={clicksLeft > 0}

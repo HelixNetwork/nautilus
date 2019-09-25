@@ -58,10 +58,10 @@ class Send extends React.PureComponent {
 
   validateInputs = e => {
     e.preventDefault();
-
     this.setState({
       openModal: validateInputs()
     });
+    
   };
 
   confirmTransfer = async () => {
@@ -312,6 +312,8 @@ class Send extends React.PureComponent {
     })
   }
 
+  
+
   render() {
     const { accountMeta, balance, loop, currencies, isSending, progress, t } = this.props;
     const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
@@ -505,7 +507,7 @@ class Send extends React.PureComponent {
                     )}
                   </div>
                   {isSending && (
-                    <Modal isOpen={isSending} onClose={isSending}>
+                    <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
                       <ProgressBar progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}

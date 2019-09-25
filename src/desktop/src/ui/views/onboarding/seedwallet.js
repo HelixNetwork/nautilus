@@ -50,7 +50,7 @@ class SeedWallet extends React.PureComponent {
                 variant="backgroundNone"
                 onClick={() => this.stepForward("seed-intro")}
               >
-                {t("global:goBack")} <span>></span>
+              <span>&lt;</span>  {t("global:goBack")} 
               </Button>
               <Button
                 className="navright"

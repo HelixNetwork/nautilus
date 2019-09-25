@@ -45,7 +45,6 @@ class Sidebar extends React.PureComponent {
             {t("settings:currency")}
           </a>
         </li>
-        
         {wallet.ready && (
           <React.Fragment>
             <li className={active == "editname" ? css.active : ""}>
@@ -84,7 +83,7 @@ class Sidebar extends React.PureComponent {
           <a
             onClick={() => this.props.history.push("/settings/accountsetting")}
           >
-            {t("settings:account")}{" "}
+            {t("settings:advanced")}{" "}
           </a>
         </li>
       </ul>

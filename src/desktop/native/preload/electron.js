@@ -15,8 +15,8 @@ let onboardingGenerated = false;
 let onboardingName = null;
 
 const KEYTAR_SERVICE = remote.app.isPackaged
-  ? "Helix wallet"
-  : "Helix wallet (dev)";
+  ? "Nautilus wallet"
+  : "Nautilus wallet (dev)";
 
 const capitalize = string => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -414,7 +414,24 @@ const Electron = {
     const final_checksum = await checksum(txBytes);
     return final_checksum;
   },
+ /**
+     * Set local storage item by item key
+     * @param {string} Key - Target item key
+     * @param {any} Storage - Target item value
+     * @returns {boolean} If item update is succesfull
+     */
+    setStorage(key, item) {
+      return electronSettings.set(key, item);
+  },
 
+  /**
+   * Remove local storage item by item key
+   * @param {string} Key - Target item key
+   * @returns {boolean} If item removal is succesfull
+   */
+  removeStorage(key) {
+      return electronSettings.delete(key);
+  },
   /**
    * Proxy native menu attribute settings
    * @param {string} Attribute - Target attribute
