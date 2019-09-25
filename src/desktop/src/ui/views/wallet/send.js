@@ -28,7 +28,7 @@ import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 import ProgressBar from 'ui/components/progress';
 import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
-import {MAX_NOTE_LENGTH} from '../../../constants';
+import {MAX_NOTE_LENGTH,MAX_HLX_LENGTH} from '../../../constants';
 class Send extends React.PureComponent {
   static propTypes = {
     /** @ignore */
@@ -414,6 +414,7 @@ class Send extends React.PureComponent {
                           marginLeft: "50px",
                           color: "white"
                         }}
+                        maxLength={MAX_HLX_LENGTH}
                         placeholder={selectedHlx}
                         onChange={this.hlxInput.bind(this)}
                       ></input>
@@ -428,7 +429,7 @@ class Send extends React.PureComponent {
                         left: '55px'
                       }}
                       >
-                        NOTE
+                      {t("send:note")}
                       </span>
                       <input className={css.msgBox}
                         style={{
@@ -456,7 +457,7 @@ class Send extends React.PureComponent {
                         <img src={ic1} alt="" />
                       </a>
                       <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3'}}>
-                        SEND
+                      {t("send:send")}
                       </h2>
                     </form>
                     {openModal && (
@@ -493,14 +494,14 @@ class Send extends React.PureComponent {
                             variant="danger"
                             onClick={() => this.setState({ openModal: false })}
                           >
-                            Cancel
+                            Cancel{t("global:Cancel")}
                           </Button>
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <Button
                             variant="success"
                             onClick={this.confirmTransfer.bind(this)}
                           >
-                            Confirm
+                            Confirm{t("global:confirm")}
                           </Button>
                         </div>
                       </Modal>

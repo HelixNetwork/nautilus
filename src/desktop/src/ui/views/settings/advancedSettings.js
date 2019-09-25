@@ -110,8 +110,7 @@ class AdvancedSettings extends React.PureComponent {
       setNotifications ,
     } = this.props;
     const { resetConfirm, resetCountdown } = this.state;
-console.log("changePOWSettingssssss#####",changePowSettings);
-console.log("setnotifications",setNotifications);
+
     return (
       <div className={classNames(css.foo_bxx12)}>
         <Scrollbar>
