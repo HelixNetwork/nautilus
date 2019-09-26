@@ -494,14 +494,14 @@ class Send extends React.PureComponent {
                             variant="danger"
                             onClick={() => this.setState({ openModal: false })}
                           >
-                            Cancel{t("global:Cancel")}
+                           {t("global:cancel")}
                           </Button>
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <Button
                             variant="success"
                             onClick={this.confirmTransfer.bind(this)}
                           >
-                            Confirm{t("global:confirm")}
+                           {t("global:confirm")}
                           </Button>
                         </div>
                       </Modal>
