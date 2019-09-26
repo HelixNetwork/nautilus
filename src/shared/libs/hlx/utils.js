@@ -168,15 +168,15 @@ export const formatUnit = value => {
 
   switch (true) {
     case value < 1000:
-      return "h";
+      return "HLX";
     case value < 1000000:
-      return "Kh";
+      return "kHLX";
     case value < 1000000000:
-      return "Mh";
+      return "mHLX";
     case value < 1000000000000:
-      return "Gh";
+      return "gHLX";
     default:
-      return "Th";
+      return "tHLX";
   }
 };
 
