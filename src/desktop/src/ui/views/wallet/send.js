@@ -485,7 +485,7 @@ class Send extends React.PureComponent {
                           </div>
                           <br />
                           <div>
-                            <h3>Continue transaction with</h3>
+                            <h3>{t("send:continuetransaction")}</h3>
                             <br />
                             <Checksum address={address} />
                           </div>
@@ -494,14 +494,14 @@ class Send extends React.PureComponent {
                             variant="danger"
                             onClick={() => this.setState({ openModal: false })}
                           >
-                            Cancel{t("global:Cancel")}
+                           {t("global:cancel")}
                           </Button>
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <Button
                             variant="success"
                             onClick={this.confirmTransfer.bind(this)}
                           >
-                            Confirm{t("global:confirm")}
+                           {t("global:confirm")}
                           </Button>
                         </div>
                       </Modal>
@@ -509,7 +509,7 @@ class Send extends React.PureComponent {
                   </div>
                   {isSending && (
                     <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
-                      <ProgressBar progress={this.state.progress} title={progressTitle}/>
+                      <ProgressBar type={"send"} progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}
                 </div>

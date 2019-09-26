@@ -32,6 +32,7 @@ export default class ProgressBar extends React.PureComponent {
 
     render() {
         const { progress, title, subtitle, type } = this.props;
+        if(type=="send"){
         if(Math.min(progress, 100)==0){
             this.setState({
                 color:'error'
@@ -52,6 +53,19 @@ export default class ProgressBar extends React.PureComponent {
                 color:'success'
             })
         }
+    }
+    else{
+        if(Math.min(Math.round(progress),100)<100){
+        this.setState({
+            color:'default'
+        })
+    }
+    else{
+        this.setState({
+            color:'success'
+        })
+    }
+    }
         
         return (
             <div className={classNames(css.progress, type ? css[type] : null)}>
@@ -62,9 +76,9 @@ export default class ProgressBar extends React.PureComponent {
                 </div> */}
                 <Progress type="circle" percent={Math.min(progress, 100)} status={this.state.color} style={circleProgress} theme={{
                     default: {
-                        symbol: progress + '%',
-                        trailColor: '#eaac32',
-                        color: '#eaac32'
+                        symbol: Math.round(progress) + '%',
+                        trailColor: '#152353',
+                        color: '#ebba53'
                       }
                 }}/>
                 <br/><br/><br/><br/>

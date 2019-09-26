@@ -328,7 +328,7 @@ class Receive extends React.PureComponent {
                                 </div>
                                 <div className={css.hlx_iconHolder}>
                                        <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                                       <p style={{marginTop: '30px',marginLeft: '2px',fontSize: '11px',opacity: '0.3'}}>SHARE QR CODE</p> 
+                                       <p style={{marginTop: '30px',marginLeft: '2px',fontSize: '11px',opacity: '0.3'}}>{t("receive:shareQr")}</p> 
                                        </div> 
                               </Clipboard>
                               
