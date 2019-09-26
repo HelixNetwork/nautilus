@@ -99,15 +99,14 @@ class AccountName extends React.PureComponent {
             </h1>
           </Row>
           <Row className={css.centerBox}>
-            <h4 style={{ marginTop: "4vw", marginBottom:'4vw' }}>
-              {t("setSeedName:letsAddName")}
-            </h4>
+            <div style= {{margin: "5vw"}}>
             <Input
               value={name}
               focus
               label={t("addAdditionalSeed:accountName")}
               onChange={value => this.setState({ name: value })}
             />
+            </div>
           </Row>
 
           <Row>

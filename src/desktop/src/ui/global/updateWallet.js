@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withI18n } from "react-i18next";
 
+import Progress from "ui/components/progress";
 import Modal from "ui/components/modal/Modal";
 
 export class UpdateWallet extends React.PureComponent {
@@ -45,9 +46,9 @@ export class UpdateWallet extends React.PureComponent {
           <article>
             {progress && (
               <Progress
-                type="large"
+              type={"update"}
                 progress={progress.percent}
-                subtitle={t("updates:downloadProgress", {
+                title={t("updates:downloadProgress", {
                   transferred:
                     (progress.transferred / 1048576).toFixed(2) + " MB",
                   total: (progress.total / 1048576).toFixed(2) + " MB"

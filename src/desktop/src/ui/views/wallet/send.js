@@ -509,7 +509,7 @@ class Send extends React.PureComponent {
                   </div>
                   {isSending && (
                     <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
-                      <ProgressBar progress={this.state.progress} title={progressTitle}/>
+                      <ProgressBar type={"send"} progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}
                 </div>

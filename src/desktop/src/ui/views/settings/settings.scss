@@ -175,7 +175,7 @@ p {
   article,
   ul {
       margin: 0 auto;
-      max-width: 560px;
+      max-width: 100%;       // 560px;
       padding: 120px 20px;
   }
 }
@@ -210,4 +210,10 @@ p {
   text-decoration: none;
   top: 115px;
   right: 14%;
+}
+
+.p_style {
+  font-size: 14px;
+  line-height: 24px;
+  font-family: monospace;
 }
