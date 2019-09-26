@@ -362,6 +362,7 @@
     "notEnoughFunds": "Insufficient funds",
     "notEnoughFundsExplanation": "You do not have enough HLX to complete this transfer.",
     "recipientAddress": "Recipient address",
+    "continuetransaction":"Continue transaction with",
     "amount": "Amount",
     "max": "MAX",
     "message": "Message",

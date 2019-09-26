@@ -485,7 +485,7 @@ class Send extends React.PureComponent {
                           </div>
                           <br />
                           <div>
-                            <h3>Continue transaction with</h3>
+                            <h3>{t("send:continuetransaction")}</h3>
                             <br />
                             <Checksum address={address} />
                           </div>
