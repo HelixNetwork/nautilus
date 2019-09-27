@@ -306,11 +306,11 @@ class SeedGenerate extends React.PureComponent {
             <span className={classNames(css.text_color)}>.</span>
           </h1>
             <h3>
-            Generate randomness by <b>clicking</b> on the characters.
+            {t("global:generaterandomness")} <b>{t("globa:clicking")}</b> {t("global:onthecharacters")}
             </h3>
             <Row className={css.strength}>
             
-             Strength
+           {t("global:strength")}
               
               <div className={classNames(css.progressOuter,progressStrength===100?css.progressSuccess:'')}>
                   <div className={classNames(css.progressInner,progressStrength===100?css.progressSuccess:'')} style={{width:`${progressStrength}%`}}>

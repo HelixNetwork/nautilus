@@ -396,9 +396,9 @@ class Receive extends React.PureComponent {
                         {
                             addresses.map(value=>{
                           return (
-                            <div style={{ padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px', overflow:'hidden'}} key={value.address}>
-                              <span style={{ display: 'inline-block',float: 'left', width: '74%'}}>{(value.address).substring(0,30)+'...'}</span> 
-                              <span style={{ width: '18%', float: 'right', display: 'inline-block'}}>  <span className={value.spent==true? css.used_dot:css.ready_dot}></span> {value.spent==true?'Used':'Ready'}</span>
+                            <div style={{ padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px', overflow:'hidden'}} key={`${value.address}1`}>
+                              <span style={{ display: 'inline-block',float: 'left', width: '74%'}} key={`${value.address}2`}>{(value.address).substring(0,30)+'...'}</span> 
+                              <span style={{ width: '18%', float: 'right', display: 'inline-block'}} key={`${value.address}3`}>  <span className={value.spent==true? css.used_dot:css.ready_dot} key={`${value.address}4`}></span> {value.spent==true?'Used':'Ready'}</span>
                               {/* marginLeft:'32px',padding:'5px 10px 5px 14px' */}
                             </div>
                           );

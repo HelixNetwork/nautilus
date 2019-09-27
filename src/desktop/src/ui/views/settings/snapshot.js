@@ -194,7 +194,7 @@ class Snapshot extends PureComponent {
                   {t("snapshotTransition:attaching")} <br />
                   {t("loading:thisMayTake")} {t("global:pleaseWaitEllipses")}{" "}
                   <br />
-                  {Tools.renderProgressChildren(
+                  {Snapshot.renderProgressChildren(
                     activeStepIndex,
                     sizeOfActiveSteps,
                     t
