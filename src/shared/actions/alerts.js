@@ -122,7 +122,6 @@ export const generateUnsupportedNodeErrorAlert = () => dispatch => {
  * @returns {function} dispatch
  */
 export const generateTransitionErrorAlert = err => dispatch => {
-  console.log(err);
   if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
     dispatch(
       generateAlert(

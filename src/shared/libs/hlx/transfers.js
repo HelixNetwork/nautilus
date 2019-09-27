@@ -217,7 +217,6 @@ export const prepareTransferArray = (
       ? [transfer]
       : [transfer, assign({}, transfer, { address: firstAddress })];
   }
-console.log([transfer]);
   return [transfer];
 };
 

@@ -109,7 +109,6 @@ export const manuallySyncAccount = (seedStore, accountName, quorum = false) => {
                 dispatch(manualSyncSuccess(result));
             })
             .catch((err) => {
-              console.log(err);
                 dispatch(generateErrorAlert(generateSyncingErrorAlert, err));
                 dispatch(manualSyncError());
             });
