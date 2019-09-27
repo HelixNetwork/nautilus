@@ -15,7 +15,7 @@ import SeedStore from "libs/seed";
 import Icon from 'ui/components/icon';
 
 import PropTypes from "prop-types";
-import hlx from "ui/images/hlx.png";
+import hlx from "ui/images/logo.png";
 import { withI18n } from "react-i18next";
 import Button from "ui/components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -62,12 +62,12 @@ class Support extends React.PureComponent {
                   <h3 className={css.heading}>SUPPORT</h3>
               
                   <section className={style.about}>
-                      <div style={{ width: "100%", marginTop: "15%"}}>
+                      <div style={{ width: "100%", marginTop: "15%", opacity:"0.3"}}>
                    <img src={hlx} alt=""/>
                    </div>
                     <h1>Nautilus Wallet</h1>
                     <h2>
-                       Email: <small>nautilus.hlx.ai</small>
+                       Email us at: <small>nautilus@hlx.ai</small>
                     </h2>
                     </section>
                   </div>
