@@ -119,14 +119,19 @@
 
     &.loading {
         pointer-events: none;
-        animation: spin 0.8s ease infinite;
-    }
-}
+        animation: spin 0.8s infinite linear;
+        transform-origin: 50% 50%;
+        display: block;
+    } 
+
+  }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg);}
+    // to {
+    //     transform: rotate(360deg);
+    // }
 }
 
 
@@ -381,7 +386,7 @@
     font-size: 12px;
     font-family: Helvetica-Bold;
     opacity: 0.6;
-    margin-left: -50px;
+    margin-left: -70px;
   }
   
   .note{
@@ -467,7 +472,7 @@
   .sender_heading{
     margin-top: -50px;
     margin-bottom: 0px;
-    padding-left: 95px;
+    padding-left: 75px;
     font-family: Yu Gothic;
     opacity: 0.8;
     font-size: 17px;
