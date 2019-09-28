@@ -75,7 +75,6 @@
   },
   "scripts": {
     "start": "yarn run build && concurrently --kill-others  \" yarn run devserver \"  \"wait-on http://localhost:1074 && cross-env NODE_ENV=development  electron -r @babel/register main.js\"",
-    "postinstall": "node scripts/win-realm-patch.js && patch-package && electron-builder install-app-deps",
     "devserver": "node server.js",
     "style:shots": "node scripts/puppeteer.js",
     "build": "rimraf dist && concurrently \"yarn run build-main\" \"yarn run build-app\"",
@@ -189,7 +188,6 @@
     "electron-builder": "20.38.5",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
-    "patch-package": "6.1.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.31.0",
