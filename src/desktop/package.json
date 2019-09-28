@@ -120,7 +120,8 @@
       "provider": "s3",
       "bucket": "nautilus-wallet",
       "region ": "us-east-2",
-      "endpoint ": "https://nautilus-wallet.s3.us-east-2.amazonaws.com/nautilus/releases",
+      "endpoint ": "https://nautilus-wallet.s3.us-east-2.amazonaws.com",
+      "path":"/nautilus/releases",
       "channel": "latest"
     },
     "extends": null,
