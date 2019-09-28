@@ -37,6 +37,7 @@ import Send from "ui/views/wallet/send";
 import Receive from "ui/views/wallet/receive";
 import Chart from "ui/views/wallet/chart";
 import WalletHistory from "ui/views/wallet/wallet_history";
+import Support from "ui/views/wallet/support";
 import {
   formatValue,
   formatUnit,
@@ -131,6 +132,7 @@ class Wallet extends React.PureComponent {
         <Route exact path="/wallet/receive" component={Receive} />
         <Route path="/wallet/chart" component={Chart} />
         <Route path="/wallet/history" component={WalletHistory} />
+        <Route path="/wallet/support" component={Support} />
       </Switch>
              
 
@@ -150,6 +152,7 @@ class Wallet extends React.PureComponent {
         <Route exact path="/wallet/receive" component={Receive} />
         <Route path="/wallet/chart" component={Chart} />
         <Route path="/wallet/history" component={WalletHistory} />
+        <Route path="/wallet/support" component={Support} />
       </Switch>
       </div>
     );
