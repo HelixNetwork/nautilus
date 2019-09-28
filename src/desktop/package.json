@@ -118,9 +118,9 @@
     },
     "publish": {
       "provider": "s3",
-      "bucket": "nautiluswallet",
-      "region ": "ap-south-1",
-      "endpoint ": "https://nautiluswallet.s3.ap-south-1.amazonaws.com",
+      "bucket": "nautilus-wallet",
+      "region ": "us-east-2",
+      "endpoint ": "https://nautilus-wallet.s3.us-east-2.amazonaws.com/nautilus/releases",
       "channel": "latest"
     },
     "extends": null,
