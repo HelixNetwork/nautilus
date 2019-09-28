@@ -370,8 +370,8 @@ export const fetchNodeList = () => {
           })
           .catch(() => {
             // TODO(mahi):remove this after updating NODE_REMOTE_LIST 
-              nodes = unionBy(nodes, getState().settings.nodes, 'url');
-              dispatch(setNodeList(nodes));
+              // nodes = unionBy(nodes, getState().settings.nodes, 'url');
+              // dispatch(setNodeList(nodes));
               dispatch(fetchNodeListError());
           });
   };
