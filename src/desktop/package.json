@@ -76,6 +76,7 @@
   "scripts": {
     "start": "yarn run build && concurrently --kill-others  \" yarn run devserver \"  \"wait-on http://localhost:1074 && cross-env NODE_ENV=development  electron -r @babel/register main.js\"",
     "devserver": "node server.js",
+    "postinstall": "electron-builder install-app-deps",
     "style:shots": "node scripts/puppeteer.js",
     "build": "rimraf dist && concurrently \"yarn run build-main\" \"yarn run build-app\"",
     "build-main": "./node_modules/.bin/cross-env NODE_ENV=production webpack --env=production --config webpack.config/config.main.js",
