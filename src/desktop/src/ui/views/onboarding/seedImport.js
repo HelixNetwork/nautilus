@@ -255,7 +255,7 @@ class SeedImport extends React.PureComponent {
                 <PasswordInput
                   focus
                   value={this.state.password}
-                  label="Keystore Password"
+                  label="SeedVault Password"
                   showValid
                   onChange={value => {
                     this.setState({ password: value });
@@ -266,14 +266,14 @@ class SeedImport extends React.PureComponent {
                   variant="backgroundNone"
                   className="modal_navleft"
                 >
-               <span>&lt;</span>   Cancel 
+               <span>&lt;</span> {t("global:cancel")}  
                 </Button>
                 <Button
                   onClick={this.onSubmit.bind(this)}
                   variant="backgroundNone"
                   className="modal_navright"
                 >
-                  Import Seed <span>></span>
+                  {t("seedVault:importSeedVault")}<span>></span>
                 </Button>
               </form>
             </Modal>

@@ -111,7 +111,7 @@ class TopBar extends Component {
               <hr />
             </li>
             <li>
-              <h4>{accountName.toUpperCase()}</h4>
+              <h4>{accountName}</h4>
               <br />
               <div> <span className={css.dot}></span><h6>CONNECTED</h6></div>
             </li>

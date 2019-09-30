@@ -7,6 +7,7 @@ import keytar from "keytar";
 import Realm from "../realm";
 import helixTangled from '../helixTangled';
 import fs from "fs";
+import { formatHlx } from "libs/hlx/utils";
 const dialog = require("electron").remote.dialog;
 const kdbx = require("../kdbx");
 const argon2 = require("argon2");
@@ -451,7 +452,48 @@ const Electron = {
    */
   autoUpdate: () => {
     ipc.send("updates.check");
-  }
+  },
+
+  /**
+     * Create and show a native notification based on new transactions
+     * @param {string} accountName - target account name
+     * @param {array} transactions - new transactions
+     * @param {array} confirmations - recently confirmed transactions
+     * @param {object} settings - wallet settings
+     */
+  notify: (accountName, transactions, confirmations, settings) => {
+      if (!transactions.length && !confirmations.length) {
+          return;
+      }
+
+      if (!settings.notifications || !settings.notifications.general) {
+          return;
+      }
+
+      let message = '';
+
+      if (transactions.length > 1) {
+          message = locales.multipleTx;
+      } else if (transactions.length && transactions[0].transferValue === 0) {
+          if (!settings.notifications.messages) {
+              return;
+          }
+          message = locales.messageTx;
+      } else if (transactions.length) {
+          message = locales.valueTx.replace('{{value}}', formatHlx(transactions[0].transferValue));
+      } else if (settings.notifications.confirmations) {
+          message = confirmations[0].incoming ? locales.confirmedIn : locales.confirmedOut;
+          message = message.replace('{{value}}', formatHlx(confirmations[0].transferValue));
+      }
+
+      const notification = new Notification('Trinity', {
+          body: message.replace('{{account}}', accountName),
+      });
+
+      notification.onclick = () => {
+          remote.getCurrentWindow().webContents.send('account.switch', accountName);
+      };
+  },
 };
 
 export default Electron;

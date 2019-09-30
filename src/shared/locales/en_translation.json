@@ -3,8 +3,12 @@
     "send": "SEND",
     "cancel": "Cancel",
     "continue?": "Are you sure you want to continue?",
+    "generaterandomness":"Generate randomness by",
     "noTransactions": "NO RECENT HISTORY",
     "refresh": "Refresh",
+    "clicking":"clicking",
+    "strength":"Strength",
+    "onthecharacters":"on the characters.",
     "balanceError": "Not enough balance",
     "balanceErrorMessage": "You do not have enough HELIX to complete this transfer.",
     "totalBalance": "Total balance",
@@ -57,7 +61,7 @@
     "no": "No",
     "okay": "Okay",
     "skip": "Skip",
-    "password": "Password",
+    "password": " Account Password",
     "unrecognisedPassword": "Unrecognised password",
     "unrecognisedPasswordExplanation": "The password was not recognised. Please try again.",
     "unrecognisedAccount": "Unrecognised account",
@@ -194,9 +198,9 @@
     "oldPassword": "Cannot set old password",
     "oldPasswordExplanation": "You cannot use the old password as your new password. Please try again with a new password.",
     "ensureStrongPassword": "Ensure you use a strong password of at least 11 characters.",
-    "currentPassword": "Current Password",
-    "newPassword": "New Password",
-    "confirmPassword": "Confirm New Password",
+    "currentPassword": "Current Account Password",
+    "newPassword": "New Account Password",
+    "confirmPassword": "Confirm New Account Password",
     "passwordTooWeak": "Password too weak",
     "passwordTooWeakReason": "Your password is too weak. Use a combination of words, and avoid common phrases, names or dates.",
     "reasonRow": "Straight rows of keys are easy to guess.",
@@ -220,7 +224,7 @@
     "passwordMismatch": "Passwords do not match",
     "passwordMismatchExplanation": "The passwords you have entered do not match. Please try again.",
     "anEncryptedCopy": "This is your account password. You will use it to log in.",
-    "retypePassword": "Retype Password"
+    "retypePassword": "Retype Account Password"
   },
   "copyToClipboard": {
     "seedCleared": "Clipboard cleared",
@@ -362,6 +366,7 @@
     "notEnoughFunds": "Insufficient funds",
     "notEnoughFundsExplanation": "You do not have enough HLX to complete this transfer.",
     "recipientAddress": "Recipient address",
+    "continuetransaction":"Continue transaction with",
     "amount": "Amount",
     "max": "MAX",
     "message": "Message",
@@ -382,7 +387,8 @@
     "swipeToSend": "Swipe to send",
     "sendCoins": "SEND HLX",
     "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!",
-    "enterReceiverAddress": "Enter Receiver Address"
+    "enterReceiverAddress": "Enter Receiver Address",
+    "note":"NOTE"
   },
   "setSeedName": {
     "letsAddName": "Let's add a name",

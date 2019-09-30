@@ -34,7 +34,9 @@ p {
   color: #e8b349;
 }
 .set_bxac {
-  margin-top: 0px;
+    margin-top: 36px !important;
+    width: 85% !important;
+    margin-left: 7% !important;
 }
 .set_bxac h5 {
   margin-left: 2px;
@@ -175,14 +177,11 @@ p {
   article,
   ul {
       margin: 0 auto;
-      max-width: 560px;
+      max-width: 100%;       // 560px;
       padding: 120px 20px;
   }
 }
 
-.p_style {
-  margin-top: 2vw !important;
-}
 .nodebox{
 
   width: 60%;
@@ -211,3 +210,23 @@ p {
   top: 115px;
   right: 14%;
 }
+
+.p_style {
+  font-size: 14px;
+  line-height: 24px;
+  font-family: monospace;
+  margin-top: 2vw !important;
+}
+
+.paragraph {
+font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 16px;
+    font-family: proximaNova-bold;
+    text-align: left;
+  }
+
+  .p_opacity{
+    opacity:0.7;
+    margin-top:1vw;
+  }

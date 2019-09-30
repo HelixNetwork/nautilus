@@ -50,7 +50,7 @@ export const generateAlert = (
   category,
   title,
   message,
-  closeInterval = 5500,
+  closeInterval =2000,
   err
 ) => dispatch => {
   dispatch(generate(category, title, message, closeInterval));

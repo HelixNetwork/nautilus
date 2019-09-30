@@ -6,9 +6,23 @@ import {
 } from "../libs/hlx/addresses";
 import {
   updateAddresses,
-  updateAccountAfterTransition
+  updateAccountAfterTransition,
+  syncAccountDuringSnapshotTransition
 } from "../actions/accounts";
+import NodesManager from '../libs/hlx/NodeManager';
 
+import { getRemotePoWFromState, nodesConfigurationFactory } from '../selectors/global';
+import {getBalances} from '../libs/hlx/extendedApi';
+import {generateTransitionErrorAlert, generateAlert, generateErrorAlert} from './alerts';
+import map from 'lodash/map';
+import i18next from '../libs/i18next';
+import Errors from "../libs/errors";
+import findLastIndex from 'lodash/findLastIndex';
+import noop from 'lodash/noop';
+import { setActiveStepIndex, startTrackingProgress, reset as resetProgress } from '../actions/progress';
+import reduce from 'lodash/reduce';
+import { selectedAccountStateFactory, getSelectedAccountName } from '../selectors/accounts';
+import { Account } from '../database';
 /**
  * Dispatch to map storage (persisted) data to redux state
  *
@@ -130,6 +144,76 @@ export const setSeedIndex = payload =>({
   type: WalletActionTypes.SET_SEED_INDEX,
   payload
 });
+
+/**
+ * Dispatch to update detected balance during snapshot transition
+ *
+ * @method updateTransitionBalance
+ * @param {number} payload
+ *
+ * @returns {{type: {string}, payload: {number} }}
+ */
+export const updateTransitionBalance = (payload) => ({
+  type: WalletActionTypes.UPDATE_TRANSITION_BALANCE,
+  payload,
+});
+
+/**
+ * Dispatch if an error occurs during snapshot transition
+ *
+ * @method snapshotTransitionError
+ *
+ * @returns {{type: {string} }}
+ */
+export const snapshotTransitionError = () => ({
+  type: WalletActionTypes.SNAPSHOT_TRANSITION_ERROR,
+});
+
+/**
+ * Dispatch to update generated addresses during snapshot transition
+ *
+ * @method updateTransitionAddresses
+ * @param {array} payload
+ *
+ * @returns {{type: {string}, payload: {array} }}
+ */
+export const updateTransitionAddresses = (payload) => ({
+  type: WalletActionTypes.UPDATE_TRANSITION_ADDRESSES,
+  payload,
+});
+/**
+ * Dispatch when addresses are about to be attached to tangle during snapshot transition
+ *
+ * @method snapshotAttachToTangleRequest
+ *
+ * @returns {{type: {string} }}
+ */
+export const snapshotAttachToTangleRequest = () => ({
+  type: WalletActionTypes.SNAPSHOT_ATTACH_TO_TANGLE_REQUEST,
+});
+
+/**
+ * Dispatch when addresses are successfully attached to tangle during snapshot transition
+ *
+ * @method snapshotAttachToTangleComplete
+ *
+ * @returns {{type: {string} }}
+ */
+export const snapshotAttachToTangleComplete = () => ({
+  type: WalletActionTypes.SNAPSHOT_ATTACH_TO_TANGLE_COMPLETE,
+});
+
+/**
+ * Dispatch when snapshot transition is successfully completed
+ *
+ * @method snapshotTransitionSuccess
+ *
+ * @returns {{type: {string} }}
+ */
+export const snapshotTransitionSuccess = () => ({
+  type: WalletActionTypes.SNAPSHOT_TRANSITION_SUCCESS,
+});
+
 /**
  * Completes snapshot transition by sequentially attaching addresses to tangle
  *
@@ -142,127 +226,90 @@ export const setSeedIndex = payload =>({
  *
  * @returns {function}
  */
-export const completeSnapshotTransition = (
-  seedStore,
-  accountName,
-  addresses,
-  quorum = true
-) => {
+export const completeSnapshotTransition = (seed, accountName, addresses, powFn) => {
   return (dispatch, getState) => {
-    dispatch(
-      generateAlert(
-        "info",
-        i18next.t("snapshotTransition:attaching"),
-        i18next.t("global:deviceMayBecomeUnresponsive")
-      )
-    );
-
-    dispatch(snapshotAttachToTangleRequest());
-
-    const snapshotTransitionFn = (settings, withQuorum) => () => {
-      return (
-        getBalancesAsync(settings, withQuorum)(addresses)
-          // Find balance on all addresses
-          .then(balances => {
-            const allBalances = map(balances.balances, Number);
-            const totalBalance = accumulateBalance(allBalances);
-            const hasZeroBalance = totalBalance === 0;
-
-            // If accumulated balance is zero, terminate the snapshot process
-            if (hasZeroBalance) {
-              throw new Error(
-                Errors.CANNOT_TRANSITION_ADDRESSES_WITH_ZERO_BALANCE
-              );
-            }
-
-            const lastIndexWithBalance = findLastIndex(
-              allBalances,
-              balance => balance > 0
-            );
-            const relevantBalances = allBalances.slice(
-              0,
-              lastIndexWithBalance + 1
-            );
-            const relevantAddresses = addresses.slice(
-              0,
-              lastIndexWithBalance + 1
-            );
-
-            dispatch(startTrackingProgress(relevantAddresses));
-
-            return reduce(
-              relevantAddresses,
-              (promise, address, index) => {
-                return promise.then(result => {
-                  dispatch(setActiveStepIndex(index));
-
-                  const existingAccountState = selectedAccountStateFactory(
-                    accountName
-                  )(getState());
-
-                  return attachAndFormatAddress(settings, withQuorum)(
-                    address,
-                    index,
-                    relevantBalances[index],
-                    getRemotePoWFromState(getState())
-                      ? extend(
-                          {
-                            __proto__: seedStore.__proto__
-                          },
-                          seedStore,
-                          { offloadPow: true }
-                        )
-                      : seedStore,
-                    existingAccountState
-                  )
-                    .then(({ attachedAddressObject, attachedTransactions }) => {
-                      const newState = syncAccountDuringSnapshotTransition(
-                        attachedTransactions,
-                        attachedAddressObject,
-                        existingAccountState
-                      );
-
-                      // Update storage (realm)
-                      Account.update(accountName, newState);
-                      // Update redux store
-                      dispatch(updateAccountAfterTransition(newState));
-
-                      return result;
-                    })
-                    .catch(noop);
-                });
-              },
-              Promise.resolve()
-            );
-          })
-          .then(({ node }) => {
-            dispatch(changeNode(node));
-
-            dispatch(snapshotTransitionSuccess());
-            dispatch(snapshotAttachToTangleComplete());
-            dispatch(
-              generateAlert(
-                "success",
-                i18next.t("snapshotTransition:transitionComplete"),
-                i18next.t("snapshotTransition:transitionCompleteExplanation"),
-                20000
-              )
-            );
-
-            dispatch(resetProgress());
-          })
+      dispatch(
+          generateAlert(
+              'info',
+              i18next.t('snapshotTransition:attaching'),
+              i18next.t('global:deviceMayBecomeUnresponsive'),
+          ),
       );
-    };
 
-    return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
-      .withRetries()(snapshotTransitionFn)()
-      .catch(err => {
-        dispatch(generateErrorAlert(generateTransitionErrorAlert, err));
-        dispatch(snapshotTransitionError());
-        dispatch(snapshotAttachToTangleComplete());
-      });
+      dispatch(snapshotAttachToTangleRequest());
+
+      // Find balance on all addresses
+      getBalances()(addresses)
+          .then((balances) => {
+              const allBalances = map(balances.balances, Number);
+              const totalBalance = accumulateBalance(allBalances);
+              const hasZeroBalance = totalBalance === 0;
+
+              // If accumulated balance is zero, terminate the snapshot process
+              if (hasZeroBalance) {
+                  throw new Error(Errors.CANNOT_TRANSITION_ADDRESSES_WITH_ZERO_BALANCE);
+              }
+
+              const lastIndexWithBalance = findLastIndex(allBalances, (balance) => balance > 0);
+              const relevantBalances = allBalances.slice(0, lastIndexWithBalance + 1);
+              const relevantAddresses = addresses.slice(0, lastIndexWithBalance + 1);
+
+              dispatch(startTrackingProgress(relevantAddresses));
+
+              return reduce(
+                  relevantAddresses,
+                  (promise, address, index) => {
+                      return promise.then((result) => {
+                          dispatch(setActiveStepIndex(index));
+
+                          return attachAndFormatAddress()(
+                              address,
+                              index,
+                              relevantBalances[index],
+                              seed,
+                              // Pass proof of work function as null, if configuration is set to remote
+                              getRemotePoWFromState(getState()) ? null : powFn,
+                          )
+                              .then(({ addressData, transfer }) => {
+                                  const existingAccountState = selectedAccountStateFactory(accountName)(getState());
+
+                                  const { newState } = syncAccountDuringSnapshotTransition(
+                                      transfer,
+                                      addressData,
+                                      existingAccountState,
+                                  );
+                                  dispatch(updateAccountAfterTransition(newState));
+
+                                  return result;
+                              })
+                              .catch(noop);
+                      });
+                  },
+                  Promise.resolve(),
+              );
+          })
+          .then(() => {
+              dispatch(snapshotTransitionSuccess());
+              dispatch(snapshotAttachToTangleComplete());
+              dispatch(
+                  generateAlert(
+                      'success',
+                      i18next.t('snapshotTransition:transitionComplete'),
+                      i18next.t('snapshotTransition:transitionCompleteExplanation'),
+                      20000,
+                  ),
+              );
+
+              dispatch(resetProgress());
+          })
+          .catch((error) => {
+              dispatch(snapshotTransitionError());
+              dispatch(snapshotAttachToTangleComplete());
+              dispatch(generateTransitionErrorAlert(error));
+          });
   };
 };
+
 /**
  * Dispatch to show/hide ('Is your balance correct?') during snapshot transition
  *
@@ -288,7 +335,7 @@ export const setBalanceCheckFlag = payload => ({
 export const getBalanceForCheck = (addresses, quorum = true) => {
   return (dispatch, getState) => {
     return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
-      .withRetries()(getBalancesAsync)(addresses)
+      .withRetries()(getBalances)(addresses)
       .then(result => {
         const balanceOnAddresses = accumulateBalance(
           map(result.balances, Number)

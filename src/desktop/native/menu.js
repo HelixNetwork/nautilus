@@ -119,10 +119,10 @@ autoUpdater.on("update-not-available", () => {
  * On update ready to install event callback
  */
 autoUpdater.on('update-downloaded', () => {
-  // const mainWindow = getWindow('main');
-  // if (mainWindow) {
-  //     mainWindow.webContents.send('update.progress', false);
-  // }   
+  const mainWindow = getWindow('main');
+  if (mainWindow) {
+      mainWindow.webContents.send('update.progress', false);
+  }   
   dialog.showMessageBox(
       {
           title: language.updates.installUpdate,
@@ -130,9 +130,9 @@ autoUpdater.on('update-downloaded', () => {
       },
       () => {
           setTimeout(() => {
-              // const mainWindow = getWindow('main');
-              // mainWindow.removeAllListeners('close');
-              // app.removeAllListeners('window-all-closed');
+              const mainWindow = getWindow('main');
+              mainWindow.removeAllListeners('close');
+              app.removeAllListeners('window-all-closed');
               autoUpdater.quitAndInstall();
           }, 0);
       },
@@ -140,10 +140,10 @@ autoUpdater.on('update-downloaded', () => {
 });
 
 autoUpdater.on('download-progress', (progressObj) => {       
-  // const mainWindow = getWindow('main');
-  // // if (mainWindow) {
-  // //     mainWindow.webContents.send('update.progress', progressObj);
-  // // }
+  const mainWindow = getWindow('main');
+  if (mainWindow) {
+      mainWindow.webContents.send('update.progress', progressObj);
+  }
 });
 
 /**

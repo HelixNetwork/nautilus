@@ -61,7 +61,7 @@ class SeedBackup extends React.PureComponent {
               onClick={() => this.setState({ exportVisible: true })}
               className={css.secure}
             >
-              <h3>{t("saveYourSeed:recommended")}</h3>
+              {/* <h3>{t("saveYourSeed:recommended")}</h3> */}
               <div className={css.backup}>
                 <Lottie
                   options={defaultOptions}

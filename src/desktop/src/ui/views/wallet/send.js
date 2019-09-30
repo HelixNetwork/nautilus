@@ -28,7 +28,7 @@ import { makeTransaction } from "actions/transfers";
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 import ProgressBar from 'ui/components/progress';
 import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
-import {MAX_NOTE_LENGTH} from '../../../constants';
+import {MAX_NOTE_LENGTH,MAX_HLX_LENGTH} from '../../../constants';
 class Send extends React.PureComponent {
   static propTypes = {
     /** @ignore */
@@ -414,6 +414,7 @@ class Send extends React.PureComponent {
                           marginLeft: "50px",
                           color: "white"
                         }}
+                        maxLength={MAX_HLX_LENGTH}
                         placeholder={selectedHlx}
                         onChange={this.hlxInput.bind(this)}
                       ></input>
@@ -428,7 +429,7 @@ class Send extends React.PureComponent {
                         left: '55px'
                       }}
                       >
-                        NOTE
+                      {t("send:note")}
                       </span>
                       <input className={css.msgBox}
                         style={{
@@ -446,7 +447,7 @@ class Send extends React.PureComponent {
                         className={css.reci_text}
                         value={address}
                         onChange={this.addressInput.bind(this)}
-                        placeholder="RECEIVER ADDRESS"
+                        placeholder="RECIPIENT ADDRESS"
                       />
                       <br />
                       <a
@@ -454,10 +455,13 @@ class Send extends React.PureComponent {
                         onClick={this.validateInputs.bind(this)}
                       >
                         <img src={ic1} alt="" />
-                      </a>
-                      <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3'}}>
-                        SEND
+                      
+                      <h2 className={classNames(css.send_bts_h2)}>
+                      {t("send:send")}
                       </h2>
+                      
+                      </a>
+
                     </form>
                     {openModal && (
                       <Modal
@@ -484,7 +488,7 @@ class Send extends React.PureComponent {
                           </div>
                           <br />
                           <div>
-                            <h3>Continue transaction with</h3>
+                            <h3>{t("send:continuetransaction")}</h3>
                             <br />
                             <Checksum address={address} />
                           </div>
@@ -493,14 +497,14 @@ class Send extends React.PureComponent {
                             variant="danger"
                             onClick={() => this.setState({ openModal: false })}
                           >
-                            Cancel
+                           {t("global:cancel")}
                           </Button>
                           &nbsp;&nbsp;&nbsp;&nbsp;
                           <Button
                             variant="success"
                             onClick={this.confirmTransfer.bind(this)}
                           >
-                            Confirm
+                           {t("global:confirm")}
                           </Button>
                         </div>
                       </Modal>
@@ -508,7 +512,7 @@ class Send extends React.PureComponent {
                   </div>
                   {isSending && (
                     <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
-                      <ProgressBar progress={this.state.progress} title={progressTitle}/>
+                      <ProgressBar type={"send"} progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}
                 </div>

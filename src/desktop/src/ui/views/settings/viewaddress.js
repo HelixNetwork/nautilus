@@ -52,7 +52,7 @@ class Viewaddress extends React.PureComponent {
         <div className={classNames(css.set_bxac)}>
           <div className={css.scroll}>
            
-              <ul className={css.addresses} style={{ marginLeft: "100px", paddingTop: "0px" }}>
+              <ul className={css.addresses} style={{ marginLeft: "25px", paddingTop: "0px" }}>
                 <Scrollbar className={css.scroll_address}>
                   {addressData.map(addressObject => {
                     const address =
@@ -61,8 +61,8 @@ class Viewaddress extends React.PureComponent {
                     return (
                       <li key={address} style={{overflow:"hidden"}}>
                         <p
-                          className={isSpent(addressObject) ? css.spent : null}
-                          style={{marginTop: "10px", float: "left", width: "77%"}}
+                          className={css.p_style}
+                          style={{marginTop: "10px", float: "left", width: "61%", marginLeft:"0%" }}
 
                         >
                           <Clipboard
@@ -78,10 +78,7 @@ class Viewaddress extends React.PureComponent {
                             </span>
                           </Clipboard>
                         </p>
-                        <strong style={{float: "right", marginTop: "4%"}}>
-                          {formatValue(addressObject.balance)}
-                          {formatUnit(addressObject.balance)}
-                        </strong>
+                        <strong style={{float: "right", marginTop: "5%"}}> {formatValue(addressObject.balance)} <span> {formatUnit(addressObject.balance)}</span></strong>
                       </li>
                     );
                   })}

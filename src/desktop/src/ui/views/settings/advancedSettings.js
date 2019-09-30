@@ -110,8 +110,7 @@ class AdvancedSettings extends React.PureComponent {
       setNotifications ,
     } = this.props;
     const { resetConfirm, resetCountdown } = this.state;
-console.log("changePOWSettingssssss#####",changePowSettings);
-console.log("setnotifications",setNotifications);
+
     return (
       <div className={classNames(css.foo_bxx12)}>
         <Scrollbar>
@@ -121,7 +120,7 @@ console.log("setnotifications",setNotifications);
             </h3>
 
             {/* <hr className={classNames(css.setinghr)} /> */}
-            <p style={{ marginLeft: "5vw", marginTop: "2vw" }}>
+            <p className= {css.p_opacity} style={{ marginLeft: "5vw", marginTop: "2vw" }}>
               {t("pow:feeless")} {t("pow:localOrRemote")}
             </p>
             <Toggle
@@ -133,7 +132,7 @@ console.log("setnotifications",setNotifications);
             {/* <hr className={classNames(css.setinghr)}/> */}
             <h3 style={{ marginLeft: "27vw", marginTop: "3vw" }}>{t('advancedSettings:autoPromotion')}</h3>
 
-            <p className={css.p_style}>{t('advancedSettings:autoPromotionExplanation')}</p>
+            <p className= {css.p_opacity}>{t('advancedSettings:autoPromotionExplanation')}</p>
             <Toggle
               checked={settings.autoPromotion}
               onChange={() => changeAutoPromotionSettings()}
@@ -165,7 +164,7 @@ console.log("setnotifications",setNotifications);
               onChange={(value) => setNotifications({ type: 'messages', enabled: value })}
             />
             
-            <p style={{ marginLeft: "19vw", marginTop: "2vw" }}>{t('notifications:notificationExplanation')}</p>
+            <p className= {css.p_opacity} style={{ marginLeft: "19vw", marginTop: "2vw" }}>{t('notifications:notificationExplanation')}</p>
             {/* <hr className={classNames(css.setinghr1)} /> */}
             <React.Fragment>
               <h3 style={{ marginLeft: "27vw" }}>{t('proxy:proxy')}</h3>
@@ -175,7 +174,7 @@ console.log("setnotifications",setNotifications);
                 on={t('enabled')}
                 off={t('disabled')}
               />
-              <p className={css.p_style}>{t('proxy:proxyExplanation')}</p>
+              <p className= {css.p_opacity}>{t('proxy:proxyExplanation')}</p>
              
             </React.Fragment>
             {/* <hr className={classNames(css.setinghr2)} /> */}
@@ -184,7 +183,7 @@ console.log("setnotifications",setNotifications);
             </h3>
             {/* <hr className={classNames(css.setinghr3)} /> */}
             <Trans i18nKey="walletResetConfirmation:warning">
-              <p className={css.p_style}>
+              <p className= {css.p_opacity}>
                 <React.Fragment>
                   All of your wallet data including your{" "}
                 </React.Fragment>
