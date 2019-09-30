@@ -144,6 +144,18 @@ export const updateAddresses = (accountName, addresses) => ({
 export const fullAccountInfoFetchRequest = () => ({
   type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_REQUEST
 });
+/**
+ * Deletes an account.
+ *
+ * @method deleteAccount
+ * @param {string} accountName
+ *
+ * @returns {function} dispatch
+ */
+export const deleteAccount = (accountName) => (dispatch) => {
+  dispatch(removeAccount(accountName));
+  dispatch(generateAccountDeletedAlert());
+};
 
 /**
  * Assign account index to each account if not already assigned
@@ -394,3 +406,19 @@ export const updateAccountAfterTransition = payload => ({
   type: ActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION,
   payload
 });
+/**
+ * Dispatch to remove an account and its associated data from state
+ *
+ * @method removeAccount
+ * @param {string} payload
+ *
+ * @returns {{type: {string}, payload: {string} }}
+ */
+export const removeAccount = (payload) => {
+    Account.delete(payload);
+
+    return {
+        type: AccountsActionTypes.REMOVE_ACCOUNT,
+        payload,
+    };
+};

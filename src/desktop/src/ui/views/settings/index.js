@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import css from "./settings.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -14,6 +14,7 @@ import SettingsTheme from "ui/views/settings/themesetting";
 import AccountName from "ui/views/settings/editName";
 import Viewseed from "ui/views/settings/viewseed";
 import Viewaddress from "ui/views/settings/viewaddress";
+import Remove from "ui/views/settings/removeaccount";
 import Changepassword from "ui/views/settings/changepassword";
 import SettingsMode from "ui/views/settings/mode";
 import Snapshot from "ui/views/settings/snapshot";
@@ -36,12 +37,22 @@ class Settings extends React.PureComponent {
     /** Wallet account names */
     accountNames: PropTypes.array.isRequired,
     /** @ignore */
-    wallet: PropTypes.object
+    wallet: PropTypes.object,
+    // match: PropTypes.object
   };
+  // state = {
+  // match: this.props.match
+  // };
+
   render() {
+    // const match=this.props.match;
+    // const { accountIndex } = match.params;
     const { history, t, location } = this.props;
     const currentKey = location.pathname.split("/")[2] || "/";
-
+    // const accountSettings = typeof accountIndex === 'string';
+    // const account = accountSettings
+    //     ? { ...accounts[accountNames[accountIndex]], ...{ accountName: accountNames[accountIndex], accountIndex } }
+    //     : null;
     return (
       <div>
         <Top bal={"none"} main={"block"} user={"none"} history={history} />
@@ -74,6 +85,7 @@ class Settings extends React.PureComponent {
                         path="/settings/password"
                         component={Changepassword}
                       />
+                      <Route path="/settings/remove/:accountIndex" component={Remove}/>
                       <Route path="/settings/mode" component={SettingsMode} />
                       <Route path="/settings/snapshot" component={Snapshot} />
                       <Route

@@ -211,3 +211,13 @@ p {
   top: 115px;
   right: 14%;
 }
+.log {
+
+      list-style: none;
+      width: 60%;
+      margin-left: 10vw;
+      user-select: all;
+      cursor: text;
+      color: var(--primary);
+      margin-right: 10px;
+  }
