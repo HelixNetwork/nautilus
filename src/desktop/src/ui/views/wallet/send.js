@@ -59,9 +59,9 @@ class Send extends React.PureComponent {
   validateInputs = e => {
     e.preventDefault();
     this.setState({
-      openModal: validateInputs()
+      openModal: this.areInputsValid()
     });
-    
+
   };
 
   confirmTransfer = async () => {
@@ -148,10 +148,10 @@ class Send extends React.PureComponent {
     this.props.startTrackingProgress(steps);
   }
 
-  validateInputs = () => {
+  areInputsValid() {
     const { generateAlert, balance, t } = this.props;
     const { address, txamount,hlxamount, message } = this.state;
-    
+
     // Validate address length
     if (address.length !== ADDRESS_LENGTH) {
       generateAlert(
@@ -193,9 +193,10 @@ class Send extends React.PureComponent {
       return false;
     }
 
-    this.setState({
-      openModal: true
-    });
+    // this.setState({
+    //   openModal: true
+    // });
+    return true;
   };
 
   addressInput(e) {
@@ -469,19 +470,19 @@ class Send extends React.PureComponent {
                           <br />
                           <div className={css.transferLoading}>
                             <br />
-                            <Lottie
-                              options={defaultOptions}
-                              eventListeners={[
-                                {
-                                  eventName: "complete",
-                                  callback: () => {
-                                    if (typeof onEnd === "function") {
-                                      onEnd();
-                                    }
-                                  }
-                                }
-                              ]}
-                            />
+                            {/*<Lottie*/}
+                            {/*  options={defaultOptions}*/}
+                            {/*  eventListeners={[*/}
+                            {/*    {*/}
+                            {/*      eventName: "complete",*/}
+                            {/*      callback: () => {*/}
+                            {/*        if (typeof onEnd === "function") {*/}
+                            {/*          onEnd();*/}
+                            {/*        }*/}
+                            {/*      }*/}
+                            {/*    }*/}
+                            {/*  ]}*/}
+                            {/*/>*/}
                           </div>
                           <br />
                           <div>
