@@ -25,7 +25,7 @@
     "@helixnetwork/sha3": "^1.0.0-alpha.6",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.6",
     "@helixnetwork/validators": "^1.0.0-alpha.6",
-    "argon2": "rihardsgravis/node-argon2#prebuild-release",
+    "argon2": "rihardsgravis/node-argon2#ae1a860",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
@@ -75,7 +75,6 @@
   },
   "scripts": {
     "start": "yarn run build && concurrently --kill-others  \" yarn run devserver \"  \"wait-on http://localhost:1074 && cross-env NODE_ENV=development  electron -r @babel/register main.js\"",
-    "postinstall": "electron-builder install-app-deps",
     "devserver": "node server.js",
     "style:shots": "node scripts/puppeteer.js",
     "build": "rimraf dist && concurrently \"yarn run build-main\" \"yarn run build-app\"",
@@ -87,7 +86,7 @@
     "compile:win": "./node_modules/.bin/electron-builder --win --x64",
     "publish:linux": "./node_modules/.bin/electron-builder --linux --x64 -p always",
     "publish:mac": "./node_modules/.bin/cross-env electron-builder --mac --x64 -p always",
-    "publish:win":   "./node_modules/.bin/electron-builder --win --x64 -p always",
+    "publish:win": "./node_modules/.bin/electron-builder --win --x64 -p always",
     "auditjs": "./../../node_modules/.bin/auditjs -n -l error -w whitelist.json",
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
     "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl"
@@ -119,9 +118,10 @@
     },
     "publish": {
       "provider": "s3",
-      "bucket": "nautiluswallet",
-      "region ": "ap-south-1",
-      "endpoint ": "https://nautiluswallet.s3.ap-south-1.amazonaws.com",
+      "bucket": "nautilus-wallet",
+      "region ": "us-east-2",
+      "endpoint ": "https://nautilus-wallet.s3.us-east-2.amazonaws.com",
+      "path":"/nautilus/releases",
       "channel": "latest"
     },
     "extends": null,

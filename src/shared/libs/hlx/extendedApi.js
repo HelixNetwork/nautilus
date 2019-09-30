@@ -315,15 +315,14 @@ const sendTransfer = settings => (
   minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE
 ) => {
   // return console.log(settings);
+
   const cached = {
     txs: [],
     transactionObjects: []
   };
-
   return seedStore
     .prepareTransfers(settings)(transfers, options)
     .then(txs => {
-      
       cached.txs = txs;
       return getTransactionsToApprove(settings)({}, depth);
     })
@@ -342,6 +341,7 @@ const sendTransfer = settings => (
     })
     .then(() => cached.transactionObjects)
     .catch(err =>{ throw new Error(err)});
+  
 };
 
 /**
