@@ -377,8 +377,16 @@
     color: #000;
 }
 
-
-
+  .send_bts {
+    display: inline-block;
+    margin-top: 1%;
+    margin-left: 50%;
+    cursor: pointer;  
+    & :hover {
+      opacity: 1;
+    }
+  }
+  
   .send_bts img {
     height: 50%;
     width: 55px;
@@ -387,24 +395,13 @@
     opacity: 0.3;
   }
 
-
-  .send_bts {
-    display: inline-block;
-    margin-top: 1%;
-    margin-left: 50%;
-    
-  }
   .send_bts_h2{
     opacity: 0.3;
     margin-top: -1%;
     color: white;
-    margin-left: 0%;
+    margin-left: -8%;
   } 
-
-  a .send_bts :hover{
-      color:white;
-      cursor: pointer;          
-  }
+              
 
   .img{
     height:36px;
