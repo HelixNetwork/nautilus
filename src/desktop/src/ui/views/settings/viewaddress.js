@@ -62,7 +62,7 @@ class Viewaddress extends React.PureComponent {
                       <li key={address} style={{overflow:"hidden"}}>
                         <p
                           className={css.p_style}
-                          style={{marginTop: "10px", float: "left", width: "51%"}}
+                          style={{marginTop: "10px", float: "left", width: "61%", marginLeft:"0%" }}
 
                         >
                           <Clipboard
@@ -78,7 +78,7 @@ class Viewaddress extends React.PureComponent {
                             </span>
                           </Clipboard>
                         </p>
-                        <strong style={{float: "right", marginTop: "6%"}}> {formatValue(addressObject.balance)} <span> {formatUnit(addressObject.balance)}</span></strong>
+                        <strong style={{float: "right", marginTop: "5%"}}> {formatValue(addressObject.balance)} <span> {formatUnit(addressObject.balance)}</span></strong>
                       </li>
                     );
                   })}

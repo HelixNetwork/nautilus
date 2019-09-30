@@ -455,10 +455,13 @@ class Send extends React.PureComponent {
                         onClick={this.validateInputs.bind(this)}
                       >
                         <img src={ic1} alt="" />
-                      </a>
-                      <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3'}}>
+                      
+                      <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3', color:"white"}}>
                       {t("send:send")}
                       </h2>
+                      
+                      </a>
+
                     </form>
                     {openModal && (
                       <Modal
