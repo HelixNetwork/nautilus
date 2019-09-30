@@ -447,7 +447,7 @@ class Send extends React.PureComponent {
                         className={css.reci_text}
                         value={address}
                         onChange={this.addressInput.bind(this)}
-                        placeholder="RECEIVER ADDRESS"
+                        placeholder="RECIPIENT ADDRESS"
                       />
                       <br />
                       <a
@@ -455,10 +455,13 @@ class Send extends React.PureComponent {
                         onClick={this.validateInputs.bind(this)}
                       >
                         <img src={ic1} alt="" />
-                      </a>
-                      <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3'}}>
+                      
+                      <h2 className={classNames(css.send_bts_h2)}>
                       {t("send:send")}
                       </h2>
+                      
+                      </a>
+
                     </form>
                     {openModal && (
                       <Modal
