@@ -95,7 +95,7 @@ function createWindow() {
 
     dialog.showMessageBox(options, (index) => {
       if (index === 0)   windows.main.reload()
-      else   windows.main.closed()
+      else   windows.main.close()
     })
   })
   windows.main.loadURL(url);
