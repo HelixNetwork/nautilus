@@ -67,7 +67,7 @@ class Support extends React.PureComponent {
                    </div>
                     <h1>Nautilus Wallet</h1>
                     <h2>
-                       Email us at: <small>nautilus@hlx.ai</small>
+                       Email us at: <small>nautilus@helix-foundation.org</small>
                     </h2>
                     </section>
                   </div>
