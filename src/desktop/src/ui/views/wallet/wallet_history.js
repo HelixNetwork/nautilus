@@ -50,20 +50,13 @@ class WalletHistory extends React.PureComponent {
     return (
       <div>
         <section className={css.home}>
-          {/* <Top disp={"block"} history={this.props.history} /> */}
+         
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
                   <div className={classNames(css.foo_bxx1)}>
                   <h3 className={css.heading}>TRANSACTION HISTORY</h3>
-                {/* <div className={css.search}><input type="text" className={css.search_text} placeholder="Type text here..." /></div>
-                <div className={css.search}><select className={css.sort_text} placeholder="Sort by">
-                  <option value="all">All</option>
-                  <option value="sent">Sent</option>
-                  <option value="receive">Receive</option>
-                  <option value="pending">Pending</option>
-                  </select></div> */}
                   <List
                         updateAccount={() => this.updateAccount()}
                         setItem={item =>

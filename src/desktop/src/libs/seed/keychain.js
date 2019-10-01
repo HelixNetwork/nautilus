@@ -18,7 +18,8 @@ class Keychain extends SeedStoreCore {
    */
   constructor(key, accountId) {
     super();
-
+  
+    
     return (async () => {
         this.key = key.slice(0);
       

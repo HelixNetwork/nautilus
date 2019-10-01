@@ -60,6 +60,8 @@ class AccountName extends React.PureComponent {
       t,
       accountName
     } = this.props;
+    console.log("account",account);
+    console.log("accountName",accountNames);
     const newAccountName = this.state.newAccountName.replace(/^\s+|\s+$/g, "");
 
     if (newAccountName.length < 1) {

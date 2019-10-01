@@ -117,6 +117,7 @@ export class ListComponent extends React.PureComponent {
   listAddresses(tx) {
     const { t } = this.props;
 
+
     return (
       <div className={css.addresses}>
         <strong>{t("addresses")}:</strong>
@@ -342,7 +343,7 @@ export class ListComponent extends React.PureComponent {
     return (
       <React.Fragment>
         <nav className={css.nav}>
-        {/* <div className={css.search}><input type="text" className={css.search_text} placeholder="Type text here..." /></div> */}
+       
         <div className={css.search}>
           <div
               onClick={() => this.setState({ search: "" })}
@@ -381,7 +382,7 @@ export class ListComponent extends React.PureComponent {
 
           
         </nav>
-        {/* <div className={css.list} style={style}> */}
+      
 
           <Scrollbar style={scrollStyle}>
             {filteredTransactions.length ? (
@@ -442,37 +443,7 @@ export class ListComponent extends React.PureComponent {
                     </div>
                     )}
 
-                    {/* <div className={css.alt_bg}>
-                      {isReceived ? (
-                        <Icon icon="plus" size={14} />
-                      ) : (
-                        <Icon icon="minus" size={14} />
-                      )}
-                      <span>
-                        {formatTime(
-                          navigator.language,
-                          detectedTimezone,
-                          convertUnixTimeToJSDate(transaction.timestamp)
-                        )}
-                      </span>
-                      <span>
-                        {!isConfirmed
-                          ? isReceived
-                            ? t("receiving")
-                            : t("sending")
-                          : isReceived
-                          ? t("received")
-                          : t("sent")}
-                      </span>
-                      <span>
-                        {transaction.transferValue === 0
-                          ? ""
-                          : isReceived
-                          ? "+"
-                          : "-"}
-                        {formatHlx(transaction.transferValue, true, true)}
-                      </span>
-                    </div> */}
+                 
                   </a>
                 );
               })
@@ -484,7 +455,7 @@ export class ListComponent extends React.PureComponent {
               </p>
             )}
           </Scrollbar>
-        {/* </div> */}
+      
         <div
           className={classNames(css.popup, activeTx ? css.on : null)}
           onClick={() => setItem(null)}

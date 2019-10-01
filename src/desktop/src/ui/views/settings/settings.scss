@@ -210,23 +210,32 @@ p {
   top: 115px;
   right: 14%;
 }
+.log {
 
-.p_style {
-  font-size: 14px;
-  line-height: 24px;
-  font-family: monospace;
-  margin-top: 2vw !important;
-}
-
-.paragraph {
-font-size: 16px;
+      list-style: none;
+      width: 60%;
+      margin-left: 10vw;
+      user-select: all;
+      cursor: text;
+      color: var(--primary);
+      margin-right: 10px;
+  }
+  .p_style {
+    font-size: 14px;
     line-height: 24px;
-    margin-bottom: 16px;
-    font-family: proximaNova-bold;
-    text-align: left;
+    font-family: monospace;
+    margin-top: 2vw !important;
   }
-
-  .p_opacity{
-    opacity:0.7;
-    margin-top:1vw;
-  }
+  
+  .paragraph {
+  font-size: 16px;
+      line-height: 24px;
+      margin-bottom: 16px;
+      font-family: proximaNova-bold;
+      text-align: left;
+    }
+  
+    .p_opacity{
+      opacity:0.7;
+      margin-top:1vw;
+    }
