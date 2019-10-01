@@ -117,12 +117,13 @@
       "buildResources": "./assets",
       "output": "./out"
     },
+    "afterSign": "./scripts/notarize.macos.js",
     "publish": {
       "provider": "s3",
       "bucket": "nautilus-wallet",
       "region ": "us-east-2",
       "endpoint ": "https://nautilus-wallet.s3.us-east-2.amazonaws.com",
-      "path":"/nautilus/releases",
+      "path": "/nautilus/releases",
       "channel": "latest"
     },
     "extends": null,
@@ -143,6 +144,7 @@
     "dmg": {
       "iconSize": 120,
       "title": "${productName}",
+      "sign": false,
       "contents": [
         {
           "x": 520,
@@ -176,6 +178,13 @@
     "target": [
       "dmg",
       "zip"
+    ],
+    "entitlements": "./entitlements.mac.plist",
+    "entitlementsInherit": "./entitlements.mac.plist",
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "asarUnpack": [
+      "**/*.node"
     ]
   },
   "homepage": "./",
@@ -187,9 +196,10 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
     "electron": "3.0.15",
-    "electron-builder": "20.38.5",
+    "electron-builder": "^21.2.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
+    "electron-notarize": "^0.1.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.31.0",
