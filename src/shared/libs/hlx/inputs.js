@@ -367,6 +367,16 @@ export const getUnspentInputs = provider => (
     preparedInputs.inputs,
     spentAddresses
   ).then(unspentInputs => {
+    const filtered = filterAddressesWithIncomingTransfers(
+        unspentInputs,
+        pendingValueTransfers
+    );
+
+    const collected = filtered.reduce((sum, input) => sum + input.balance, 0);
+
+    if (collected< threshold){
+      throw new Error(Errors.FUNDS_AT_SPENT_ADDRESSES);
+    }
     // Keep track of all spent addresses that are filtered
     inputs.spentAddresses = [
       ...inputs.spentAddresses,
@@ -376,11 +386,6 @@ export const getUnspentInputs = provider => (
       )
     ];
 
-    const filtered = filterAddressesWithIncomingTransfers(
-      unspentInputs,
-      pendingValueTransfers
-    );
-
     // Keep track of all addresses with incoming transfers
     inputs.addressesWithIncomingTransfers = [
       ...inputs.addressesWithIncomingTransfers,
@@ -389,8 +394,6 @@ export const getUnspentInputs = provider => (
         input => input.address
       )
     ];
-
-    const collected = filtered.reduce((sum, input) => sum + input.balance, 0);
 
     const diff = threshold - collected;
     const hasInputs = size(preparedInputs.inputs);
