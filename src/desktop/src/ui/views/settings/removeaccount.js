@@ -50,7 +50,7 @@ class Remove extends PureComponent {
      * @returns {undefined}
      */
     removeAccount = async (password) => {
-        const { accountMeta, accountName, account, history, t, generateAlert, deleteAccount } = this.props;
+        const { accountMeta, accountName, history, t, generateAlert, deleteAccount } = this.props;
         this.setState({
             removeConfirm: false,
         });
