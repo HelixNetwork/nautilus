@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Lottie from "react-lottie";
-import * as animationData from "animations/hlx.json";
+import * as animationData from "animations/lottie.json";
 
 /**
  * Animated/static logo component
