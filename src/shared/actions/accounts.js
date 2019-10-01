@@ -19,7 +19,8 @@ import {
   generateNodeOutOfSyncErrorAlert,
   generateUnsupportedNodeErrorAlert,
   generateAccountSyncRetryAlert,
-  generateLedgerCancelledAlert
+  generateLedgerCancelledAlert,
+  generateErrorAlert
 } from "../actions/alerts";
 
 import {
@@ -33,6 +34,9 @@ import { changeNode } from "./settings";
 import { withRetriesOnDifferentNodes, getRandomNodes } from "../libs/hlx/utils";
 import { DEFAULT_RETRIES } from "../config";
 import { AccountsActionTypes } from "./types";
+import NodesManager from '../libs/hlx/NodeManager';
+import orderBy from 'lodash/orderBy';
+import map from 'lodash/map';
 
 /**
  * Dispatch when account information is successfully synced on login
@@ -120,6 +124,20 @@ export const manuallySyncAccount = (seedStore, accountName, quorum = false) => {
 export const manualSyncRequest = () => ({
   type: AccountsActionTypes.MANUAL_SYNC_REQUEST,
 });
+
+/**
+ * Dispatch when account is successfully synced
+ *
+ * @method manualSyncSuccess
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {object} }}
+ */
+export const manualSyncSuccess = (payload) => ({
+  type: AccountsActionTypes.MANUAL_SYNC_SUCCESS,
+  payload,
+});
+
 /**
  * Dispatch to update address data for provided account
  *
@@ -403,7 +421,7 @@ export const changeAccountName = payload => {
  * @returns {{type: {string}, payload: {object} }}
  */
 export const updateAccountAfterTransition = payload => ({
-  type: ActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION,
+  type: AccountsActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION,
   payload
 });
 /**
@@ -421,4 +439,43 @@ export const removeAccount = (payload) => {
         type: AccountsActionTypes.REMOVE_ACCOUNT,
         payload,
     };
+};
+
+/**
+ *  Sync local account in case signed inputs were exposed to the network (and the network call failed)
+ *
+ *   @method syncAccountOnValueTransactionFailure
+ *   @param {array} attachedTransactions
+ *   @param {object} attachedAddressObject
+ *   @param {object} accountState
+ *
+ *   @returns {object}
+ **/
+export const syncAccountDuringSnapshotTransition = (attachedTransactions, attachedAddressObject, accountState) => {
+  // Check if attached address is already part of existing address data
+  const existingAddressObject = find(accountState.addressData, { address: attachedAddressObject.address });
+
+  return {
+      ...accountState,
+      addressData: existingAddressObject
+          ? // If address is already part of existing address data, then simply replace the existing address object with the attached one
+            map(accountState.addressData, (addressObject) => {
+                if (addressObject.address === attachedAddressObject.address) {
+                    return attachedAddressObject;
+                }
+
+                return addressObject;
+            })
+          : // If address is not part of existing address data, then add it to address data
+            orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
+      transactions: [
+          ...accountState.transactions,
+          ...map(attachedTransactions, (transaction) => ({
+              ...transaction,
+              persistence: false,
+              broadcasted: true,
+              fatalErrorOnRetry: false,
+          })),
+      ],
+  };
 };

@@ -115,7 +115,7 @@ class Changepassword extends React.PureComponent {
 
     return (
       <div className={classNames(css.foo_bxx12)}>
-        <div cllassname={classNames(css.set_bxac)}>
+        <div classname={classNames(css.set_bxac)}>
           <form onSubmit={e => this.changePassword(e)}>
             <h5 style={{ marginLeft: "22vw", marginTop: "3vw " }}>
               

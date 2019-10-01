@@ -65,7 +65,6 @@ class Snapshot extends PureComponent {
         });
     }
 
-    
 
   componentDidUpdate(prevProps) {
     const { wallet, ui } = this.props;
@@ -194,7 +193,7 @@ class Snapshot extends PureComponent {
                   {t("snapshotTransition:attaching")} <br />
                   {t("loading:thisMayTake")} {t("global:pleaseWaitEllipses")}{" "}
                   <br />
-                  {Tools.renderProgressChildren(
+                  {Snapshot.renderProgressChildren(
                     activeStepIndex,
                     sizeOfActiveSteps,
                     t
@@ -216,14 +215,12 @@ class Snapshot extends PureComponent {
         />
         <section className="spage_1">
           <div className={classNames(css.foo_bxx12)}>
-          <Scrollbar>
-            <div className={css.scroll}>
              
-                <article>
-                  <h3 style={{ marginLeft: "14vw" ,marginTop:'-8vw'}}>
+                <article style={{ marginLeft: "10vw" }}>
+                  <h3 style={{ marginLeft: "14vw" ,marginTop:'6vw'}}>
                     {t("advancedSettings:snapshotTransition")}
                   </h3>
-                  <p>
+                  <p className={css.p_opacity}>
                     {t("snapshotTransition:snapshotExplanation")} <br />
                     {t("snapshotTransition:hasSnapshotTakenPlace")}
                   </p>
@@ -250,14 +247,14 @@ class Snapshot extends PureComponent {
                       cancel: t("global:no")
                     }}
                   />
-                   <h3 style={{ marginLeft: "16vw"}}>{t('advancedSettings:manualSync')}</h3>
+                   <h3 style={{ marginLeft: "16vw", marginTop: "6vw"}}>{t('advancedSettings:manualSync')}</h3>
                         {ui.isSyncing ? (
-                            <p>
+                            <p className={css.p_opacity}>
                                 {t('manualSync:syncingYourAccount')} <br />
                                 {t('manualSync:thisMayTake')}
                             </p>
                         ) : (
-                            <p>
+                            <p className={css.p_opacity}>
                                 {t('manualSync:outOfSync')} <br />
                                 {t('manualSync:pressToSync')}
                             </p>
@@ -273,8 +270,6 @@ class Snapshot extends PureComponent {
                         </Button>
                 </article>
          
-            </div>
-            </Scrollbar>
           </div>
         </section>
       </div>

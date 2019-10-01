@@ -1,5 +1,6 @@
 .about {
     text-align: center;
+    margin-top: 17vw;
     article {
         display: block;
         position: relative;
@@ -16,7 +17,8 @@
     h1 {
         margin: 20px auto;
         line-height: 18px;
-        font-size: 38px;
+        font-size: 28px;
+        opacity: 0.3;
     }
 
     p {
@@ -28,14 +30,14 @@
 
     h2 {
         display: inline-block;
-        color: var(--primary);
-        font-size: 18px;
+        color: #ebba53;
+        font-size: 33px;
         margin-bottom: 0px;
 
         small {
             margin: 5px 0 0 6px;
             float: right;
-            font-size: 11px;
+            font-size: 22px;
             padding: 0 10px 1px;
             border-radius: 3px;
             background: #c65b38;

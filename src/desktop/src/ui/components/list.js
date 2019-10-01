@@ -347,7 +347,7 @@ export class ListComponent extends React.PureComponent {
         <div className={css.search}>
           <div
               onClick={() => this.setState({ search: "" })}
-              style={{ display: "inline-block", marginLeft: "-131%",color:'white',opacity:'0.3', marginTop:'5px' }}
+              className = {css.search_icon_style}
             >
               <Icon
                 icon={search.length > 0 ? "cross" : "search"}

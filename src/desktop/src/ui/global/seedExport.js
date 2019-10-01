@@ -185,9 +185,9 @@ export class SeedExportComponent extends PureComponent {
               </div>
               {t("seedVault:exportSeedVault")}
             </h1>
-            {step === 1 && <h4>{t("seedVault:seedVaultExplanation")}</h4>}
-            {step === 2 && <h4>{t("seedVault:seedVaultWarning")}</h4>}
-            {step === 3 && <h4>{t("seedVault:seedVaultKeyExplanation")}</h4>}
+            {step === 1 && <h4 className={css.modal_h4}>{t("seedVault:seedVaultExplanation")}</h4>}
+            {step === 2 && <h4 className={css.modal_h4}>{t("seedVault:seedVaultWarning")}</h4>}
+            {step === 3 && <h4 className={css.modal_h4}>{t("seedVault:seedVaultKeyExplanation")}</h4>}
           </Row>
           <Row>
             <Button

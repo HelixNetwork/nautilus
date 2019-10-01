@@ -1,10 +1,11 @@
 import assign from "lodash/assign";
 import filter from "lodash/filter";
 import map from "lodash/map";
+import unionBy from "lodash/unionBy";
 import transform from "lodash/transform";
 import { Account, Node, Wallet } from "../database";
 import { DEFAULT_NODE, DEFAULT_NODES } from "../config";
-
+import {setNodeList} from '../actions/wallet';
 /**
  * Map persisted state to redux state
  * @method mapStorageToState
@@ -21,8 +22,8 @@ export const mapStorageToState = () => {
     errorLog,
     accountInfoDuringSetup
   } = Wallet.latestDataAsPlainObject;
-  const nodes = Node.getDataAsArray();
-
+  let nodes = Node.getDataAsArray();
+  nodes = unionBy(nodes, DEFAULT_NODES, 'url');
   return {
     accounts: {
       accountInfoDuringSetup,

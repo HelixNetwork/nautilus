@@ -59,9 +59,9 @@ class Send extends React.PureComponent {
   validateInputs = e => {
     e.preventDefault();
     this.setState({
-      openModal: validateInputs()
+      openModal: this.areInputsValid()
     });
-    
+
   };
 
   confirmTransfer = async () => {
@@ -148,10 +148,10 @@ class Send extends React.PureComponent {
     this.props.startTrackingProgress(steps);
   }
 
-  validateInputs = () => {
+  areInputsValid() {
     const { generateAlert, balance, t } = this.props;
     const { address, txamount,hlxamount, message } = this.state;
-    
+
     // Validate address length
     if (address.length !== ADDRESS_LENGTH) {
       generateAlert(
@@ -193,9 +193,10 @@ class Send extends React.PureComponent {
       return false;
     }
 
-    this.setState({
-      openModal: true
-    });
+    // this.setState({
+    //   openModal: true
+    // });
+    return true;
   };
 
   addressInput(e) {
@@ -436,7 +437,7 @@ class Send extends React.PureComponent {
                         className={css.reci_text}
                         value={address}
                         onChange={this.addressInput.bind(this)}
-                        placeholder="RECEIVER ADDRESS"
+                        placeholder="RECIPIENT ADDRESS"
                       />
                       <br />
                       <a
@@ -444,10 +445,13 @@ class Send extends React.PureComponent {
                         onClick={this.validateInputs.bind(this)}
                       >
                         <img src={ic1} alt="" />
-                      </a>
-                      <h2 className={classNames(css.send_bts_h2)} style={{opacity:'0.3'}}>
+                      
+                      <h2 className={classNames(css.send_bts_h2)}>
                       {t("send:send")}
                       </h2>
+                      
+                      </a>
+
                     </form>
                     {openModal && (
                       <Modal
@@ -458,19 +462,19 @@ class Send extends React.PureComponent {
                           <br />
                           <div className={css.transferLoading}>
                             <br />
-                            <Lottie
-                              options={defaultOptions}
-                              eventListeners={[
-                                {
-                                  eventName: "complete",
-                                  callback: () => {
-                                    if (typeof onEnd === "function") {
-                                      onEnd();
-                                    }
-                                  }
-                                }
-                              ]}
-                            />
+                            {/*<Lottie*/}
+                            {/*  options={defaultOptions}*/}
+                            {/*  eventListeners={[*/}
+                            {/*    {*/}
+                            {/*      eventName: "complete",*/}
+                            {/*      callback: () => {*/}
+                            {/*        if (typeof onEnd === "function") {*/}
+                            {/*          onEnd();*/}
+                            {/*        }*/}
+                            {/*      }*/}
+                            {/*    }*/}
+                            {/*  ]}*/}
+                            {/*/>*/}
                           </div>
                           <br />
                           <div>
@@ -498,7 +502,7 @@ class Send extends React.PureComponent {
                   </div>
                   {isSending && (
                     <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
-                      <ProgressBar progress={this.state.progress} title={progressTitle}/>
+                      <ProgressBar type={"send"} progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}
                 </div>
