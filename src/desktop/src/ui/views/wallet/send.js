@@ -344,11 +344,7 @@ class Send extends React.PureComponent {
     return (
       <div>
         <section className={css.home}>
-          {/* <Top bal={"block"} main={"block"} user={"block"} history={history} /> */}
-          {/* <TopBar/>
-          <DashSidebar
-          history={history}
-          /> */}
+          
           <div className={classNames(css.pg1_foo3)}>
             <div className="container">
               <div className="row">
@@ -356,15 +352,11 @@ class Send extends React.PureComponent {
                   <div className={classNames(css.foo_bxx1)} style={{paddingBottom:'100px'}}>
                     <h5 style={{marginLeft: '494px'}}>
                       {t("send:sendCoins")}
-                      {/* <span>.</span> */}
+                   
                     </h5>
                     <h6 style={{opacity: '0.3',marginLeft: '275px'}}>{t("send:irrevocableTransactionWarning")}</h6>
                     <form style={{marginLeft: '48px'}}>
-                      {/* <div className={classNames(css.bbx_box1, css.tr_box)}>
-                                            <span className={classNames(css.er1)}>EUR</span>
-                                            <span className={classNames(css.er2)}>26,74</span>
-                                            <input type="text" classNames={css.er1} placeholder="EUR"></input>
-                                        </div> */}
+                    
                       <div>
                       <select
                       className={css.currencyBox}
@@ -391,10 +383,7 @@ class Send extends React.PureComponent {
                       ></input>
                       </div>
                       <h1 className={classNames(css.eq)}>=</h1>
-                      {/* <div className={classNames(css.bbx_box1)}>
-                                            <span className={classNames(css.er1)}>mHLX</span>
-                                            <span className={classNames(css.er2)}>1337,00</span>
-                                        </div> */}
+                    
                       <div>
                       <select
                       defaultValue={"mHLX"}
@@ -419,7 +408,7 @@ class Send extends React.PureComponent {
                         onChange={this.hlxInput.bind(this)}
                       ></input>
                       </div>
-                      {/* <p>{t("send:enterReceiverAddress")}</p> */}
+                   
 
                       <div>
                       <span
@@ -517,7 +506,7 @@ class Send extends React.PureComponent {
             </div>
           </div>
         </section>
-        {/* <footer className={classNames(css.footer_bx)}></footer> */}
+     
       </div>
     );
   }

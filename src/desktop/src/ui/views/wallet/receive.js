@@ -348,15 +348,9 @@ class Receive extends React.PureComponent {
                               <Button
                                 className="icon_hover"
                                 variant="backgroundNone"
-                                // loading={isGeneratingReceiveAddress}
-                                // onClick={this.onGeneratePress}
+                              
                               >
-                      {/* <div className={css.hlx_iconHolder}>
-                      
-                      <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                    
-                   </div>          */}
-                    {/* <Icon icon="receive" size={55} /> */}
+                   
                                 <br />
                                 {t("receive:copyAddress")} <span> > </span>
                               </Button>
@@ -365,9 +359,8 @@ class Receive extends React.PureComponent {
                             <Button
                               className="icon_hover"
                               variant="backgroundNone"
-                              // loading={isGeneratingReceiveAddress}
+                             
                             >
-                              {/* <Icon icon="receive" size={55} /> */}
                               <br />
                               {t("receive:copyAddress")} <span> > </span>
                             </Button>
@@ -376,12 +369,7 @@ class Receive extends React.PureComponent {
                       <div className={classNames(css.addbottom)}>
                         <hr/>
                       </div>
-                      {/* Refresh and Receive Buttons... */}
-                      {/* <div className={css.hlx_iconHolder}>
-                      
-                         <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                      
-                      </div> */}
+                   
                     </div>
                     </div>
                  
@@ -400,7 +388,7 @@ class Receive extends React.PureComponent {
                             <div style={{ padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px', overflow:'hidden'}} key={value.address}>
                               <span style={{ display: 'inline-block',float: 'left', width: '74%'}}>{(value.address).substring(0,30)+'...'}</span> 
                               <span style={{ width: '18%', float: 'right', display: 'inline-block'}}>  <span className={value.spent==true? css.used_dot:css.ready_dot}></span> {value.spent==true?'Used':'Ready'}</span>
-                              {/* marginLeft:'32px',padding:'5px 10px 5px 14px' */}
+                            
                             </div>
                           );
                             })

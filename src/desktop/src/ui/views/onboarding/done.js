@@ -29,16 +29,6 @@ class Done extends React.PureComponent {
    * @returns {undefined}
    */
 
-  // stepForward(route) {
-  // this.handleClick=this.handleClick.bind(this);
-
-  //     this.props.history.push(`/onboarding/${route}`);
-  // }
-
-  // setComplete = () => {
-  //     const { history } = this.props;
-  //     history.push('/onboarding/login');
-  // };
 
   render() {
     const { loop, animate, onEnd } = this.props;
@@ -83,7 +73,7 @@ class Done extends React.PureComponent {
           />
           <h6>{t("onboardingComplete:walletReady")}</h6>
         </Row>
-        {/* <h1>{t('onboardingComplete:allDone')}<span className={classNames(css.text_color)}>!</span> </h1> */}
+      
 
         <Row>
           <Button
@@ -107,7 +97,7 @@ class Done extends React.PureComponent {
           </Button>
         </Row>
 
-        {/* <Button className="navright" variant="backgroundNone" onClick={() => this.props.history.push('/wallet')} >{t('login:login')} <span>></span></Button> */}
+      
       </div>
             
     );

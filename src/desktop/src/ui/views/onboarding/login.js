@@ -138,10 +138,6 @@ class Login extends React.PureComponent {
       throw e;
     }
 
-    // this.props.getPrice();
-    // this.props.getChartData();
-    // this.props.getMarketData();
-    // this.props.getCurrencyData(currency);
 
     if (addingAdditionalAccount) {
       this.props.getFullAccountInfo(seedStore, accountName);
@@ -201,10 +197,6 @@ class Login extends React.PureComponent {
         password: ""
       });
 
-      // if (!completedMigration) {
-      //     this.setState({ shouldMigrate: true });
-      //     return;
-      // }
 
       try {
         await this.setupAccount();
