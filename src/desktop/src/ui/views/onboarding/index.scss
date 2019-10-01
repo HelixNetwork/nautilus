@@ -680,12 +680,13 @@ footer li::after {
     background: transparent;
     border: none;
     color: var(--secondary);
-    font-size: 24px;
+    font-size: 20px;
     line-height: 29px;
     height: 23px;
     margin: 0;
     padding: 0px 14px;
-    font-family: "SourceCodePro";
+    font-family: "proximaNova-regular";
+    width: 25%;
     // transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
 
     &.disabled {

@@ -7,6 +7,7 @@ export default {
   ADDRESS_HAS_PENDING_TRANSFERS:
     "Input addresses already used in a pending transfer.",
   FUNDS_AT_SPENT_ADDRESSES: "WARNING FUNDS AT SPENT ADDRESSES.",
+  PENDING_TRANSACTIONS_NOT_CONFIRMED: "Please wait until the pending transactions are confirmed.",
   CANNOT_SEND_TO_OWN_ADDRESS: "Cannot send to an own address.",
   POW_FUNCTION_UNDEFINED: "Proof of work function is undefined.",
   DIGEST_FUNCTION_UNDEFINED: "Digest function is undefined.",

@@ -347,15 +347,9 @@ class Receive extends React.PureComponent {
                               <Button
                                 className="icon_hover"
                                 variant="backgroundNone"
-                                // loading={isGeneratingReceiveAddress}
-                                // onClick={this.onGeneratePress}
+                              
                               >
-                      {/* <div className={css.hlx_iconHolder}>
-                      
-                      <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                    
-                   </div>          */}
-                    {/* <Icon icon="receive" size={55} /> */}
+                   
                                 <br />
                                 {t("receive:copyAddress")} <span> > </span>
                               </Button>
@@ -364,9 +358,8 @@ class Receive extends React.PureComponent {
                             <Button
                               className="icon_hover"
                               variant="backgroundNone"
-                              // loading={isGeneratingReceiveAddress}
+                             
                             >
-                              {/* <Icon icon="receive" size={55} /> */}
                               <br />
                               {t("receive:copyAddress")} <span> > </span>
                             </Button>
@@ -375,12 +368,7 @@ class Receive extends React.PureComponent {
                       <div className={classNames(css.addbottom)}>
                         <hr/>
                       </div>
-                      {/* Refresh and Receive Buttons... */}
-                      {/* <div className={css.hlx_iconHolder}>
-                      
-                         <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                      
-                      </div> */}
+                   
                     </div>
                     </div>
                  

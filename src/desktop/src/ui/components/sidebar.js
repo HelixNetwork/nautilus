@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import css from "ui/views/settings/settings.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -19,10 +19,15 @@ class Sidebar extends React.PureComponent {
     }).isRequired,
     accounts: PropTypes.object,
     accountNames: PropTypes.array.isRequired,
-    wallet: PropTypes.object
+    wallet: PropTypes.object,
+    // match: PropTypes.object
   };
+  // state = {
+  //   match: this.props.match
+  //   };
   render() {
-    const { t, active, wallet } = this.props;
+    const { t, active, wallet,accountNames} = this.props;
+   
     return (
       <ul className={classNames(css.acco_pg)}>
         <li className={active == "language" ? css.active : ""}>
@@ -67,6 +72,13 @@ class Sidebar extends React.PureComponent {
                 {t("settings:changePassword")}
               </a>
             </li>
+            {accountNames.length > 1 && (
+            <li className={active == "removeaccount" ? css.active : ""}>
+              <a onClick={() => this.props.history.push("/settings/remove/:accountIndex")}>
+              Remove Account
+              </a>
+            </li>
+              )}
             {/* <li className={active == "mode" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/mode")}>
                 {t("settings:mode")}
@@ -83,7 +95,7 @@ class Sidebar extends React.PureComponent {
           <a
             onClick={() => this.props.history.push("/settings/accountsetting")}
           >
-            {t("settings:advanced")}{" "}
+            {t("settings:advanced")}
           </a>
         </li>
       </ul>
