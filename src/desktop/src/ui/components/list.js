@@ -116,6 +116,7 @@ export class ListComponent extends React.PureComponent {
 
   listAddresses(tx) {
     const { t } = this.props;
+console.log("Account for history", accountId);
 
     return (
       <div className={css.addresses}>

@@ -26,12 +26,8 @@ class Sidebar extends React.PureComponent {
   //   match: this.props.match
   //   };
   render() {
-    const { t, active, wallet } = this.props;
-    // const { accountIndex } = match.params;
-    // const accountSettings = typeof accountIndex === 'string';
-    // const account = accountSettings
-    // ? { ...accounts[accountNames[accountIndex]], ...{ accountName: accountNames[accountIndex], accountIndex } }
-    // : null;
+    const { t, active, wallet,accountNames} = this.props;
+   
     return (
       <ul className={classNames(css.acco_pg)}>
         <li className={active == "language" ? css.active : ""}>
@@ -76,11 +72,13 @@ class Sidebar extends React.PureComponent {
                 {t("settings:changePassword")}
               </a>
             </li>
+            {accountNames.length > 1 && (
             <li className={active == "removeaccount" ? css.active : ""}>
-              <a onClick={() => this.props.history.push("/settings/remove/${accountIndex}")}>
+              <a onClick={() => this.props.history.push("/settings/remove/:accountIndex")}>
               Remove Account
               </a>
             </li>
+              )}
             {/* <li className={active == "mode" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/mode")}>
                 {t("settings:mode")}
