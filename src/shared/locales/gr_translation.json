@@ -163,7 +163,9 @@
       "forceUpdateExplanation": "Ein kritisches Update wurde veröffentlicht. Bitte aktualisieren Sie die App jetzt.",
       "missingPermission": "Dateisystemberechtigung erforderlich",
       "missingPermissionExplanation": "Um diese Funktion ausführen zu können, ist ein Zugriff auf das Dateisystem erforderlich.",
-      "swipeToConfirm": "Zum Bestätigen abwischen"
+      "swipeToConfirm": "Zum Bestätigen abwischen",
+      "pending_transactions_not_confirmed": "Try again later!",
+      "pending_transactions_not_confirmed_explanation": "Please wait until the pending transactions are confirmed."
     },
     "addAdditionalSeed": {
       "seedInvalidChars": "Seed enthält ungültige Zeichen",
