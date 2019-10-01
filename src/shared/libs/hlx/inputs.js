@@ -375,7 +375,7 @@ export const getUnspentInputs = provider => (
     const collected = filtered.reduce((sum, input) => sum + input.balance, 0);
 
     if (collected< threshold){
-      throw new Error(Errors.FUNDS_AT_SPENT_ADDRESSES);
+      throw new Error(Errors.PENDING_TRANSACTIONS_NOT_CONFIRMED);
     }
     // Keep track of all spent addresses that are filtered
     inputs.spentAddresses = [
