@@ -985,6 +985,15 @@ export const makeTransaction = (
               20000
             )
           );
+        } else if (message === Errors.PENDING_TRANSACTIONS_NOT_CONFIRMED) {
+          return dispatch(
+              generateAlert(
+                  "error",
+                  i18next.t("global:pending_transactions_not_confirmed"),
+                  i18next.t("global:pending_transactions_not_confirmed_explanation"),
+                  20000
+              )
+          );
         } else if (message === Errors.LEDGER_CANCELLED) {
           return;
         }

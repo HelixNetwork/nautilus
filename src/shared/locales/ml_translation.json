@@ -162,7 +162,9 @@
     "forceUpdateExplanation": "A critical update has been released. Please update the app now.",
     "missingPermission": "File system permission required",
     "missingPermissionExplanation": "Access to the file system is required in order to perform this function.",
-    "swipeToConfirm": "Swipe to confirm"
+    "swipeToConfirm": "Swipe to confirm",
+    "pending_transactions_not_confirmed": "Try again later!",
+    "pending_transactions_not_confirmed_explanation": "Please wait until the pending transactions are confirmed."
   },
   "addAdditionalSeed": {
     "seedInvalidChars": "Seed contains invalid characters",
