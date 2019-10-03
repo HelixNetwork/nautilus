@@ -5,14 +5,12 @@ import PropTypes from "prop-types";
 import { withI18n, Trans } from "react-i18next";
 import Button from "ui/components/button";
 import { setAccountInfoDuringSetup } from "actions/accounts";
-import Logos from "ui/components/logos";
 import css from "./index.scss";
 import Modal from "ui/components/modal";
 import SeedExport from "ui/global/seedExport";
 import Lottie from "react-lottie";
 import * as animationData from "animations/export.json";
 import { Row } from "react-bootstrap";
-// import Electron from '../../../../native/preload/electron';
 
 class SeedBackup extends React.PureComponent {
   static propTypes = {
@@ -23,10 +21,10 @@ class SeedBackup extends React.PureComponent {
 
   state = {
     seed: Electron.getOnboardingSeed(),
-    onboardingname:
-      Electron.getOnboardingName() != null ? Electron.getOnboardingName() : "",
+    onboardingname: Electron.getOnboardingName() != null ? Electron.getOnboardingName() : "",
     writeVisible: false,
-    exportVisible: false
+    exportVisible: false,
+    exported: false
   };
 
   stepForward(route) {
@@ -37,7 +35,7 @@ class SeedBackup extends React.PureComponent {
   }
   render() {
     const { loop, history, t } = this.props;
-    const { exportVisible, onboardingname, seed } = this.state;
+    const { exportVisible, onboardingname, seed, exported } = this.state;
     const defaultOptions = {
       loop: loop,
       autoplay: true,
@@ -49,7 +47,7 @@ class SeedBackup extends React.PureComponent {
 
     return (
       <div>
-        <Row style={{marginTop:'5vw'}}>
+        <Row style={{ marginTop: '5vw' }}>
           <h1>
             {t("saveYourSeed:saveYourSeed")}
             <span className={classNames(css.text_color)}>.</span>
@@ -57,11 +55,7 @@ class SeedBackup extends React.PureComponent {
         </Row>
         <Row className={css.centerBox1}>
           <nav className={css.choice}>
-            <a
-              onClick={() => this.setState({ exportVisible: true })}
-              className={css.secure}
-            >
-            
+            <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
               <div className={css.backup}>
                 <Lottie
                   options={defaultOptions}
@@ -76,7 +70,6 @@ class SeedBackup extends React.PureComponent {
                     }
                   ]}
                 />
-               
               </div>
               <h4>{t("seedVault:exportSeedVault")}</h4>
             </a>
@@ -84,35 +77,16 @@ class SeedBackup extends React.PureComponent {
         </Row>
 
         <Row>
-          <Button
-            className="navleft"
-            variant="backgroundNone"
-            onClick={() => this.stepForward("account-name")}
-          >
-         <span>&lt;</span>  {t("global:goBack")} 
+          <Button className="navleft" variant="backgroundNone" onClick={() => this.stepForward("account-name")}>
+            <span>&lt;</span>  {t("global:goBack")}
           </Button>
-          <Button
-            className="navright"
-            variant="backgroundNone"
-            onClick={() => this.stepForward("seed-import")}
-          >
+          <Button className="navright" variant="backgroundNone" disabled={!exported} onClick={() => this.stepForward("seed-import")}>
             {t("global:confirm")} <span>></span>
           </Button>
         </Row>
-
-
-        <Modal
-          variant="confirm"
-          isOpen={exportVisible}
-          onClose={() => this.setState({ exportVisible: false })}
-        >
-          <SeedExport
-            seed={seed}
-            title={onboardingname}
-            onClose={() => this.setState({ exportVisible: false })}
-          />
+        <Modal variant="confirm" isOpen={exportVisible} onClose={() => this.setState({ exportVisible: false })}>
+          <SeedExport seed={seed} title={onboardingname} onClose={() => this.setState({ exportVisible: false, exported: true })} />
         </Modal>
-
       </div>
     );
   }

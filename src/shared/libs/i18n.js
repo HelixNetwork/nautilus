@@ -43,12 +43,12 @@
 //     'zh_CN',
 //     'zh_TW',
 // ];
-export const I18N_LOCALES = ["en", "ml","gr"];
+export const I18N_LOCALES = ["en", ];
 
 export const I18N_LOCALE_LABELS = [
   "English (International)",
-  "മലയാളം - Malayalam",
-  "Deutsche-German"
+  // "മലയാളം - Malayalam",
+  // "Deutsche-German"
 ];
 
 /**
