@@ -48,7 +48,7 @@ class Send extends React.PureComponent {
     amount: "",
     hlxamount: "",
     txamount:"",
-    message: "Test",
+    message: "",
     openModal: false,
     selectedCurrency:'EUR',
     selectedHlx:'mHLX',
@@ -206,8 +206,14 @@ class Send extends React.PureComponent {
   }
 
   hlxInput(e) {
+    const re = /^[0-9.]+$/;
+
+    // if value is not blank, then test the regex
+
+    if (e.target.value === '' || re.test(e.target.value)) {
     let {txamount,selectedHlx} = this.state;
     let hlxamount = e.target.value;
+   
     let base = 0;
     if(selectedHlx=="HLX"){
       base=1;
@@ -235,36 +241,47 @@ class Send extends React.PureComponent {
       txamount:txamount
     });
   }
+}
 
   amountInput(e) {
-    let {txamount,selectedHlx} = this.state;
-    let base = 0;
-    if(selectedHlx=="HLX"){
-      base=1;
+    const re = /^[0-9\b]+$/;
+
+    // if value is not blank, then test the regex
+
+    if (e.target.value === '' || re.test(e.target.value)) {
       
-    }
-    else if(selectedHlx=="kHLX"){
-      base=1000;
-    }
-    else if(selectedHlx=="mHLX"){
-      base=1000000;
-    }
-    else if(selectedHlx=="gHLX")
-    {
-      base=1000000000;
-    }
-    else if(e.target.value=="tHLX")
-    {
-      base=1000000000000;
+      let {txamount,selectedHlx} = this.state;
+      let base = 0;
+      if(selectedHlx=="HLX"){
+        base=1;
+        
+      }
+      else if(selectedHlx=="kHLX"){
+        base=1000;
+      }
+      else if(selectedHlx=="mHLX"){
+        base=1000000;
+      }
+      else if(selectedHlx=="gHLX")
+      {
+        base=1000000000;
+      }
+      else if(e.target.value=="tHLX")
+      {
+        base=1000000000000;
+      }
+      
+      let hlx = this.state.conversionRate * e.target.value;
+      txamount = hlx * base;
+      this.setState({
+        amount: e.target.value,
+        hlxamount:hlx,
+        txamount:txamount
+      });
+    
     }
     
-    let hlx = this.state.conversionRate * e.target.value;
-    txamount = hlx * base;
-    this.setState({
-      amount: e.target.value,
-      hlxamount:hlx,
-      txamount:txamount
-    });
+  
   }
 
   currencyChange(e){
@@ -336,7 +353,13 @@ class Send extends React.PureComponent {
     })
   }
 
-  
+  resetForm(){
+    this.setState({ 
+      openModal: false,
+      amount:"",
+      hlxamount:""
+    });
+  }
 
   render() {
     const { accountMeta, balance, loop, currencies, isSending, progress, t } = this.props;
@@ -428,6 +451,7 @@ class Send extends React.PureComponent {
                           color: "white"
                         }}
                         maxLength={MAX_HLX_LENGTH}
+                        min={0}
                         placeholder={selectedHlx}
                         onChange={this.hlxInput.bind(this)}
                       ></input>
@@ -466,6 +490,7 @@ class Send extends React.PureComponent {
                       <a
                         className={css.send_bts}
                         onClick={this.validateInputs.bind(this)}
+                        disabled={this.state.hlxamount!=""}
                       >
                         <img src={ic1} alt="" />
                       
@@ -524,7 +549,7 @@ class Send extends React.PureComponent {
                     )}
                   </div>
                   {isSending && (
-                    <Modal isOpen={isSending} onClose={() => this.setState({ openModal: false })}>
+                    <Modal isOpen={isSending} onClose={this.resetForm.bind(this)}>
                       <ProgressBar type={"send"} progress={this.state.progress} title={progressTitle}/>
                     </Modal>
                   )}
