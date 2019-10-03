@@ -502,7 +502,7 @@
         border-radius: 5px;
 }
 
-@media screen and (max-width: 1359px) {
+@media only screen and (max-width: 1359px) {
     .search_icon_style {
         margin-left: -105% !important;
       }
