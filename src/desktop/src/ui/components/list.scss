@@ -502,6 +502,14 @@
         border-radius: 5px;
 }
 
+@media screen and (max-width: 1359px) {
+    .search_icon_style {
+        margin-left: -105% !important;
+      }
+      .refresh {
+        margin-left: 45vw !important;
+      }
+
 @media screen and (max-width: 1365px) {
     .search_icon_style {
         margin-left: -131% !important;
@@ -511,12 +519,6 @@
       }
       
 }
-@media screen and (max-width: 1359px) {
-    .search_icon_style {
-        margin-left: -105% !important;
-      }
-      .refresh {
-        margin-left: 45vw !important;
-      }
+
       
 }
