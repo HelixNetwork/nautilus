@@ -48,7 +48,7 @@ class Send extends React.PureComponent {
     amount: "",
     hlxamount: "",
     txamount:"",
-    message: "",
+    message: "Nautilus Wallet",
     openModal: false,
     selectedCurrency:'EUR',
     selectedHlx:'mHLX',
