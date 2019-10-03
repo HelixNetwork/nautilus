@@ -598,7 +598,7 @@ const isNodeHealthy = settings => {
         ) {
           throw new Error(Errors.UNSUPPORTED_NODE);
         }
-        if(currentRoundIndex === latestSolidRoundIndex+1)
+        if((currentRoundIndex -latestSolidRoundIndex) < 50 )
         {
           return true;
         }
