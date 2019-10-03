@@ -104,7 +104,7 @@
     display: block;
     text-align: center;
     margin-right: 0;
-    margin-left: 47vw !important; //36
+    margin-left: 58vw !important; //36
     color: white !important;
     opacity: 0.3 !important;
 
@@ -309,7 +309,7 @@
     font-size: 17px;
     border: none;
     background: transparent;
-    margin-left: 155px;
+    margin-left: 76%;
     color:white;
   }
 
@@ -502,12 +502,4 @@
         border-radius: 5px;
 }
 
-@media screen and (max-width: 1366px){
-    .search_icon_style {
-        margin-left: -131%;
-      }
-      .refresh {
-        margin-left: 36vw !important;
-      }
       
-}
