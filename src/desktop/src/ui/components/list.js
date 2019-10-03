@@ -364,7 +364,7 @@ export class ListComponent extends React.PureComponent {
           </div>
           {/* Should be changed to isLoading and isBusy */}
           <a
-            onClick={()=>{this.updateAccount();this.updateTx()}}
+            onClick={()=>{this.updateAccount();this.updateTx()}} title= "Refresh"
             className={classNames(css.refresh, (this.props.ui.isSyncing || this.props.ui.isSendingTransfer || this.props.ui.isAttachingToTangle || this.props.ui.isTransitioning) ? css.busy : null, this.props.ui.isFetchingAccountInfo ? css.loading : null)}
           >
             <Icon icon="sync" size={24} />
