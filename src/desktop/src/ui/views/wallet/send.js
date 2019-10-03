@@ -237,10 +237,33 @@ class Send extends React.PureComponent {
   }
 
   amountInput(e) {
+    let {txamount,selectedHlx} = this.state;
+    let base = 0;
+    if(selectedHlx=="HLX"){
+      base=1;
+      
+    }
+    else if(selectedHlx=="kHLX"){
+      base=1000;
+    }
+    else if(selectedHlx=="mHLX"){
+      base=1000000;
+    }
+    else if(selectedHlx=="gHLX")
+    {
+      base=1000000000;
+    }
+    else if(e.target.value=="tHLX")
+    {
+      base=1000000000000;
+    }
+    
     let hlx = this.state.conversionRate * e.target.value;
+    txamount = hlx * base;
     this.setState({
       amount: e.target.value,
-      hlxamount:hlx
+      hlxamount:hlx,
+      txamount:txamount
     });
   }
 
