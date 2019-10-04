@@ -9,13 +9,13 @@ export const DEFAULT_NODE = __TEST__
       password: ""
     }
   : {
-      url: "https://hlxtest.net:8085",
+      url: "https://helixmain.net:8085",
       pow: true,
       token: "",
       password: ""
     };
 export const NODES_WITH_POW_DISABLED = [
-  "https://relayer3.hlxtest.net:8087"
+  "https://relayer3.helixmain.net:8087"
   // 'https://hlxtest.net:8087',
 ].map(url => ({
   url,
@@ -26,9 +26,10 @@ export const NODES_WITH_POW_DISABLED = [
 // TODO
 
 export const NODES_WITH_POW_ENABLED = [
-  "https://hlxtest.net:8085",
-  "https://relayer1.hlxtest.net:8087",
-  "https://relayer2.hlxtest.net:8087",
+  "https://helixmain.net:8085",
+  "https://relayer1.hellixmain.net:8087",
+  "https://relayer2.helixmain.net:8087",
+  "https://relayer3.helixmain.net:8087"
 ].map(url => ({
   url,
   pow: true,
