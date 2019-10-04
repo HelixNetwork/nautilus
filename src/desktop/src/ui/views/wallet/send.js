@@ -372,7 +372,8 @@ class Send extends React.PureComponent {
     this.setState({ 
       openModal: false,
       amount:"",
-      hlxamount:""
+      hlxamount:"",
+      address: ""
     });
   }
 
