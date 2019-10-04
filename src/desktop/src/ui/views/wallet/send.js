@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import css from "./wallet.scss";
 import classNames from "classnames";
+import isEmpty from "lodash/isEmpty";
 import images from "ui/images/ic1.png";
 import TopBar from "./topBar";
 import DashSidebar from 'ui/components/dash_sidebar';
@@ -182,8 +183,19 @@ class Send extends React.PureComponent {
       return false;
     }
 
+    // If empty falls back to default value
+
+    if(message == "")
+    {
+      return true;
+    }
+
+
     // Validate whether message only contains ASCII letters
     // as anything else is lost up on conversion to txBytes
+
+  
+
     if (!isValidMessage(message)) {
       generateAlert(
         "error",
@@ -338,10 +350,13 @@ class Send extends React.PureComponent {
   }
 
   msgChange(e){
+   
+    if(!isEmpty(e.target.value)){
     this.setState({
       message:e.target.value
     })
   }
+}
 
   componentDidMount(){
     const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
