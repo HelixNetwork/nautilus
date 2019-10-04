@@ -1,6 +1,6 @@
 {
   "name": "nautilus-wallet",
-  "version": "0.2.0-alpha.3",
+  "version": "0.2.0-alpha.4",
   "private": true,
   "description": "Desktop wallet for Helix",
   "license": "Apache-2.0 OR EPL-2.0",
