@@ -268,7 +268,14 @@ export const isValidAddress = address => {
  * @returns {boolean}
  */
 export const isValidMessage = message => {
-  return txsToAscii(asciiToTxHex(message)) === message;
+  try{
+return txsToAscii(asciiToTxHex(message)) === message;
+  }
+  catch(err){
+    // return false as it was invalid message
+    return false;
+  }
+
 };
 
 /**
