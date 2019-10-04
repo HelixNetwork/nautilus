@@ -27,7 +27,7 @@ export const NODES_WITH_POW_DISABLED = [
 
 export const NODES_WITH_POW_ENABLED = [
   "https://helixmain.net:8085",
-  "https://relayer1.hellixmain.net:8087",
+  "https://relayer1.helixmain.net:8087",
   "https://relayer2.helixmain.net:8087",
   "https://relayer3.helixmain.net:8087"
 ].map(url => ({
