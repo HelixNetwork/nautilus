@@ -97,7 +97,7 @@ class Welcome extends React.PureComponent {
             <React.Fragment>
               <div className={css.privacy}>
                 <h1>
-                  {step === "terms" ? "Terms and Conditions" : "Privacy Policy"}
+                  {step === "terms" ? "Terms and Conditions" : t("privacyPolicy:privacyPolicy")}
                 </h1>
                 <article>
                   <Scrollbar
