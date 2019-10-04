@@ -151,7 +151,6 @@ class Send extends React.PureComponent {
   areInputsValid() {
     const { generateAlert, balance, t } = this.props;
     const { address, txamount,hlxamount, message } = this.state;
-console.log("Message===", message);
 
     // Validate address length
     if (address.length !== ADDRESS_LENGTH) {
@@ -186,8 +185,6 @@ console.log("Message===", message);
     // Validate whether message only contains ASCII letters
     // as anything else is lost up on conversion to txBytes
     if (!isValidMessage(message)) {
-      console.log("Message in Validation===", message);
-      
       generateAlert(
         "error",
         t("send:invalidMessage"),
@@ -341,8 +338,6 @@ console.log("Message===", message);
   }
 
   msgChange(e){
-    console.log("Msg changing...");
-    
     this.setState({
       message:e.target.value
     })
