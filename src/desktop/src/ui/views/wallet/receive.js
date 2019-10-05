@@ -78,7 +78,7 @@ class Receive extends React.PureComponent {
     message: "",
     scramble: new Array(ADDRESS_LENGTH).fill(0),
     hasSyncedAddress: false,
-    spentstatus:""
+    spentstatus: ""
   };
 
   componentWillReceiveProps(nextProps) {
@@ -152,7 +152,7 @@ class Receive extends React.PureComponent {
       history,
       generateAlert,
       t,
-      
+
     } = this.props;
     const seedStore = await new SeedStore[accountMeta.type](
       password,
@@ -222,8 +222,8 @@ class Receive extends React.PureComponent {
     }
   }
 
-  showReady(){
-    const {accountInfo} = this.props;
+  showReady() {
+    const { accountInfo } = this.props;
 
   }
 
@@ -235,173 +235,160 @@ class Receive extends React.PureComponent {
       hadErrorGeneratingNewAddress,
       accountInfo
     } = this.props;
-    const { message, scramble, hasSyncedAddress,spentstatus } = this.state;
-    let addresses=[];
-    accountInfo.addressData.map(value=>{
-      const data={
-        address:value.address,
-        spent:value.spent.local
+    const { message, scramble, hasSyncedAddress, spentstatus } = this.state;
+    let addresses = [];
+    accountInfo.addressData.map(value => {
+      const data = {
+        address: value.address,
+        spent: value.spent.local
       }
       addresses.push(data)
     });
     return (
-      <div>
-        
-        <section className={css.home}>
-         
-          <div className={classNames(css.pg1_foo3)}>
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className={classNames(css.foo_bxx1)}>
-                    <h3 style={{fontSize:'16px',marginLeft:'252px',marginTop:'-5vw', width: "32%"}}>
-                      {t("receive:receiveCoins")}
-                      <span>.</span>
-                    </h3>
-                    <h3 style={{fontSize:'14px', marginLeft:'0px',marginTop:'-2vw', opacity:'0.3', width:"60%"}}>{t("receive:irrevocableTransactionWarning")} {t("receive:TransactionWarning")}</h3>
-                    <div className={classNames(css.hlx_wallet_box)}>
-                      {/* Address generate */} 
-                      <div className={css.hlx_iconLeft}>
-                          <Button
-                            className="icon_hover"
-                            style={{ marginLeft : "15vw" }}
-                            variant="backgroundNone"
-                            loading={isGeneratingReceiveAddress}
-                            onClick={this.onGeneratePress}
-                          >
-                            <Icon icon="sync" size={28} />
-                            <br />
-                            <p style={{fontSize: '12px',opacity: '0.3',marginTop: '-5px', width: '120px',marginLeft: '12px'}}>{t("receive:generateNewAddress")}</p>{t("receive:generateNewAddress")} <span> > </span>
-                          </Button>
-                        
-                      
-                      
-                     
-                        </div>
-                      <div className={classNames(css.hlx_receive_box)}>
-                        {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
-                          <div
-                            className={
-                              isGeneratingReceiveAddress ? css.loading : null
-                            }
-                          >
-                            {receiveAddress && (
-                              <Clipboard
-                                text={receiveAddress}
-                                title={t("receive:addressCopied")}
-                                success={t("receive:addressCopiedExplanation")}
-                              >
-                                <div className={css.address_div}>
-                                  {receiveAddress
-                                    .substring(0, 64)
-                                    .split("")
-                                    .map((char, index) => {
-                                      const scrambleChar =
-                                        scramble[index] > 0
-                                          ? indexToChar(scramble[index])
-                                          : null;
-                                      return (
-                                        <React.Fragment key={`char-${index}`}>
-                                          {scrambleChar || char}
-                                        </React.Fragment>
-                                      );
-                                    })}
-                                      
-                                  <span style={{ color: "#eaac32" }}>
-                                    {receiveAddress
-                                      .substring(64, 72)
-                                      .split("")
-                                      .map((char, index) => {
-                                        const scrambleChar =
-                                          scramble[index + 64] > 0
-                                            ? indexToChar(scramble[index + 64])
-                                            : null;
-                                        return (
-                                          <React.Fragment key={`char-${index}`}>
-                                            {scrambleChar || char}
-                                          </React.Fragment>
-                                        );
-                                      })}
-                                  </span>
-                                 
-                                </div>
-                                <div className={css.hlx_iconHolder}>
-                                       <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
-                                       <p style={{marginTop: '30px',marginLeft: '2px',fontSize: '11px',opacity: '0.3'}}>{t("receive:shareQr")}</p> 
-                                       </div> 
-                              </Clipboard>
-                              
-                            )}
-                          </div>
-                        ) : (
-                          " "
-                        )}
-                      </div>
-                      <div className={css.hlx_iconRight}>
-                          {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
-                            <Clipboard
-                              text={receiveAddress}
-                              title={t("receive:addressCopied")}
-                              success={t("receive:addressCopiedExplanation")}
-                            >
-                              <Button
-                                className="icon_hover"
-                                variant="backgroundNone"
-                              
-                              >
-                   
-                                <br />
-                                {t("receive:copyAddress")} <span> > </span>
-                              </Button>
-                            </Clipboard>
-                          ) : (
-                            <Button
-                              className="icon_hover"
-                              variant="backgroundNone"
-                             
-                            >
-                              <br />
-                              {t("receive:copyAddress")} <span> > </span>
-                            </Button>
-                          )}
-                        </div>
-                      <div className={classNames(css.addbottom)}>
-                        <hr/>
-                      </div>
-                   
-                    </div>
-                    </div>
-                 
-                    <div className="col-lg-12">
-                    <h3 style={{fontSize:'16px', marginLeft:'72vw',marginTop:'-61.3vw'}}>
-                      {t("receive:Address")}
-                   </h3>
-                    <h3 style={{fontSize:'14px', marginLeft:'71vw', opacity:'0.3'}}>{t("receive:Overviewstatus")}</h3><br/>
-                    <h3  style={{fontSize:'14px', marginLeft:'72vw', marginTop:'-28px', opacity:'0.3'}}>{t("receive:AddressStatus")}</h3><br/>
-                    <div className={classNames(css.hlx_wallet_addr)}>
-                        <Scrollbar >
-                          
-                        {
-                            addresses.map(value=>{
-                          return (
-                            <div style={{ padding:'14px',backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',marginLeft:'10px',marginBottom:'10px',fontSize:'14px', overflow:'hidden'}} key={`${value.address}1`}>
-                              <span style={{ display: 'inline-block',float: 'left', width: '74%'}} key={`${value.address}2`}>{(value.address).substring(0,30)+'...'}</span> 
-                              <span style={{ width: '18%', float: 'right', display: 'inline-block'}} key={`${value.address}3`}>  <span className={value.spent==true? css.used_dot:css.ready_dot} key={`${value.address}4`}></span> {value.spent==true?'Used':'Ready'}</span>
-                              {/* marginLeft:'32px',padding:'5px 10px 5px 14px' */}
-                            </div>
-                          );
-                            })
-                        }
-                        </Scrollbar>
-                    </div>
-                    </div>
+
+      <section className={css.home}>
+        <div className={classNames(css.pg1_foo3)}>
+          <div className={classNames(css.foo_bxx1)}>
+            <h3 style={{ fontSize: '16px', marginLeft: '252px', marginTop: '-5vw', width: "32%" }}>
+              {t("receive:receiveCoins")}
+              <span>.</span>
+            </h3>
+            <h3 style={{ fontSize: '14px', marginLeft: '0px', marginTop: '-2vw', opacity: '0.3', width: "60%", textAlign: "center" }}>{t("receive:irrevocableTransactionWarning")} {t("receive:TransactionWarning")}</h3>
+            <div className={classNames(css.hlx_wallet_box)}>
+              {/* Address generate */}
+              <div className={css.hlx_iconLeft}>
+                <Button
+                  className="icon_hover"
+                  style={{ marginLeft: "15vw" }}
+                  variant="backgroundNone"
+                  loading={isGeneratingReceiveAddress}
+                  onClick={this.onGeneratePress}
+                >
+                  <Icon icon="sync" size={28} />
+                  <br />
+                  <p style={{ fontSize: '12px', opacity: '0.3', marginTop: '-5px', width: '120px', marginLeft: '12px' }}>{t("receive:generateNewAddress")}</p>{t("receive:generateNewAddress")} <span> > </span>
+                </Button>
               </div>
+              <div className={classNames(css.hlx_receive_box)}>
+                {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
+                  <div
+                    className={
+                      isGeneratingReceiveAddress ? css.loading : null
+                    }
+                  >
+                    {receiveAddress && (
+                      <Clipboard
+                        text={receiveAddress}
+                        title={t("receive:addressCopied")}
+                        success={t("receive:addressCopiedExplanation")}
+                      >
+                        <div className={css.address_div}>
+                          {receiveAddress
+                            .substring(0, 64)
+                            .split("")
+                            .map((char, index) => {
+                              const scrambleChar =
+                                scramble[index] > 0
+                                  ? indexToChar(scramble[index])
+                                  : null;
+                              return (
+                                <React.Fragment key={`char-${index}`}>
+                                  {scrambleChar || char}
+                                </React.Fragment>
+                              );
+                            })}
+
+                          <span style={{ color: "#eaac32" }}>
+                            {receiveAddress
+                              .substring(64, 72)
+                              .split("")
+                              .map((char, index) => {
+                                const scrambleChar =
+                                  scramble[index + 64] > 0
+                                    ? indexToChar(scramble[index + 64])
+                                    : null;
+                                return (
+                                  <React.Fragment key={`char-${index}`}>
+                                    {scrambleChar || char}
+                                  </React.Fragment>
+                                );
+                              })}
+                          </span>
+
+                        </div>
+                        <div className={css.hlx_iconHolder}>
+                          <QR data={JSON.stringify({ address: receiveAddress, message: message })} />
+                          <p style={{ marginTop: '30px', marginLeft: '2px', fontSize: '11px', opacity: '0.3' }}>{t("receive:shareQr")}</p>
+                        </div>
+                      </Clipboard>
+
+                    )}
+                  </div>
+                ) : (
+                    " "
+                  )}
               </div>
+              <div className={css.hlx_iconRight}>
+                {!hadErrorGeneratingNewAddress && hasSyncedAddress ? (
+                  <Clipboard
+                    text={receiveAddress}
+                    title={t("receive:addressCopied")}
+                    success={t("receive:addressCopiedExplanation")}
+                  >
+                    <Button
+                      className="icon_hover"
+                      variant="backgroundNone"
+
+                    >
+
+                      <br />
+                      {t("receive:copyAddress")} <span> > </span>
+                    </Button>
+                  </Clipboard>
+                ) : (
+                    <Button
+                      className="icon_hover"
+                      variant="backgroundNone"
+
+                    >
+                      <br />
+                      {t("receive:copyAddress")} <span> > </span>
+                    </Button>
+                  )}
+              </div>
+              <div className={classNames(css.addbottom)}>
+                <hr />
+              </div>
+
             </div>
           </div>
-          <hr className={css.recieve_hr}/>
-        </section>
-      </div>
+
+          <div>
+            <h3 style={{ fontSize: '16px', marginLeft: '72vw', marginTop: '-61.3vw' }}>
+              {t("receive:Address")}
+            </h3>
+            <h3 style={{ fontSize: '14px', marginLeft: '71vw', opacity: '0.3' }}>{t("receive:Overviewstatus")}</h3><br />
+            <h3 style={{ fontSize: '14px', marginLeft: '72vw', marginTop: '-28px', opacity: '0.3' }}>{t("receive:AddressStatus")}</h3><br />
+            <div className={classNames(css.hlx_wallet_addr)}>
+              <Scrollbar >
+
+                {
+                  addresses.map(value => {
+                    return (
+                      <div style={{ padding: '14px', backgroundImage: 'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))', marginLeft: '10px', marginBottom: '10px', fontSize: '14px', overflow: 'hidden' }} key={`${value.address}1`}>
+                        <span style={{ display: 'inline-block', float: 'left', width: '74%' }} key={`${value.address}2`}>{(value.address).substring(0, 30) + '...'}</span>
+                        <span style={{ width: '18%', float: 'right', display: 'inline-block' }} key={`${value.address}3`}>  <span className={value.spent == true ? css.used_dot : css.ready_dot} key={`${value.address}4`}></span> {value.spent == true ? 'Used' : 'Ready'}</span>
+                        {/* marginLeft:'32px',padding:'5px 10px 5px 14px' */}
+                      </div>
+                    );
+                  })
+                }
+              </Scrollbar>
+            </div>
+          </div>
+        </div>
+        <hr className={css.recieve_hr} />
+      </section>
     );
   }
 }
