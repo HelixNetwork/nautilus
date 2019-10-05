@@ -62,6 +62,7 @@ function createWindow() {
     backgroundColor: "#011327",
     resizable: false,
     fullscreen: false,
+    useContentSize:true,
     webPreferences: {
       nodeIntegration: false,
       preload: path.resolve(
