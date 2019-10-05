@@ -225,7 +225,7 @@ class Send extends React.PureComponent {
     if (e.target.value === '' || re.test(e.target.value)) {
     let {txamount,selectedHlx} = this.state;
     let hlxamount = e.target.value;
-   
+    let conversion = 0.000000022;
     let base = 0;
     if(selectedHlx=="HLX"){
       base=1;
@@ -246,7 +246,9 @@ class Send extends React.PureComponent {
       base=1000000000000;
     }
     txamount = hlxamount * base;
-    let amount = txamount / this.state.conversionRate
+    const base1 = conversion * txamount;
+
+    let amount = this.state.conversionRate * base1;
     this.setState({
       hlxamount: hlxamount,
       amount: amount,
@@ -256,7 +258,7 @@ class Send extends React.PureComponent {
 }
 
   amountInput(e) {
-    const re = /^[0-9\b]+$/;
+    const re = /^[0-9.]+$/;
 
     // if value is not blank, then test the regex
 
@@ -264,6 +266,7 @@ class Send extends React.PureComponent {
       
       let {txamount,selectedHlx} = this.state;
       let base = 0;
+      const conversion = 0.000000022;
       if(selectedHlx=="HLX"){
         base=1;
         
@@ -282,8 +285,9 @@ class Send extends React.PureComponent {
       {
         base=1000000000000;
       }
-      
-      let hlx = this.state.conversionRate * e.target.value;
+      let hlx = e.target.value / conversion;
+      hlx = (hlx/this.state.conversionRate);
+      hlx = Math.round(hlx / base);
       txamount = hlx * base;
       this.setState({
         amount: e.target.value,
@@ -298,6 +302,25 @@ class Send extends React.PureComponent {
 
   currencyChange(e){
     let selectedCurrency = e.target.value
+    const {selectedHlx} = this.state;
+    let base = 0;
+    if(selectedHlx=="HLX"){
+      base=1;
+    }
+    else if(selectedHlx=="kHLX"){
+      base=1000;
+    }
+    else if(selectedHlx=="mHLX"){
+      base=1000000;
+    }
+    else if(selectedHlx=="gHLX")
+    {
+      base=1000000000;
+    }
+    else if(selectedHlx=="tHLX")
+    {
+      base=1000000000000;
+    }
     const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
     axios.get(url)
     .then(resp=>{
@@ -306,7 +329,7 @@ class Send extends React.PureComponent {
       });
       if(this.state.amount!==""){
         this.setState({
-          hlxamount:this.state.amount * resp.data.rates[selectedCurrency]
+          hlxamount:Math.ceil((this.state.amount * resp.data.rates[selectedCurrency])/base)
         })
       }
     })
@@ -319,6 +342,8 @@ class Send extends React.PureComponent {
   hlxChange(e){
     let {txamount,hlxamount} = this.state
     let base = 0;
+    const conversion = 0.000000022;
+    let amount = 0;
     if(e.target.value=="HLX"){
       base=1;
     }
@@ -338,14 +363,17 @@ class Send extends React.PureComponent {
     }
     
    if(hlxamount!==""){
-     txamount=hlxamount*base;
+     txamount=hlxamount * base;
+     amount = (txamount * conversion);
    }
    else{
      txamount=0;
    }
     this.setState({
       selectedHlx:e.target.value,
-      txamount:txamount
+      txamount:txamount,
+      amount:amount,
+      hlxamount:hlxamount
     })
   }
 
