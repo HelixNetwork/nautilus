@@ -63,6 +63,11 @@ class AccountName extends React.PureComponent {
       return;
     }
 
+    if (accountNames.map((accountName) => accountName.toLowerCase()).indexOf(name.toLowerCase()) > -1) {
+      generateAlert('error', t('addAdditionalSeed:nameInUse'), t('addAdditionalSeed:nameInUseExplanation'));
+      return;
+  }
+
     this.props.setAccountInfoDuringSetup({
       name: this.state.name,
       completed: !Electron.getOnboardingGenerated() && accountNames.length > 0
