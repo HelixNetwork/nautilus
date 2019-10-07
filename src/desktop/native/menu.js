@@ -70,7 +70,7 @@ let getWindow = null;
 
 // Disable automatic update downloads
 autoUpdater.autoDownload = false;
-
+autoUpdater.checkForUpdatesAndNotify();
 /**
  * On update error event callback
  */
