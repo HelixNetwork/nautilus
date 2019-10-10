@@ -514,7 +514,7 @@ export class ListComponent extends React.PureComponent {
                 </div>
                 {!activeTx.persistence && (
                   <nav>
-                    {isActiveFailed && !activeTx.incoming && (
+                    {isActiveFailed && (
                       <Button
                         className="small"
                         loading={isRetryingFailedTransaction}
@@ -525,7 +525,7 @@ export class ListComponent extends React.PureComponent {
                         {t("retry")}
                       </Button>
                     )}
-                    {!isActiveFailed && !activeTx.incoming && (
+                    {!isActiveFailed && (
                       <Button
                         className="small"
                         loading={
