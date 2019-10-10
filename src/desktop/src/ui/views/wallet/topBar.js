@@ -24,6 +24,7 @@ import {
   formatHlx,
   getCurrencyValue
 } from "libs/hlx/utils";
+import {IntlProvider,FormattedNumber} from 'react-intl';
 
 class TopBar extends Component {
   static propTypes = {
@@ -41,7 +42,9 @@ class TopBar extends Component {
       push: PropTypes.func.isRequired
     }).isRequired,
   };
-  state = {}
+  state = {
+    amount:0.022
+  }
   changeAccount(e) {
     if (e.target.value == "add") {
       this.props.history.push("/onboarding/seed-intro");
@@ -71,8 +74,12 @@ class TopBar extends Component {
     history.push("/wallet/");
   };
 
+  componentDidUpdate(){
+  }
+
   render() {
-    const { accountInfo, accountNames, accountName, seedIndex, history } = this.props;
+    const { accountInfo, accountNames, accountName, seedIndex, currency, history } = this.props;
+    const {amount} = this.state;
     let balance = accumulateBalance(
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
@@ -83,7 +90,13 @@ class TopBar extends Component {
           <div className={css.topIn}>
             <h4 style={{ marginBottom: '-13px' }}>BALANCE</h4>
             <br />
-            <div> <span className={css.dot}></span><h6 style={{ opacity: '0.3' }}>€0.02/mHLX</h6></div>
+            <div> <span className={css.dot}></span><h6 style={{ opacity: '0.3' }}>
+            <IntlProvider locale='en'>
+              <FormattedNumber
+                value={amount}
+                style="currency"
+                currency={currency} />
+                </IntlProvider>/mHLX</h6></div>
           </div>
           <div className={css.topBal}>
             <img src={hlx} />
