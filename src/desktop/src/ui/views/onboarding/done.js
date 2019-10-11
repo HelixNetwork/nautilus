@@ -11,7 +11,8 @@ import Logos from "ui/components/logos";
 import Lottie from "react-lottie";
 import { setPassword } from "actions/wallet";
 import * as animationData from "animations/done.json";
-import {Row} from 'react-bootstrap'
+import {Row} from 'react-bootstrap';
+import {setOnboardingComplete} from 'actions/accounts';
 
 class Done extends React.PureComponent {
   static propTypes = {
@@ -21,7 +22,8 @@ class Done extends React.PureComponent {
     onEnd: PropTypes.func,
     /** Should animation loop */
     loop: PropTypes.bool,
-    setPassword: PropTypes.func.isRequired
+    setPassword: PropTypes.func.isRequired,
+    setOnboardingComplete: PropTypes.func.isRequired,
   };
 
   /**
@@ -35,7 +37,7 @@ class Done extends React.PureComponent {
     const size = 190;
     const h_size = 120;
 
-    const { history, t } = this.props;
+    const { history, t,setOnboardingComplete } = this.props;
     const defaultOptions = {
       loop: loop,
       autoplay: true,
@@ -90,6 +92,7 @@ class Done extends React.PureComponent {
             variant="backgroundNone"
             onClick={() => {
               setPassword({});
+              setOnboardingComplete(true);
               this.props.history.push("/onboarding/login");
             }}
           >
@@ -105,7 +108,8 @@ class Done extends React.PureComponent {
 }
 
 const mapDispatchToProps = {
-  setPassword
+  setPassword,
+  setOnboardingComplete
 };
 
 export default connect(
