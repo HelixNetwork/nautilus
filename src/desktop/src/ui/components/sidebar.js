@@ -30,33 +30,40 @@ class Sidebar extends React.PureComponent {
    
     return (
       <ul className={classNames(css.acco_pg)}>
+        <p className={classNames(css.sidePara)}>{t("settings:generalSettings")}</p>
         <li className={active == "language" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/settings/language")}>
             {t("settings:language")}
           </a>
         </li>
-        <li className={active == "node" ? css.active : ""}>
-          <a onClick={() => this.props.history.push("/settings/node")}>
-            {t("global:node")}
-          </a>
-        </li>
+        
         <li className={active == "theme" ? css.active : ""}>
           <a onClick={() => this.props.history.push("/settings/theme")}>
             {t("settings:theme")}
           </a>
         </li>
-        <li className={active == "currency" ? css.active : ""}>
-          <a onClick={() => this.props.history.push("/settings/currency")}>
-            {t("settings:currency")}
+        <li className={active == "accountsetting" ? css.active : ""}>
+          <a
+            onClick={() => this.props.history.push("/settings/accountsetting")}
+          >
+            {t("settings:advanced")}
           </a>
         </li>
+    
         {wallet.ready && (
+          
           <React.Fragment>
+            <p className={classNames(css.sidePara1)}>{t("settings:accountSettings")}</p>
             <li className={active == "editname" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/editname")}>
                 {t("settings:accountName")}{" "}
               </a>
             </li>
+            <li className={active == "node" ? css.active : ""}>
+          <a onClick={() => this.props.history.push("/settings/node")}>
+            {t("global:node")}
+          </a>
+        </li>
             <li className={active == "viewseed" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/viewseed")}>
                 {t("accountManagement:viewSeed")}
@@ -75,15 +82,11 @@ class Sidebar extends React.PureComponent {
             {accountNames.length > 1 && (
             <li className={active == "removeaccount" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/remove/:accountIndex")}>
-              Remove Account
+             {t("settings:removeAccount")}
               </a>
             </li>
               )}
-            {/* <li className={active == "mode" ? css.active : ""}>
-              <a onClick={() => this.props.history.push("/settings/mode")}>
-                {t("settings:mode")}
-              </a>
-            </li> */}
+           
             <li className={active == "snapshot" ? css.active : ""}>
               <a onClick={() => this.props.history.push("/settings/snapshot")}>
                 {t("settings:snap")}
@@ -91,13 +94,7 @@ class Sidebar extends React.PureComponent {
             </li>
           </React.Fragment>
         )}
-        <li className={active == "accountsetting" ? css.active : ""}>
-          <a
-            onClick={() => this.props.history.push("/settings/accountsetting")}
-          >
-            {t("settings:advanced")}
-          </a>
-        </li>
+     
       </ul>
     );
   }
