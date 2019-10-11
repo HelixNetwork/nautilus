@@ -391,7 +391,6 @@ class Send extends React.PureComponent {
 
   componentDidMount(){
     const {currency} = this.props;
-    console.log(currency);
     const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
     axios.get(url)
     .then(resp=>{

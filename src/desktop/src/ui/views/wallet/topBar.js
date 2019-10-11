@@ -25,7 +25,7 @@ import {
   getCurrencyValue
 } from "libs/hlx/utils";
 import {IntlProvider,FormattedNumber} from 'react-intl';
-
+import axios from 'axios';
 class TopBar extends Component {
   static propTypes = {
     accounts: PropTypes.object.isRequired,
@@ -43,7 +43,7 @@ class TopBar extends Component {
     }).isRequired,
   };
   state = {
-    amount:0.022
+    amount:0
   }
   changeAccount(e) {
     if (e.target.value == "add") {
@@ -74,12 +74,23 @@ class TopBar extends Component {
     history.push("/wallet/");
   };
 
-  componentDidUpdate(){
+  componentDidMount(){
+    const {currency} = this.props;
+    const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
+    axios.get(url)
+    .then(resp=>{
+      this.setState({
+        amount: (resp.data.rates[currency] * 0.022).toFixed(3)
+      });
+    })
   }
 
   render() {
-    const { accountInfo, accountNames, accountName, seedIndex, currency, history } = this.props;
-    const {amount} = this.state;
+    const { accountInfo, accountNames, accountName, seedIndex, currency, conversionRate, history } = this.props;
+    let {amount} = this.state;
+    if(conversionRate != 0){
+      amount = (0.022 * conversionRate).toFixed(3);
+    }
     let balance = accumulateBalance(
       accountInfo.addressData.map(addressdata => addressdata.balance)
     );
@@ -146,7 +157,8 @@ const mapStateToProps = state => ({
   accountInfo: selectAccountInfo(state),
   seedIndex: getSeedIndexFromState(state),
   balance: getBalanceForSelectedAccount(state),
-  currency: state.settings.currency
+  currency: state.settings.currency,
+  conversionRate:state.settings.conversionRate
 });
 
 const mapDispatchToProps = {
