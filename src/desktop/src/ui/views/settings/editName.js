@@ -118,7 +118,7 @@ class AccountName extends React.PureComponent {
     const { newAccountName } = this.state;
     return (
       <div className={classNames(css.foo_bxx12)}>
-        <div classname={classNames(css.set_bxac)}>
+        <div className={classNames(css.set_bxac)}>
           <form
             style={{ marginTop: "7vw" }}
             onSubmit={e => {
