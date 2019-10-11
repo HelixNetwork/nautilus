@@ -90,7 +90,8 @@
     "publish:win": "./node_modules/.bin/electron-builder --win --x64 -p always",
     "auditjs": "./../../node_modules/.bin/auditjs -n -l error -w whitelist.json",
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
-    "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl"
+    "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl",
+    "test": "yarn run build-app && jest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -193,6 +194,8 @@
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
+    "@jest-runner/electron": "^2.0.2",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
     "electron": "3.0.15",
@@ -200,10 +203,39 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
     "electron-notarize": "^0.1.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.0",
+    "enzyme-to-json": "^3.4.2",
+    "jest": "^24.9.0",
+    "jest-image-snapshot": "^2.11.0",
+    "puppeteer": "^1.20.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.3.1"
+  },
+  "jest": {
+    "runner": "@jest-runner/electron",
+    "globalSetup": "<rootDir>scripts/jestSetup.js",
+    "globalTeardown": "<rootDir>scripts/jestTeardown.js",
+    "testEnvironment": "<rootDir>scripts/jestEnv.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>scripts/jestLibs.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "modulePaths": [
+      "src",
+      "../shared"
+    ],
+    "moduleNameMapper": {
+      "\\.(scss)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(svg)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/react-qr-reader/"
+    ]
   }
 }
