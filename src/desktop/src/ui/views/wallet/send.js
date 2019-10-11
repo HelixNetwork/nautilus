@@ -30,6 +30,8 @@ import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
 import ProgressBar from 'ui/components/progress';
 import { reset as resetProgress, startTrackingProgress } from 'actions/progress';
 import {MAX_NOTE_LENGTH,MAX_HLX_LENGTH} from '../../../constants';
+import { getCurrencyData } from "actions/settings";
+
 class Send extends React.PureComponent {
   static propTypes = {
     /** @ignore */
@@ -51,7 +53,7 @@ class Send extends React.PureComponent {
     txamount:"",
     message: "Nautilus Wallet",
     openModal: false,
-    selectedCurrency:'EUR',
+    selectedCurrency:this.props.currency,
     selectedHlx:'mHLX',
     conversionRate:1,
     progress:''
@@ -336,7 +338,8 @@ class Send extends React.PureComponent {
     
     this.setState({
       selectedCurrency:selectedCurrency
-    })
+    });
+    this.props.getCurrencyData(selectedCurrency,true);
   }
 
   hlxChange(e){
@@ -387,11 +390,13 @@ class Send extends React.PureComponent {
 }
 
   componentDidMount(){
+    const {currency} = this.props;
     const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
     axios.get(url)
     .then(resp=>{
       this.setState({
-        conversionRate: resp.data.rates['EUR']
+        selectedCurrency:currency,
+        conversionRate: resp.data.rates[currency]
       });
     })
   }
@@ -406,7 +411,7 @@ class Send extends React.PureComponent {
   }
 
   render() {
-    const { accountMeta, balance, loop, currencies, isSending, progress, t } = this.props;
+    const { accountMeta, balance, loop, currency, currencies, isSending, progress, t } = this.props;
     const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
     const defaultOptions = {
       loop: loop,
@@ -618,12 +623,14 @@ const mapStateToProps = state => ({
   conversionRate:state.settings.conversionRate,
   isSending:state.ui.isSendingTransfer,
   progress: state.progress,
+  currency:state.settings.currency
 });
 
 const mapDispatchToProps = {
   generateAlert,
   makeTransaction,
-  startTrackingProgress
+  startTrackingProgress,
+  getCurrencyData
 };
 export default connect(
   mapStateToProps,

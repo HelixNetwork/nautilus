@@ -160,6 +160,12 @@ const settingsReducer = (state = initialState, action) => {
           ...state,
           node: action.payload,
       };
+      case SettingsActionTypes.CURRENCY_DATA_UPDATE:
+      return {
+        ...state,
+        currency: action.payload.currency,
+        conversionRate:action.payload.conversionRate
+      };
   }
   return state;
 };

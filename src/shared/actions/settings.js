@@ -466,7 +466,20 @@ export const currencyDataFetchSuccess = payload => {
     payload
   };
 };
-
+/**
+ * Dispatch when currency information (conversion rates) is about to be fetched
+ *
+ * @method currencyDataFetchSuccess
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {objec} }}
+ */
+export const currencyDataUpdate = payload => {
+  return {
+    type: SettingsActionTypes.CURRENCY_DATA_UPDATE,
+    payload
+  };
+};
 /**
  * Makes an API call for checking if attachToTangle is enabled on the selected IRI node
  * and changes auto promotion configuration for wallet
@@ -554,7 +567,7 @@ export function getCurrencyData(currency, withAlerts = false) {
 
         // Update redux
         dispatch(currencyDataFetchSuccess(payload));
-
+        dispatch(currencyDataUpdate(payload))
         if (withAlerts) {
           dispatch(
             generateAlert(
