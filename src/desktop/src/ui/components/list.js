@@ -521,7 +521,7 @@ export class ListComponent extends React.PureComponent {
                         {t("retry")}
                       </Button>
                     )}
-                    {!isActiveFailed && (
+                    {(!isActiveFailed && !activeTx.incoming) && (
                       <Button
                         className="small"
                         loading={
