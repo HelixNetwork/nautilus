@@ -61,6 +61,7 @@
     "no": "No",
     "okay": "Okay",
     "skip": "Skip",
+   
     "password": " Account Password",
     "unrecognisedPassword": "Unrecognised password",
     "unrecognisedPasswordExplanation": "The password was not recognised. Please try again.",
@@ -408,7 +409,10 @@
   },
   "settings": {
     "settings": "Settings",
+    "generalSettings":"General Settings",
+    "accountSettings":"Account Settings",
     "transferSending": "Transfer sending",
+    "removeAccount":"Remove Account",
     "transferSendingExplanation": "Please wait until your transfer has been sent.",
     "mode": "Mode",
     "theme": "Theme",

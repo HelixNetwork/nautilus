@@ -133,7 +133,7 @@ class AccountName extends React.PureComponent {
             />
             <Button
               type="submit"
-              style={{ marginLeft: "31vw", marginTop: "4vw" }}
+              style={{ marginLeft: "28vw", marginTop: "4vw" }}
               disabled={
                 newAccountName.replace(/^\s+|\s+$/g, "") === accountName
               }
