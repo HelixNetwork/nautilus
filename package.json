@@ -17,11 +17,12 @@
     "format": "prettier --write \"**/*.{js,json,css}\""
   },
   "lint-staged": {
-    "*.{js,json,css}": [
+    "*.{json,css}": [
       "prettier --write",
       "git add"
     ],
     "*.js": [
+      "prettier --write",
       "eslint --fix",
       "git add"
     ]
