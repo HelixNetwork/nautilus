@@ -110,7 +110,7 @@
     display: inline-block;
     float: right;
     margin-top: 4%;
-    width: 9%;
+    width: 12%;
     text-align: left;
     cursor: pointer;
 
@@ -297,19 +297,19 @@
 }
 
 .search{
-    width: 45%;
+    width:60%;
     padding-left: 0px;
     display: inline-block;
     margin-bottom: -21px;
-    margin-top: 8px;
+    margin-top: 0.3%;
     height: 71%;
     overflow: hidden;
   }
   
   .search_text{
     display: inline-block;
-    float: right;
-    width: 90%;
+    float: left;
+    width: 35%;
     margin-left: 0%;
     font-family: Yu Gothic;
     opacity: 2.3;
@@ -329,7 +329,7 @@
   }
   
   .sort_text{
-    padding: 8% 4%;
+    padding: 8%;
     float: right;
     font-family: Yu Gothic;
     opacity: 0.3;
@@ -351,7 +351,7 @@
 
 .sort_by{
     display: inline-block;
-    width: 36%;
+    width: 40%;
     margin-top: 1%;
     height: 70%;
 
@@ -518,12 +518,13 @@
 }
 
 .nav_div {
-    display: inline;
-    width: 30%;
+    overflow: hidden;
+    display: inline-block;
+    width: 20%;
 }  
 
 .title_refresh {
-    width: 82%;
+    width: 80%;
     padding: 4%;
     margin: 0%;
     color: white;
@@ -535,7 +536,7 @@
 }
 
 .title_sort {
-    width: 55%;
+    width: 45%;
     padding: 4%;
     margin: 0%;
     color: white;

@@ -364,7 +364,7 @@ export class ListComponent extends React.PureComponent {
           </div>
           {/* Should be changed to isLoading and isBusy */}
           <div className= {css.nav_div}>
-            <p className= {css.title_refresh}>Click To Refresh</p>
+            <p className= {css.title_refresh}>Click To Refresh:</p>
             <a
               onClick={() => { this.updateAccount(); this.updateTx() }}
               className={classNames(css.refresh, (this.props.ui.isSyncing || this.props.ui.isSendingTransfer || this.props.ui.isAttachingToTangle || this.props.ui.isTransitioning) ? css.busy : null, this.props.ui.isFetchingAccountInfo ? css.loading : null)}
@@ -373,7 +373,7 @@ export class ListComponent extends React.PureComponent {
             </a>
           </div>
           <div className= {css.nav_div}>
-            <p className= {css.title_sort}>Sort By</p>
+            <p className= {css.title_sort}>Sort By:</p>
             <div className = {css.sort_by}><select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
               {filters.map(item => {
                 return (
