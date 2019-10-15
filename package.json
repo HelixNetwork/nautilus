@@ -11,6 +11,10 @@
   },
   "main": "index.js",
   "scripts": {
+    "install-app":"yarn && yarn run install-desktop && yarn run install-shared",
+    "install-desktop":"cd src/desktop && yarn",
+    "install-shared":"cd src/shared && yarn",
+    "start":"cd src/desktop && yarn run start",
     "lint": "./node_modules/.bin/eslint .",
     "lint:shared": "./node_modules/.bin/eslint src/shared/",
     "lint:desktop": "./node_modules/.bin/eslint src/desktop/",
