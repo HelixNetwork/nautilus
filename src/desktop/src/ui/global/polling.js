@@ -91,7 +91,6 @@ class Polling extends React.PureComponent {
 
     componentDidUpdate(prevProps) {
         // const { marketData, isPollingMarketData } = this.props;
-
         // /**
         //  * Send updated marketData to Tray application
         //  */
@@ -201,7 +200,7 @@ class Polling extends React.PureComponent {
 
                 const { accountName } = unconfirmedBundleTails[bundleHashToPromote];
 
-                const seedStore = await new SeedStore[selectedAccountType](password, name);
+                const seedStore = await new SeedStore[selectedAccountType](password, accountName);
 
                 return this.props.promoteTransfer(bundleHashToPromote, accountName, seedStore);
             }
