@@ -22,6 +22,7 @@ import Settings from 'ui/views/settings/index';
 import UpdateWallet from 'ui/global/updateWallet';
 import LockWallet from 'ui/global/lockWallet';
 import FatalError from 'ui/global/fatalError';
+import './index.scss';
 
 /**
  * Wallet wrapper component
