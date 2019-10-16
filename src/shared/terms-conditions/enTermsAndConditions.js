@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 export default `
 ## **Nautilus Wallet Terms & Conditions**
 The Helix Foundation, Torellstr. 7, 10243 Berlin (“Helix”) is a non-profit foundation 

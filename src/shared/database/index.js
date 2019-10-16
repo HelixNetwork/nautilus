@@ -1,22 +1,16 @@
-import assign from "lodash/assign";
-import each from "lodash/each";
-import find from "lodash/find";
-import includes from "lodash/includes";
-import isArray from "lodash/isArray";
-import isEmpty from "lodash/isEmpty";
-import isUndefined from "lodash/isUndefined";
-import map from "lodash/map";
-import merge from "lodash/merge";
-import orderBy from "lodash/orderBy";
-import size from "lodash/size";
-import some from "lodash/some";
-import { serialise, parse } from "../libs/utils";
-import schemas, {
-  getDeprecatedStoragePath,
-  STORAGE_PATH as latestStoragePath,
-  v_0Schema
-} from "./schemas";
-import { preserveAddressLocalSpendStatus } from "libs/hlx/addresses";
+import assign from 'lodash/assign';
+import each from 'lodash/each';
+import find from 'lodash/find';
+import includes from 'lodash/includes';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
+import orderBy from 'lodash/orderBy';
+import size from 'lodash/size';
+import some from 'lodash/some';
+import { preserveAddressLocalSpendStatus } from 'libs/hlx/addresses';
+import { serialise, parse } from '../libs/utils';
+import schemas, { getDeprecatedStoragePath, STORAGE_PATH as latestStoragePath, vSchema0 } from './schemas';
 // Initialise realm instance
 let realm = {}; // eslint-disable-line import/no-mutable-exports
 
@@ -30,526 +24,507 @@ let Realm = null;
  * @returns {object}
  */
 export const getRealm = () => {
-  return Electron.getRealm();
+    // eslint-disable-next-line no-undef
+    return Electron.getRealm();
 };
 
 class Account {
-  static getObjectForId(id) {
-    return realm.objectForPrimaryKey("Account", id);
-  }
-
-  static get data() {
-    return realm.objects("Account");
-  }
-
-  /**
-   * Gets account data for all stored accounts.
-   * @method getDataAsArray
-   *
-   * @returns {array}
-   */
-  static getDataAsArray() {
-    const accounts = Account.data;
-
-    return map(accounts, account =>
-      assign({}, account, {
-        addressData: map(account.addressData, data => assign({}, data)),
-        transactions: map(account.transactions, transaction =>
-          assign({}, transaction)
-        ),
-        meta: assign({}, account.meta)
-      })
-    );
-  }
-
-  /**
-   * Orders accounts by indexes
-   *
-   * @method orderAccountsByIndex
-   *
-   * @returns {void}
-   */
-  static orderAccountsByIndex() {
-    const orderedAccounts = orderBy(Account.getDataAsArray(), ["index"]);
-
-    if (some(orderedAccounts, (account, index) => index !== account.index)) {
-      realm.write(() => {
-        each(orderedAccounts, (account, index) => {
-          realm.create("Account", assign({}, account, { index }), true);
-        });
-      });
+    static getObjectForId(id) {
+        return realm.objectForPrimaryKey('Account', id);
     }
-  }
 
-  /**
-   * Creates account.
-   * @method create
-   *
-   * @param {object} data
-   */
-  static create(data) {
-    realm.write(() => realm.create("Account", data));
-  }
-
-  /**
-   * Creates multiple accounts.
-   * @method createMultiple
-   *
-   * @param {object} data
-   */
-  static createMultiple(accountsData) {
-    realm.write(() => {
-      each(accountsData, data => realm.create("Account", data));
-    });
-  }
-
-  /**
-   * Creates an account if it does not already exist.
-   *
-   * @method createIfNotExists
-   * @param {string} name
-   * @param {object} data
-   */
-  static createIfNotExists(name, data) {
-    const shouldCreate = isEmpty(Account.getObjectForId(name));
-
-    if (shouldCreate) {
-      Account.create(assign({}, data, { name }));
+    static get data() {
+        return realm.objects('Account');
     }
-  }
 
-  /**
-   * Updates account.
-   * @method updateTransactionsAndAddressData
-   *
-   * @param {string} name
-   * @param {object} data
-   */
-  static update(name, data) {
-    realm.write(() => {
-      const existingData = Account.getObjectForId(name);
-      const updatedData = assign({}, existingData, {
-        ...data,
-        name,
-        addressData: isEmpty(data.addressData)
-          ? existingData.addressData
-          : preserveAddressLocalSpendStatus(
-            map(existingData.addressData, data => assign({}, data)),
-            data.addressData
-          )
-      });
+    /**
+     * Gets account data for all stored accounts.
+     * @method getDataAsArray
+     *
+     * @returns {array}
+     */
+    static getDataAsArray() {
+        const accounts = Account.data;
 
-      realm.create("Account", updatedData, true);
-    });
-  }
-
-  /**
-   * Deletes account.
-   * @method delete
-   *
-   * @param {string} name
-   */
-  static delete(name) {
-    realm.write(() => {
-      const accountsBeforeDeletion = Account.getDataAsArray();
-      const accountForDeletion = find(accountsBeforeDeletion, { name });
-
-      if (accountForDeletion) {
-        realm.delete(Account.getObjectForId(name));
-
-        const accountsAfterDeletion = Account.getDataAsArray();
-        const deletedAccountIndex = accountForDeletion.index;
-
-        each(accountsAfterDeletion, account => {
-          realm.create(
-            "Account",
+        return map(accounts, (account) =>
             assign({}, account, {
-              index:
-                account.index > deletedAccountIndex
-                  ? account.index - 1
-                  : account.index
+                addressData: map(account.addressData, (data) => assign({}, data)),
+                transactions: map(account.transactions, (transaction) => assign({}, transaction)),
+                meta: assign({}, account.meta),
             }),
-            true
-          );
+        );
+    }
+
+    /**
+     * Orders accounts by indexes
+     *
+     * @method orderAccountsByIndex
+     *
+     * @returns {void}
+     */
+    static orderAccountsByIndex() {
+        const orderedAccounts = orderBy(Account.getDataAsArray(), ['index']);
+
+        if (some(orderedAccounts, (account, index) => index !== account.index)) {
+            realm.write(() => {
+                each(orderedAccounts, (account, index) => {
+                    realm.create('Account', assign({}, account, { index }), true);
+                });
+            });
+        }
+    }
+
+    /**
+     * Creates account.
+     * @method create
+     *
+     * @param {object} data
+     */
+    static create(data) {
+        realm.write(() => realm.create('Account', data));
+    }
+
+    /**
+     * Creates multiple accounts.
+     * @method createMultiple
+     *
+     * @param {object} data
+     */
+    static createMultiple(accountsData) {
+        realm.write(() => {
+            each(accountsData, (data) => realm.create('Account', data));
         });
-      }
-    });
-  }
+    }
 
-  /**
-   * Migrate account data under a new name.
-   *
-   * @method migrate
-   *
-   * @param {string} from - Account name
-   * @param {string} to - New account name
-   */
-  static migrate(from, to) {
-    const accountData = Account.getObjectForId(from);
+    /**
+     * Creates an account if it does not already exist.
+     *
+     * @method createIfNotExists
+     * @param {string} name
+     * @param {object} data
+     */
+    static createIfNotExists(name, data) {
+        const shouldCreate = isEmpty(Account.getObjectForId(name));
 
-    realm.write(() => {
-      // Create account with new name.
-      realm.create("Account", assign({}, accountData, { name: to }));
-      // Delete account with old name.
-      realm.delete(accountData);
-    });
-  }
+        if (shouldCreate) {
+            Account.create(assign({}, data, { name }));
+        }
+    }
+
+    /**
+     * Updates account.
+     * @method updateTransactionsAndAddressData
+     *
+     * @param {string} name
+     * @param {object} data
+     */
+    static update(name, data) {
+        realm.write(() => {
+            const existingData = Account.getObjectForId(name);
+            const updatedData = assign({}, existingData, {
+                ...data,
+                name,
+                addressData: isEmpty(data.addressData)
+                    ? existingData.addressData
+                    : preserveAddressLocalSpendStatus(
+                          map(existingData.addressData, (data) => assign({}, data)),
+                          data.addressData,
+                      ),
+            });
+
+            realm.create('Account', updatedData, true);
+        });
+    }
+
+    /**
+     * Deletes account.
+     * @method delete
+     *
+     * @param {string} name
+     */
+    static delete(name) {
+        realm.write(() => {
+            const accountsBeforeDeletion = Account.getDataAsArray();
+            const accountForDeletion = find(accountsBeforeDeletion, { name });
+
+            if (accountForDeletion) {
+                realm.delete(Account.getObjectForId(name));
+
+                const accountsAfterDeletion = Account.getDataAsArray();
+                const deletedAccountIndex = accountForDeletion.index;
+
+                each(accountsAfterDeletion, (account) => {
+                    realm.create(
+                        'Account',
+                        assign({}, account, {
+                            index: account.index > deletedAccountIndex ? account.index - 1 : account.index,
+                        }),
+                        true,
+                    );
+                });
+            }
+        });
+    }
+
+    /**
+     * Migrate account data under a new name.
+     *
+     * @method migrate
+     *
+     * @param {string} from - Account name
+     * @param {string} to - New account name
+     */
+    static migrate(from, to) {
+        const accountData = Account.getObjectForId(from);
+
+        realm.write(() => {
+            // Create account with new name.
+            realm.create('Account', assign({}, accountData, { name: to }));
+            // Delete account with old name.
+            realm.delete(accountData);
+        });
+    }
 }
 
 /**
  * Model for node.
  */
 class Node {
-  /**
-   * Gets object for provided id (url)
-   *
-   * @method getObjectForId
-   * @param {string} id
-   *
-   * @returns {object}
-   */
-  static getObjectForId(id) {
-    return realm.objectForPrimaryKey("Node", id);
-  }
-
-  /**
-   * Returns a list of nodes
-   *
-   * @return {Realm.Results}
-   */
-  static get data() {
-    return realm.objects("Node");
-  }
-
-  /**
-   * Returns nodes as array
-   *
-   * @method getDataAsArray
-   *
-   * @return {array}
-   */
-  static getDataAsArray() {
-    return map(Node.data, node => assign({}, node));
-  }
-
-  /**
-   * Adds a custom node
-   *
-   * @method addCustomNode
-   * @param {string} url Node URL
-   */
-  static addCustomNode(payload) {
-    const { url, pow } = payload;
-    realm.write(() => {
-      realm.create("Node", {
-        url,
-        custom: true,
-        pow
-      });
-    });
-  }
-
-  /**
-   * Removes a node.
-   *
-   * @method delete
-   * @param {string} url
-   */
-  static delete(url) {
-    const node = Node.getObjectForId(url);
-    realm.write(() => realm.delete(node));
-  }
-
-  /**
-   *
-   * @method addNodes
-   * @param {array} nodes
-   */
-  static addNodes(nodes) {
-    if (size(nodes)) {
-      const existingUrls = map(Node.getDataAsArray(), node => node.url);
-
-      realm.write(() => {
-        each(nodes, node => {
-          // If it's an existing node, just update properties.
-          if (includes(existingUrls, node.url)) {
-            realm.create("Node", node, true);
-          } else {
-            realm.create("Node", node);
-          }
-        });
-      });
+    /**
+     * Gets object for provided id (url)
+     *
+     * @method getObjectForId
+     * @param {string} id
+     *
+     * @returns {object}
+     */
+    static getObjectForId(id) {
+        return realm.objectForPrimaryKey('Node', id);
     }
-  }
+
+    /**
+     * Returns a list of nodes
+     *
+     * @return {Realm.Results}
+     */
+    static get data() {
+        return realm.objects('Node');
+    }
+
+    /**
+     * Returns nodes as array
+     *
+     * @method getDataAsArray
+     *
+     * @return {array}
+     */
+    static getDataAsArray() {
+        return map(Node.data, (node) => assign({}, node));
+    }
+
+    /**
+     * Adds a custom node
+     *
+     * @method addCustomNode
+     * @param {string} url Node URL
+     */
+    static addCustomNode(payload) {
+        const { url, pow } = payload;
+        realm.write(() => {
+            realm.create('Node', {
+                url,
+                custom: true,
+                pow,
+            });
+        });
+    }
+
+    /**
+     * Removes a node.
+     *
+     * @method delete
+     * @param {string} url
+     */
+    static delete(url) {
+        const node = Node.getObjectForId(url);
+        realm.write(() => realm.delete(node));
+    }
+
+    /**
+     *
+     * @method addNodes
+     * @param {array} nodes
+     */
+    static addNodes(nodes) {
+        if (size(nodes)) {
+            const existingUrls = map(Node.getDataAsArray(), (node) => node.url);
+
+            realm.write(() => {
+                each(nodes, (node) => {
+                    // If it's an existing node, just update properties.
+                    if (includes(existingUrls, node.url)) {
+                        realm.create('Node', node, true);
+                    } else {
+                        realm.create('Node', node);
+                    }
+                });
+            });
+        }
+    }
 }
 
 /**
  * Model for wallet data and settings.
  */
 class Wallet {
-  static version = Number(schemas[size(schemas) - 1].schemaVersion);
-  /**
-   * Gets object for provided id (version)
-   *
-   * @method getObjectForId
-   * @param {number} id
-   *
-   * @returns {object}
-   */
-  static getObjectForId(id = Wallet.version) {
-    return realm.objectForPrimaryKey("Wallet", id);
-  }
-
-  /**
-   * Gets wallet data.
-   *
-   * @return {Realm.Results}
-   */
-
-  static get data() {
-    return realm.objects("Wallet");
-  }
-
-  /**
-   * Wallet settings for most recent version.
-   */
-
-  static get latestSettings() {
-    const dataForCurrentVersion = Wallet.getObjectForId();
-    return dataForCurrentVersion.settings;
-  }
-
-  /**
-   * Wallet data (as plain object) for most recent version.
-   */
-  static get latestDataAsPlainObject() {
-    const data = Wallet.latestData;
-    return parse(serialise(data));
-  }
-
-  /**
-   * Wallet data for most recent version.
-   */
-  static get latestData() {
-    return Wallet.getObjectForId();
-  }
-
-  /**
-   * Updates active locale.
-   *
-   * @method updateLocale
-   * @param {string} payload
-   */
-  static updateLocale(payload) {
-    realm.write(() => {
-      Wallet.latestSettings.locale = payload;
-    });
-  }
-
-  /**
-   * Updates error log.
-   *
-   * @method updateErrorLog
-   * @param {object | array} payload
-   */
-  static updateErrorLog(payload) {
-    realm.write(() => {
-      if (isArray(payload)) {
-        each(payload, value => Wallet.latestData.errorLog.push(value));
-      } else {
-        Wallet.latestData.errorLog.push(payload);
-      }
-    });
-  }
-
-  /**
-   * Creates a wallet object if it does not already exist.
-   * @method createIfNotExists
-   */
-  static createIfNotExists() {
-    const shouldCreate = isEmpty(Wallet.getObjectForId());
-    if (shouldCreate) {
-      realm.write(() =>
-        realm.create("Wallet", {
-          version: Wallet.version,
-          settings: { notifications: {}, quorum: {} },
-          accountInfoDuringSetup: { meta: {} }
-        })
-      );
+    static version = Number(schemas[size(schemas) - 1].schemaVersion);
+    /**
+     * Gets object for provided id (version)
+     *
+     * @method getObjectForId
+     * @param {number} id
+     *
+     * @returns {object}
+     */
+    static getObjectForId(id = Wallet.version) {
+        return realm.objectForPrimaryKey('Wallet', id);
     }
-  }
 
-  static acceptTerms() {
-    realm.write(() => {
-      Wallet.latestSettings.acceptedTerms = true;
-    });
-  }
+    /**
+     * Gets wallet data.
+     *
+     * @return {Realm.Results}
+     */
 
-  static acceptPrivacyPolicy() {
-    realm.write(() => {
-      Wallet.latestSettings.acceptedPrivacy = true;
-    });
-  }
+    static get data() {
+        return realm.objects('Wallet');
+    }
 
-  static updateAccountInfoDuringSetup(payload) {
-    realm.write(() => {
-      const data = Wallet.latestData;
-      data.accountInfoDuringSetup = assign(
-        {},
-        data.accountInfoDuringSetup,
-        payload
-      );
-    });
-  }
+    /**
+     * Wallet settings for most recent version.
+     */
 
-  /**
- * Clears error log.
- *
- * @method clearErrorLog
- */
-  static clearErrorLog() {
-    realm.write(() => {
-      Wallet.latestData.errorLog = [];
-    });
-  }
+    static get latestSettings() {
+        const dataForCurrentVersion = Wallet.getObjectForId();
+        return dataForCurrentVersion.settings;
+    }
 
-  static setOnboardingComplete() {
-    realm.write(() => {
-      Wallet.latestData.onboardingComplete = true;
-    });
-  }
+    /**
+     * Wallet data (as plain object) for most recent version.
+     */
+    static get latestDataAsPlainObject() {
+        const data = Wallet.latestData;
+        return parse(serialise(data));
+    }
 
-  static updateErrorLog(payload) {
-    realm.write(() => {
-      if (isArray(payload)) {
-        each(payload, value => Wallet.latestData.errorLog.push(value));
-      } else {
-        Wallet.latestData.errorLog.push(payload);
-      }
-    });
-  }
+    /**
+     * Wallet data for most recent version.
+     */
+    static get latestData() {
+        return Wallet.getObjectForId();
+    }
 
-  /**
-   * Adds new account and removes temporarily stored account info during setup
-   *
-   * @method addAccount
-   *
-   * @param {object} accountData
-   */
-  static addAccount(accountData) {
-    realm.write(() => {
-      const data = Wallet.latestData;
-      data.accountInfoDuringSetup = {
-        name: "",
-        meta: {},
-        usedExistingSeed: false
-      };
-      realm.create("Account", accountData);
-    });
-  }
-  /**
-   * Updates remote proof of work setting.
-   *
-   * @method updateRemotePoWSetting
-   * @param {boolean} payload
-   */
-  static updateRemotePowSetting(payload) {
-    realm.write(() => {
-      Wallet.latestSettings.remotePoW = payload;
-    });
-  }
+    /**
+     * Updates active locale.
+     *
+     * @method updateLocale
+     * @param {string} payload
+     */
+    static updateLocale(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.locale = payload;
+        });
+    }
 
-  static updateQuorumConfig(payload) {
-    const existingConfig = Wallet.latestSettings.quorum;
-    realm.write(() => {
-      Wallet.latestSettings.quorum = assign({}, existingConfig, payload);
-    });
-  }
+    /**
+     * Updates error log.
+     *
+     * @method updateErrorLog
+     * @param {object | array} payload
+     */
+    static updateErrorLog(payload) {
+        realm.write(() => {
+            if (isArray(payload)) {
+                each(payload, (value) => Wallet.latestData.errorLog.push(value));
+            } else {
+                Wallet.latestData.errorLog.push(payload);
+            }
+        });
+    }
 
-  /**
+    /**
+     * Creates a wallet object if it does not already exist.
+     * @method createIfNotExists
+     */
+    static createIfNotExists() {
+        const shouldCreate = isEmpty(Wallet.getObjectForId());
+        if (shouldCreate) {
+            realm.write(() =>
+                realm.create('Wallet', {
+                    version: Wallet.version,
+                    settings: { notifications: {}, quorum: {} },
+                    accountInfoDuringSetup: { meta: {} },
+                }),
+            );
+        }
+    }
+
+    static acceptTerms() {
+        realm.write(() => {
+            Wallet.latestSettings.acceptedTerms = true;
+        });
+    }
+
+    static acceptPrivacyPolicy() {
+        realm.write(() => {
+            Wallet.latestSettings.acceptedPrivacy = true;
+        });
+    }
+
+    static updateAccountInfoDuringSetup(payload) {
+        realm.write(() => {
+            const data = Wallet.latestData;
+            data.accountInfoDuringSetup = assign({}, data.accountInfoDuringSetup, payload);
+        });
+    }
+
+    /**
+     * Clears error log.
+     *
+     * @method clearErrorLog
+     */
+    static clearErrorLog() {
+        realm.write(() => {
+            Wallet.latestData.errorLog = [];
+        });
+    }
+
+    static setOnboardingComplete() {
+        realm.write(() => {
+            Wallet.latestData.onboardingComplete = true;
+        });
+    }
+
+    /**
+     * Adds new account and removes temporarily stored account info during setup
+     *
+     * @method addAccount
+     *
+     * @param {object} accountData
+     */
+    static addAccount(accountData) {
+        realm.write(() => {
+            const data = Wallet.latestData;
+            data.accountInfoDuringSetup = {
+                name: '',
+                meta: {},
+                usedExistingSeed: false,
+            };
+            realm.create('Account', accountData);
+        });
+    }
+    /**
+     * Updates remote proof of work setting.
+     *
+     * @method updateRemotePoWSetting
+     * @param {boolean} payload
+     */
+    static updateRemotePowSetting(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.remotePoW = payload;
+        });
+    }
+
+    static updateQuorumConfig(payload) {
+        const existingConfig = Wallet.latestSettings.quorum;
+        realm.write(() => {
+            Wallet.latestSettings.quorum = assign({}, existingConfig, payload);
+        });
+    }
+
+    /**
      * Updates node auto-switch setting
      *
      * @method updateNodeAutoSwitchSetting
      *
      * @param {boolean} payload
      */
-  static updateNodeAutoSwitchSetting(payload) {
-    realm.write(() => {
-      Wallet.latestSettings.nodeAutoSwitch = payload;
-    });
-  }
+    static updateNodeAutoSwitchSetting(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.nodeAutoSwitch = payload;
+        });
+    }
 
-  /**
-   * Updates autoNodeList setting
-   *
-   * @method updateAutoNodeListSetting
-   *
-   * @param {boolean} payload
-   */
-  static updateAutoNodeListSetting(payload) {
-    realm.write(() => {
-      Wallet.latestSettings.autoNodeList = payload;
-    });
-  }
+    /**
+     * Updates autoNodeList setting
+     *
+     * @method updateAutoNodeListSetting
+     *
+     * @param {boolean} payload
+     */
+    static updateAutoNodeListSetting(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.autoNodeList = payload;
+        });
+    }
 
-  static updateCurrencyData(payload) {
-    const { conversionRate, currency, availableCurrencies } = payload;
-    realm.write(() => {
-      Wallet.latestSettings.currency = currency;
-      Wallet.latestSettings.conversionRate = conversionRate;
-      Wallet.latestSettings.availableCurrencies = availableCurrencies;
-    });
-  }
+    static updateCurrencyData(payload) {
+        const { conversionRate, currency, availableCurrencies } = payload;
+        realm.write(() => {
+            Wallet.latestSettings.currency = currency;
+            Wallet.latestSettings.conversionRate = conversionRate;
+            Wallet.latestSettings.availableCurrencies = availableCurrencies;
+        });
+    }
 
-  /**
+    /**
      * Updates auto-promotion setting.
      *
      * @method updateAutoPromotionSetting
      * @param {boolean} payload
      */
     static updateAutoPromotionSetting(payload) {
-      realm.write(() => {
-          Wallet.latestSettings.autoPromotion = payload;
-      });
-  }
-     /* Updates wallet's node.
+        realm.write(() => {
+            Wallet.latestSettings.autoPromotion = payload;
+        });
+    }
+    /* Updates wallet's node.
      *
      * @method updateNode
      *
      * @param {string} payload
      */
-  static updateNode(payload) {
-    realm.write(() => {
-      Wallet.latestSettings.node = payload;
-    });
-  }
+    static updateNode(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.node = payload;
+        });
+    }
 
-  /**
+    /**
      * Updates notifications configuration.
      *
      * @method updateNotificationsSetting
      * @param {object} payload
      */
     static updateNotificationsSetting(payload) {
-      const { type, enabled } = payload;
+        const { type, enabled } = payload;
 
-      realm.write(() => {
-          Wallet.latestSettings.notifications[type] = enabled;
-      });
-  }
+        realm.write(() => {
+            Wallet.latestSettings.notifications[type] = enabled;
+        });
+    }
 
-  /**
+    /**
      * Updates system proxy settings.
      *
      * @method updateIgnoreProxySetting
      * @param {object} payload
      */
     static updateIgnoreProxySetting(enabled) {
-      realm.write(() => {
-          Wallet.latestSettings.ignoreProxy = enabled;
-      });
-  }
-
+        realm.write(() => {
+            Wallet.latestSettings.ignoreProxy = enabled;
+        });
+    }
 }
 
 /**
@@ -561,22 +536,19 @@ class Wallet {
  *
  * @returns {undefined}
  */
-const migrateToNewStoragePath = config => {
-  const oldRealm = new Realm(config);
-  const walletData = oldRealm.objectForPrimaryKey(
-    "Wallet",
-    config.schemaVersion
-  );
+const migrateToNewStoragePath = (config) => {
+    const oldRealm = new Realm(config);
+    const walletData = oldRealm.objectForPrimaryKey('Wallet', config.schemaVersion);
 
-  const newRealm = new Realm(assign({}, config, { path: latestStoragePath }));
+    const newRealm = new Realm(assign({}, config, { path: latestStoragePath }));
 
-  newRealm.write(() => {
-    if (!isEmpty(walletData)) {
-      newRealm.create("Wallet", walletData);
-    }
-  });
+    newRealm.write(() => {
+        if (!isEmpty(walletData)) {
+            newRealm.create('Wallet', walletData);
+        }
+    });
 
-  oldRealm.write(() => oldRealm.deleteAll());
+    oldRealm.write(() => oldRealm.deleteAll());
 };
 
 /**
@@ -587,18 +559,18 @@ const migrateToNewStoragePath = config => {
  * @returns {Promise<any>}
  */
 const purge = () =>
-  new Promise((resolve, reject) => {
-    try {
-      realm.removeAllListeners();
-      realm.write(() => realm.deleteAll());
-      //TODO: find a way to remove realm file
-      // Realm.deleteFile(schemas[size(schemas) - 1]);
+    new Promise((resolve, reject) => {
+        try {
+            realm.removeAllListeners();
+            realm.write(() => realm.deleteAll());
+            //TODO: find a way to remove realm file
+            // Realm.deleteFile(schemas[size(schemas) - 1]);
 
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
+            resolve();
+        } catch (error) {
+            reject(error);
+        }
+    });
 
 /**
  * Initialises storage.
@@ -608,39 +580,39 @@ const purge = () =>
  *
  * @returns {Promise}
  */
-const initialise = getEncryptionKeyPromise => {
-  Realm = getRealm();
+const initialise = (getEncryptionKeyPromise) => {
+    Realm = getRealm();
 
-  return getEncryptionKeyPromise().then(encryptionKey => {
-    let hasVersionZeroRealmAtDeprecatedPath = false;
-    try {
-      hasVersionZeroRealmAtDeprecatedPath =
-        Realm.schemaVersion(getDeprecatedStoragePath(0), encryptionKey) !== -1;
-    } catch (error) { }
+    return getEncryptionKeyPromise().then((encryptionKey) => {
+        let hasVersionZeroRealmAtDeprecatedPath = false;
+        try {
+            hasVersionZeroRealmAtDeprecatedPath =
+                Realm.schemaVersion(getDeprecatedStoragePath(0), encryptionKey) !== -1;
+        } catch (error) {}
 
-    const versionZeroConfig = {
-      encryptionKey,
-      schemaVersion: 0,
-      path: getDeprecatedStoragePath(0),
-      schema: v_0Schema
-    };
-    if (
-      hasVersionZeroRealmAtDeprecatedPath
-      // Make sure version one realm file doesn't exist
-      // If both version zero and version one files exist,
-      // that probably means that a user already migrated to version one schema but version zero file wasn't removed
-    ) {
-      migrateToNewStoragePath(versionZeroConfig);
-    }
+        const versionZeroConfig = {
+            encryptionKey,
+            schemaVersion: 0,
+            path: getDeprecatedStoragePath(0),
+            schema: vSchema0,
+        };
+        if (
+            hasVersionZeroRealmAtDeprecatedPath
+            // Make sure version one realm file doesn't exist
+            // If both version zero and version one files exist,
+            // that probably means that a user already migrated to version one schema but version zero file wasn't removed
+        ) {
+            migrateToNewStoragePath(versionZeroConfig);
+        }
 
-    try {
-      Realm.deleteFile(versionZeroConfig);
-    } catch (error) { }
+        try {
+            Realm.deleteFile(versionZeroConfig);
+        } catch (error) {}
 
-    const schemasSize = size(schemas);
-    realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
-    initialiseSync();
-  });
+        const schemasSize = size(schemas);
+        realm = new Realm(assign({}, schemas[schemasSize - 1], { encryptionKey }));
+        initialiseSync();
+    });
 };
 
 /**
@@ -651,7 +623,7 @@ const initialise = getEncryptionKeyPromise => {
  * @returns {Promise}
  */
 const initialiseSync = () => {
-  Wallet.createIfNotExists();
+    Wallet.createIfNotExists();
 };
 
 /**
@@ -662,15 +634,6 @@ const initialiseSync = () => {
  *
  * @returns {Promise}
  */
-const reinitialise = getEncryptionKeyPromise =>
-  purge().then(() => initialise(getEncryptionKeyPromise));
+const reinitialise = (getEncryptionKeyPromise) => purge().then(() => initialise(getEncryptionKeyPromise));
 
-export {
-  realm,
-  Wallet,
-  initialise,
-  initialiseSync,
-  reinitialise,
-  Account,
-  Node
-};
+export { realm, Wallet, initialise, initialiseSync, reinitialise, Account, Node };

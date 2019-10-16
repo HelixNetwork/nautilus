@@ -1,56 +1,28 @@
-import each from "lodash/each";
-import filter from "lodash/filter";
-import head from "lodash/head";
-import isEmpty from "lodash/isEmpty";
-import map from "lodash/map";
-import some from "lodash/some";
-import reduce from "lodash/reduce";
-import union from "lodash/union";
-import unionBy from "lodash/unionBy";
-import { setPrice, setChartData, setMarketData } from "./marketData";
-import { quorum, changeHelixNode } from "../libs/hlx";
-import {
-  setNodeList,
-  setRandomlySelectedNode,
-  setAutoPromotion,
-  changeNode
-} from "./settings";
-import {
-  fetchRemoteNodes,
-  withRetriesOnDifferentNodes,
-  getRandomNodes
-} from "../libs/hlx/utils";
-import {
-  formatChartData,
-  getUrlTimeFormat,
-  getUrlNumberFormat
-} from "../libs/utils";
-import { generateAccountInfoErrorAlert, generateAlert } from "./alerts";
-import {
-  constructBundlesFromTransactions,
-  findPromotableTail,
-  isFundedBundle
-} from "../libs/hlx/transfers";
-import { selectedAccountStateFactory } from "../selectors/accounts";
-import {
-  getSelectedNodeFromState,
-  getNodesFromState,
-  getCustomNodesFromState
-} from "../selectors/global";
-import { syncAccount } from "../libs/hlx/accounts";
-import { forceTransactionPromotion } from "./transfers";
-import {
-  DEFAULT_NODES,
-  DEFAULT_NODE as defaultNodes,
-  NODES_WITH_POW_DISABLED as defaultNodesWithPowEnabled,
-  NODES_WITH_POW_ENABLED as defaultNodesWithPowDisabled,
-  DEFAULT_RETRIES
-} from "../config";
-import Errors from "../libs/errors";
-import i18next from "../libs/i18next";
-import { Account } from "../database";
-import { PollingActionTypes } from "../actions/types";
-
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import head from 'lodash/head';
+import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
+import some from 'lodash/some';
+import reduce from 'lodash/reduce';
+import unionBy from 'lodash/unionBy';
+import isArray from 'lodash/isArray';
+import { quorum } from 'libs/hlx';
+import { fetchRemoteNodes, withRetriesOnDifferentNodes, getRandomNodes } from 'libs/hlx/utils';
+import { formatChartData, getUrlTimeFormat, getUrlNumberFormat } from 'libs/utils';
+import { constructBundlesFromTransactions, findPromotableTail, isFundedBundle } from 'libs/hlx/transfers';
+import { selectedAccountStateFactory } from 'selectors/accounts';
+import { getSelectedNodeFromState, getNodesFromState, getCustomNodesFromState } from 'selectors/global';
+import { syncAccount } from 'libs/hlx/accounts';
+import Errors from 'libs/errors';
+import i18next from 'libs/i18next';
+import { PollingActionTypes } from 'actions/types';
+import { setPrice, setChartData, setMarketData } from './marketData';
+import { setNodeList, setAutoPromotion, changeNode } from './settings';
+import { generateAccountInfoErrorAlert, generateAlert } from './alerts';
+import { forceTransactionPromotion } from './transfers';
+import { DEFAULT_NODES, DEFAULT_RETRIES } from '../config';
+import { Account } from '../database';
 /**
  * Dispatch when HELIX price information is about to be fetched
  *
@@ -59,7 +31,7 @@ import { PollingActionTypes } from "../actions/types";
  * @returns {{type: {string} }}
  */
 const fetchPriceRequest = () => ({
-  type: PollingActionTypes.FETCH_PRICE_REQUEST
+    type: PollingActionTypes.FETCH_PRICE_REQUEST,
 });
 
 /**
@@ -70,7 +42,7 @@ const fetchPriceRequest = () => ({
  * @returns {{type: {string} }}
  */
 const fetchPriceSuccess = () => ({
-  type: PollingActionTypes.FETCH_PRICE_SUCCESS
+    type: PollingActionTypes.FETCH_PRICE_SUCCESS,
 });
 
 /**
@@ -81,7 +53,7 @@ const fetchPriceSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const fetchPriceError = () => ({
-  type: PollingActionTypes.FETCH_PRICE_ERROR
+    type: PollingActionTypes.FETCH_PRICE_ERROR,
 });
 
 /**
@@ -92,7 +64,7 @@ const fetchPriceError = () => ({
  * @returns {{type: {string} }}
  */
 const fetchNodeListRequest = () => ({
-  type: PollingActionTypes.FETCH_NODELIST_REQUEST
+    type: PollingActionTypes.FETCH_NODELIST_REQUEST,
 });
 
 /**
@@ -103,7 +75,7 @@ const fetchNodeListRequest = () => ({
  * @returns {{type: {string} }}
  */
 const fetchNodeListSuccess = () => ({
-  type: PollingActionTypes.FETCH_NODELIST_SUCCESS
+    type: PollingActionTypes.FETCH_NODELIST_SUCCESS,
 });
 
 /**
@@ -114,7 +86,7 @@ const fetchNodeListSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const fetchNodeListError = () => ({
-  type: PollingActionTypes.FETCH_NODELIST_ERROR
+    type: PollingActionTypes.FETCH_NODELIST_ERROR,
 });
 
 /**
@@ -125,7 +97,7 @@ const fetchNodeListError = () => ({
  * @returns {{type: {string} }}
  */
 const fetchChartDataRequest = () => ({
-  type: PollingActionTypes.FETCH_CHART_DATA_REQUEST
+    type: PollingActionTypes.FETCH_CHART_DATA_REQUEST,
 });
 
 /**
@@ -136,7 +108,7 @@ const fetchChartDataRequest = () => ({
  * @returns {{type: {string} }}
  */
 const fetchChartDataSuccess = () => ({
-  type: PollingActionTypes.FETCH_CHART_DATA_SUCCESS
+    type: PollingActionTypes.FETCH_CHART_DATA_SUCCESS,
 });
 
 /**
@@ -147,7 +119,7 @@ const fetchChartDataSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const fetchChartDataError = () => ({
-  type: PollingActionTypes.FETCH_CHART_DATA_ERROR
+    type: PollingActionTypes.FETCH_CHART_DATA_ERROR,
 });
 
 /**
@@ -158,7 +130,7 @@ const fetchChartDataError = () => ({
  * @returns {{type: {string} }}
  */
 const fetchMarketDataRequest = () => ({
-  type: PollingActionTypes.FETCH_MARKET_DATA_REQUEST
+    type: PollingActionTypes.FETCH_MARKET_DATA_REQUEST,
 });
 
 /**
@@ -169,7 +141,7 @@ const fetchMarketDataRequest = () => ({
  * @returns {{type: {string} }}
  */
 const fetchMarketDataSuccess = () => ({
-  type: PollingActionTypes.FETCH_MARKET_DATA_SUCCESS
+    type: PollingActionTypes.FETCH_MARKET_DATA_SUCCESS,
 });
 
 /**
@@ -180,7 +152,7 @@ const fetchMarketDataSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const fetchMarketDataError = () => ({
-  type: PollingActionTypes.FETCH_MARKET_DATA_ERROR
+    type: PollingActionTypes.FETCH_MARKET_DATA_ERROR,
 });
 
 /**
@@ -191,7 +163,7 @@ const fetchMarketDataError = () => ({
  * @returns {{type: {string} }}
  */
 const accountInfoForAllAccountsFetchRequest = () => ({
-  type: PollingActionTypes.ACCOUNT_INFO_FOR_ALL_ACCOUNTS_FETCH_REQUEST
+    type: PollingActionTypes.ACCOUNT_INFO_FOR_ALL_ACCOUNTS_FETCH_REQUEST,
 });
 
 /**
@@ -203,7 +175,7 @@ const accountInfoForAllAccountsFetchRequest = () => ({
  * @returns {{type: {string}, payload: {object} }}
  */
 const accountInfoForAllAccountsFetchSuccess = () => ({
-  type: PollingActionTypes.ACCOUNT_INFO_FOR_ALL_ACCOUNTS_FETCH_SUCCESS
+    type: PollingActionTypes.ACCOUNT_INFO_FOR_ALL_ACCOUNTS_FETCH_SUCCESS,
 });
 
 /**
@@ -214,7 +186,7 @@ const accountInfoForAllAccountsFetchSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const accountInfoForAllAccountsFetchError = () => ({
-  type: PollingActionTypes.ACCOUNT_INFO_FOR_ALL_ACCOUNTS_FETCH_ERROR
+    type: PollingActionTypes.ACCOUNT_INFO_FOR_ALL_ACCOUNTS_FETCH_ERROR,
 });
 
 /**
@@ -225,9 +197,9 @@ const accountInfoForAllAccountsFetchError = () => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-const promoteTransactionRequest = payload => ({
-  type: PollingActionTypes.PROMOTE_TRANSACTION_REQUEST,
-  payload
+const promoteTransactionRequest = (payload) => ({
+    type: PollingActionTypes.PROMOTE_TRANSACTION_REQUEST,
+    payload,
 });
 
 /**
@@ -238,7 +210,7 @@ const promoteTransactionRequest = payload => ({
  * @returns {{type: {string} }}
  */
 const promoteTransactionSuccess = () => ({
-  type: PollingActionTypes.PROMOTE_TRANSACTION_SUCCESS
+    type: PollingActionTypes.PROMOTE_TRANSACTION_SUCCESS,
 });
 
 /**
@@ -249,7 +221,7 @@ const promoteTransactionSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const promoteTransactionError = () => ({
-  type: PollingActionTypes.PROMOTE_TRANSACTION_ERROR
+    type: PollingActionTypes.PROMOTE_TRANSACTION_ERROR,
 });
 
 /**
@@ -260,9 +232,9 @@ const promoteTransactionError = () => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setPollFor = payload => ({
-  type: PollingActionTypes.SET_POLL_FOR,
-  payload
+export const setPollFor = (payload) => ({
+    type: PollingActionTypes.SET_POLL_FOR,
+    payload,
 });
 
 /**
@@ -273,9 +245,9 @@ export const setPollFor = payload => ({
  * @param {object} payload
  * @returns {{type: {string}, payload: {object} }}
  */
-export const syncAccountBeforeAutoPromotion = payload => ({
-  type: PollingActionTypes.SYNC_ACCOUNT_BEFORE_AUTO_PROMOTION,
-  payload
+export const syncAccountBeforeAutoPromotion = (payload) => ({
+    type: PollingActionTypes.SYNC_ACCOUNT_BEFORE_AUTO_PROMOTION,
+    payload,
 });
 
 /**
@@ -286,9 +258,9 @@ export const syncAccountBeforeAutoPromotion = payload => ({
  * @param {object} payload
  * @returns {{type: {string}, payload: {object} }}
  */
-export const syncAccountWhilePolling = payload => ({
-  type: PollingActionTypes.SYNC_ACCOUNT_WHILE_POLLING,
-  payload
+export const syncAccountWhilePolling = (payload) => ({
+    type: PollingActionTypes.SYNC_ACCOUNT_WHILE_POLLING,
+    payload,
 });
 
 /**
@@ -299,22 +271,20 @@ export const syncAccountWhilePolling = payload => ({
  *   @returns {function} - dispatch
  **/
 export const fetchMarketData = () => {
-  return dispatch => {
-    dispatch(fetchMarketDataRequest());
-    fetch(
-      "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=IOT&tsyms=USD"
-    )
-      .then(
-        response => response.json(),
-        () => {
-          dispatch(fetchMarketDataError());
-        }
-      )
-      .then(json => {
-        dispatch(setMarketData(json));
-        dispatch(fetchMarketDataSuccess());
-      });
-  };
+    return (dispatch) => {
+        dispatch(fetchMarketDataRequest());
+        fetch('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=IOT&tsyms=USD')
+            .then(
+                (response) => response.json(),
+                () => {
+                    dispatch(fetchMarketDataError());
+                },
+            )
+            .then((json) => {
+                dispatch(setMarketData(json));
+                dispatch(fetchMarketDataSuccess());
+            });
+    };
 };
 
 /**
@@ -325,17 +295,15 @@ export const fetchMarketData = () => {
  *   @returns {function} - dispatch
  **/
 export const fetchPrice = () => {
-  return dispatch => {
-    dispatch(fetchPriceRequest());
-    fetch(
-      "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=IOT&tsyms=USD,EUR,BTC,ETH"
-    )
-      .then(response => response.json(), () => dispatch(fetchPriceError()))
-      .then(json => {
-        dispatch(setPrice(json));
-        dispatch(fetchPriceSuccess());
-      });
-  };
+    return (dispatch) => {
+        dispatch(fetchPriceRequest());
+        fetch('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=IOT&tsyms=USD,EUR,BTC,ETH')
+            .then((response) => response.json(), () => dispatch(fetchPriceError()))
+            .then((json) => {
+                dispatch(setPrice(json));
+                dispatch(fetchPriceSuccess());
+            });
+    };
 };
 
 /**
@@ -346,35 +314,35 @@ export const fetchPrice = () => {
  * @returns {function}
  */
 export const fetchNodeList = () => {
-  return (dispatch, getState) => {
-      dispatch(fetchNodeListRequest());
+    return (dispatch, getState) => {
+        dispatch(fetchNodeListRequest());
 
-      let nodes = DEFAULT_NODES;
-      fetchRemoteNodes()
-          .then((remoteNodes) => {
-              // If there is a successful response, keep a union of (new nodes returned from the endpoint, default hardcoded nodes)
-              if (isArray(remoteNodes) && remoteNodes.length) {
-                  nodes = unionBy(nodes, remoteNodes, 'url');
-              } else {
-                  // Otherwise, fallback to existing nodes
-                  nodes = getNodesFromState(getState());
-              }
+        let nodes = DEFAULT_NODES;
+        fetchRemoteNodes()
+            .then((remoteNodes) => {
+                // If there is a successful response, keep a union of (new nodes returned from the endpoint, default hardcoded nodes)
+                if (isArray(remoteNodes) && remoteNodes.length) {
+                    nodes = unionBy(nodes, remoteNodes, 'url');
+                } else {
+                    // Otherwise, fallback to existing nodes
+                    nodes = getNodesFromState(getState());
+                }
 
-              // Update nodes on global quorum instance
-              quorum.setNodes(
-                  unionBy(getCustomNodesFromState(getState()), getState().settings.autoNodeList && nodes, 'url'),
-              );
+                // Update nodes on global quorum instance
+                quorum.setNodes(
+                    unionBy(getCustomNodesFromState(getState()), getState().settings.autoNodeList && nodes, 'url'),
+                );
 
-              dispatch(setNodeList(nodes));
-              dispatch(fetchNodeListSuccess());
-          })
-          .catch(() => {
-            // TODO(mahi):remove this after updating NODE_REMOTE_LIST 
-              // nodes = unionBy(nodes, getState().settings.nodes, 'url');
-              // dispatch(setNodeList(nodes));
-              dispatch(fetchNodeListError());
-          });
-  };
+                dispatch(setNodeList(nodes));
+                dispatch(fetchNodeListSuccess());
+            })
+            .catch(() => {
+                // TODO(mahi):remove this after updating NODE_REMOTE_LIST
+                // nodes = unionBy(nodes, getState().settings.nodes, 'url');
+                // dispatch(setNodeList(nodes));
+                dispatch(fetchNodeListError());
+            });
+    };
 };
 /**
  * Fetch data points for time series price information
@@ -384,61 +352,61 @@ export const fetchNodeList = () => {
  * @returns {function} - dispatch
  */
 export const fetchChartData = () => {
-  return dispatch => {
-    dispatch(fetchChartDataRequest());
+    return (dispatch) => {
+        dispatch(fetchChartDataRequest());
 
-    const arrayCurrenciesTimeFrames = [];
-    //If you want a new currency just add it in this array, the function will handle the rest.
-    const currencies = ["USD", "EUR", "BTC", "ETH"];
-    const timeframes = ["24h", "7d", "1m", "1h"];
-    const chartData = {};
+        const arrayCurrenciesTimeFrames = [];
+        //If you want a new currency just add it in this array, the function will handle the rest.
+        const currencies = ['USD', 'EUR', 'BTC', 'ETH'];
+        const timeframes = ['24h', '7d', '1m', '1h'];
+        const chartData = {};
 
-    each(currencies, itemCurrency => {
-      chartData[itemCurrency] = {};
-      each(timeframes, timeFrameItem => {
-        arrayCurrenciesTimeFrames.push({
-          currency: itemCurrency,
-          timeFrame: timeFrameItem
-        });
-      });
-    });
-
-    const urls = [];
-    const grabContent = url => fetch(url).then(response => response.json());
-
-    each(arrayCurrenciesTimeFrames, currencyTimeFrameArrayItem => {
-      const url = `https://min-api.cryptocompare.com/data/histo${getUrlTimeFormat(
-        currencyTimeFrameArrayItem.timeFrame
-      )}?fsym=IOT&tsym=${
-        currencyTimeFrameArrayItem.currency
-      }&limit=${getUrlNumberFormat(currencyTimeFrameArrayItem.timeFrame)}`;
-
-      urls.push(url);
-    });
-
-    Promise.all(map(urls, grabContent))
-      .then(results => {
-        const chartData = { USD: {}, EUR: {}, BTC: {}, ETH: {} };
-        let actualCurrency = "";
-        let currentTimeFrame = "";
-        let currentCurrency = "";
-
-        each(results, (resultItem, index) => {
-          currentTimeFrame = arrayCurrenciesTimeFrames[index].timeFrame;
-          currentCurrency = arrayCurrenciesTimeFrames[index].currency;
-          const formattedData = formatChartData(resultItem, currentTimeFrame);
-
-          if (actualCurrency !== currentCurrency) {
-            actualCurrency = currentCurrency;
-          }
-          chartData[currentCurrency][currentTimeFrame] = formattedData;
+        each(currencies, (itemCurrency) => {
+            chartData[itemCurrency] = {};
+            each(timeframes, (timeFrameItem) => {
+                arrayCurrenciesTimeFrames.push({
+                    currency: itemCurrency,
+                    timeFrame: timeFrameItem,
+                });
+            });
         });
 
-        dispatch(setChartData(chartData));
-        dispatch(fetchChartDataSuccess());
-      })
-      .catch(() => dispatch(fetchChartDataError()));
-  };
+        const urls = [];
+        const grabContent = (url) => fetch(url).then((response) => response.json());
+
+        each(arrayCurrenciesTimeFrames, (currencyTimeFrameArrayItem) => {
+            const url = `https://min-api.cryptocompare.com/data/histo${getUrlTimeFormat(
+                currencyTimeFrameArrayItem.timeFrame,
+            )}?fsym=IOT&tsym=${currencyTimeFrameArrayItem.currency}&limit=${getUrlNumberFormat(
+                currencyTimeFrameArrayItem.timeFrame,
+            )}`;
+
+            urls.push(url);
+        });
+
+        Promise.all(map(urls, grabContent))
+            .then((results) => {
+                const chartData = { USD: {}, EUR: {}, BTC: {}, ETH: {} };
+                let actualCurrency = '';
+                let currentTimeFrame = '';
+                let currentCurrency = '';
+
+                each(results, (resultItem, index) => {
+                    currentTimeFrame = arrayCurrenciesTimeFrames[index].timeFrame;
+                    currentCurrency = arrayCurrenciesTimeFrames[index].currency;
+                    const formattedData = formatChartData(resultItem, currentTimeFrame);
+
+                    if (actualCurrency !== currentCurrency) {
+                        actualCurrency = currentCurrency;
+                    }
+                    chartData[currentCurrency][currentTimeFrame] = formattedData;
+                });
+
+                dispatch(setChartData(chartData));
+                dispatch(fetchChartDataSuccess());
+            })
+            .catch(() => dispatch(fetchChartDataError()));
+    };
 };
 
 /**
@@ -452,51 +420,39 @@ export const fetchChartData = () => {
  *
  * @returns {function} dispatch
  **/
-export const getAccountInfoForAllAccounts = (
-  accountNames,
-  notificationFn,
-  withQuorum = true
-) => {
-  return (dispatch, getState) => {
-    dispatch(accountInfoForAllAccountsFetchRequest());
+export const getAccountInfoForAllAccounts = (accountNames, notificationFn, withQuorum = true) => {
+    return (dispatch, getState) => {
+        dispatch(accountInfoForAllAccountsFetchRequest());
 
-    const selectedNode = getSelectedNodeFromState(getState());
-    const randomNodes = getRandomNodes(
-      getNodesFromState(getState()),
-      DEFAULT_RETRIES,
-      [selectedNode]
-    );
+        const selectedNode = getSelectedNodeFromState(getState());
+        const randomNodes = getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode]);
 
-    const settings = getState().settings;
+        const settings = getState().settings;
 
-    return reduce(
-      accountNames,
-      (promise, accountName) => {
-        return promise.then(() => {
-          const existingAccountState = selectedAccountStateFactory(accountName)(
-            getState()
-          );
+        return reduce(
+            accountNames,
+            (promise, accountName) => {
+                return promise.then(() => {
+                    const existingAccountState = selectedAccountStateFactory(accountName)(getState());
 
-          return withRetriesOnDifferentNodes([selectedNode, ...randomNodes])(
-            (...args) => syncAccount(...[...args, withQuorum])
-          )(existingAccountState, undefined, notificationFn, settings).then(
-            ({ node, result }) => {
-              dispatch(changeNode(node));
-              dispatch(syncAccountWhilePolling(result));
-            }
-          );
-        });
-      },
-      Promise.resolve()
-    )
-      .then(() => {
-        dispatch(accountInfoForAllAccountsFetchSuccess());
-      })
-      .catch(err => {
-        dispatch(accountInfoForAllAccountsFetchError());
-        dispatch(generateAccountInfoErrorAlert(err));
-      });
-  };
+                    return withRetriesOnDifferentNodes([selectedNode, ...randomNodes])((...args) =>
+                        syncAccount(...[...args, withQuorum]),
+                    )(existingAccountState, undefined, notificationFn, settings).then(({ node, result }) => {
+                        dispatch(changeNode(node));
+                        dispatch(syncAccountWhilePolling(result));
+                    });
+                });
+            },
+            Promise.resolve(),
+        )
+            .then(() => {
+                dispatch(accountInfoForAllAccountsFetchSuccess());
+            })
+            .catch((err) => {
+                dispatch(accountInfoForAllAccountsFetchError());
+                dispatch(generateAccountInfoErrorAlert(err));
+            });
+    };
 };
 
 /**
@@ -513,91 +469,74 @@ export const getAccountInfoForAllAccounts = (
  *
  * @returns {function} - dispatch
  **/
-export const promoteTransfer = (bundleHash, accountName, withQuorum = true) => (
-  dispatch,
-  getState
-) => {
-  dispatch(promoteTransactionRequest(bundleHash));
+export const promoteTransfer = (bundleHash, accountName, withQuorum = true) => (dispatch, getState) => {
+    dispatch(promoteTransactionRequest(bundleHash));
 
-  let accountState = selectedAccountStateFactory(accountName)(getState());
+    let accountState = selectedAccountStateFactory(accountName)(getState());
 
-  const getTailTransactionsForThisBundleHash = transactions =>
-    filter(
-      transactions,
-      transaction =>
-        transaction.bundle === bundleHash && transaction.currentIndex === 0
-    );
+    const getTailTransactionsForThisBundleHash = (transactions) =>
+        filter(transactions, (transaction) => transaction.bundle === bundleHash && transaction.currentIndex === 0);
 
-  return syncAccount(undefined, withQuorum)(accountState)
-    .then(newState => {
-      accountState = newState;
+    return syncAccount(undefined, withQuorum)(accountState)
+        .then((newState) => {
+            accountState = newState;
 
-      // Update persistent storage
-      Account.update(accountName, accountState);
+            // Update persistent storage
+            Account.update(accountName, accountState);
 
-      // Update redux storage
-      dispatch(syncAccountBeforeAutoPromotion(accountState));
+            // Update redux storage
+            dispatch(syncAccountBeforeAutoPromotion(accountState));
 
-      const transactionsForThisBundleHash = filter(
-        accountState.transactions,
-        transaction => transaction.bundle === bundleHash
-      );
+            const transactionsForThisBundleHash = filter(
+                accountState.transactions,
+                (transaction) => transaction.bundle === bundleHash,
+            );
 
-      if (
-        some(
-          transactionsForThisBundleHash,
-          transaction => transaction.persistence === true
+            if (some(transactionsForThisBundleHash, (transaction) => transaction.persistence === true)) {
+                throw new Error(Errors.TRANSACTION_ALREADY_CONFIRMED);
+            }
+
+            const bundles = constructBundlesFromTransactions(accountState.transactions);
+
+            if (isEmpty(bundles)) {
+                throw new Error(Errors.NO_VALID_BUNDLES_CONSTRUCTED);
+            }
+
+            return isFundedBundle(undefined, withQuorum)(head(bundles));
+        })
+        .then((isFunded) => {
+            if (!isFunded) {
+                throw new Error(Errors.BUNDLE_NO_LONGER_FUNDED);
+            }
+
+            return findPromotableTail()(getTailTransactionsForThisBundleHash(accountState.transactions), 0);
+        })
+        .then((consistentTail) =>
+            dispatch(
+                forceTransactionPromotion(
+                    accountName,
+                    consistentTail,
+                    getTailTransactionsForThisBundleHash(accountState.transactions),
+                    false,
+                    // Auto promote does not support local proof of work
+                    // Pass in null in replacement of seedStore object
+                    null,
+                ),
+            ),
         )
-      ) {
-        throw new Error(Errors.TRANSACTION_ALREADY_CONFIRMED);
-      }
-
-      const bundles = constructBundlesFromTransactions(
-        accountState.transactions
-      );
-
-      if (isEmpty(bundles)) {
-        throw new Error(Errors.NO_VALID_BUNDLES_CONSTRUCTED);
-      }
-
-      return isFundedBundle(undefined, withQuorum)(head(bundles));
-    })
-    .then(isFunded => {
-      if (!isFunded) {
-        throw new Error(Errors.BUNDLE_NO_LONGER_FUNDED);
-      }
-
-      return findPromotableTail()(
-        getTailTransactionsForThisBundleHash(accountState.transactions),
-        0
-      );
-    })
-    .then(consistentTail =>
-      dispatch(
-        forceTransactionPromotion(
-          accountName,
-          consistentTail,
-          getTailTransactionsForThisBundleHash(accountState.transactions),
-          false,
-          // Auto promote does not support local proof of work
-          // Pass in null in replacement of seedStore object
-          null
-        )
-      )
-    )
-    .then(() => dispatch(promoteTransactionSuccess()))
-    .catch(err => {
-      if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
-        // FIXME: Temporary solution until local/remote PoW is reworked on auto-promotion
-        dispatch(
-          generateAlert(
-            "error",
-            i18next.t("global:autopromotionError"),
-            i18next.t("global:autopromotionErrorExplanation")
-          )
-        );
-        dispatch(setAutoPromotion(false));
-      }
-      dispatch(promoteTransactionError());
-    });
+        .then(() => dispatch(promoteTransactionSuccess()))
+        .catch((err) => {
+            if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
+                // FIXME: Temporary solution until local/remote PoW is reworked on auto-promotion
+                dispatch(
+                    generateAlert(
+                        'error',
+                        i18next.t('global:autopromotionError'),
+                        i18next.t('global:autopromotionErrorExplanation'),
+                    ),
+                );
+                dispatch(setAutoPromotion(false));
+            }
+            dispatch(promoteTransactionError());
+        });
 };
