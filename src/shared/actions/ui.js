@@ -1,4 +1,4 @@
-import { UiActionTypes } from "../actions/types";
+import { UiActionTypes } from 'actions/types';
 
 /**
  * Dispatch to set QR message in state
@@ -8,9 +8,9 @@ import { UiActionTypes } from "../actions/types";
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setQrMessage = payload => ({
-  type: UiActionTypes.SET_QR_MESSAGE,
-  payload
+export const setQrMessage = (payload) => ({
+    type: UiActionTypes.SET_QR_MESSAGE,
+    payload,
 });
 
 /**
@@ -21,9 +21,9 @@ export const setQrMessage = payload => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setQrAmount = payload => ({
-  type: UiActionTypes.SET_QR_AMOUNT,
-  payload
+export const setQrAmount = (payload) => ({
+    type: UiActionTypes.SET_QR_AMOUNT,
+    payload,
 });
 
 /**
@@ -34,9 +34,9 @@ export const setQrAmount = payload => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setQrTag = payload => ({
-  type: UiActionTypes.SET_QR_TAG,
-  payload
+export const setQrTag = (payload) => ({
+    type: UiActionTypes.SET_QR_TAG,
+    payload,
 });
 
 /**
@@ -47,9 +47,9 @@ export const setQrTag = payload => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setQrDenomination = payload => ({
-  type: UiActionTypes.SET_QR_DENOMINATION,
-  payload
+export const setQrDenomination = (payload) => ({
+    type: UiActionTypes.SET_QR_DENOMINATION,
+    payload,
 });
 
 /**
@@ -60,9 +60,9 @@ export const setQrDenomination = payload => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setSelectedQrTab = payload => ({
-  type: UiActionTypes.SET_SELECTED_QR_TAB,
-  payload
+export const setSelectedQrTab = (payload) => ({
+    type: UiActionTypes.SET_SELECTED_QR_TAB,
+    payload,
 });
 
 /**
@@ -72,9 +72,9 @@ export const setSelectedQrTab = payload => ({
  *
  * @returns {{type: {string} }}
  */
-export const setSendAddressField = payload => ({
-  type: UiActionTypes.SET_SEND_ADDRESS_FIELD,
-  payload
+export const setSendAddressField = (payload) => ({
+    type: UiActionTypes.SET_SEND_ADDRESS_FIELD,
+    payload,
 });
 
 /**
@@ -85,9 +85,9 @@ export const setSendAddressField = payload => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setSendAmountField = payload => ({
-  type: UiActionTypes.SET_SEND_AMOUNT_FIELD,
-  payload
+export const setSendAmountField = (payload) => ({
+    type: UiActionTypes.SET_SEND_AMOUNT_FIELD,
+    payload,
 });
 
 /**
@@ -98,9 +98,9 @@ export const setSendAmountField = payload => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setSendMessageField = payload => ({
-  type: UiActionTypes.SET_SEND_MESSAGE_FIELD,
-  payload
+export const setSendMessageField = (payload) => ({
+    type: UiActionTypes.SET_SEND_MESSAGE_FIELD,
+    payload,
 });
 
 /**
@@ -111,7 +111,7 @@ export const setSendMessageField = payload => ({
  * @returns {{type: {string} }}
  */
 export const clearSendFields = () => ({
-  type: UiActionTypes.CLEAR_SEND_FIELDS
+    type: UiActionTypes.CLEAR_SEND_FIELDS,
 });
 
 /**
@@ -123,9 +123,9 @@ export const clearSendFields = () => ({
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setSendDenomination = payload => ({
-  type: UiActionTypes.SET_SEND_DENOMINATION,
-  payload
+export const setSendDenomination = (payload) => ({
+    type: UiActionTypes.SET_SEND_DENOMINATION,
+    payload,
 });
 
 /**
@@ -136,9 +136,9 @@ export const setSendDenomination = payload => ({
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const setUserActivity = payload => ({
-  type: UiActionTypes.SET_USER_ACTIVITY,
-  payload
+export const setUserActivity = (payload) => ({
+    type: UiActionTypes.SET_USER_ACTIVITY,
+    payload,
 });
 
 /**
@@ -149,11 +149,11 @@ export const setUserActivity = payload => ({
  *
  * @returns {{type: {string}, payload: {boolean} }}
  */
-export const setDoNotMinimise = payload => {
-  return {
-    type: UiActionTypes.SET_DO_NOT_MINIMISE,
-    payload
-  };
+export const setDoNotMinimise = (payload) => {
+    return {
+        type: UiActionTypes.SET_DO_NOT_MINIMISE,
+        payload,
+    };
 };
 
 /**
@@ -164,11 +164,11 @@ export const setDoNotMinimise = payload => {
  * @returns {{type: {string}, modalContent: {string}, modalProps: {object} }}
  */
 export const toggleModalActivity = (modalContent, modalProps) => {
-  return {
-    type: UiActionTypes.TOGGLE_MODAL_ACTIVITY,
-    modalContent,
-    modalProps
-  };
+    return {
+        type: UiActionTypes.TOGGLE_MODAL_ACTIVITY,
+        modalContent,
+        modalProps,
+    };
 };
 
 /**
@@ -178,11 +178,11 @@ export const toggleModalActivity = (modalContent, modalProps) => {
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const updateModalProps = payload => {
-  return {
-    type: UiActionTypes.UPDATE_MODAL_PROPS,
-    payload
-  };
+export const updateModalProps = (payload) => {
+    return {
+        type: UiActionTypes.UPDATE_MODAL_PROPS,
+        payload,
+    };
 };
 
 /**
@@ -193,11 +193,11 @@ export const updateModalProps = payload => {
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setLoginRoute = payload => {
-  return {
-    type: UiActionTypes.SET_LOGIN_ROUTE,
-    payload
-  };
+export const setLoginRoute = (payload) => {
+    return {
+        type: UiActionTypes.SET_LOGIN_ROUTE,
+        payload,
+    };
 };
 
 /**
@@ -208,11 +208,11 @@ export const setLoginRoute = payload => {
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const setKeyboardActivity = payload => {
-  return {
-    type: UiActionTypes.SET_KEYBOARD_ACTIVITY,
-    payload
-  };
+export const setKeyboardActivity = (payload) => {
+    return {
+        type: UiActionTypes.SET_KEYBOARD_ACTIVITY,
+        payload,
+    };
 };
 
 /**
@@ -223,9 +223,9 @@ export const setKeyboardActivity = payload => {
  *
  * @returns {{type: {string}, payload: {bool} }}
  */
-export const setAnimateChartOnMount = payload => {
-  return {
-    type: UiActionTypes.SET_ANIMATE_CHART_ON_MOUNT,
-    payload
-  };
+export const setAnimateChartOnMount = (payload) => {
+    return {
+        type: UiActionTypes.SET_ANIMATE_CHART_ON_MOUNT,
+        payload,
+    };
 };
