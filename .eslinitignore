@@ -3,4 +3,5 @@ node_modules/*
 *.min.js
 dist/
 src/shared/locales/*
+src/shared/animations/*
 !src/shared/locales/en/translation.json
