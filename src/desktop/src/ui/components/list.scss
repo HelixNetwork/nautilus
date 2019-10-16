@@ -6,7 +6,8 @@
     color: black;
     overflow: hidden;
     margin-top: 60px;
-    margin-left: -184px;
+    width: 100%;
+    margin-left: 0%;
     > a {
         padding-top: 1vw;
         margin-left: 3vw;
@@ -101,12 +102,17 @@
 }
 
 .refresh {
-    display: block;
     text-align: center;
     margin-right: 0;
-    margin-left: 58vw !important; //36
     color: white !important;
     opacity: 0.3 !important;
+    margin-left: 0%;
+    display: inline-block;
+    float: right;
+    margin-top: 4%;
+    width: 12%;
+    text-align: left;
+    cursor: pointer;
 
     &:hover {
         opacity: 1 !important;
@@ -128,10 +134,7 @@
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg);}
-    // to {
-    //     transform: rotate(360deg);
-    // }
+    100% { transform: rotate(360deg);}
 }
 
 
@@ -294,31 +297,36 @@
 }
 
 .search{
-    width: 45%;
+    width:60%;
     padding-left: 0px;
     display: inline-block;
     margin-bottom: -21px;
-    margin-top: 8px;
+    margin-top: 0.3%;
+    height: 71%;
+    overflow: hidden;
   }
   
   .search_text{
+    display: inline-block;
     float: left;
-    padding-left: 45px;
+    width: 35%;
+    margin-left: 0%;
     font-family: Yu Gothic;
     opacity: 2.3;
     font-size: 17px;
     border: none;
     background: transparent;
-    margin-left: 76%;
     color:white;
+    height: 93%;
   }
 
   .search_icon_style {
     display: inline-block; 
-    margin-left: -105%;
     color:white;
     opacity:0.3; 
     margin-top:5px;
+    float: left;
+    width: 9%;
   }
   
   .sort_text{
@@ -326,22 +334,30 @@
     font-family: Yu Gothic;
     opacity: 0.3;
     font-size: 12px;
-    margin-top: 8px;
-    margin-bottom: 2vw;
     background: var(--body-bg);
     border: none;
     color: white;
     margin-right: 0px;
+    margin-top: 8px;
   }
-  .sort_by{
-    right: 150px;
-    width: 66px;
-    position: absolute;
-    margin-top: 13px;
-    color: white;
-    opacity: 0.3;
-    font-size: 14px;
-  }
+//   .sort_by{
+//     right: 150px;
+//     width: 66px;
+//     position: absolute;
+//     margin-top: 13px;
+//     color: white;
+//     opacity: 0.3;
+//     font-size: 14px;
+//   }
+
+.sort_by{
+    display: inline-block;
+    width: 40%;
+    margin-top: 1%;
+    height: 70%;
+
+}
+
   .column_sent {
     float: left;
     width: 90%;
@@ -502,4 +518,32 @@
         border-radius: 5px;
 }
 
-      
+.nav_div {
+    overflow: hidden;
+    display: inline-block;
+    width: 20%;
+}  
+
+.title_refresh {
+    width: 80%;
+    padding: 4%;
+    margin: 0%;
+    color: white;
+    float: left;
+    display: inline-block;
+    font-size: 15px;
+    opacity: 0.3;
+    text-align: right;
+}
+
+.title_sort {
+    width: 45%;
+    padding: 4%;
+    margin: 0%;
+    color: white;
+    float: left;
+    display: inline-block;
+    font-size: 15px;
+    opacity: 0.3;
+    text-align: right;
+}

@@ -1,4 +1,4 @@
-import { ProgressActionTypes } from "../actions/types";
+import { ProgressActionTypes } from 'actions/types';
 /**
  * Dispatch to set active progress bar step as completed
  *
@@ -7,7 +7,7 @@ import { ProgressActionTypes } from "../actions/types";
  * @returns {{type: {string} }}
  */
 export const setNextStepAsActive = () => ({
-  type: ProgressActionTypes.SET_NEXT_STEP_AS_ACTIVE
+    type: ProgressActionTypes.SET_NEXT_STEP_AS_ACTIVE,
 });
 
 /**
@@ -18,9 +18,9 @@ export const setNextStepAsActive = () => ({
  *
  * @returns {{type: {string}, payload: {number} }}
  */
-export const setActiveStepIndex = payload => ({
-  type: ProgressActionTypes.SET_ACTIVE_STEP_INDEX,
-  payload
+export const setActiveStepIndex = (payload) => ({
+    type: ProgressActionTypes.SET_ACTIVE_STEP_INDEX,
+    payload,
 });
 
 /**
@@ -31,7 +31,7 @@ export const setActiveStepIndex = payload => ({
  * @returns {{type: {string} }}
  */
 export const reset = () => ({
-  type: ProgressActionTypes.RESET
+    type: ProgressActionTypes.RESET,
 });
 
 /**
@@ -42,7 +42,7 @@ export const reset = () => ({
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const startTrackingProgress = payload => ({
-  type: ProgressActionTypes.START_TRACKING_PROGRESS,
-  payload
+export const startTrackingProgress = (payload) => ({
+    type: ProgressActionTypes.START_TRACKING_PROGRESS,
+    payload,
 });

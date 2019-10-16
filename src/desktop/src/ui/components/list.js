@@ -177,7 +177,7 @@ export class ListComponent extends React.PureComponent {
     }
 
     showMessage(message) {
-        if (message.indexOf('{') !== -1) {
+        if (message.indexOf('{') != -1) {
             return 'Empty';
         }
         if (message.length > 15) {
@@ -292,36 +292,40 @@ export class ListComponent extends React.PureComponent {
                         />
                     </div>
                     {/* Should be changed to isLoading and isBusy */}
-                    <a
-                        onClick={() => {
-                            this.updateAccount();
-                            this.updateTx();
-                        }}
-                        title="Refresh"
-                        className={classNames(
-                            css.refresh,
-                            this.props.ui.isSyncing ||
-                                this.props.ui.isSendingTransfer ||
-                                this.props.ui.isAttachingToTangle ||
-                                this.props.ui.isTransitioning
-                                ? css.busy
-                                : null,
-                            this.props.ui.isFetchingAccountInfo ? css.loading : null,
-                        )}
-                    >
-                        <Icon icon="sync" size={24} />
-                    </a>
-                    <p className={css.sort_by}>Sort By</p>
-                    <div className={css.search}>
-                        <select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
-                            {filters.map((item) => {
-                                return (
-                                    <option value={item} key={item}>
-                                        {item}
-                                    </option>
-                                );
-                            })}
-                        </select>
+                    <div className={css.nav_div}>
+                        <p className={css.title_refresh}>Click To Refresh:</p>
+                        <a
+                            onClick={() => {
+                                this.updateAccount();
+                                this.updateTx();
+                            }}
+                            className={classNames(
+                                css.refresh,
+                                this.props.ui.isSyncing ||
+                                    this.props.ui.isSendingTransfer ||
+                                    this.props.ui.isAttachingToTangle ||
+                                    this.props.ui.isTransitioning
+                                    ? css.busy
+                                    : null,
+                                this.props.ui.isFetchingAccountInfo ? css.loading : null,
+                            )}
+                        >
+                            <Icon icon="sync" size={24} />
+                        </a>
+                    </div>
+                    <div className={css.nav_div}>
+                        <p className={css.title_sort}>Sort By:</p>
+                        <div className={css.sort_by}>
+                            <select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
+                                {filters.map((item) => {
+                                    return (
+                                        <option value={item} key={item}>
+                                            {item}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
                     </div>
                 </nav>
 
