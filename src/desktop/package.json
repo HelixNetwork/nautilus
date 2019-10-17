@@ -54,6 +54,7 @@
     "react-charts": "^2.0.0-alpha.12",
     "react-dom": "^16.8.6",
     "react-i18next": "^9.0.10",
+    "react-intl": "^3.3.2",
     "react-lottie": "^1.2.3",
     "react-markdown": "^4.0.8",
     "react-native-progress": "^3.6.0",

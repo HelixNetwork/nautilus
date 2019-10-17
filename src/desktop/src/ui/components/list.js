@@ -39,7 +39,7 @@ import { getAccountInfo } from "actions/accounts";
  */
 
 export class ListComponent extends React.PureComponent {
- 
+
   static propTypes = {
     /** Wallet mode */
     mode: PropTypes.string.isRequired,
@@ -76,7 +76,7 @@ export class ListComponent extends React.PureComponent {
     accountMeta: PropTypes.object.isRequired,
     /** @ignore */
     password: PropTypes.object.isRequired,
-        /** @ignore */
+    /** @ignore */
     style: PropTypes.object,
     /** @ignore */
     ui: PropTypes.object.isRequired
@@ -94,7 +94,7 @@ export class ListComponent extends React.PureComponent {
     transactions: []
   };
 
-  changeFilter(e){
+  changeFilter(e) {
     this.switchFilter(e.target.value)
   }
 
@@ -201,19 +201,19 @@ export class ListComponent extends React.PureComponent {
     });
   }
 
- 
-  showMessage(message){
-    if(message.indexOf('{')!=-1){
+
+  showMessage(message) {
+    if (message.indexOf('{') != -1) {
       return 'Empty';
     }
-    if(message.length > 15){
-      return message.substring(0,15)+"...";
+    if (message.length > 15) {
+      return message.substring(0, 15) + "...";
     }
     return message;
   }
   updateAccount = async () => {
-  
-    
+
+
     const { accountInfo, password, accountName, accountMeta } = this.props;
     const seedStore = await new SeedStore[accountMeta.type](
       password,
@@ -226,26 +226,26 @@ export class ListComponent extends React.PureComponent {
       Electron.notify,
       true // Sync with quorum enabled
     );
-    
-    
+
+
   };
 
-  updateTx(){
-    
+  updateTx() {
+
     const tx = this.getAccountTransactions(this.props.accountInfo);
     this.setState({
-      transactions:tx
+      transactions: tx
     })
   }
 
-  componentDidUpdate(){
-    const {transactions} = this.state;
+  componentDidUpdate() {
+    const { transactions } = this.state;
     const tx = this.getAccountTransactions(this.props.accountInfo);
-    if(tx.length>transactions.length){
-    this.setState({
-      transactions:tx
-    })
-  }
+    if (tx.length > transactions.length) {
+      this.setState({
+        transactions: tx
+      })
+    }
   }
 
 
@@ -338,16 +338,16 @@ export class ListComponent extends React.PureComponent {
       marginLeft: '-50px',
       width: '109%',
     };
-    
+
 
     return (
       <React.Fragment>
         <nav className={css.nav}>
-       
-        <div className={css.search}>
-          <div
+
+          <div className={css.search}>
+            <div
               onClick={() => this.setState({ search: "" })}
-              className = {css.search_icon_style}
+              className={css.search_icon_style}
             >
               <Icon
                 icon={search.length > 0 ? "cross" : "search"}
@@ -360,102 +360,106 @@ export class ListComponent extends React.PureComponent {
               placeholder="Type text here..."
               onChange={e => this.setState({ search: e.target.value })}
             />
-            
+
           </div>
           {/* Should be changed to isLoading and isBusy */}
-          <a
-            onClick={()=>{this.updateAccount();this.updateTx()}} title= "Refresh"
-            className={classNames(css.refresh, (this.props.ui.isSyncing || this.props.ui.isSendingTransfer || this.props.ui.isAttachingToTangle || this.props.ui.isTransitioning) ? css.busy : null, this.props.ui.isFetchingAccountInfo ? css.loading : null)}
-          >
-            <Icon icon="sync" size={24} />
-          </a>
-          <p className={css.sort_by}>Sort By</p>
-          <div className={css.search}><select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
-                  {filters.map(item => {
-                  return (
+          <div className= {css.nav_div}>
+            <p className= {css.title_refresh}>Click To Refresh:</p>
+            <a
+              onClick={() => { this.updateAccount(); this.updateTx() }}
+              className={classNames(css.refresh, (this.props.ui.isSyncing || this.props.ui.isSendingTransfer || this.props.ui.isAttachingToTangle || this.props.ui.isTransitioning) ? css.busy : null, this.props.ui.isFetchingAccountInfo ? css.loading : null)}
+            >
+              <Icon icon="sync" size={24} />
+            </a>
+          </div>
+          <div className= {css.nav_div}>
+            <p className= {css.title_sort}>Sort By:</p>
+            <div className = {css.sort_by}><select className={css.sort_text} onChange={this.changeFilter.bind(this)}>
+              {filters.map(item => {
+                return (
                   <option value={item} key={item}>
                     {item}
                   </option>)
-                })}
-                </select>
-                </div> 
+              })}
+            </select>
+            </div>
 
-          
+          </div>
         </nav>
-      
 
-          <Scrollbar style={scrollStyle}>
-            {filteredTransactions.length ? (
-              filteredTransactions.map((transaction, key) => {
-                const isReceived = transaction.incoming;
-                const isConfirmed = transaction.persistence;
 
-                return (
-                  <a
-                    key={key}
-                    onClick={() => setItem(transaction.bundle)}
-                  >
-                    {isConfirmed ?(
-                    <div className={isReceived?css.column_receive:css.column_sent}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>{isReceived ? 'RECEIVED': 'SENT'}</h4>
+        <Scrollbar style={scrollStyle}>
+          {filteredTransactions.length ? (
+            filteredTransactions.map((transaction, key) => {
+              const isReceived = transaction.incoming;
+              const isConfirmed = transaction.persistence;
+
+              return (
+                <a
+                  key={key}
+                  onClick={() => setItem(transaction.bundle)}
+                >
+                  {isConfirmed ? (
+                    <div className={isReceived ? css.column_receive : css.column_sent}>
+                      <div className={css.column_cnt}>
+                        <h4 className={css.sent_heading}>{isReceived ? 'RECEIVED' : 'SENT'}</h4>
                         <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
-                       
-                    </div>
-                    <div className={css.column_cnt}>
+
+                      </div>
+                      <div className={css.column_cnt}>
                         <p className={css.note}>{this.showMessage(transaction.message)}</p>
-                    </div>
-                    <div className={css.column_cnt}>
+                      </div>
+                      <div className={css.column_cnt}>
                         <h4 className={css.sender_heading}>Hash</h4>
                         <p className={css.fromhash}>{transaction.bundle}</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={isReceived?css.receive:css.sent}>{transaction.transferValue === 0
+                      </div>
+                      <div className={css.column_cnt}>
+                        <span className={isReceived ? css.receive : css.sent}>{transaction.transferValue === 0
                           ? ""
                           : isReceived
-                          ? "+"
-                          : "-"}
-                        {formatHlx(transaction.transferValue, true, true)}</span>
+                            ? "+"
+                            : "-"}
+                          {formatHlx(transaction.transferValue, true, true)}</span>
+                      </div>
                     </div>
-                    </div>
-                    ): (
+                  ) : (
                       <div className={css.column_pending}>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sent_heading}>PENDING</h4>
-                        <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
-                        
-                    </div>
-                    <div className={css.column_cnt}>
-                        <p className={css.note}>{this.showMessage(transaction.message)}</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <h4 className={css.sender_heading}>Hash</h4>
-                        <p className={css.fromhash}>{transaction.bundle}</p>
-                    </div>
-                    <div className={css.column_cnt}>
-                        <span className={css.pending}>{transaction.transferValue === 0
-                          ? ""
-                          : isReceived
-                          ? "+"
-                          : "-"}
-                        {formatHlx(transaction.transferValue, true, true)}</span>
-                    </div>
-                    </div>
+                        <div className={css.column_cnt}>
+                          <h4 className={css.sent_heading}>PENDING</h4>
+                          <h6>{moment.unix(transaction.timestamp).format("DD MMM YYYY")}</h6>
+
+                        </div>
+                        <div className={css.column_cnt}>
+                          <p className={css.note}>{this.showMessage(transaction.message)}</p>
+                        </div>
+                        <div className={css.column_cnt}>
+                          <h4 className={css.sender_heading}>Hash</h4>
+                          <p className={css.fromhash}>{transaction.bundle}</p>
+                        </div>
+                        <div className={css.column_cnt}>
+                          <span className={css.pending}>{transaction.transferValue === 0
+                            ? ""
+                            : isReceived
+                              ? "+"
+                              : "-"}
+                            {formatHlx(transaction.transferValue, true, true)}</span>
+                        </div>
+                      </div>
                     )}
 
-                 
-                  </a>
-                );
-              })
-            ) : (
+
+                </a>
+              );
+            })
+          ) : (
               <p className={css.empty}>
                 {!transactions.length
                   ? t("noTransactions")
                   : t("history:noTransactionsFound")}
               </p>
             )}
-          </Scrollbar>
-      
+        </Scrollbar>
+
         <div
           className={classNames(css.popup, activeTx ? css.on : null)}
           onClick={() => setItem(null)}
@@ -478,8 +482,8 @@ export class ListComponent extends React.PureComponent {
                     {!activeTx.persistence
                       ? t("pending")
                       : activeTx.incoming
-                      ? t("received")
-                      : t("sent")}
+                        ? t("received")
+                        : t("sent")}
                     <em>
                       {formatModalTime(
                         navigator.language,
@@ -521,7 +525,7 @@ export class ListComponent extends React.PureComponent {
                         {t("retry")}
                       </Button>
                     )}
-                    {!isActiveFailed && (
+                    {(!isActiveFailed && !activeTx.incoming) && (
                       <Button
                         className="small"
                         loading={

@@ -1,0 +1,5 @@
+package.json
+src/shared/locales/*
+!src/shared/locales/en/translation.json
+src/desktop/dist/*
+npm-shrinkwrap.json

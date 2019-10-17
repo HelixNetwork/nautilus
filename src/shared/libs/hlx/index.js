@@ -1,18 +1,13 @@
-import { composeAPI } from "@helixnetwork/core";
+import { composeAPI } from '@helixnetwork/core';
 // TODO
-import "proxy-polyfill";
-import Quorum from "./quorum";
-import {
-  DEFAULT_NODE,
-  DEFAULT_NODES,
-  DEFAULT_NODE_REQUEST_TIMEOUT,
-  QUORUM_SIZE
-} from "../../config";
+import 'proxy-polyfill';
+import Quorum from './quorum';
+import { DEFAULT_NODE, DEFAULT_NODES, DEFAULT_NODE_REQUEST_TIMEOUT, QUORUM_SIZE } from '../../config';
 
 /** Globally defined HELIX instance */
 let helixAPI = composeAPI({
-  provider: DEFAULT_NODE.url,
-  timeout:DEFAULT_NODE_REQUEST_TIMEOUT
+    provider: DEFAULT_NODE.url,
+    timeout: DEFAULT_NODE_REQUEST_TIMEOUT,
 });
 
 // Set node request timeout
@@ -20,8 +15,8 @@ let helixAPI = composeAPI({
 // helixAPI.api.setApiTimeout(DEFAULT_NODE_REQUEST_TIMEOUT);
 /** Globally defined Quorum instance */
 export const quorum = new Quorum({
-  nodes: DEFAULT_NODES,
-  quorumSize: QUORUM_SIZE
+    nodes: DEFAULT_NODES,
+    quorumSize: QUORUM_SIZE,
 });
 
 /**
@@ -33,11 +28,11 @@ export const quorum = new Quorum({
  *
  * @returns {void}
  */
-export const changeHelixNode = NODE_URI => {
-  helixAPI = composeAPI({
-    provider: NODE_URI,
-    timeout:DEFAULT_NODE_REQUEST_TIMEOUT
-  });
+export const changeHelixNode = (NODE_URI) => {
+    helixAPI = composeAPI({
+        provider: NODE_URI,
+        timeout: DEFAULT_NODE_REQUEST_TIMEOUT,
+    });
 };
 
 export const helix = helixAPI;
