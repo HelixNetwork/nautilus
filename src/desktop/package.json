@@ -10,10 +10,7 @@
     "src",
     "../shared"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HelixNetwork/nautilus.git"
-  },
+  "repository": "git+https://github.com/HelixNetwork/nautilus.git",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
@@ -92,7 +89,7 @@
     "auditjs": "./../../node_modules/.bin/auditjs -n -l error -w whitelist.json",
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
     "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl",
-    "test": "yarn run build-app && jest"
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -191,9 +188,10 @@
   },
   "homepage": "./",
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.6.0",
     "@babel/register": "^7.4.4",
     "@jest-runner/electron": "^2.0.2",
     "babel-jest": "^24.9.0",
@@ -216,27 +214,5 @@
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.3.1"
   },
-  "jest": {
-    "runner": "@jest-runner/electron",
-    "globalSetup": "<rootDir>scripts/jestSetup.js",
-    "globalTeardown": "<rootDir>scripts/jestTeardown.js",
-    "testEnvironment": "<rootDir>scripts/jestEnv.js",
-    "setupFilesAfterEnv": [
-      "<rootDir>scripts/jestLibs.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "modulePaths": [
-      "src",
-      "../shared"
-    ],
-    "moduleNameMapper": {
-      "\\.(scss)$": "<rootDir>/__mocks__/styleMock.js",
-      "\\.(svg)$": "<rootDir>/__mocks__/fileMock.js"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/react-qr-reader/"
-    ]
-  }
+  "license": "MIT"
 }
