@@ -82,8 +82,11 @@ describe('libs: helix/extendedApi', () => {
                         const resultMap = {
                             getNodeInfo: {
                                 appVersion: '0.0.0',
-                                latestMilestone: EMPTY_HASH_TXBYTES,
-                                latestSolidSubtangleMilestone: '0'.repeat(64),
+                                currentRoundIndex: 426550,
+                                latestSolidRoundHash: EMPTY_HASH_TXBYTES,
+                                latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                roundStartIndex: 0,
+                                lastSnapshottedRoundIndex: 420000,
                             },
                         };
 
@@ -121,8 +124,11 @@ describe('libs: helix/extendedApi', () => {
                         const resultMap = {
                             getNodeInfo: {
                                 appVersion: '0.0.0',
-                                latestMilestone: EMPTY_HASH_TXBYTES,
-                                latestSolidSubtangleMilestone: EMPTY_HASH_TXBYTES,
+                                currentRoundIndex: 426550,
+                                latestSolidRoundHash: EMPTY_HASH_TXBYTES,
+                                latestSolidRoundIndex: 0,
+                                roundStartIndex: 0,
+                                lastSnapshottedRoundIndex: 420000,
                             },
                         };
 
@@ -143,7 +149,7 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-        describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND} less than latestMilestoneIndex`, () => {
+        describe(`when latestSolidRoundIndex is ${MAX_MILESTONE_FALLBEHIND} less than currentRoundIndex`, () => {
             describe('when "timestamp" on txBytes is from five minutes ago', () => {
                 beforeEach(() => {
                     nock('http://localhost:14265', {
@@ -160,10 +166,11 @@ describe('libs: helix/extendedApi', () => {
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
-                                    latestMilestoneIndex: 426550,
-                                    latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-                                    latestMilestone: 'c'.repeat(64),
-                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                    currentRoundIndex: 426550,
+                                    latestSolidRoundHash: 'c'.repeat(64),
+                                    latestSolidRoundIndex: 426550 - 100,
+                                    roundStartIndex: 0,
+                                    lastSnapshottedRoundIndex: 420000,
                                 },
                                 getTransactionStrings: {
                                     txs: [head(newZeroValueTransactionBytes)],
@@ -200,10 +207,11 @@ describe('libs: helix/extendedApi', () => {
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
-                                    latestMilestoneIndex: 426550,
-                                    latestSolidSubtangleMilestoneIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-                                    latestMilestone: 'c'.repeat(64),
-                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                    currentRoundIndex: 426550,
+                                    latestSolidRoundHash: 'c'.repeat(64),
+                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                    roundStartIndex: 0,
+                                    lastSnapshottedRoundIndex: 420000,
                                 },
                                 getTransactionStrings: {
                                     txs: [
@@ -255,10 +263,11 @@ describe('libs: helix/extendedApi', () => {
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
-                                    latestMilestoneIndex: 426550,
-                                    latestSolidSubtangleMilestoneIndex: 426550 - (MAX_MILESTONE_FALLBEHIND - 1),
-                                    latestMilestone: 'c'.repeat(64),
-                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                    currentRoundIndex: 426550,
+                                    latestSolidRoundHash: 'c'.repeat(64),
+                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                    roundStartIndex: 0,
+                                    lastSnapshottedRoundIndex: 420000,
                                 },
                                 getTransactionStrings: {
                                     txs: [head(newZeroValueTransactionBytes)],
@@ -295,10 +304,11 @@ describe('libs: helix/extendedApi', () => {
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
-                                    latestMilestoneIndex: 426550,
-                                    latestSolidSubtangleMilestoneIndex: 426550 - (MAX_MILESTONE_FALLBEHIND - 1),
-                                    latestMilestone: 'c'.repeat(64),
-                                    latestSolidSubtangleMilestone: 'a'.repeat(64),
+                                    currentRoundIndex: 426550,
+                                    latestSolidRoundHash: 'c'.repeat(64),
+                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                    roundStartIndex: 0,
+                                    lastSnapshottedRoundIndex: 420000,
                                 },
                                 getTransactionStrings: {
                                     txs: [
@@ -349,8 +359,8 @@ describe('libs: helix/extendedApi', () => {
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
-                                    latestMilestone: 'c'.repeat(64),
-                                    latestSolidSubtangleMilestone: 'c'.repeat(64),
+                                    currentRoundIndex: 426550,
+                                    latestSolidRoundHash: 'c'.repeat(64),
                                 },
                                 getTransactionStrings: {
                                     txs: [head(newZeroValueTransactionBytes)],
@@ -387,8 +397,11 @@ describe('libs: helix/extendedApi', () => {
                             const resultMap = {
                                 getNodeInfo: {
                                     appVersion: '0.0.0',
-                                    latestMilestone: 'c'.repeat(64),
-                                    latestSolidSubtangleMilestone: 'c'.repeat(64),
+                                    currentRoundIndex: 426550,
+                                    latestSolidRoundHash: 'c'.repeat(64),
+                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                    roundStartIndex: 0,
+                                    lastSnapshottedRoundIndex: 420000,
                                 },
                                 getTransactionStrings: {
                                     txs: [

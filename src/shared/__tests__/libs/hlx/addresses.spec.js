@@ -26,8 +26,11 @@ import transactions, {
     newZeroValueAttachedTransactionBaseTrunk,
     confirmedZeroValueTransactions,
     unconfirmedValueTransactions,
-    LATEST_MILESTONE,
-    LATEST_MILESTONE_INDEX,
+    NODE_INFO_CURRENT_ROUND_INDEX,
+    NODE_INFO_LATEST_SOLID_ROUND_HASH,
+    NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+    NODE_INFO_ROUND_START_INDEX,
+    NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
     LATEST_SOLID_SUBTANGLE_MILESTONE,
     LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
 } from '../../__samples__/transactions';
@@ -568,14 +571,15 @@ describe('#isAddressUsedAsync', () => {
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
-                                latestMilestone: LATEST_MILESTONE,
-                                latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                             };
                         } else if (body.command === 'getTransactionStrings') {
                             return {
-                                txs: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                     ? milestoneBytes
                                     : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
@@ -619,14 +623,15 @@ describe('#isAddressUsedAsync', () => {
                             } else if (body.command === 'getNodeInfo') {
                                 return {
                                     appVersion: '1',
-                                    latestMilestone: LATEST_MILESTONE,
-                                    latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                    latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                    latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                    currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                    latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                    latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                    roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                    lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                                 };
                             } else if (body.command === 'getTransactionStrings') {
                                 return {
-                                    txs: includes(body.hashes, LATEST_MILESTONE)
+                                    txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                         ? milestoneBytes
                                         : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                 };
@@ -672,14 +677,15 @@ describe('#isAddressUsedAsync', () => {
                                 } else if (body.command === 'getNodeInfo') {
                                     return {
                                         appVersion: '1',
-                                        latestMilestone: LATEST_MILESTONE,
-                                        latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                        latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                        latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                        currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                        latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                        latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                        roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                        lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                                     };
                                 } else if (body.command === 'getTransactionStrings') {
                                     return {
-                                        txs: includes(body.hashes, LATEST_MILESTONE)
+                                        txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                             ? milestoneBytes
                                             : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                     };
@@ -724,14 +730,15 @@ describe('#isAddressUsedAsync', () => {
                                 } else if (body.command === 'getNodeInfo') {
                                     return {
                                         appVersion: '1',
-                                        latestMilestone: LATEST_MILESTONE,
-                                        latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                        latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                        latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                        currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                        latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                        latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                        roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                        lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                                     };
                                 } else if (body.command === 'getTransactionStrings') {
                                     return {
-                                        txs: includes(body.hashes, LATEST_MILESTONE)
+                                        txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                             ? milestoneBytes
                                             : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                                     };
@@ -780,14 +787,15 @@ describe('#getAddressDataUptoLatestUnusedAddress', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -894,14 +902,15 @@ describe('#getAddressDataUptoLatestUnusedAddress', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1017,14 +1026,15 @@ describe('#mapLatestAddressData', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1158,14 +1168,15 @@ describe('#getFullAddressHistory', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1236,14 +1247,15 @@ describe('#getFullAddressHistory', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1333,14 +1345,15 @@ describe('#getFullAddressHistory', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1417,14 +1430,15 @@ describe('#getFullAddressHistory', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1512,14 +1526,15 @@ describe('#removeUnusedAddresses', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1569,14 +1584,15 @@ describe('#removeUnusedAddresses', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -1697,14 +1713,15 @@ describe('#removeUnusedAddresses', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2086,13 +2103,14 @@ describe('#getAddressDataUptoRemainder', () => {
                             wereAddressesSpentFrom: { states: map(addresses, () => false) },
                             getNodeInfo: {
                                 appVersion: '1',
-                                latestMilestone: LATEST_MILESTONE,
-                                latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                             },
                             getTransactionStrings: {
-                                txs: includes(body.hashes, LATEST_MILESTONE)
+                                txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                     ? milestoneBytes
                                     : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             },
@@ -2264,14 +2282,15 @@ describe('#filterSpentAddressData', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2374,14 +2393,14 @@ describe('#attachAndFormatAddress', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
+                            latestMilestone: NODE_INFO_LATEST_SOLID_ROUND_HASH,
                             latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
+                            latestMilestoneIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
                             latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2445,14 +2464,15 @@ describe('#attachAndFormatAddress', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2543,14 +2563,15 @@ describe('#syncAddresses', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2652,14 +2673,15 @@ describe('#syncAddresses', () => {
                     } else if (body.command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (body.command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2873,14 +2895,15 @@ describe('#isAnyAddressSpent', () => {
                     } else if (command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2921,14 +2944,15 @@ describe('#isAnyAddressSpent', () => {
                     } else if (command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };
@@ -2969,14 +2993,15 @@ describe('#isAnyAddressSpent', () => {
                     } else if (command === 'getNodeInfo') {
                         return {
                             appVersion: '1',
-                            latestMilestone: LATEST_MILESTONE,
-                            latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                            latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                            latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                            currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                            latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                            latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                            roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                            lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                         };
                     } else if (command === 'getTransactionStrings') {
                         return {
-                            txs: includes(body.hashes, LATEST_MILESTONE)
+                            txs: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                 ? milestoneBytes
                                 : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                         };

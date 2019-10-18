@@ -3,7 +3,7 @@
   "version": "v1.0.0",
   "description": "",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
+    "test": "./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
     "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/inputs.spec.js\"",
     "apitest": "NODE_ENV=test  --require @babel/register \"__tests__/dev-sample/api.js\""
   },
@@ -12,7 +12,7 @@
     "@helixnetwork/bundle-validator": "^1.0.0-alpha.6",
     "@helixnetwork/checksum": "^1.0.0-alpha.6",
     "@helixnetwork/converter": "^1.0.0-alpha.6",
-    "@helixnetwork/core": "^1.0.0-alpha.6",
+    "@helixnetwork/core": "^1.0.0-alpha.8",
     "@helixnetwork/transaction-converter": "^1.0.0-alpha.6",
     "@helixnetwork/validators": "^1.0.0-alpha.6",
     "axios": "^0.19.0",
