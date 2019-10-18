@@ -11,10 +11,11 @@ import nock from 'nock';
 import { prepareInputs, getInputs, isValidInput } from '../../../libs/hlx/inputs';
 import { addressData as mockAddressData, balance as totalBalanceOfMockAddressData } from '../../__samples__/addresses';
 import mockTransactions, {
-    LATEST_MILESTONE,
-    LATEST_MILESTONE_INDEX,
-    LATEST_SOLID_SUBTANGLE_MILESTONE,
-    LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+    NODE_INFO_CURRENT_ROUND_INDEX,
+    NODE_INFO_LATEST_SOLID_ROUND_HASH,
+    NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+    NODE_INFO_ROUND_START_INDEX,
+    NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
 } from '../../__samples__/transactions';
 import { milestoneBytes } from '../../__samples__/txBytes';
 import { IRI_API_VERSION } from '../../../config';
@@ -247,14 +248,15 @@ describe('libs: helix/inputs', () => {
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
-                                latestMilestone: LATEST_MILESTONE,
-                                latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                             };
                         } else if (body.command === 'getTransactionStrings') {
                             return {
-                                TxBytes: includes(body.hashes, LATEST_MILESTONE)
+                                TxBytes: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                     ? milestoneBytes
                                     : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
@@ -363,14 +365,15 @@ describe('libs: helix/inputs', () => {
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
-                                latestMilestone: LATEST_MILESTONE,
-                                latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                             };
                         } else if (body.command === 'getTransactionStrings') {
                             return {
-                                TxBytes: includes(body.hashes, LATEST_MILESTONE)
+                                TxBytes: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                     ? milestoneBytes
                                     : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
@@ -496,14 +499,15 @@ describe('libs: helix/inputs', () => {
                         } else if (body.command === 'getNodeInfo') {
                             return {
                                 appVersion: '1',
-                                latestMilestone: LATEST_MILESTONE,
-                                latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-                                latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-                                latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+                                currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+                                latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+                                latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+                                roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+                                lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
                             };
                         } else if (body.command === 'getTransactionStrings') {
                             return {
-                                TxBytes: includes(body.hashes, LATEST_MILESTONE)
+                                TxBytes: includes(body.hashes, NODE_INFO_LATEST_SOLID_ROUND_HASH)
                                     ? milestoneBytes
                                     : map(body.hashes, () => EMPTY_TRANSACTION_HEX),
                             };
