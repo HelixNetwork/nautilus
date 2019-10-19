@@ -65,7 +65,7 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-        describe('when latestMilestone is not equal to latestSolidSubtangleMilestone', () => {
+        describe('when currentRoundIndex-latestSolidRoundIndex is not less than or equal to 50', () => {
             beforeEach(() => {
                 nock('http://localhost:14265', {
                     reqheaders: {
@@ -84,7 +84,7 @@ describe('libs: helix/extendedApi', () => {
                                 appVersion: '0.0.0',
                                 currentRoundIndex: 426550,
                                 latestSolidRoundHash: EMPTY_HASH_TXBYTES,
-                                latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+                                latestSolidRoundIndex: 426499,
                                 roundStartIndex: 0,
                                 lastSnapshottedRoundIndex: 420000,
                             },
