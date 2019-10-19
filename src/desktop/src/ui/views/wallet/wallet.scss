@@ -1099,7 +1099,7 @@ margin-right: 16px;
   margin-left: -13px;    
 }
   
-.sidebar a {
+.sidebar div {
   display: block;
   color: #fff;
   width:50%;
@@ -1109,7 +1109,7 @@ margin-right: 16px;
 }
 
 
-.sidebar a:hover:not(.active) {
+.sidebar div:hover:not(.active) {
   border-bottom: 2px solid #eaac32;
   opacity: 1 !important;
 }

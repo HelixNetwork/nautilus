@@ -32,52 +32,56 @@ class Sidebar extends React.PureComponent {
             <ul className={classNames(css.acco_pg)}>
                 <p className={classNames(css.sidePara)}>{t('settings:generalSettings')}</p>
                 <li className={active === 'language' ? css.active : ''}>
-                    <a onClick={() => this.props.history.push('/settings/language')}>{t('settings:language')}</a>
+                    <div onClick={() => this.props.history.push('/settings/language')}>{t('settings:language')}</div>
                 </li>
 
                 <li className={active === 'theme' ? css.active : ''}>
-                    <a onClick={() => this.props.history.push('/settings/theme')}>{t('settings:theme')}</a>
+                    <div onClick={() => this.props.history.push('/settings/theme')}>{t('settings:theme')}</div>
                 </li>
                 <li className={active === 'accountsetting' ? css.active : ''}>
-                    <a onClick={() => this.props.history.push('/settings/accountsetting')}>{t('settings:advanced')}</a>
+                    <div onClick={() => this.props.history.push('/settings/accountsetting')}>
+                        {t('settings:advanced')}
+                    </div>
                 </li>
 
                 {wallet.ready && (
                     <React.Fragment>
                         <p className={classNames(css.sidePara1)}>{t('settings:accountSettings')}</p>
                         <li className={active === 'editname' ? css.active : ''}>
-                            <a onClick={() => this.props.history.push('/settings/editname')}>
+                            <div onClick={() => this.props.history.push('/settings/editname')}>
                                 {t('settings:accountName')}{' '}
-                            </a>
+                            </div>
                         </li>
                         <li className={active === 'node' ? css.active : ''}>
-                            <a onClick={() => this.props.history.push('/settings/node')}>{t('global:node')}</a>
+                            <div onClick={() => this.props.history.push('/settings/node')}>{t('global:node')}</div>
                         </li>
                         <li className={active === 'viewseed' ? css.active : ''}>
-                            <a onClick={() => this.props.history.push('/settings/viewseed')}>
+                            <div onClick={() => this.props.history.push('/settings/viewseed')}>
                                 {t('accountManagement:viewSeed')}
-                            </a>
+                            </div>
                         </li>
                         <li className={active === 'address' ? css.active : ''}>
-                            <a onClick={() => this.props.history.push('/settings/address')}>
+                            <div onClick={() => this.props.history.push('/settings/address')}>
                                 {t('accountManagement:viewAddresses')}
-                            </a>
+                            </div>
                         </li>
                         <li className={active === 'password' ? css.active : ''}>
-                            <a onClick={() => this.props.history.push('/settings/password')}>
+                            <div onClick={() => this.props.history.push('/settings/password')}>
                                 {t('settings:changePassword')}
-                            </a>
+                            </div>
                         </li>
                         {accountNames.length > 1 && (
                             <li className={active === 'removeaccount' ? css.active : ''}>
-                                <a onClick={() => this.props.history.push('/settings/remove/:accountIndex')}>
+                                <div onClick={() => this.props.history.push('/settings/remove/:accountIndex')}>
                                     {t('settings:removeAccount')}
-                                </a>
+                                </div>
                             </li>
                         )}
 
                         <li className={active === 'snapshot' ? css.active : ''}>
-                            <a onClick={() => this.props.history.push('/settings/snapshot')}>{t('settings:snap')}</a>
+                            <div onClick={() => this.props.history.push('/settings/snapshot')}>
+                                {t('settings:snap')}
+                            </div>
                         </li>
                     </React.Fragment>
                 )}
