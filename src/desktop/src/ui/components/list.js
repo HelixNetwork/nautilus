@@ -177,7 +177,7 @@ export class ListComponent extends React.PureComponent {
     }
 
     showMessage(message) {
-        if (message.indexOf('{') != -1) {
+        if (message.indexOf('{') !== -1) {
             return 'Empty';
         }
         if (message.length > 15) {

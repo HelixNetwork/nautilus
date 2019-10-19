@@ -77,7 +77,7 @@ class TopBar extends Component {
         return (
             <div>
                 <div className={css.top}>
-                    <img src={logo} />
+                    <img src={logo} alt=" " />
                     <div className={css.topIn}>
                         <h4 style={{ marginBottom: '-13px' }}>BALANCE</h4>
                         <br />
@@ -86,14 +86,14 @@ class TopBar extends Component {
                             <span className={css.dot}></span>
                             <h6 style={{ opacity: '0.3' }}>
                                 <IntlProvider locale="en">
-                                    <FormattedNumber value={amount} style="currency" currency={currency} />
+                                    <FormattedNumber value={amount} currency={currency} />
                                 </IntlProvider>
                                 /mHLX
                             </h6>
                         </div>
                     </div>
                     <div className={css.topBal}>
-                        <img src={hlx} />
+                        <img src={hlx} alt=" " />
                         <h2>{formatHlx(balance, true, true)}</h2>
                         <hr />
                     </div>
