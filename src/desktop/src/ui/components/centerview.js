@@ -1,14 +1,9 @@
-import React, { Component } from 'react'
-import {Grid, Row, Col} from 'react-bootstrap';
+import React, { Component } from 'react';
 
 export class centerview extends Component {
     render() {
-        return (
-            <div>
-                
-            </div>
-        )
+        return <div></div>;
     }
 }
 
-export default centerview
+export default centerview;

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from "prop-types";
-import { withI18n, Trans } from "react-i18next";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withI18n } from 'react-i18next';
 import unionBy from 'lodash/unionBy';
-import { connect } from "react-redux";
-import withNodeData from 'containers/settings/Node';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { initialState as defaultSettings } from 'reducers/settings';
 
@@ -27,7 +26,7 @@ import {
     updateNodeAutoSwitchSetting,
     changeAutoNodeListSetting,
 } from 'actions/settings';
-import { generateAlert } from "actions/alerts";
+import { generateAlert } from 'actions/alerts';
 
 /**
  * Change IRI API node component
@@ -41,19 +40,20 @@ class NodeSettings extends React.PureComponent {
             nodeAutoSwitch: PropTypes.bool.isRequired,
             autoNodeList: PropTypes.bool.isRequired,
             node: PropTypes.object.isRequired,
-            quorum: PropTypes.object.isRequired
+            quorum: PropTypes.object.isRequired,
         }),
-            changeAutoNodeListSetting: PropTypes.func.isRequired,
-            updateNodeAutoSwitchSetting: PropTypes.func.isRequired,
-            updateQuorumConfig: PropTypes.func.isRequired,
-            setFullNode: PropTypes.func.isRequired,
-      
+        changeAutoNodeListSetting: PropTypes.func.isRequired,
+        updateNodeAutoSwitchSetting: PropTypes.func.isRequired,
+        updateQuorumConfig: PropTypes.func.isRequired,
+        setFullNode: PropTypes.func.isRequired,
+
         t: PropTypes.func.isRequired,
     };
 
     state = {
         loading: this.props.isChangingNode || this.props.isCheckingCustomNode,
-        autoNodeSelection: defaultSettings.autoNodeList === this.props.settings.autoNodeList &&
+        autoNodeSelection:
+            defaultSettings.autoNodeList === this.props.settings.autoNodeList &&
             defaultSettings.nodeAutoSwitch === this.props.settings.nodeAutoSwitch &&
             defaultSettings.quorum.enabled === this.props.settings.quorum.enabled &&
             defaultSettings.quorum.size === this.props.settings.quorum.size &&
@@ -64,27 +64,22 @@ class NodeSettings extends React.PureComponent {
         quorumEnabled: this.props.settings.quorum.enabled,
         quorumSize: this.props.settings.quorum.size,
         showCustomNodes: false,
-
-    }
+    };
 
     // componentDidMount() {
     //     const { settings } = this.props;
-       
+
     //     useEffect(() => {
     //         if (!this.state.loading && settings.node.url !== primaryNode.url) {
     //             setPrimaryNode(settings.node);
     //         }
     //     }, [settings]);
 
-
-
-
     // }
 
-  
     updateQuorumEnabled = () => {
-        const {quorumEnabled, autoNodeList, quorumSize} = this.state;
-        const {nodes, customNodes, generateAlert,t} = this.props;
+        const { quorumEnabled, autoNodeList, quorumSize } = this.state;
+        const { nodes, customNodes, generateAlert, t } = this.props;
         if (
             !quorumEnabled &&
             ((autoNodeList && nodes.length < MINIMUM_QUORUM_SIZE) ||
@@ -96,8 +91,8 @@ class NodeSettings extends React.PureComponent {
                 autoNodeList
                     ? t('nodeSettings:nodeEnoughNodesExplanation')
                     : `${t('nodeSettings:nodeEnoughNodesExplanation')} ${t(
-                        'nodeSettings:nodeEnoughNodesExplanationCustomNodes',
-                    )}`,
+                          'nodeSettings:nodeEnoughNodesExplanationCustomNodes',
+                      )}`,
             );
         } else {
             if (!quorumEnabled && !autoNodeList && quorumSize > customNodes.length) {
@@ -108,8 +103,8 @@ class NodeSettings extends React.PureComponent {
     };
 
     updateAutoNodeList = () => {
-        const {autoNodeList, quorumSize} = this.state;
-        const {customNodes, generateAlert, t} = this.props;
+        const { autoNodeList, quorumSize } = this.state;
+        const { customNodes, generateAlert, t } = this.props;
         if (autoNodeList && customNodes.length < 1) {
             generateAlert('error', t('nodeSettings:noCustomNodes'), t('nodeSettings:mustAddCustomNodes'));
         } else {
@@ -123,7 +118,7 @@ class NodeSettings extends React.PureComponent {
     };
 
     updateAutoNodeSelection = () => {
-        const {autoNodeSelection} = this.state;
+        const { autoNodeSelection } = this.state;
         if (!autoNodeSelection) {
             this.setAutoNodeList(defaultSettings.autoNodeList);
             this.setNodeAutoSwitch(defaultSettings.nodeAutoSwitch);
@@ -180,8 +175,8 @@ class NodeSettings extends React.PureComponent {
     };
 
     removeCustomNode = (nodeUrl) => {
-        const {autoNodeList, quorumEnabled, quorumSize} = this.state;
-        const { t, generateAlert,customNodes } = this.props;
+        const { autoNodeList, quorumEnabled, quorumSize } = this.state;
+        const { t, generateAlert, customNodes } = this.props;
         if (!autoNodeList && quorumEnabled && quorumSize === customNodes.length) {
             return generateAlert(
                 'error',
@@ -194,8 +189,16 @@ class NodeSettings extends React.PureComponent {
     };
 
     saveSettings = () => {
-        const {autoNodeList, nodeAutoSwitch, quorumEnabled, quorumSize, primaryNode} = this.state;
-        const {settings, generateAlert, changeAutoNodeListSetting, updateNodeAutoSwitchSetting, updateQuorumConfig, setFullNode,t} = this.props;
+        const { autoNodeList, nodeAutoSwitch, quorumEnabled, quorumSize, primaryNode } = this.state;
+        const {
+            settings,
+            generateAlert,
+            changeAutoNodeListSetting,
+            updateNodeAutoSwitchSetting,
+            updateQuorumConfig,
+            setFullNode,
+            t,
+        } = this.props;
         if (autoNodeList !== settings.autoNodeList) {
             changeAutoNodeListSetting(autoNodeList);
         }
@@ -215,159 +218,164 @@ class NodeSettings extends React.PureComponent {
         );
     };
 
-    setAutoNodeSelection(status){
+    setAutoNodeSelection(status) {
         this.setState({
-            autoNodeSelection:status
-        })
+            autoNodeSelection: status,
+        });
     }
-    setNodeAutoSwitch(e){
+    setNodeAutoSwitch(e) {
         this.setState({
-            nodeAutoSwitch:e
-        })
-    }
-
-    setAutoNodeList(nodelist){
-        this.setState({
-            autoNodeList:nodelist
+            nodeAutoSwitch: e,
         });
     }
 
-    setQuorumEnabled(status){
-
+    setAutoNodeList(nodelist) {
         this.setState({
-            quorumEnabled:status
+            autoNodeList: nodelist,
         });
     }
 
-    setQuorumSize(size){
+    setQuorumEnabled(status) {
         this.setState({
-            quorumSize:size
+            quorumEnabled: status,
         });
     }
 
-    setshowCustomNodes(e){
+    setQuorumSize(size) {
         this.setState({
-            showCustomNodes:e
-        })
+            quorumSize: size,
+        });
     }
 
-    setPrimaryNode(e){
-        if(typeof(e)=="object"){
+    setshowCustomNodes(e) {
+        this.setState({
+            showCustomNodes: e,
+        });
+    }
+
+    setPrimaryNode(e) {
+        if (typeof e == 'object') {
             this.setState({
-                primaryNode:e
+                primaryNode: e,
+            });
+        } else {
+            this.setState({
+                primaryNode: { url: e, pow: true, token: '', password: '' },
             });
         }
-        else{
-            this.setState({
-                primaryNode:{url:e,pow:true,token:'',password:''}
-            });
-            
-        }
-        
     }
 
     render() {
-        const { customNodes, generateAlert, nodes, settings, actions, t } = this.props;
+        const { customNodes, nodes, settings, t } = this.props;
         const { loading } = this.state;
-        const {showCustomNodes, autoNodeList, autoNodeSelection, nodeAutoSwitch, quorumEnabled, quorumSize, primaryNode} = this.state;
+        const {
+            showCustomNodes,
+            autoNodeList,
+            autoNodeSelection,
+            nodeAutoSwitch,
+            quorumEnabled,
+            quorumSize,
+            primaryNode,
+        } = this.state;
         if (showCustomNodes) {
-            return <NodeCustom loading={loading} customNodes={customNodes} setNode={this.changeNode} removeCustomNode={this.removeCustomNode} onClose={this.setshowCustomNodes.bind(this,false)} />;
+            return (
+                <NodeCustom
+                    loading={loading}
+                    customNodes={customNodes}
+                    setNode={this.changeNode}
+                    removeCustomNode={this.removeCustomNode}
+                    onClose={this.setshowCustomNodes.bind(this, false)}
+                />
+            );
         }
 
         const availableNodes = unionBy(customNodes, autoNodeList && nodes, nodeAutoSwitch && [DEFAULT_NODE], 'url');
-       
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-                 <Scrollbar>
-                <div className={classNames(css.nodebox)} >
-               
-                <form>
-                   
-                        <article>
-                            <Toggle
-                                inline={t('nodeSettings:automaticNodeManagement')}
-                                checked={autoNodeSelection}
-                                onChange={this.updateAutoNodeSelection}
-                            />
-
-                            <Button onClick={this.setshowCustomNodes.bind(this,true)} className="small" type="button">
-                                {t('nodeSettings:addCustomNodes')}
-                            </Button>
-
-                        
-                            <Toggle
-                                disabled={autoNodeSelection}
-                                inline={t('nodeSettings:autoNodeList')}
-                                checked={autoNodeList}
-                                onChange={this.updateAutoNodeList.bind(this)}
-                            />
-
-                           
-                            <Toggle
-                                disabled={autoNodeSelection}
-                                inline={t('nodeSettings:nodeAutoswitching')}
-                                checked={nodeAutoSwitch}
-                                onChange={this.setNodeAutoSwitch.bind(this)}
-                            />
-                            {!nodeAutoSwitch && (
-                                <Select
-                                    label={t('nodeSettings:primaryNode')}
-                                    disabled={autoNodeSelection}
-                                    value={primaryNode.url}
-                                    onChange={this.setPrimaryNode.bind(this)}
-                                    options={availableNodes.map(({ url }) => {
-                                        return { value: url,label:url};
-                                    })}
+                <Scrollbar>
+                    <div className={classNames(css.nodebox)}>
+                        <form>
+                            <article>
+                                <Toggle
+                                    inline={t('nodeSettings:automaticNodeManagement')}
+                                    checked={autoNodeSelection}
+                                    onChange={this.updateAutoNodeSelection}
                                 />
-                            )}
 
-                           
-                            <Toggle
-                                disabled={autoNodeSelection}
-                                inline={t('nodeSettings:enableQuorum')}
-                                checked={quorumEnabled}
-                                onChange={this.updateQuorumEnabled.bind(this)}
-                            />
-                            <Number
-                                disabled={autoNodeSelection || !quorumEnabled}
-                                inline
-                                min={MINIMUM_QUORUM_SIZE}
-                                max={Math.min(availableNodes.length, MAXIMUM_QUORUM_SIZE)}
-                                value={quorumSize}
-                                label={t('nodeSettings:quorumSize')}
-                                onChange={this.setQuorumSize.bind(this)}
-                            />
-                        </article>
-                        <Button
-                       
-                        loading={loading}
-                        disabled={
-                            autoNodeList === settings.autoNodeList &&
-                            nodeAutoSwitch === settings.nodeAutoSwitch &&
-                            quorumEnabled === settings.quorumEnabled &&
-                            quorumSize === settings.quorumSize &&
-                            primaryNode.url === settings.node.url &&
-                            primaryNode.token === settings.node.token &&
-                            primaryNode.password === settings.node.password
-                        }
-                        type="submit"
-                        style={{marginLeft: '178px'}}
-                        onClick={this.saveSettings}
-                    >
-                        {t('global:save')}
-                    </Button>
-                 
-                   
-                
-            </form>
-           
-          </div>
-          </Scrollbar>
+                                <Button
+                                    onClick={this.setshowCustomNodes.bind(this, true)}
+                                    className="small"
+                                    type="button"
+                                >
+                                    {t('nodeSettings:addCustomNodes')}
+                                </Button>
+
+                                <Toggle
+                                    disabled={autoNodeSelection}
+                                    inline={t('nodeSettings:autoNodeList')}
+                                    checked={autoNodeList}
+                                    onChange={this.updateAutoNodeList.bind(this)}
+                                />
+
+                                <Toggle
+                                    disabled={autoNodeSelection}
+                                    inline={t('nodeSettings:nodeAutoswitching')}
+                                    checked={nodeAutoSwitch}
+                                    onChange={this.setNodeAutoSwitch.bind(this)}
+                                />
+                                {!nodeAutoSwitch && (
+                                    <Select
+                                        label={t('nodeSettings:primaryNode')}
+                                        disabled={autoNodeSelection}
+                                        value={primaryNode.url}
+                                        onChange={this.setPrimaryNode.bind(this)}
+                                        options={availableNodes.map(({ url }) => {
+                                            return { value: url, label: url };
+                                        })}
+                                    />
+                                )}
+
+                                <Toggle
+                                    disabled={autoNodeSelection}
+                                    inline={t('nodeSettings:enableQuorum')}
+                                    checked={quorumEnabled}
+                                    onChange={this.updateQuorumEnabled.bind(this)}
+                                />
+                                <Number
+                                    disabled={autoNodeSelection || !quorumEnabled}
+                                    inline
+                                    min={MINIMUM_QUORUM_SIZE}
+                                    max={Math.min(availableNodes.length, MAXIMUM_QUORUM_SIZE)}
+                                    value={quorumSize}
+                                    label={t('nodeSettings:quorumSize')}
+                                    onChange={this.setQuorumSize.bind(this)}
+                                />
+                            </article>
+                            <Button
+                                loading={loading}
+                                disabled={
+                                    autoNodeList === settings.autoNodeList &&
+                                    nodeAutoSwitch === settings.nodeAutoSwitch &&
+                                    quorumEnabled === settings.quorumEnabled &&
+                                    quorumSize === settings.quorumSize &&
+                                    primaryNode.url === settings.node.url &&
+                                    primaryNode.token === settings.node.token &&
+                                    primaryNode.password === settings.node.password
+                                }
+                                type="submit"
+                                style={{ marginLeft: '178px' }}
+                                onClick={this.saveSettings}
+                            >
+                                {t('global:save')}
+                            </Button>
+                        </form>
+                    </div>
+                </Scrollbar>
             </div>
         );
     }
-};
+}
 
 const mapStateToProps = (state) => ({
     node: state.settings.node,
@@ -380,7 +388,7 @@ const mapStateToProps = (state) => ({
     autoNodeList: state.settings.autoNodeList,
     quorumSize: state.settings.quorum.size,
     quorumEnabled: state.settings.quorum.enabled,
-    settings: state.settings
+    settings: state.settings,
 });
 const mapDispatchToProps = {
     setFullNode,
@@ -393,5 +401,5 @@ const mapDispatchToProps = {
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 )(withI18n()(NodeSettings));

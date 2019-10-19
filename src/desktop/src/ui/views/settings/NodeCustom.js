@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
-import withNodeData from 'containers/settings/Node';
-
-import { withI18n, Trans } from "react-i18next";
-import { connect } from "react-redux";
+import { withI18n } from 'react-i18next';
+import { connect } from 'react-redux';
 import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
 import Scrollbar from 'ui/components/scrollbar';
@@ -25,25 +22,25 @@ class NodeCustom extends React.PureComponent {
         t: PropTypes.func.isRequired,
     };
 
-    state={
-        url:'',
-        token:'',
-        password:'',
-        authVisible:false
-    }
+    state = {
+        url: '',
+        token: '',
+        password: '',
+        authVisible: false,
+    };
 
     addNode = (e) => {
-        const {url} = this.state;
-        
+        const { url } = this.state;
+
         if (e) {
             e.preventDefault();
         }
         this.props.setNode({ url, token: '', password: '' }, true);
     };
 
-    setUrl(e){
+    setUrl(e) {
         this.setState({
-            url:e
+            url: e,
         });
     }
 
@@ -54,14 +51,17 @@ class NodeCustom extends React.PureComponent {
         // const [password, setPassword] = useState('');
         // const [authVisible, setAuthVisible] = useState(false);
 
-
         return (
             <Modal variant="fullscreen" isOpen onClose={onClose}>
                 <section className={css.nodeCustom}>
                     <form onSubmit={this.addNode.bind(this)}>
-                       
-                            <Text value={this.state.url} disabled={loading} label={t('addCustomNode:customNode')} onChange={this.setUrl.bind(this)} />
-                            {/*
+                        <Text
+                            value={this.state.url}
+                            disabled={loading}
+                            label={t('addCustomNode:customNode')}
+                            onChange={this.setUrl.bind(this)}
+                        />
+                        {/*
                     // Temporary disable authorisation entry #https://github.com/iotaledger/trinity-wallet/pull/1654
                     authVisible ? (
                         <Fragment>
@@ -73,8 +73,7 @@ class NodeCustom extends React.PureComponent {
                             <Icon icon="plusAlt" size={10} /> {t('addCustomNode:addAuthKey')}
                         </a>
                     )*/}
-                   
-                   
+
                         {customNodes.length ? (
                             <ul>
                                 <Scrollbar>
@@ -89,24 +88,34 @@ class NodeCustom extends React.PureComponent {
                                 </Scrollbar>
                             </ul>
                         ) : (
-                                <p>{t('nodeSettings:noCustomNodes')}</p>
-                            )}
+                            <p>{t('nodeSettings:noCustomNodes')}</p>
+                        )}
 
-                    <Button className="navleft" onClick={onClose} style={ {marginTop:'9vw',fontSize:'12px',minWidth:'140px'}}  variant="dark">
-                        {t('back')}
-                    </Button>
-                    <Button  className="navright" loading={loading} onClick={this.addNode.bind(this)} style={ {marginTop:'9vw',fontSize:'12px', minWidth:'90px'}}  variant="primary">
-                        {t('addCustomNode')}
-                    </Button>
+                        <Button
+                            className="navleft"
+                            onClick={onClose}
+                            style={{ marginTop: '9vw', fontSize: '12px', minWidth: '140px' }}
+                            variant="dark"
+                        >
+                            {t('back')}
+                        </Button>
+                        <Button
+                            className="navright"
+                            loading={loading}
+                            onClick={this.addNode.bind(this)}
+                            style={{ marginTop: '9vw', fontSize: '12px', minWidth: '90px' }}
+                            variant="primary"
+                        >
+                            {t('addCustomNode')}
+                        </Button>
                     </form>
                 </section>
-                
             </Modal>
         );
     }
-};
+}
 
 export default connect(
     null,
-    null
+    null,
 )(withI18n()(NodeCustom));

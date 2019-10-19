@@ -1,20 +1,24 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n, Trans } from 'react-i18next';
+import { withI18n } from 'react-i18next';
 import { connect } from 'react-redux';
 
 import { generateAlert } from 'actions/alerts';
-import { selectAccountInfo, getSelectedAccountName, getSelectedAccountMeta, getAccountNamesFromState } from "selectors/accounts";
+import {
+    selectAccountInfo,
+    getSelectedAccountName,
+    getSelectedAccountMeta,
+    getAccountNamesFromState,
+} from 'selectors/accounts';
 import SeedStore from 'libs/seed';
 import { deleteAccount } from 'actions/accounts';
 import ModalPassword from 'ui/components/modal/Password';
-import css from "./settings.scss";
-import classNames from "classnames";
+import css from './settings.scss';
+import classNames from 'classnames';
 import Button from 'ui/components/button';
 import Confirm from 'ui/components/modal/Confirm';
 import Info from 'ui/components/info';
-import { getAccountInfo } from "actions/accounts";
-
+import { getAccountInfo } from 'actions/accounts';
 
 /**
  * Remove account component
@@ -25,19 +29,18 @@ class Remove extends PureComponent {
         account: PropTypes.object.isRequired,
         /** @ignore */
         deleteAccount: PropTypes.func.isRequired,
- /** @ignore */
+        /** @ignore */
         accountName: PropTypes.string.isRequired,
-         /** @ignore */
-    accountMeta: PropTypes.object.isRequired,
-    /** @ignore */
-    password: PropTypes.object.isRequired,
+        /** @ignore */
+        accountMeta: PropTypes.object.isRequired,
+        /** @ignore */
+        password: PropTypes.object.isRequired,
         /** @ignore */
         history: PropTypes.object.isRequired,
         /** @ignore */
         generateAlert: PropTypes.func.isRequired,
         /** @ignore */
         t: PropTypes.func.isRequired,
-      
     };
 
     state = {
@@ -54,17 +57,14 @@ class Remove extends PureComponent {
         this.setState({
             removeConfirm: false,
         });
-   
+
         try {
             const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
-            
+
             seedStore.removeAccount();
-          
+
             deleteAccount(accountName);
             history.push('/wallet');
-                
-         
-           
 
             generateAlert('success', t('settings:accountDeleted'), t('settings:accountDeletedExplanation'));
         } catch (err) {
@@ -108,13 +108,11 @@ class Remove extends PureComponent {
                         </div>
 
                         <Button
-                            style={{ marginLeft: "31vw", marginTop: "0vw" }}
-
+                            style={{ marginLeft: '31vw', marginTop: '0vw' }}
                             onClick={() => this.setState({ removeConfirm: !removeConfirm })}
                         >
                             {t('accountManagement:deleteAccount')}
                         </Button>
-
 
                         <Confirm
                             isOpen={removeConfirm}
@@ -134,18 +132,17 @@ class Remove extends PureComponent {
         );
     }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     accountNames: getAccountNamesFromState(state),
     password: state.wallet.password,
     account: selectAccountInfo(state),
     accountName: getSelectedAccountName(state),
-  accountMeta: getSelectedAccountMeta(state),
-
+    accountMeta: getSelectedAccountMeta(state),
 });
 const mapDispatchToProps = {
     generateAlert,
     deleteAccount,
-    getAccountInfo
+    getAccountInfo,
 };
 
 export default connect(
