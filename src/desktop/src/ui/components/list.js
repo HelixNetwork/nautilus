@@ -294,7 +294,7 @@ export class ListComponent extends React.PureComponent {
                     {/* Should be changed to isLoading and isBusy */}
                     <div className={css.nav_div}>
                         <p className={css.title_refresh}>Click To Refresh:</p>
-                        <a
+                        <div
                             onClick={() => {
                                 this.updateAccount();
                                 this.updateTx();
@@ -311,7 +311,7 @@ export class ListComponent extends React.PureComponent {
                             )}
                         >
                             <Icon icon="sync" size={24} />
-                        </a>
+                        </div>
                     </div>
                     <div className={css.nav_div}>
                         <p className={css.title_sort}>Sort By:</p>
@@ -336,7 +336,7 @@ export class ListComponent extends React.PureComponent {
                             const isConfirmed = transaction.persistence;
 
                             return (
-                                <a key={key} onClick={() => setItem(transaction.bundle)}>
+                                <div key={key} onClick={() => setItem(transaction.bundle)}>
                                     {isConfirmed ? (
                                         <div className={isReceived ? css.column_receive : css.column_sent}>
                                             <div className={css.column_cnt}>
@@ -378,7 +378,7 @@ export class ListComponent extends React.PureComponent {
                                             </div>
                                         </div>
                                     )}
-                                </a>
+                                </div>
                             );
                         })
                     ) : (
