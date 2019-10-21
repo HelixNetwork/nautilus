@@ -105,7 +105,7 @@ const FatalError = ({ error, history }) => {
                     <h1>Newer Nautilus version data found</h1>
                     <p>
                         Nautilus found data installed by a newer version of Nautilus which is incompatible with version{' '}
-                        <strong>{settings.version}</strong>. <a href="#">Download the latest version</a> or update
+                        <strong>{settings.version}</strong>. <a href=" ">Download the latest version</a> or update
                         Nautilus now.
                     </p>
                     <Button

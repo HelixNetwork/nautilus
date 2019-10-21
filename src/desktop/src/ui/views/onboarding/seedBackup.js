@@ -57,7 +57,7 @@ class SeedBackup extends React.PureComponent {
                 </Row>
                 <Row className={css.centerBox1}>
                     <nav className={css.choice}>
-                        <a onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
+                        <a href=" " onClick={() => this.setState({ exportVisible: true })} className={css.secure}>
                             <div className={css.backup}>
                                 <Lottie
                                     options={defaultOptions}

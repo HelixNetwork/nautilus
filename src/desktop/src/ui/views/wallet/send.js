@@ -452,6 +452,7 @@ class Send extends React.PureComponent {
                                             />
                                             <br />
                                             <a
+                                                href=" "
                                                 className={css.send_bts}
                                                 onClick={this.validateInputs.bind(this)}
                                                 disabled={this.state.hlxamount !== ''}

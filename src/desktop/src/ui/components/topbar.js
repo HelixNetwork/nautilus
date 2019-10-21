@@ -44,10 +44,11 @@ class Top extends React.PureComponent {
                 <div style={{ marginRight: '30px', marginTop: '-36px' }}>
                     {wallet.ready ? (
                         <React.Fragment>
-                            <a href="#" className={classNames(css.main_mn)} style={{ display: this.props.user }}>
+                            <a href=" " className={classNames(css.main_mn)} style={{ display: this.props.user }}>
                                 <img src={log} style={{ width: '40px' }} alt="" />
                             </a>
                             <a
+                                href=" "
                                 onClick={this.doLogout.bind(this)}
                                 className={classNames(css.setting)}
                                 style={{ display: this.props.common }}
@@ -55,6 +56,7 @@ class Top extends React.PureComponent {
                                 <FontAwesomeIcon icon={faPowerOff} /> Logout{' '}
                             </a>
                             <a
+                                href=" "
                                 onClick={() => this.props.history.push('/settings/editname')}
                                 className={classNames(css.setting)}
                                 style={{ display: this.props.common }}
@@ -62,6 +64,7 @@ class Top extends React.PureComponent {
                                 <FontAwesomeIcon icon={faCog} /> Settings
                             </a>
                             <a
+                                href=" "
                                 onClick={() => this.props.history.push('/wallet/')}
                                 className={classNames(css.setting)}
                                 style={{ display: this.props.main }}
