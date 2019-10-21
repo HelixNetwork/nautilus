@@ -107,7 +107,7 @@ describe('libs: helix/extendedApi', () => {
             });
         });
 
-        describe(`when latestMilestone is ${EMPTY_HASH_TXBYTES}`, () => {
+        describe(`when latestSolidRoundHash is ${EMPTY_HASH_TXBYTES}`, () => {
             beforeEach(() => {
                 nock('http://localhost:14265', {
                     reqheaders: {
@@ -148,237 +148,237 @@ describe('libs: helix/extendedApi', () => {
                     .catch((error) => expect(error.message).to.equal('Node not synced'));
             });
         });
+        // FIXME (sachu) port to finality updates
+        // describe(`when latestSolidRoundIndex is ${MAX_MILESTONE_FALLBEHIND} less than currentRoundIndex`, () => {
+        //     describe('when "timestamp" on txBytes is from five minutes ago', () => {
+        //         beforeEach(() => {
+        //             nock('http://localhost:14265', {
+        //                 reqheaders: {
+        //                     'Content-Type': 'application/json',
+        //                     'X-HELIX-API-Version': IRI_API_VERSION,
+        //                 },
+        //             })
+        //                 .filteringRequestBody(() => '*')
+        //                 .persist()
+        //                 .post('/', '*')
+        //                 .reply(200, (_, body) => {
+        //                     const { command } = body;
+        //                     const resultMap = {
+        //                         getNodeInfo: {
+        //                             appVersion: '0.0.0',
+        //                             currentRoundIndex: 426550,
+        //                             latestSolidRoundHash: 'c'.repeat(64),
+        //                             latestSolidRoundIndex: 426550 - 100,
+        //                             roundStartIndex: 0,
+        //                             lastSnapshottedRoundIndex: 420000,
+        //                         },
+        //                         getTransactionStrings: {
+        //                             txs: [head(newZeroValueTransactionBytes)],
+        //                         },
+        //                     };
 
-        describe(`when latestSolidRoundIndex is ${MAX_MILESTONE_FALLBEHIND} less than currentRoundIndex`, () => {
-            describe('when "timestamp" on txBytes is from five minutes ago', () => {
-                beforeEach(() => {
-                    nock('http://localhost:14265', {
-                        reqheaders: {
-                            'Content-Type': 'application/json',
-                            'X-HELIX-API-Version': IRI_API_VERSION,
-                        },
-                    })
-                        .filteringRequestBody(() => '*')
-                        .persist()
-                        .post('/', '*')
-                        .reply(200, (_, body) => {
-                            const { command } = body;
-                            const resultMap = {
-                                getNodeInfo: {
-                                    appVersion: '0.0.0',
-                                    currentRoundIndex: 426550,
-                                    latestSolidRoundHash: 'c'.repeat(64),
-                                    latestSolidRoundIndex: 426550 - 100,
-                                    roundStartIndex: 0,
-                                    lastSnapshottedRoundIndex: 420000,
-                                },
-                                getTransactionStrings: {
-                                    txs: [head(newZeroValueTransactionBytes)],
-                                },
-                            };
+        //                     return resultMap[command] || {};
+        //                 });
+        //         });
 
-                            return resultMap[command] || {};
-                        });
-                });
+        //         afterEach(() => {
+        //             nock.cleanAll();
+        //         });
 
-                afterEach(() => {
-                    nock.cleanAll();
-                });
+        //         it('should return false', () => {
+        //             return isNodeHealthy().then((result) => expect(result).to.equal(false));
+        //         });
+        //     });
 
-                it('should return false', () => {
-                    return isNodeHealthy().then((result) => expect(result).to.equal(false));
-                });
-            });
+        //     describe('when "timestamp" on txBytes is within five minutes', () => {
+        //         beforeEach(() => {
+        //             nock('http://localhost:14265', {
+        //                 reqheaders: {
+        //                     'Content-Type': 'application/json',
+        //                     'X-HELIX-API-Version': IRI_API_VERSION,
+        //                 },
+        //             })
+        //                 .filteringRequestBody(() => '*')
+        //                 .persist()
+        //                 .post('/', '*')
+        //                 .reply(200, (_, body) => {
+        //                     const { command } = body;
 
-            describe('when "timestamp" on txBytes is within five minutes', () => {
-                beforeEach(() => {
-                    nock('http://localhost:14265', {
-                        reqheaders: {
-                            'Content-Type': 'application/json',
-                            'X-HELIX-API-Version': IRI_API_VERSION,
-                        },
-                    })
-                        .filteringRequestBody(() => '*')
-                        .persist()
-                        .post('/', '*')
-                        .reply(200, (_, body) => {
-                            const { command } = body;
+        //                     const resultMap = {
+        //                         getNodeInfo: {
+        //                             appVersion: '0.0.0',
+        //                             currentRoundIndex: 426550,
+        //                             latestSolidRoundHash: 'c'.repeat(64),
+        //                             latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+        //                             roundStartIndex: 0,
+        //                             lastSnapshottedRoundIndex: 420000,
+        //                         },
+        //                         getTransactionStrings: {
+        //                             txs: [
+        //                                 head(
+        //                                     map(newZeroValueTransactionBytes, (byteString) => {
+        //                                         const transactionObject = asTransactionObject(byteString);
+        //                                         const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-                            const resultMap = {
-                                getNodeInfo: {
-                                    appVersion: '0.0.0',
-                                    currentRoundIndex: 426550,
-                                    latestSolidRoundHash: 'c'.repeat(64),
-                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-                                    roundStartIndex: 0,
-                                    lastSnapshottedRoundIndex: 420000,
-                                },
-                                getTransactionStrings: {
-                                    txs: [
-                                        head(
-                                            map(newZeroValueTransactionBytes, (byteString) => {
-                                                const transactionObject = asTransactionObject(byteString);
-                                                const timestampLessThanAMinuteAgo = Date.now() - 60000;
+        //                                         return asTransactionStrings({
+        //                                             ...transactionObject,
+        //                                             timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
+        //                                         });
+        //                                     }),
+        //                                 ),
+        //                             ],
+        //                         },
+        //                     };
 
-                                                return asTransactionStrings({
-                                                    ...transactionObject,
-                                                    timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
-                                                });
-                                            }),
-                                        ),
-                                    ],
-                                },
-                            };
+        //                     return resultMap[command] || {};
+        //                 });
+        //         });
 
-                            return resultMap[command] || {};
-                        });
-                });
+        //         afterEach(() => {
+        //             nock.cleanAll();
+        //         });
 
-                afterEach(() => {
-                    nock.cleanAll();
-                });
+        //         it('should return true if "timestamp" on txBytes is within five minutes', () => {
+        //             return isNodeHealthy().then((result) => expect(result).to.equal(true));
+        //         });
+        //     });
+        // });
 
-                it('should return true if "timestamp" on txBytes is within five minutes', () => {
-                    return isNodeHealthy().then((result) => expect(result).to.equal(true));
-                });
-            });
-        });
+        // describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND -
+        //     1} less than latestMilestoneIndex`, () => {
+        //     describe('when "timestamp" on txBytes is from five minutes ago', () => {
+        //         beforeEach(() => {
+        //             nock('http://localhost:14265', {
+        //                 reqheaders: {
+        //                     'Content-Type': 'application/json',
+        //                     'X-HELIX-API-Version': IRI_API_VERSION,
+        //                 },
+        //             })
+        //                 .filteringRequestBody(() => '*')
+        //                 .persist()
+        //                 .post('/', '*')
+        //                 .reply(200, (_, body) => {
+        //                     const { command } = body;
 
-        describe(`when latestSolidSubtangleMilestoneIndex is ${MAX_MILESTONE_FALLBEHIND -
-            1} less than latestMilestoneIndex`, () => {
-            describe('when "timestamp" on txBytes is from five minutes ago', () => {
-                beforeEach(() => {
-                    nock('http://localhost:14265', {
-                        reqheaders: {
-                            'Content-Type': 'application/json',
-                            'X-HELIX-API-Version': IRI_API_VERSION,
-                        },
-                    })
-                        .filteringRequestBody(() => '*')
-                        .persist()
-                        .post('/', '*')
-                        .reply(200, (_, body) => {
-                            const { command } = body;
+        //                     const resultMap = {
+        //                         getNodeInfo: {
+        //                             appVersion: '0.0.0',
+        //                             currentRoundIndex: 426550,
+        //                             latestSolidRoundHash: 'c'.repeat(64),
+        //                             latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+        //                             roundStartIndex: 0,
+        //                             lastSnapshottedRoundIndex: 420000,
+        //                         },
+        //                         getTransactionStrings: {
+        //                             txs: [head(newZeroValueTransactionBytes)],
+        //                         },
+        //                     };
 
-                            const resultMap = {
-                                getNodeInfo: {
-                                    appVersion: '0.0.0',
-                                    currentRoundIndex: 426550,
-                                    latestSolidRoundHash: 'c'.repeat(64),
-                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-                                    roundStartIndex: 0,
-                                    lastSnapshottedRoundIndex: 420000,
-                                },
-                                getTransactionStrings: {
-                                    txs: [head(newZeroValueTransactionBytes)],
-                                },
-                            };
+        //                     return resultMap[command] || {};
+        //                 });
+        //         });
 
-                            return resultMap[command] || {};
-                        });
-                });
+        //         afterEach(() => {
+        //             nock.cleanAll();
+        //         });
 
-                afterEach(() => {
-                    nock.cleanAll();
-                });
+        //         it('should return false', () => {
+        //             return isNodeHealthy().then((result) => expect(result).to.equal(false));
+        //         });
+        //     });
 
-                it('should return false', () => {
-                    return isNodeHealthy().then((result) => expect(result).to.equal(false));
-                });
-            });
+        //     describe('when "timestamp" on txBytes is within five minutes', () => {
+        //         beforeEach(() => {
+        //             nock('http://localhost:14265', {
+        //                 reqheaders: {
+        //                     'Content-Type': 'application/json',
+        //                     'X-HELIX-API-Version': IRI_API_VERSION,
+        //                 },
+        //             })
+        //                 .filteringRequestBody(() => '*')
+        //                 .persist()
+        //                 .post('/', '*')
+        //                 .reply(200, (_, body) => {
+        //                     const { command } = body;
 
-            describe('when "timestamp" on txBytes is within five minutes', () => {
-                beforeEach(() => {
-                    nock('http://localhost:14265', {
-                        reqheaders: {
-                            'Content-Type': 'application/json',
-                            'X-HELIX-API-Version': IRI_API_VERSION,
-                        },
-                    })
-                        .filteringRequestBody(() => '*')
-                        .persist()
-                        .post('/', '*')
-                        .reply(200, (_, body) => {
-                            const { command } = body;
+        //                     const resultMap = {
+        //                         getNodeInfo: {
+        //                             appVersion: '0.0.0',
+        //                             currentRoundIndex: 426550,
+        //                             latestSolidRoundHash: 'c'.repeat(64),
+        //                             latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
+        //                             roundStartIndex: 0,
+        //                             lastSnapshottedRoundIndex: 420000,
+        //                         },
+        //                         getTransactionStrings: {
+        //                             txs: [
+        //                                 head(
+        //                                     map(newZeroValueTransactionBytes, (TxByteString) => {
+        //                                         const transactionObject = asTransactionObject(TxByteString);
+        //                                         const timestampLessThanAMinuteAgo = Date.now() - 60000;
 
-                            const resultMap = {
-                                getNodeInfo: {
-                                    appVersion: '0.0.0',
-                                    currentRoundIndex: 426550,
-                                    latestSolidRoundHash: 'c'.repeat(64),
-                                    latestSolidRoundIndex: 426550 - MAX_MILESTONE_FALLBEHIND,
-                                    roundStartIndex: 0,
-                                    lastSnapshottedRoundIndex: 420000,
-                                },
-                                getTransactionStrings: {
-                                    txs: [
-                                        head(
-                                            map(newZeroValueTransactionBytes, (TxByteString) => {
-                                                const transactionObject = asTransactionObject(TxByteString);
-                                                const timestampLessThanAMinuteAgo = Date.now() - 60000;
+        //                                         return asTransactionStrings({
+        //                                             ...transactionObject,
+        //                                             timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
+        //                                         });
+        //                                     }),
+        //                                 ),
+        //                             ],
+        //                         },
+        //                     };
 
-                                                return asTransactionStrings({
-                                                    ...transactionObject,
-                                                    timestamp: Math.round(timestampLessThanAMinuteAgo / 1000),
-                                                });
-                                            }),
-                                        ),
-                                    ],
-                                },
-                            };
+        //                     return resultMap[command] || {};
+        //                 });
+        //         });
 
-                            return resultMap[command] || {};
-                        });
-                });
+        //         afterEach(() => {
+        //             nock.cleanAll();
+        //         });
 
-                afterEach(() => {
-                    nock.cleanAll();
-                });
-
-                it('should return true if "timestamp" on txBytes is within five minutes', () => {
-                    return isNodeHealthy().then((result) => expect(result).to.equal(true));
-                });
-            });
-        });
+        //         it('should return true if "timestamp" on txBytes is within five minutes', () => {
+        //             return isNodeHealthy().then((result) => expect(result).to.equal(true));
+        //         });
+        //     });
+        // });
 
         describe(`when latestMilestone is not ${EMPTY_HASH_TXBYTES} and is equal to latestSolidSubtangleMilestone`, () => {
-            describe('when "timestamp" on txBytes is from five minutes ago', () => {
-                beforeEach(() => {
-                    nock('http://localhost:14265', {
-                        reqheaders: {
-                            'Content-Type': 'application/json',
-                            'X-HELIX-API-Version': IRI_API_VERSION,
-                        },
-                    })
-                        .filteringRequestBody(() => '*')
-                        .persist()
-                        .post('/', '*')
-                        .reply(200, (_, body) => {
-                            const { command } = body;
+            // describe('when "timestamp" on txBytes is from five minutes ago', () => {
+            //     beforeEach(() => {
+            //         nock('http://localhost:14265', {
+            //             reqheaders: {
+            //                 'Content-Type': 'application/json',
+            //                 'X-HELIX-API-Version': IRI_API_VERSION,
+            //             },
+            //         })
+            //             .filteringRequestBody(() => '*')
+            //             .persist()
+            //             .post('/', '*')
+            //             .reply(200, (_, body) => {
+            //                 const { command } = body;
 
-                            const resultMap = {
-                                getNodeInfo: {
-                                    appVersion: '0.0.0',
-                                    currentRoundIndex: 426550,
-                                    latestSolidRoundHash: 'c'.repeat(64),
-                                },
-                                getTransactionStrings: {
-                                    txs: [head(newZeroValueTransactionBytes)],
-                                },
-                            };
+            //                 const resultMap = {
+            //                     getNodeInfo: {
+            //                         appVersion: '0.0.0',
+            //                         currentRoundIndex: 426550,
+            //                         latestSolidRoundHash: 'c'.repeat(64),
+            //                     },
+            //                     getTransactionStrings: {
+            //                         txs: [head(newZeroValueTransactionBytes)],
+            //                     },
+            //                 };
 
-                            return resultMap[command] || {};
-                        });
-                });
+            //                 return resultMap[command] || {};
+            //             });
+            //     });
 
-                afterEach(() => {
-                    nock.cleanAll();
-                });
+            //     afterEach(() => {
+            //         nock.cleanAll();
+            //     });
 
-                it('should return false', () => {
-                    return isNodeHealthy().then((result) => expect(result).to.equal(false));
-                });
-            });
+            //     it('should return false', () => {
+            //         return isNodeHealthy().then((result) => expect(result).to.equal(false));
+            //     });
+            // });
 
             describe('when "timestamp" on txBytes is within five minutes', () => {
                 beforeEach(() => {
