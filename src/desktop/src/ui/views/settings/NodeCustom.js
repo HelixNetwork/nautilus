@@ -80,7 +80,7 @@ class NodeCustom extends React.PureComponent {
                                     {customNodes.map(({ url }) => (
                                         <li key={url}>
                                             <strong>{url}</strong>
-                                            <a onClick={() => removeCustomNode(url)}>
+                                            <a href=" " onClick={() => removeCustomNode(url)}>
                                                 <Icon icon="cross" size={16} />
                                             </a>
                                         </li>

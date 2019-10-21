@@ -93,7 +93,7 @@ class PasswordInput extends React.PureComponent {
                 style={this.props.style ? this.props.style : {}}
             >
                 <fieldset>
-                    <a className={hidden ? css.strike : null} onClick={this.setVisibility}>
+                    <a href=" " className={hidden ? css.strike : null} onClick={this.setVisibility}>
                         <Icon icon="eye" size={16} />
                     </a>
                     <input
