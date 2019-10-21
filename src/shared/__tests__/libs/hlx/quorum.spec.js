@@ -67,9 +67,9 @@ describe('libs: helix/quorum', () => {
             });
         });
 
-        describe('when method is getNodeInfo:latestSolidSubtangleMilestone', () => {
+        describe('when method is getNodeInfo:latestSolidRoundHash', () => {
             describe('when frequency is greater than 67 percent', () => {
-                it('should return most frequently occurring latestSolidSubtangleMilestone', () => {
+                it('should return most frequently occurring latestSolidRoundHash', () => {
                     const correctHash = 'e'.repeat(64);
                     const incorrectHash = 'f'.repeat(64);
 
@@ -83,16 +83,13 @@ describe('libs: helix/quorum', () => {
                         correctHash,
                     ];
 
-                    const result = determineQuorumResult(args, args.length)(
-                        'getNodeInfo:latestSolidSubtangleMilestone',
-                        67,
-                    );
+                    const result = determineQuorumResult(args, args.length)('getNodeInfo:latestSolidRoundHash', 67);
                     expect(result).to.equal(correctHash);
                 });
             });
 
             describe('when frequency is less than 67 percent', () => {
-                it(`should return ${EMPTY_HASH_TXBYTES} as a fallback latestSolidSubtangleMilestone`, () => {
+                it(`should return ${EMPTY_HASH_TXBYTES} as a fallback latestSolidRoundHash`, () => {
                     const correctHash = 'e'.repeat(64);
                     const incorrectHash = 'f'.repeat(64);
 
@@ -106,10 +103,7 @@ describe('libs: helix/quorum', () => {
                         correctHash,
                     ];
 
-                    const result = determineQuorumResult(args, args.length)(
-                        'getNodeInfo:latestSolidSubtangleMilestone',
-                        67,
-                    );
+                    const result = determineQuorumResult(args, args.length)('getNodeInfo:latestSolidRoundHash', 67);
                     expect(result).to.equal(EMPTY_HASH_TXBYTES);
                 });
             });
@@ -135,9 +129,9 @@ describe('libs: helix/quorum', () => {
             });
         });
 
-        describe('when method is getNodeInfo:latestSolidSubtangleMilestone', () => {
+        describe('when method is getNodeInfo:latestSolidRoundHash', () => {
             it(`should return ${EMPTY_HASH_TXBYTES}`, () => {
-                expect(fallbackToSafeResult('getNodeInfo:latestSolidSubtangleMilestone')).to.equal(EMPTY_HASH_TXBYTES);
+                expect(fallbackToSafeResult('getNodeInfo:latestSolidRoundHash')).to.equal(EMPTY_HASH_TXBYTES);
             });
         });
 
