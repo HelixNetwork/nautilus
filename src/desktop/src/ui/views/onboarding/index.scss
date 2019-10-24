@@ -907,9 +907,35 @@ modal_footer{
   border-radius: 3px;
   background: transparent;
   color: white;
+  margin-right: 1%;
 }
 
 .secure {
   color:white ;
   opacity: 0.7;
+}
+a {
+  color: var(--input-alt);
+  &:hover {
+    color: var(--input);
+  }
+}
+.strike {
+  color: var(--input-alt);
+  &:hover {
+    color: var(--input);
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 16px;
+    border-radius: 2px;
+    background: var(--input-alt);
+    transform: rotate(45deg);
+    margin-left: -0.5%;
+  }
+  &:hover:after {
+    background: var(--input);
+  }
 }
