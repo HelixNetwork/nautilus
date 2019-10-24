@@ -176,69 +176,62 @@ class Send extends React.PureComponent {
     }
 
     hlxInput(e) {
-        const re = /^[0-9.]+$/;
+        let { txamount, selectedHlx, hlxamount } = this.state;
 
-        // if value is not blank, then test the regex
-
-        if (e.target.value === '' || re.test(e.target.value)) {
-            let { txamount, selectedHlx } = this.state;
-            let hlxamount = e.target.value;
-            let conversion = 0.000000022;
-            let base = 0;
-            if (selectedHlx === 'HLX') {
-                base = 1;
-            } else if (selectedHlx === 'kHLX') {
-                base = 1000;
-            } else if (selectedHlx === 'mHLX') {
-                base = 1000000;
-            } else if (selectedHlx === 'gHLX') {
-                base = 1000000000;
-            } else if (e.target.value === 'tHLX') {
-                base = 1000000000000;
-            }
-            txamount = hlxamount * base;
-            const base1 = conversion * txamount;
-
-            let amount = this.state.conversionRate * base1;
-            this.setState({
-                hlxamount: hlxamount,
-                amount: amount.toFixed(3),
-                txamount: txamount,
-            });
+        let hlxamount1 = e.target.value;
+        hlxamount1 = hlxamount1.toString();
+        if (selectedHlx === 'HLX' && hlxamount1.indexOf('.') !== -1) {
+            hlxamount1 = hlxamount;
         }
+        let conversion = 0.000000022;
+        let base = 0;
+        if (selectedHlx === 'HLX') {
+            base = 1;
+        } else if (selectedHlx === 'kHLX') {
+            base = 1000;
+        } else if (selectedHlx === 'mHLX') {
+            base = 1000000;
+        } else if (selectedHlx === 'gHLX') {
+            base = 1000000000;
+        } else if (e.target.value === 'tHLX') {
+            base = 1000000000000;
+        }
+        txamount = hlxamount1 * base;
+        const base1 = conversion * txamount;
+
+        let amount = this.state.conversionRate * base1;
+        this.setState({
+            hlxamount: hlxamount1,
+            amount: amount.toFixed(3),
+            txamount: txamount,
+        });
     }
 
     amountInput(e) {
-        const re = /^[0-9.]+$/;
-
-        // if value is not blank, then test the regex
-
-        if (e.target.value === '' || re.test(e.target.value)) {
-            let { txamount, selectedHlx } = this.state;
-            let base = 0;
-            const conversion = 0.000000022;
-            if (selectedHlx === 'HLX') {
-                base = 1;
-            } else if (selectedHlx === 'kHLX') {
-                base = 1000;
-            } else if (selectedHlx === 'mHLX') {
-                base = 1000000;
-            } else if (selectedHlx === 'gHLX') {
-                base = 1000000000;
-            } else if (e.target.value === 'tHLX') {
-                base = 1000000000000;
-            }
-            let hlx = e.target.value / conversion;
-            hlx = hlx / this.state.conversionRate;
-            hlx = Math.round(hlx / base);
-            txamount = hlx * base;
-            const amount = e.event.value;
-            this.setState({
-                amount: amount,
-                hlxamount: hlx,
-                txamount: txamount,
-            });
+        let { txamount, selectedHlx } = this.state;
+        let base = 0;
+        const conversion = 0.000000022;
+        if (selectedHlx === 'HLX') {
+            base = 1;
+        } else if (selectedHlx === 'kHLX') {
+            base = 1000;
+        } else if (selectedHlx === 'mHLX') {
+            base = 1000000;
+        } else if (selectedHlx === 'gHLX') {
+            base = 1000000000;
+        } else if (e.target.value === 'tHLX') {
+            base = 1000000000000;
         }
+        let hlx = e.target.value / conversion;
+        hlx = hlx / this.state.conversionRate;
+        hlx = Math.round(hlx / base);
+        txamount = hlx * base;
+        const amount = e.event.value;
+        this.setState({
+            amount: amount,
+            hlxamount: hlx,
+            txamount: txamount,
+        });
     }
 
     currencyChange(e) {
