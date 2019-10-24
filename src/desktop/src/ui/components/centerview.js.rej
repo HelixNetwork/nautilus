@@ -1,0 +1,11 @@
+diff a/src/desktop/src/ui/components/centerview.js b/src/desktop/src/ui/components/centerview.js	(rejected hunks)
+@@ -5,5 +5 @@ export class centerview extends Component {
+-        return (
+-            <div>
+-                
+-            </div>
+-        )
++        return <div></div>;
+@@ -13 +9 @@ export class centerview extends Component {
+-export default centerview
++export default centerview;

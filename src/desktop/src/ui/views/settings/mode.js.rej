@@ -1,0 +1,87 @@
+diff a/src/desktop/src/ui/views/settings/mode.js b/src/desktop/src/ui/views/settings/mode.js	(rejected hunks)
+@@ -1,7 +1,7 @@
+-import React from "react";
+-import css from "./settings.scss";
+-import classNames from "classnames";
+-import PropTypes from "prop-types";
+-import { withI18n } from "react-i18next";
+-import { connect } from "react-redux";
+-import Button from "ui/components/button";
++import React from 'react';
++import css from './settings.scss';
++import classNames from 'classnames';
++import PropTypes from 'prop-types';
++import { withI18n } from 'react-i18next';
++import { connect } from 'react-redux';
++import Button from 'ui/components/button';
+@@ -13,11 +13,11 @@ class SettingsMode extends React.PureComponent {
+-  static propTypes = {
+-    location: PropTypes.object,
+-    history: PropTypes.shape({
+-      push: PropTypes.func.isRequired
+-    }).isRequired,
+-    t: PropTypes.func.isRequired
+-  };
+-  state = {
+-    step: "language",
+-    scrollEnd: false
+-  };
++    static propTypes = {
++        location: PropTypes.object,
++        history: PropTypes.shape({
++            push: PropTypes.func.isRequired,
++        }).isRequired,
++        t: PropTypes.func.isRequired,
++    };
++    state = {
++        step: 'language',
++        scrollEnd: false,
++    };
+@@ -25,25 +25,17 @@ class SettingsMode extends React.PureComponent {
+-  render() {
+-    const { t } = this.props;
+-    return (
+-      <div className={classNames(css.foo_bxx12)}>
+-        <div classname={classNames(css.set_bxac)}>
+-          <h5 style={{ marginLeft: "14vw", marginTop: "11vw" }}>
+-            {t("settings:mode")}
+-          </h5>
+-          <input
+-            type="text"
+-            className={classNames(css.ssetting_textline)}
+-          ></input>
+-          <br />
+-          <br />
+-          <Button
+-            style={{ marginLeft: "14vw", marginTop: "4vw" }}
+-            onClick={() => this.stepForward("done")}
+-          >
+-            {t("global:save")}
+-          </Button>
+-          <div className={classNames(css.spe_bx)}></div>
+-        </div>
+-      </div>
+-    );
+-  }
++    render() {
++        const { t } = this.props;
++        return (
++            <div className={classNames(css.foo_bxx12)}>
++                <div classname={classNames(css.set_bxac)}>
++                    <h5 style={{ marginLeft: '14vw', marginTop: '11vw' }}>{t('settings:mode')}</h5>
++                    <input type="text" className={classNames(css.ssetting_textline)}></input>
++                    <br />
++                    <br />
++                    <Button style={{ marginLeft: '14vw', marginTop: '4vw' }} onClick={() => this.stepForward('done')}>
++                        {t('global:save')}
++                    </Button>
++                    <div className={classNames(css.spe_bx)}></div>
++                </div>
++            </div>
++        );
++    }
+@@ -53,2 +45,2 @@ export default connect(
+-  null,
+-  mapDispatchToProps
++    null,
++    mapDispatchToProps,

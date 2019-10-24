@@ -202,7 +202,7 @@ class Send extends React.PureComponent {
             let amount = this.state.conversionRate * base1;
             this.setState({
                 hlxamount: hlxamount,
-                amount: amount,
+                amount: amount.toFixed(3),
                 txamount: txamount,
             });
         }
@@ -232,8 +232,9 @@ class Send extends React.PureComponent {
             hlx = hlx / this.state.conversionRate;
             hlx = Math.round(hlx / base);
             txamount = hlx * base;
+            const amount = e.event.value;
             this.setState({
-                amount: e.target.value,
+                amount: amount,
                 hlxamount: hlx,
                 txamount: txamount,
             });
@@ -299,7 +300,7 @@ class Send extends React.PureComponent {
         this.setState({
             selectedHlx: e.target.value,
             txamount: txamount,
-            amount: amount,
+            amount: amount.toFixed(3),
             hlxamount: hlxamount,
         });
     }
