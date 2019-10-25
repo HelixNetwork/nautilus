@@ -236,65 +236,25 @@ class Send extends React.PureComponent {
 
     currencyChange(e) {
         let selectedCurrency = e.target.value;
-        const { selectedHlx } = this.state;
-        let base = 0;
-        if (selectedHlx === 'HLX') {
-            base = 1;
-        } else if (selectedHlx === 'kHLX') {
-            base = 1000;
-        } else if (selectedHlx === 'mHLX') {
-            base = 1000000;
-        } else if (selectedHlx === 'gHLX') {
-            base = 1000000000;
-        } else if (selectedHlx === 'tHLX') {
-            base = 1000000000000;
-        }
         const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
         axios.get(url).then((resp) => {
             this.setState({
+                selectedCurrency: selectedCurrency,
                 conversionRate: resp.data.rates[selectedCurrency],
+                amount: '',
+                hlxamount: '',
+                txamount: '',
             });
-            if (this.state.amount !== '') {
-                this.setState({
-                    hlxamount: Math.ceil((this.state.amount * resp.data.rates[selectedCurrency]) / base),
-                });
-            }
-        });
-
-        this.setState({
-            selectedCurrency: selectedCurrency,
         });
         this.props.getCurrencyData(selectedCurrency, true);
     }
 
     hlxChange(e) {
-        let { txamount, hlxamount } = this.state;
-        let base = 0;
-        const conversion = 0.000000022;
-        let amount = 0;
-        if (e.target.value === 'HLX') {
-            base = 1;
-        } else if (e.target.value === 'kHLX') {
-            base = 1000;
-        } else if (e.target.value === 'mHLX') {
-            base = 1000000;
-        } else if (e.target.value === 'gHLX') {
-            base = 1000000000;
-        } else if (e.target.value === 'tHLX') {
-            base = 1000000000000;
-        }
-
-        if (hlxamount !== '') {
-            txamount = hlxamount * base;
-            amount = txamount * conversion;
-        } else {
-            txamount = 0;
-        }
         this.setState({
             selectedHlx: e.target.value,
-            txamount: txamount,
-            amount: amount.toFixed(3),
-            hlxamount: hlxamount,
+            txamount: '',
+            amount: '',
+            hlxamount: '',
         });
     }
 
