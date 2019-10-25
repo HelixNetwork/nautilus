@@ -202,7 +202,7 @@ class Send extends React.PureComponent {
         let amount = this.state.conversionRate * base1;
         this.setState({
             hlxamount: hlxamount1,
-            amount: amount.toFixed(3),
+            amount: amount.toFixed(2),
             txamount: txamount,
         });
     }
