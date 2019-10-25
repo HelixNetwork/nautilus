@@ -1,0 +1,74 @@
+diff a/src/desktop/src/ui/views/wallet/chart.js b/src/desktop/src/ui/views/wallet/chart.js	(rejected hunks)
+@@ -1,6 +1,6 @@
+-import React from "react";
+-import { connect } from "react-redux";
+-import css from "./wallet.scss";
+-import classNames from "classnames";
+-import PropTypes from "prop-types";
+-import { withI18n } from "react-i18next";
++import React from 'react';
++import { connect } from 'react-redux';
++import css from './wallet.scss';
++import classNames from 'classnames';
++import PropTypes from 'prop-types';
++import { withI18n } from 'react-i18next';
+@@ -9,18 +9,16 @@ class Charts extends React.PureComponent {
+-  static propTypes = {
+-    location: PropTypes.object,
+-    history: PropTypes.shape({
+-      push: PropTypes.func.isRequired
+-    }).isRequired,
+-    t: PropTypes.func.isRequired
+-  };
+-  render() {
+-
+-    return (
+-      <div>
+-        <section className={css.home}>
+-     
+-            <div className="container">
+-              <div className="row">
+-                <div className="col-lg-12">
+-                  <div className={classNames(css.foo_bxx1)}>
+-                    {/* <h5>
++    static propTypes = {
++        location: PropTypes.object,
++        history: PropTypes.shape({
++            push: PropTypes.func.isRequired,
++        }).isRequired,
++        t: PropTypes.func.isRequired,
++    };
++    render() {
++        return (
++            <div>
++                <section className={css.home}>
++                    <div className="container">
++                        <div className="row">
++                            <div className="col-lg-12">
++                                <div className={classNames(css.foo_bxx1)}>
++                                    {/* <h5>
+@@ -42,4 +40,6 @@ class Charts extends React.PureComponent {
+-                   <p style={{margin:'205px',marginLeft:'400px'}}>Currently not available</p>
+-                  </div>
+-                </div>
+-              </div>
++                                    <p style={{ margin: '205px', marginLeft: '400px' }}>Currently not available</p>
++                                </div>
++                            </div>
++                        </div>
++                    </div>
++                </section>
+@@ -47,6 +47,2 @@ class Charts extends React.PureComponent {
+-         
+-        </section>
+-       
+-      </div>
+-    );
+-  }
++        );
++    }
+@@ -57,2 +53,2 @@ export default connect(
+-  null,
+-  mapDispatchToProps
++    null,
++    mapDispatchToProps,

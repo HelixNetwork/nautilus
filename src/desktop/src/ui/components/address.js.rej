@@ -1,0 +1,175 @@
+diff a/src/desktop/src/ui/components/address.js b/src/desktop/src/ui/components/address.js	(rejected hunks)
+@@ -1,3 +1,7 @@
+-import React from "react";
+-import css from "./address.scss";
+-import { connect } from "react-redux";
++import React from 'react';
++import css from './address.scss';
++import { connect } from 'react-redux';
++import { generateNewAddress } from 'actions/wallet';
++import Scrollbar from 'ui/components/scrollbar';
++import PropTypes from 'prop-types';
++import { withI18n } from 'react-i18next';
+@@ -5,11 +9,5 @@ import {
+-  generateNewAddress
+-} from "actions/wallet";
+-import Scrollbar from "ui/components/scrollbar";
+-import PropTypes from "prop-types";
+-import { withI18n } from "react-i18next";
+-import {
+-  selectLatestAddressFromAccountFactory,
+-  selectAccountInfo,
+-  getSelectedAccountName,
+-  getSelectedAccountMeta
+-} from "selectors/accounts";
++    selectLatestAddressFromAccountFactory,
++    selectAccountInfo,
++    getSelectedAccountName,
++    getSelectedAccountMeta,
++} from 'selectors/accounts';
+@@ -17,4 +15 @@ import map from 'lodash/map';
+-import {
+-  mapNormalisedTransactions,
+-  formatRelevantTransactions
+-} from "libs/hlx/transfers";
++import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
+@@ -22 +17 @@ import {
+- * Component to set the 
++ * Component to set the
+@@ -25,61 +20,13 @@ class Address extends React.PureComponent {
+-  static propTypes = {
+-    location: PropTypes.object,
+-    history: PropTypes.shape({
+-      push: PropTypes.func.isRequired
+-    }).isRequired,
+-    /** @ignore */
+-    generateNewAddress: PropTypes.func.isRequired,
+-    /** @ignore */
+-    isGeneratingReceiveAddress: PropTypes.bool.isRequired,
+-    /** @ignore */
+-    receiveAddress: PropTypes.string.isRequired,
+-    /** @ignore */
+-    account: PropTypes.object.isRequired,
+-
+-  }
+-  state = {
+-    currentlyPromotingBundleHash: false,
+-    isRetryingFailedTransaction: false,
+-    transactions: []
+-  };
+-  getAccountTransactions = accountData => {
+-    const addresses = map(
+-      accountData.addressData,
+-      addressData => addressData.address
+-    );
+-    const transactions = mapNormalisedTransactions(
+-      accountData.transactions,
+-      accountData.addressData
+-    );
+-    return formatRelevantTransactions(transactions, addresses);
+-  };
+-  componentDidMount() {
+-    const { ui, accountInfo } = this.props;
+-    const isBusy =
+-      ui.isSyncing ||
+-      ui.isSendingTransfer ||
+-      ui.isAttachingToTangle ||
+-      ui.isTransitioning;
+-    const isLoading = ui.isFetchingAccountInfo;
+-    const currentlyPromotingBundleHash = ui.currentlyPromotingBundleHash;
+-    const isRetryingFailedTransaction = ui.isRetryingFailedTransaction;
+-    const tx = this.getAccountTransactions(accountInfo);
+-    this.setState({
+-      isBusy: isBusy,
+-      isLoading: isLoading,
+-      currentlyPromotingBundleHash: currentlyPromotingBundleHash,
+-      isRetryingFailedTransaction: isRetryingFailedTransaction,
+-      transactions: tx
+-    });
+-  }
+-  listAddresses(tx){
+-  }
+-  render() {
+-    
+-      return (
+-        <div className={(css.addressbox)}>
+-          <Scrollbar>
+-      
+-          </Scrollbar>
+-        </div>
+-      );
++    static propTypes = {
++        location: PropTypes.object,
++        history: PropTypes.shape({
++            push: PropTypes.func.isRequired,
++        }).isRequired,
++        /** @ignore */
++        generateNewAddress: PropTypes.func.isRequired,
++        /** @ignore */
++        isGeneratingReceiveAddress: PropTypes.bool.isRequired,
++        /** @ignore */
++        receiveAddress: PropTypes.string.isRequired,
++        /** @ignore */
++        account: PropTypes.object.isRequired,
+@@ -87 +34,34 @@ class Address extends React.PureComponent {
+-  };
++    state = {
++        currentlyPromotingBundleHash: false,
++        isRetryingFailedTransaction: false,
++        transactions: [],
++    };
++    getAccountTransactions = (accountData) => {
++        const addresses = map(accountData.addressData, (addressData) => addressData.address);
++        const transactions = mapNormalisedTransactions(accountData.transactions, accountData.addressData);
++        return formatRelevantTransactions(transactions, addresses);
++    };
++    componentDidMount() {
++        const { ui, accountInfo } = this.props;
++        const isBusy = ui.isSyncing || ui.isSendingTransfer || ui.isAttachingToTangle || ui.isTransitioning;
++        const isLoading = ui.isFetchingAccountInfo;
++        const currentlyPromotingBundleHash = ui.currentlyPromotingBundleHash;
++        const isRetryingFailedTransaction = ui.isRetryingFailedTransaction;
++        const tx = this.getAccountTransactions(accountInfo);
++        this.setState({
++            isBusy: isBusy,
++            isLoading: isLoading,
++            currentlyPromotingBundleHash: currentlyPromotingBundleHash,
++            isRetryingFailedTransaction: isRetryingFailedTransaction,
++            transactions: tx,
++        });
++    }
++    listAddresses(tx) {}
++    render() {
++        return (
++            <div className={css.addressbox}>
++                <Scrollbar></Scrollbar>
++            </div>
++        );
++    }
++}
+@@ -89,8 +69,8 @@ class Address extends React.PureComponent {
+-const mapStateToProps = state => ({
+-  receiveAddress: selectLatestAddressFromAccountFactory()(state),
+-  isGeneratingReceiveAddress: state.ui.isGeneratingReceiveAddress,
+-  hadErrorGeneratingNewAddress: state.ui.hadErrorGeneratingNewAddress,
+-  account: selectAccountInfo(state),
+-  accountName: getSelectedAccountName(state),
+-  accountMeta: getSelectedAccountMeta(state),
+-  isValidatingAddress: state.wallet.isValidatingAddress
++const mapStateToProps = (state) => ({
++    receiveAddress: selectLatestAddressFromAccountFactory()(state),
++    isGeneratingReceiveAddress: state.ui.isGeneratingReceiveAddress,
++    hadErrorGeneratingNewAddress: state.ui.hadErrorGeneratingNewAddress,
++    account: selectAccountInfo(state),
++    accountName: getSelectedAccountName(state),
++    accountMeta: getSelectedAccountMeta(state),
++    isValidatingAddress: state.wallet.isValidatingAddress,
+@@ -100,2 +80 @@ const mapDispatchToProps = {
+-  generateNewAddress,
+-
++    generateNewAddress,
+@@ -104,2 +83,2 @@ export default connect(
+-  mapStateToProps,
+-  mapDispatchToProps
++    mapStateToProps,
++    mapDispatchToProps,

@@ -1,0 +1,125 @@
+diff a/src/desktop/src/ui/global/theme.js b/src/desktop/src/ui/global/theme.js	(rejected hunks)
+@@ -1,5 +1,5 @@
+-import { PureComponent } from "react";
+-import { connect } from "react-redux";
+-import PropTypes from "prop-types";
+-import { updateTheme } from "actions/settings";
+-import { getThemeFromState } from "selectors/global";
++import { PureComponent } from 'react';
++import { connect } from 'react-redux';
++import PropTypes from 'prop-types';
++import { updateTheme } from 'actions/settings';
++import { getThemeFromState } from 'selectors/global';
+@@ -11,10 +11,10 @@ class Theme extends PureComponent {
+-  static propTypes = {
+-    /** @ignore */
+-    history: PropTypes.object,
+-    /** @ignore */
+-    theme: PropTypes.object.isRequired,
+-    /** @ignore */
+-    themeName: PropTypes.string.isRequired,
+-    /** @ignore */
+-    updateTheme: PropTypes.func.isRequired
+-  };
++    static propTypes = {
++        /** @ignore */
++        history: PropTypes.object,
++        /** @ignore */
++        theme: PropTypes.object.isRequired,
++        /** @ignore */
++        themeName: PropTypes.string.isRequired,
++        /** @ignore */
++        updateTheme: PropTypes.func.isRequired,
++    };
+@@ -22,5 +22,5 @@ class Theme extends PureComponent {
+-  state = {
+-    themeIndex: 0,
+-    originalTheme: "Default",
+-    routeIndex: 0
+-  };
++    state = {
++        themeIndex: 0,
++        originalTheme: 'Default',
++        routeIndex: 0,
++    };
+@@ -28,3 +28,3 @@ class Theme extends PureComponent {
+-  componentDidMount() {
+-    this.updateTheme(this.props.theme);
+-  }
++    componentDidMount() {
++        this.updateTheme(this.props.theme);
++    }
+@@ -32,3 +32,4 @@ class Theme extends PureComponent {
+-  componentWillReceiveProps(nextProps) {
+-    if (this.props.themeName !== nextProps.themeName) {
+-      this.updateTheme(nextProps.theme);
++    componentWillReceiveProps(nextProps) {
++        if (this.props.themeName !== nextProps.themeName) {
++            this.updateTheme(nextProps.theme);
++        }
+@@ -36 +36,0 @@ class Theme extends PureComponent {
+-  }
+@@ -38,3 +38,4 @@ class Theme extends PureComponent {
+-  componentWillUnmount() {
+-    if (this.timeout) {
+-      clearTimeout(this.timeout);
++    componentWillUnmount() {
++        if (this.timeout) {
++            clearTimeout(this.timeout);
++        }
+@@ -42 +42,0 @@ class Theme extends PureComponent {
+-  }
+@@ -44,3 +44,3 @@ class Theme extends PureComponent {
+-  updateTheme(theme) {
+-    Object.keys(theme).forEach(colorsName => {
+-      const colorSet = theme[colorsName];
++    updateTheme(theme) {
++        Object.keys(theme).forEach((colorsName) => {
++            const colorSet = theme[colorsName];
+@@ -48,15 +48,9 @@ class Theme extends PureComponent {
+-      Object.keys(colorSet).forEach(colorName => {
+-        if (colorName === "color") {
+-          document.documentElement.style.setProperty(
+-            `--${colorsName}`,
+-            colorSet.color
+-          );
+-        } else {
+-          document.documentElement.style.setProperty(
+-            `--${colorsName}-${colorName}`,
+-            colorSet[colorName]
+-          );
+-        }
+-      });
+-    });
+-  }
++            Object.keys(colorSet).forEach((colorName) => {
++                if (colorName === 'color') {
++                    document.documentElement.style.setProperty(`--${colorsName}`, colorSet.color);
++                } else {
++                    document.documentElement.style.setProperty(`--${colorsName}-${colorName}`, colorSet[colorName]);
++                }
++            });
++        });
++    }
+@@ -64,3 +58,3 @@ class Theme extends PureComponent {
+-  render() {
+-    return null;
+-  }
++    render() {
++        return null;
++    }
+@@ -69,3 +63,3 @@ class Theme extends PureComponent {
+-const mapStateToProps = state => ({
+-  theme: getThemeFromState(state),
+-  themeName: state.settings.themeName
++const mapStateToProps = (state) => ({
++    theme: getThemeFromState(state),
++    themeName: state.settings.themeName,
+@@ -75 +69 @@ const mapDispatchToProps = {
+-  updateTheme
++    updateTheme,
+@@ -79,2 +73,2 @@ export default connect(
+-  mapStateToProps,
+-  mapDispatchToProps
++    mapStateToProps,
++    mapDispatchToProps,

@@ -176,73 +176,14 @@ class Send extends React.PureComponent {
     }
 
     hlxInput(e) {
-        const re = /^[0-9.]+$/;
+        let { txamount, selectedHlx, hlxamount } = this.state;
 
-        // if value is not blank, then test the regex
-
-        if (e.target.value === '' || re.test(e.target.value)) {
-            let { txamount, selectedHlx } = this.state;
-            let hlxamount = e.target.value;
-            let conversion = 0.000000022;
-            let base = 0;
-            if (selectedHlx === 'HLX') {
-                base = 1;
-            } else if (selectedHlx === 'kHLX') {
-                base = 1000;
-            } else if (selectedHlx === 'mHLX') {
-                base = 1000000;
-            } else if (selectedHlx === 'gHLX') {
-                base = 1000000000;
-            } else if (e.target.value === 'tHLX') {
-                base = 1000000000000;
-            }
-            txamount = hlxamount * base;
-            const base1 = conversion * txamount;
-
-            let amount = this.state.conversionRate * base1;
-            this.setState({
-                hlxamount: hlxamount,
-                amount: amount,
-                txamount: txamount,
-            });
+        let hlxamount1 = e.target.value;
+        hlxamount1 = hlxamount1.toString();
+        if (selectedHlx === 'HLX' && hlxamount1.indexOf('.') !== -1) {
+            hlxamount1 = hlxamount;
         }
-    }
-
-    amountInput(e) {
-        const re = /^[0-9.]+$/;
-
-        // if value is not blank, then test the regex
-
-        if (e.target.value === '' || re.test(e.target.value)) {
-            let { txamount, selectedHlx } = this.state;
-            let base = 0;
-            const conversion = 0.000000022;
-            if (selectedHlx === 'HLX') {
-                base = 1;
-            } else if (selectedHlx === 'kHLX') {
-                base = 1000;
-            } else if (selectedHlx === 'mHLX') {
-                base = 1000000;
-            } else if (selectedHlx === 'gHLX') {
-                base = 1000000000;
-            } else if (e.target.value === 'tHLX') {
-                base = 1000000000000;
-            }
-            let hlx = e.target.value / conversion;
-            hlx = hlx / this.state.conversionRate;
-            hlx = Math.round(hlx / base);
-            txamount = hlx * base;
-            this.setState({
-                amount: e.target.value,
-                hlxamount: hlx,
-                txamount: txamount,
-            });
-        }
-    }
-
-    currencyChange(e) {
-        let selectedCurrency = e.target.value;
-        const { selectedHlx } = this.state;
+        let conversion = 0.000000022;
         let base = 0;
         if (selectedHlx === 'HLX') {
             base = 1;
@@ -252,55 +193,68 @@ class Send extends React.PureComponent {
             base = 1000000;
         } else if (selectedHlx === 'gHLX') {
             base = 1000000000;
-        } else if (selectedHlx === 'tHLX') {
+        } else if (e.target.value === 'tHLX') {
             base = 1000000000000;
         }
+        txamount = hlxamount1 * base;
+        const base1 = conversion * txamount;
+
+        let amount = this.state.conversionRate * base1;
+        this.setState({
+            hlxamount: hlxamount1,
+            amount: amount.toFixed(2),
+            txamount: txamount,
+        });
+    }
+
+    amountInput(e) {
+        let { txamount, selectedHlx } = this.state;
+        let base = 0;
+        const conversion = 0.000000022;
+        if (selectedHlx === 'HLX') {
+            base = 1;
+        } else if (selectedHlx === 'kHLX') {
+            base = 1000;
+        } else if (selectedHlx === 'mHLX') {
+            base = 1000000;
+        } else if (selectedHlx === 'gHLX') {
+            base = 1000000000;
+        } else if (e.target.value === 'tHLX') {
+            base = 1000000000000;
+        }
+        let hlx = e.target.value / conversion;
+        hlx = hlx / this.state.conversionRate;
+        hlx = Math.round(hlx / base);
+        txamount = hlx * base;
+        const amount = e.target.value;
+        this.setState({
+            amount: amount,
+            hlxamount: hlx,
+            txamount: txamount,
+        });
+    }
+
+    currencyChange(e) {
+        let selectedCurrency = e.target.value;
         const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
         axios.get(url).then((resp) => {
             this.setState({
+                selectedCurrency: selectedCurrency,
                 conversionRate: resp.data.rates[selectedCurrency],
+                amount: '',
+                hlxamount: '',
+                txamount: '',
             });
-            if (this.state.amount !== '') {
-                this.setState({
-                    hlxamount: Math.ceil((this.state.amount * resp.data.rates[selectedCurrency]) / base),
-                });
-            }
-        });
-
-        this.setState({
-            selectedCurrency: selectedCurrency,
         });
         this.props.getCurrencyData(selectedCurrency, true);
     }
 
     hlxChange(e) {
-        let { txamount, hlxamount } = this.state;
-        let base = 0;
-        const conversion = 0.000000022;
-        let amount = 0;
-        if (e.target.value === 'HLX') {
-            base = 1;
-        } else if (e.target.value === 'kHLX') {
-            base = 1000;
-        } else if (e.target.value === 'mHLX') {
-            base = 1000000;
-        } else if (e.target.value === 'gHLX') {
-            base = 1000000000;
-        } else if (e.target.value === 'tHLX') {
-            base = 1000000000000;
-        }
-
-        if (hlxamount !== '') {
-            txamount = hlxamount * base;
-            amount = txamount * conversion;
-        } else {
-            txamount = 0;
-        }
         this.setState({
             selectedHlx: e.target.value,
-            txamount: txamount,
-            amount: amount,
-            hlxamount: hlxamount,
+            txamount: '',
+            amount: '',
+            hlxamount: '',
         });
     }
 
