@@ -1,0 +1,82 @@
+diff a/src/desktop/src/ui/views/settings/NodeCustom.js b/src/desktop/src/ui/views/settings/NodeCustom.js	(rejected hunks)
+@@ -3,2 +3,2 @@ import PropTypes from 'prop-types';
+-import { withI18n } from "react-i18next";
+-import { connect } from "react-redux";
++import { withI18n } from 'react-i18next';
++import { connect } from 'react-redux';
+@@ -25,6 +25,6 @@ class NodeCustom extends React.PureComponent {
+-    state={
+-        url:'',
+-        token:'',
+-        password:'',
+-        authVisible:false
+-    }
++    state = {
++        url: '',
++        token: '',
++        password: '',
++        authVisible: false,
++    };
+@@ -33,2 +33,2 @@ class NodeCustom extends React.PureComponent {
+-        const {url} = this.state;
+-        
++        const { url } = this.state;
++
+@@ -41 +41 @@ class NodeCustom extends React.PureComponent {
+-    setUrl(e){
++    setUrl(e) {
+@@ -43 +43 @@ class NodeCustom extends React.PureComponent {
+-            url:e
++            url: e,
+@@ -59,3 +58,7 @@ class NodeCustom extends React.PureComponent {
+-                       
+-                            <Text value={this.state.url} disabled={loading} label={t('addCustomNode:customNode')} onChange={this.setUrl.bind(this)} />
+-                            {/*
++                        <Text
++                            value={this.state.url}
++                            disabled={loading}
++                            label={t('addCustomNode:customNode')}
++                            onChange={this.setUrl.bind(this)}
++                        />
++                        {/*
+@@ -73,2 +76 @@ class NodeCustom extends React.PureComponent {
+-                   
+-                   
++
+@@ -89,2 +91,2 @@ class NodeCustom extends React.PureComponent {
+-                                <p>{t('nodeSettings:noCustomNodes')}</p>
+-                            )}
++                            <p>{t('nodeSettings:noCustomNodes')}</p>
++                        )}
+@@ -92,6 +94,17 @@ class NodeCustom extends React.PureComponent {
+-                    <Button className="navleft" onClick={onClose} style={ {marginTop:'9vw',fontSize:'12px',minWidth:'140px'}}  variant="dark">
+-                        {t('back')}
+-                    </Button>
+-                    <Button  className="navright" loading={loading} onClick={this.addNode.bind(this)} style={ {marginTop:'9vw',fontSize:'12px', minWidth:'90px'}}  variant="primary">
+-                        {t('addCustomNode')}
+-                    </Button>
++                        <Button
++                            className="navleft"
++                            onClick={onClose}
++                            style={{ marginTop: '9vw', fontSize: '12px', minWidth: '140px' }}
++                            variant="dark"
++                        >
++                            {t('back')}
++                        </Button>
++                        <Button
++                            className="navright"
++                            loading={loading}
++                            onClick={this.addNode.bind(this)}
++                            style={{ marginTop: '9vw', fontSize: '12px', minWidth: '90px' }}
++                            variant="primary"
++                        >
++                            {t('addCustomNode')}
++                        </Button>
+@@ -100 +112,0 @@ class NodeCustom extends React.PureComponent {
+-                
+@@ -104 +116 @@ class NodeCustom extends React.PureComponent {
+-};
++}
+@@ -108 +120 @@ export default connect(
+-    null
++    null,

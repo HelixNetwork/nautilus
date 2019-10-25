@@ -1,0 +1,1096 @@
+diff a/src/desktop/src/ui/views/wallet/send.js b/src/desktop/src/ui/views/wallet/send.js	(rejected hunks)
+@@ -1,11 +1,11 @@
+-import React from "react";
+-import { connect } from "react-redux";
+-import css from "./wallet.scss";
+-import classNames from "classnames";
+-import isEmpty from "lodash/isEmpty";
+-import PropTypes from "prop-types";
+-import ic1 from "ui/images/svg/send.svg";
+-import { withI18n } from "react-i18next";
+-import SeedStore from "libs/seed";
+-import Modal from "ui/components/modal/Modal";
+-import Button from "ui/components/button";
++import React from 'react';
++import { connect } from 'react-redux';
++import css from './wallet.scss';
++import classNames from 'classnames';
++import isEmpty from 'lodash/isEmpty';
++import PropTypes from 'prop-types';
++import ic1 from 'ui/images/svg/send.svg';
++import { withI18n } from 'react-i18next';
++import SeedStore from 'libs/seed';
++import Modal from 'ui/components/modal/Modal';
++import Button from 'ui/components/button';
+@@ -13,9 +13,5 @@ import axios from 'axios';
+-import {
+-  getSelectedAccountName,
+-  getSelectedAccountMeta,
+-  getBalanceForSelectedAccount
+-} from "selectors/accounts";
+-import { generateAlert } from "actions/alerts";
+-import Checksum from "ui/components/checksum";
+-import { makeTransaction } from "actions/transfers";
+-import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from "libs/hlx/utils";
++import { getSelectedAccountName, getSelectedAccountMeta, getBalanceForSelectedAccount } from 'selectors/accounts';
++import { generateAlert } from 'actions/alerts';
++import Checksum from 'ui/components/checksum';
++import { makeTransaction } from 'actions/transfers';
++import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from 'libs/hlx/utils';
+@@ -24,2 +20,2 @@ import { startTrackingProgress } from 'actions/progress';
+-import {MAX_NOTE_LENGTH,MAX_HLX_LENGTH} from '../../../constants';
+-import { getCurrencyData } from "actions/settings";
++import { MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
++import { getCurrencyData } from 'actions/settings';
+@@ -28,71 +24,32 @@ class Send extends React.PureComponent {
+-  static propTypes = {
+-    /** @ignore */
+-    balance: PropTypes.number.isRequired,
+-    /** @ignore */
+-    // settings: PropTypes.shape({
+-    //     conversionRate: PropTypes.number.isRequired,
+-    //     currency: PropTypes.string.isRequired,
+-    //     usdPrice: PropTypes.number.isRequired,
+-    // }),
+-    makeTransaction: PropTypes.func.isRequired,
+-    /** @ignore */
+-    t: PropTypes.func.isRequired,
+-  };
+-  state = {
+-    address: "",
+-    amount: "",
+-    hlxamount: "",
+-    txamount:"",
+-    message: "Nautilus Wallet",
+-    openModal: false,
+-    selectedCurrency:this.props.currency,
+-    selectedHlx:'mHLX',
+-    conversionRate:1,
+-    progress:''
+-  };
+-
+-  validateInputs = e => {
+-    e.preventDefault();
+-    this.setState({
+-      openModal: this.areInputsValid()
+-    });
+-
+-  };
+-
+-  confirmTransfer = async () => {
+-    const { password, accountName, accountMeta } = this.props;
+-    const { address, txamount } = this.state;
+-    this.setState({
+-      openModal: false
+-    });
+-
+-    const seedStore = await new SeedStore[accountMeta.type](
+-      password,
+-      accountName,
+-      accountMeta
+-    );
+-
+-    const message =
+-      SeedStore[accountMeta.type].isMessageAvailable ||
+-      parseInt(txamount || "0") === 0
+-        ? this.state.message
+-        : "";
+-
+-    this.setState({
+-      message: message
+-    });
+-
+-    this.sendTransfer(seedStore, address, parseInt(txamount) || 0, message);
+-  };
+-
+-  sendTransfer = (seedStore, address, value, message) => {
+-    const { ui, accountName, generateAlert, t } = this.props;
+-
+-    if (ui.isSyncing) {
+-      generateAlert(
+-        "error",
+-        t("global:syncInProgress"),
+-        t("global:syncInProgressExplanation")
+-      );
+-      return;
+-    }
++    static propTypes = {
++        /** @ignore */
++        balance: PropTypes.number.isRequired,
++        /** @ignore */
++        // settings: PropTypes.shape({
++        //     conversionRate: PropTypes.number.isRequired,
++        //     currency: PropTypes.string.isRequired,
++        //     usdPrice: PropTypes.number.isRequired,
++        // }),
++        makeTransaction: PropTypes.func.isRequired,
++        /** @ignore */
++        t: PropTypes.func.isRequired,
++    };
++    state = {
++        address: '',
++        amount: '',
++        hlxamount: '',
++        txamount: '',
++        message: 'Nautilus Wallet',
++        openModal: false,
++        selectedCurrency: this.props.currency,
++        selectedHlx: 'mHLX',
++        conversionRate: 1,
++        progress: '',
++    };
++
++    validateInputs = (e) => {
++        e.preventDefault();
++        this.setState({
++            openModal: this.areInputsValid(),
++        });
++    };
+@@ -100,60 +57,6 @@ class Send extends React.PureComponent {
+-    if (ui.isTransitioning) {
+-      generateAlert(
+-        "error",
+-        t("snapshotTransitionInProgress"),
+-        t("snapshotTransitionInProgressExplanation")
+-      );
+-      return;
+-    }
+-    this.setProgressSteps(value === 0);
+-    
+-
+-    this.props.makeTransaction(
+-      seedStore,
+-      address,
+-      value,
+-      message,
+-      accountName,
+-      null,
+-      // eslint-disable-next-line no-undef
+-      Electron.genFn
+-    );
+-  };
+-
+-  setProgressSteps(isZeroValueTransaction) {
+-    const { t } = this.props;
+-
+-    const steps = isZeroValueTransaction
+-      ? [
+-          t("progressSteps:preparingTransfers"),
+-          t("progressSteps:gettingTransactionsToApprove"),
+-          t("progressSteps:proofOfWork"),
+-          t("progressSteps:broadcasting")
+-        ]
+-      : [
+-          t("progressSteps:validatingReceiveAddress"),
+-          t("progressSteps:syncingAccount"),
+-          t("progressSteps:preparingInputs"),
+-          t("progressSteps:preparingTransfers"),
+-          t("progressSteps:gettingTransactionsToApprove"),
+-          t("progressSteps:proofOfWork"),
+-          t("progressSteps:validatingTransactionAddresses"),
+-          t("progressSteps:broadcasting")
+-        ];
+-
+-    this.props.startTrackingProgress(steps);
+-  }
+-
+-  areInputsValid() {
+-    const { generateAlert, balance, t } = this.props;
+-    const { address, txamount, message } = this.state;
+-
+-    // Validate address length
+-    if (address.length !== ADDRESS_LENGTH) {
+-      generateAlert(
+-        "error",
+-        t("send:invalidAddress"),
+-        t("send:invalidAddressExplanation1", { maxLength: ADDRESS_LENGTH })
+-      );
+-      return false;
+-    }
++    confirmTransfer = async () => {
++        const { password, accountName, accountMeta } = this.props;
++        const { address, txamount } = this.state;
++        this.setState({
++            openModal: false,
++        });
+@@ -161,9 +64,4 @@ class Send extends React.PureComponent {
+-    // Validate address checksum
+-    if (!isValidAddress(address)) {
+-      generateAlert(
+-        "error",
+-        t("send:invalidAddress"),
+-        t("send:invalidAddressExplanation3")
+-      );
+-      return false;
+-    }
++        const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
++
++        const message =
++            SeedStore[accountMeta.type].isMessageAvailable || parseInt(txamount || '0') === 0 ? this.state.message : '';
+@@ -171,8 +69,55 @@ class Send extends React.PureComponent {
+-    // Validate enought balance
+-    if (parseFloat(txamount) > balance) {
+-      generateAlert(
+-        "error",
+-        t("send:notEnoughFunds"),
+-        t("send:notEnoughFundsExplanation")
+-      );
+-      return false;
++        this.setState({
++            message: message,
++        });
++
++        this.sendTransfer(seedStore, address, parseInt(txamount) || 0, message);
++    };
++
++    sendTransfer = (seedStore, address, value, message) => {
++        const { ui, accountName, generateAlert, t } = this.props;
++
++        if (ui.isSyncing) {
++            generateAlert('error', t('global:syncInProgress'), t('global:syncInProgressExplanation'));
++            return;
++        }
++
++        if (ui.isTransitioning) {
++            generateAlert('error', t('snapshotTransitionInProgress'), t('snapshotTransitionInProgressExplanation'));
++            return;
++        }
++        this.setProgressSteps(value === 0);
++
++        this.props.makeTransaction(
++            seedStore,
++            address,
++            value,
++            message,
++            accountName,
++            null,
++            // eslint-disable-next-line no-undef
++            Electron.genFn,
++        );
++    };
++
++    setProgressSteps(isZeroValueTransaction) {
++        const { t } = this.props;
++
++        const steps = isZeroValueTransaction
++            ? [
++                  t('progressSteps:preparingTransfers'),
++                  t('progressSteps:gettingTransactionsToApprove'),
++                  t('progressSteps:proofOfWork'),
++                  t('progressSteps:broadcasting'),
++              ]
++            : [
++                  t('progressSteps:validatingReceiveAddress'),
++                  t('progressSteps:syncingAccount'),
++                  t('progressSteps:preparingInputs'),
++                  t('progressSteps:preparingTransfers'),
++                  t('progressSteps:gettingTransactionsToApprove'),
++                  t('progressSteps:proofOfWork'),
++                  t('progressSteps:validatingTransactionAddresses'),
++                  t('progressSteps:broadcasting'),
++              ];
++
++        this.props.startTrackingProgress(steps);
+@@ -181 +126,45 @@ class Send extends React.PureComponent {
+-    // If empty falls back to default value
++    areInputsValid() {
++        const { generateAlert, balance, t } = this.props;
++        const { address, txamount, message } = this.state;
++
++        // Validate address length
++        if (address.length !== ADDRESS_LENGTH) {
++            generateAlert(
++                'error',
++                t('send:invalidAddress'),
++                t('send:invalidAddressExplanation1', { maxLength: ADDRESS_LENGTH }),
++            );
++            return false;
++        }
++
++        // Validate address checksum
++        if (!isValidAddress(address)) {
++            generateAlert('error', t('send:invalidAddress'), t('send:invalidAddressExplanation3'));
++            return false;
++        }
++
++        // Validate enought balance
++        if (parseFloat(txamount) > balance) {
++            generateAlert('error', t('send:notEnoughFunds'), t('send:notEnoughFundsExplanation'));
++            return false;
++        }
++
++        // If empty falls back to default value
++
++        if (message === '') {
++            return true;
++        }
++
++        // Validate whether message only contains ASCII letters
++        // as anything else is lost up on conversion to txBytes
++
++        if (!isValidMessage(message)) {
++            generateAlert('error', t('send:invalidMessage'), t('send:invalidMessageExplanation'));
++            return false;
++        }
++
++        // this.setState({
++        //   openModal: true
++        // });
++        return true;
++    }
+@@ -183,3 +172,4 @@ class Send extends React.PureComponent {
+-    if(message === "")
+-    {
+-      return true;
++    addressInput(e) {
++        this.setState({
++            address: e.target.value,
++        });
+@@ -189,2 +211,31 @@ class Send extends React.PureComponent {
+-    // Validate whether message only contains ASCII letters
+-    // as anything else is lost up on conversion to txBytes
++    amountInput(e) {
++        const re = /^[0-9.]+$/;
++
++        // if value is not blank, then test the regex
++
++        if (e.target.value === '' || re.test(e.target.value)) {
++            let { txamount, selectedHlx } = this.state;
++            let base = 0;
++            const conversion = 0.000000022;
++            if (selectedHlx === 'HLX') {
++                base = 1;
++            } else if (selectedHlx === 'kHLX') {
++                base = 1000;
++            } else if (selectedHlx === 'mHLX') {
++                base = 1000000;
++            } else if (selectedHlx === 'gHLX') {
++                base = 1000000000;
++            } else if (e.target.value === 'tHLX') {
++                base = 1000000000000;
++            }
++            let hlx = e.target.value / conversion;
++            hlx = hlx / this.state.conversionRate;
++            hlx = Math.round(hlx / base);
++            txamount = hlx * base;
++            this.setState({
++                amount: e.target.value,
++                hlxamount: hlx,
++                txamount: txamount,
++            });
++        }
++    }
+@@ -192 +243,26 @@ class Send extends React.PureComponent {
+-  
++    currencyChange(e) {
++        let selectedCurrency = e.target.value;
++        const { selectedHlx } = this.state;
++        let base = 0;
++        if (selectedHlx === 'HLX') {
++            base = 1;
++        } else if (selectedHlx === 'kHLX') {
++            base = 1000;
++        } else if (selectedHlx === 'mHLX') {
++            base = 1000000;
++        } else if (selectedHlx === 'gHLX') {
++            base = 1000000000;
++        } else if (selectedHlx === 'tHLX') {
++            base = 1000000000000;
++        }
++        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
++        axios.get(url).then((resp) => {
++            this.setState({
++                conversionRate: resp.data.rates[selectedCurrency],
++            });
++            if (this.state.amount !== '') {
++                this.setState({
++                    hlxamount: Math.ceil((this.state.amount * resp.data.rates[selectedCurrency]) / base),
++                });
++            }
++        });
+@@ -194,7 +270,4 @@ class Send extends React.PureComponent {
+-    if (!isValidMessage(message)) {
+-      generateAlert(
+-        "error",
+-        t("send:invalidMessage"),
+-        t("send:invalidMessageExplanation")
+-      );
+-      return false;
++        this.setState({
++            selectedCurrency: selectedCurrency,
++        });
++        this.props.getCurrencyData(selectedCurrency, true);
+@@ -203,39 +276,29 @@ class Send extends React.PureComponent {
+-    // this.setState({
+-    //   openModal: true
+-    // });
+-    return true;
+-  };
+-
+-  addressInput(e) {
+-    this.setState({
+-      address: e.target.value
+-    });
+-  }
+-
+-  hlxInput(e) {
+-    const re = /^[0-9.]+$/;
+-
+-    // if value is not blank, then test the regex
+-
+-    if (e.target.value === '' || re.test(e.target.value)) {
+-    let {txamount,selectedHlx} = this.state;
+-    let hlxamount = e.target.value;
+-    let conversion = 0.000000022;
+-    let base = 0;
+-    if(selectedHlx==="HLX"){
+-      base=1;
+-      
+-    }
+-    else if(selectedHlx==="kHLX"){
+-      base=1000;
+-    }
+-    else if(selectedHlx==="mHLX"){
+-      base=1000000;
+-    }
+-    else if(selectedHlx==="gHLX")
+-    {
+-      base=1000000000;
+-    }
+-    else if(e.target.value==="tHLX")
+-    {
+-      base=1000000000000;
++    hlxChange(e) {
++        let { txamount, hlxamount } = this.state;
++        let base = 0;
++        const conversion = 0.000000022;
++        let amount = 0;
++        if (e.target.value === 'HLX') {
++            base = 1;
++        } else if (e.target.value === 'kHLX') {
++            base = 1000;
++        } else if (e.target.value === 'mHLX') {
++            base = 1000000;
++        } else if (e.target.value === 'gHLX') {
++            base = 1000000000;
++        } else if (e.target.value === 'tHLX') {
++            base = 1000000000000;
++        }
++
++        if (hlxamount !== '') {
++            txamount = hlxamount * base;
++            amount = txamount * conversion;
++        } else {
++            txamount = 0;
++        }
++        this.setState({
++            selectedHlx: e.target.value,
++            txamount: txamount,
++            amount: amount,
++            hlxamount: hlxamount,
++        });
+@@ -243,11 +305,0 @@ class Send extends React.PureComponent {
+-    txamount = hlxamount * base;
+-    const base1 = conversion * txamount;
+-
+-    let amount = this.state.conversionRate * base1;
+-    this.setState({
+-      hlxamount: hlxamount,
+-      amount: amount,
+-      txamount:txamount
+-    });
+-  }
+-}
+@@ -255,52 +307,6 @@ class Send extends React.PureComponent {
+-  amountInput(e) {
+-    const re = /^[0-9.]+$/;
+-
+-    // if value is not blank, then test the regex
+-
+-    if (e.target.value === '' || re.test(e.target.value)) {
+-      
+-      let {txamount,selectedHlx} = this.state;
+-      let base = 0;
+-      const conversion = 0.000000022;
+-      if(selectedHlx==="HLX"){
+-        base=1;
+-        
+-      }
+-      else if(selectedHlx==="kHLX"){
+-        base=1000;
+-      }
+-      else if(selectedHlx==="mHLX"){
+-        base=1000000;
+-      }
+-      else if(selectedHlx==="gHLX")
+-      {
+-        base=1000000000;
+-      }
+-      else if(e.target.value==="tHLX")
+-      {
+-        base=1000000000000;
+-      }
+-      let hlx = e.target.value / conversion;
+-      hlx = (hlx/this.state.conversionRate);
+-      hlx = Math.round(hlx / base);
+-      txamount = hlx * base;
+-      this.setState({
+-        amount: e.target.value,
+-        hlxamount:hlx,
+-        txamount:txamount
+-      });
+-    
+-    }
+-    
+-  
+-  }
+-
+-  currencyChange(e){
+-    let selectedCurrency = e.target.value
+-    const {selectedHlx} = this.state;
+-    let base = 0;
+-    if(selectedHlx==="HLX"){
+-      base=1;
+-    }
+-    else if(selectedHlx==="kHLX"){
+-      base=1000;
++    msgChange(e) {
++        if (!isEmpty(e.target.value)) {
++            this.setState({
++                message: e.target.value,
++            });
++        }
+@@ -308,10 +314,10 @@ class Send extends React.PureComponent {
+-    else if(selectedHlx==="mHLX"){
+-      base=1000000;
+-    }
+-    else if(selectedHlx==="gHLX")
+-    {
+-      base=1000000000;
+-    }
+-    else if(selectedHlx==="tHLX")
+-    {
+-      base=1000000000000;
++
++    componentDidMount() {
++        const { currency } = this.props;
++        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
++        axios.get(url).then((resp) => {
++            this.setState({
++                selectedCurrency: currency,
++                conversionRate: resp.data.rates[currency],
++            });
++        });
+@@ -319,7 +325,2 @@ class Send extends React.PureComponent {
+-    const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
+-    axios.get(url)
+-    .then(resp=>{
+-      this.setState({
+-        conversionRate: resp.data.rates[selectedCurrency]
+-      });
+-      if(this.state.amount!==""){
++
++    resetForm() {
+@@ -327,18 +328,5 @@ class Send extends React.PureComponent {
+-          hlxamount:Math.ceil((this.state.amount * resp.data.rates[selectedCurrency])/base)
+-        })
+-      }
+-    })
+-    
+-    this.setState({
+-      selectedCurrency:selectedCurrency
+-    });
+-    this.props.getCurrencyData(selectedCurrency,true);
+-  }
+-
+-  hlxChange(e){
+-    let {txamount,hlxamount} = this.state
+-    let base = 0;
+-    const conversion = 0.000000022;
+-    let amount = 0;
+-    if(e.target.value==="HLX"){
+-      base=1;
++            openModal: false,
++            amount: '',
++            hlxamount: '',
++            address: '',
++        });
+@@ -346,38 +333,0 @@ class Send extends React.PureComponent {
+-    else if(e.target.value==="kHLX"){
+-      base=1000;
+-    }
+-    else if(e.target.value==="mHLX"){
+-      base=1000000;
+-    }
+-    else if(e.target.value==="gHLX")
+-    {
+-      base=1000000000;
+-    }
+-    else if(e.target.value==="tHLX")
+-    {
+-      base=1000000000000;
+-    }
+-    
+-   if(hlxamount!==""){
+-     txamount=hlxamount * base;
+-     amount = (txamount * conversion);
+-   }
+-   else{
+-     txamount=0;
+-   }
+-    this.setState({
+-      selectedHlx:e.target.value,
+-      txamount:txamount,
+-      amount:amount,
+-      hlxamount:hlxamount
+-    })
+-  }
+-
+-  msgChange(e){
+-   
+-    if(!isEmpty(e.target.value)){
+-    this.setState({
+-      message:e.target.value
+-    })
+-  }
+-}
+@@ -385,196 +335,184 @@ class Send extends React.PureComponent {
+-  componentDidMount(){
+-    const {currency} = this.props;
+-    const url = "https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD";
+-    axios.get(url)
+-    .then(resp=>{
+-      this.setState({
+-        selectedCurrency:currency,
+-        conversionRate: resp.data.rates[currency]
+-      });
+-    })
+-  }
+-
+-  resetForm(){
+-    this.setState({ 
+-      openModal: false,
+-      amount:"",
+-      hlxamount:"",
+-      address: ""
+-    });
+-  }
+-
+-  render() {
+-    const {  currencies, isSending, progress, t } = this.props;
+-    const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx} = this.state;
+-    
+-    const progressTitle =
+-        progress.activeStepIndex !== progress.activeSteps.length
+-          ? progress.activeSteps[progress.activeStepIndex]
+-          : `${t("send:totalTime")} ${Math.round(
+-              progress.timeTakenByEachStep.reduce(
+-                (total, time) => total + Number(time),
+-                0
+-              )
+-            )}s`;
+-    this.setState({
+-      progress: Math.round(
+-        (progress.activeStepIndex / progress.activeSteps.length) * 100
+-      ),
+-      title: progressTitle
+-    });
+-    return (
+-      <div>
+-        <section className={css.home}>
+-          
+-          <div className={classNames(css.pg1_foo3)}>
+-            <div className="container">
+-              <div className="row">
+-                <div className="col-lg-9">
+-                  <div className={classNames(css.foo_bxx1)} style={{paddingBottom:'100px'}}>
+-                    <h5 style={{marginLeft: '494px'}}>
+-                      {t("send:sendCoins")}
+-                   
+-                    </h5>
+-                    <h6 style={{opacity: '0.3',marginLeft: '275px'}}>{t("send:irrevocableTransactionWarning")}</h6>
+-                    <form style={{marginLeft: '48px'}}>
+-                    
+-                      <div>
+-                      <select
+-                      className={css.currencyBox}
+-                      onChange={this.currencyChange.bind(this)}
+-                      value={selectedCurrency}
+-                      >
+-                        {currencies
+-                        .slice()
+-                        .sort()
+-                        .map(item => {
+-                          return <option value={item} key={item} style={{backgroundColor:'transparent'}}>{item}</option>
+-                        })}
+-                      </select>
+-                      <input
+-                        type="number"
+-                        value={amount}
+-                        className={classNames(css.bbx_box1, css.tr_box)}
+-                        style={{
+-                          marginLeft: "50px",
+-                          color: "white"
+-                        }}
+-                        placeholder={selectedCurrency}
+-                        onChange={this.amountInput.bind(this)}
+-                      ></input>
+-                      </div>
+-                      <h1 className={classNames(css.eq)}>=</h1>
+-                    
+-                      <div>
+-                      <select
+-                      defaultValue={"mHLX"}
+-                      className={css.currencyBox}
+-                      onChange={this.hlxChange.bind(this)}
+-                      >
+-                        <option value="HLX">HLX</option>
+-                        <option value="kHLX">kHLX</option>
+-                        <option value="mHLX">mHLX</option>
+-                        <option value="gHLX">gHLX</option>
+-                      </select>
+-                      <input
+-                        value={hlxamount}
+-                        type="number"
+-                        className={classNames(css.bbx_box1, css.tr_box)}
+-                        style={{
+-                          marginLeft: "50px",
+-                          color: "white"
+-                        }}
+-                        maxLength={MAX_HLX_LENGTH}
+-                        min={0}
+-                        placeholder={selectedHlx}
+-                        onChange={this.hlxInput.bind(this)}
+-                      ></input>
+-                      </div>
+-                   
+-
+-                      <div>
+-                      <span
+-                      className={css.currencyBox}
+-                      style={{
+-                        top: '355px',
+-                        left: '55px'
+-                      }}
+-                      >
+-                      {t("send:note")}
+-                      </span>
+-                      <input className={css.msgBox}
+-                        style={{
+-                          marginLeft: "50px",
+-                          color: "white"
+-                        }}
+-                        placeholder="Enter note"
+-                        maxLength={MAX_NOTE_LENGTH}
+-                        onChange={this.msgChange.bind(this)}/>
+-                      </div>
+-                      <input
+-                        id="recipient-address"
+-                        type="text"
+-                        name="name"
+-                        className={css.reci_text}
+-                        value={address}
+-                        onChange={this.addressInput.bind(this)}
+-                        placeholder="RECIPIENT ADDRESS"
+-                      />
+-                      <br />
+-                      <a
+-                        className={css.send_bts}
+-                        onClick={this.validateInputs.bind(this)}
+-                        disabled={this.state.hlxamount!==""}
+-                      >
+-                        <img src={ic1} alt="" />
+-                      
+-                      <h2 className={classNames(css.send_bts_h2)}>
+-                      {t("send:send")}
+-                      </h2>
+-                      
+-                      </a>
+-
+-                    </form>
+-                    {openModal && (
+-                      <Modal
+-                        isOpen={openModal}
+-                        onClose={() => this.setState({ openModal: false })}
+-                      >
+-                        <div style={{ marginTop: "-60px" }}>
+-                          <br />
+-                          <div className={css.transferLoading}>
+-                            <br />
+-                            {/*<Lottie*/}
+-                            {/*  options={defaultOptions}*/}
+-                            {/*  eventListeners={[*/}
+-                            {/*    {*/}
+-                            {/*      eventName: "complete",*/}
+-                            {/*      callback: () => {*/}
+-                            {/*        if (typeof onEnd === "function") {*/}
+-                            {/*          onEnd();*/}
+-                            {/*        }*/}
+-                            {/*      }*/}
+-                            {/*    }*/}
+-                            {/*  ]}*/}
+-                            {/*/>*/}
+-                          </div>
+-                          <br />
+-                          <div>
+-                            <h3>{t("send:continuetransaction")}</h3>
+-                            <br />
+-                            <Checksum address={address} />
+-                          </div>
+-                          <br />
+-                          <Button
+-                            variant="danger"
+-                            onClick={() => this.setState({ openModal: false })}
+-                          >
+-                           {t("global:cancel")}
+-                          </Button>
+-                          &nbsp;&nbsp;&nbsp;&nbsp;
+-                          <Button
+-                            variant="success"
+-                            onClick={this.confirmTransfer.bind(this)}
+-                          >
+-                           {t("global:confirm")}
+-                          </Button>
++    render() {
++        const { currencies, isSending, progress, t } = this.props;
++        const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx } = this.state;
++
++        const progressTitle =
++            progress.activeStepIndex !== progress.activeSteps.length
++                ? progress.activeSteps[progress.activeStepIndex]
++                : `${t('send:totalTime')} ${Math.round(
++                      progress.timeTakenByEachStep.reduce((total, time) => total + Number(time), 0),
++                  )}s`;
++        this.setState({
++            progress: Math.round((progress.activeStepIndex / progress.activeSteps.length) * 100),
++            title: progressTitle,
++        });
++        return (
++            <div>
++                <section className={css.home}>
++                    <div className={classNames(css.pg1_foo3)}>
++                        <div className="container">
++                            <div className="row">
++                                <div className="col-lg-9">
++                                    <div className={classNames(css.foo_bxx1)} style={{ paddingBottom: '100px' }}>
++                                        <h5 style={{ marginLeft: '494px' }}>{t('send:sendCoins')}</h5>
++                                        <h6 style={{ opacity: '0.3', marginLeft: '275px' }}>
++                                            {t('send:irrevocableTransactionWarning')}
++                                        </h6>
++                                        <form style={{ marginLeft: '48px' }}>
++                                            <div>
++                                                <select
++                                                    className={css.currencyBox}
++                                                    onChange={this.currencyChange.bind(this)}
++                                                    value={selectedCurrency}
++                                                >
++                                                    {currencies
++                                                        .slice()
++                                                        .sort()
++                                                        .map((item) => {
++                                                            return (
++                                                                <option
++                                                                    value={item}
++                                                                    key={item}
++                                                                    style={{ backgroundColor: 'transparent' }}
++                                                                >
++                                                                    {item}
++                                                                </option>
++                                                            );
++                                                        })}
++                                                </select>
++                                                <input
++                                                    type="number"
++                                                    value={amount}
++                                                    className={classNames(css.bbx_box1, css.tr_box)}
++                                                    style={{
++                                                        marginLeft: '50px',
++                                                        color: 'white',
++                                                    }}
++                                                    placeholder={selectedCurrency}
++                                                    onChange={this.amountInput.bind(this)}
++                                                ></input>
++                                            </div>
++                                            <h1 className={classNames(css.eq)}>=</h1>
++
++                                            <div>
++                                                <select
++                                                    defaultValue={'mHLX'}
++                                                    className={css.currencyBox}
++                                                    onChange={this.hlxChange.bind(this)}
++                                                >
++                                                    <option value="HLX">HLX</option>
++                                                    <option value="kHLX">kHLX</option>
++                                                    <option value="mHLX">mHLX</option>
++                                                    <option value="gHLX">gHLX</option>
++                                                </select>
++                                                <input
++                                                    value={hlxamount}
++                                                    type="number"
++                                                    className={classNames(css.bbx_box1, css.tr_box)}
++                                                    style={{
++                                                        marginLeft: '50px',
++                                                        color: 'white',
++                                                    }}
++                                                    maxLength={MAX_HLX_LENGTH}
++                                                    min={0}
++                                                    placeholder={selectedHlx}
++                                                    onChange={this.hlxInput.bind(this)}
++                                                ></input>
++                                            </div>
++
++                                            <div>
++                                                <span
++                                                    className={css.currencyBox}
++                                                    style={{
++                                                        top: '355px',
++                                                        left: '55px',
++                                                    }}
++                                                >
++                                                    {t('send:note')}
++                                                </span>
++                                                <input
++                                                    className={css.msgBox}
++                                                    style={{
++                                                        marginLeft: '50px',
++                                                        color: 'white',
++                                                    }}
++                                                    placeholder="Enter note"
++                                                    maxLength={MAX_NOTE_LENGTH}
++                                                    onChange={this.msgChange.bind(this)}
++                                                />
++                                            </div>
++                                            <input
++                                                id="recipient-address"
++                                                type="text"
++                                                name="name"
++                                                className={css.reci_text}
++                                                value={address}
++                                                onChange={this.addressInput.bind(this)}
++                                                placeholder="RECIPIENT ADDRESS"
++                                            />
++                                            <br />
++                                            <a
++                                                className={css.send_bts}
++                                                onClick={this.validateInputs.bind(this)}
++                                                disabled={this.state.hlxamount !== ''}
++                                            >
++                                                <img src={ic1} alt="" />
++
++                                                <h2 className={classNames(css.send_bts_h2)}>{t('send:send')}</h2>
++                                            </a>
++                                        </form>
++                                        {openModal && (
++                                            <Modal
++                                                isOpen={openModal}
++                                                onClose={() => this.setState({ openModal: false })}
++                                            >
++                                                <div style={{ marginTop: '-60px' }}>
++                                                    <br />
++                                                    <div className={css.transferLoading}>
++                                                        <br />
++                                                        {/*<Lottie*/}
++                                                        {/*  options={defaultOptions}*/}
++                                                        {/*  eventListeners={[*/}
++                                                        {/*    {*/}
++                                                        {/*      eventName: "complete",*/}
++                                                        {/*      callback: () => {*/}
++                                                        {/*        if (typeof onEnd === "function") {*/}
++                                                        {/*          onEnd();*/}
++                                                        {/*        }*/}
++                                                        {/*      }*/}
++                                                        {/*    }*/}
++                                                        {/*  ]}*/}
++                                                        {/*/>*/}
++                                                    </div>
++                                                    <br />
++                                                    <div>
++                                                        <h3>{t('send:continuetransaction')}</h3>
++                                                        <br />
++                                                        <Checksum address={address} />
++                                                    </div>
++                                                    <br />
++                                                    <Button
++                                                        variant="danger"
++                                                        onClick={() => this.setState({ openModal: false })}
++                                                    >
++                                                        {t('global:cancel')}
++                                                    </Button>
++                                                    &nbsp;&nbsp;&nbsp;&nbsp;
++                                                    <Button variant="success" onClick={this.confirmTransfer.bind(this)}>
++                                                        {t('global:confirm')}
++                                                    </Button>
++                                                </div>
++                                            </Modal>
++                                        )}
++                                    </div>
++                                    {isSending && (
++                                        <Modal isOpen={isSending} onClose={this.resetForm.bind(this)}>
++                                            <ProgressBar
++                                                type={'send'}
++                                                progress={this.state.progress}
++                                                title={progressTitle}
++                                            />
++                                        </Modal>
++                                    )}
++                                </div>
++                            </div>
+@@ -582,10 +520,2 @@ class Send extends React.PureComponent {
+-                      </Modal>
+-                    )}
+-                  </div>
+-                  {isSending && (
+-                    <Modal isOpen={isSending} onClose={this.resetForm.bind(this)}>
+-                      <ProgressBar type={"send"} progress={this.state.progress} title={progressTitle}/>
+-                    </Modal>
+-                  )}
+-                </div>
+-              </div>
++                    </div>
++                </section>
+@@ -593,6 +523,2 @@ class Send extends React.PureComponent {
+-          </div>
+-        </section>
+-     
+-      </div>
+-    );
+-  }
++        );
++    }
+@@ -601,11 +527,11 @@ class Send extends React.PureComponent {
+-const mapStateToProps = state => ({
+-  accountName: getSelectedAccountName(state),
+-  accountMeta: getSelectedAccountMeta(state),
+-  password: state.wallet.password,
+-  balance: getBalanceForSelectedAccount(state),
+-  ui: state.ui,
+-  currencies: state.settings.availableCurrencies,
+-  conversionRate:state.settings.conversionRate,
+-  isSending:state.ui.isSendingTransfer,
+-  progress: state.progress,
+-  currency:state.settings.currency
++const mapStateToProps = (state) => ({
++    accountName: getSelectedAccountName(state),
++    accountMeta: getSelectedAccountMeta(state),
++    password: state.wallet.password,
++    balance: getBalanceForSelectedAccount(state),
++    ui: state.ui,
++    currencies: state.settings.availableCurrencies,
++    conversionRate: state.settings.conversionRate,
++    isSending: state.ui.isSendingTransfer,
++    progress: state.progress,
++    currency: state.settings.currency,
+@@ -615,4 +541,4 @@ const mapDispatchToProps = {
+-  generateAlert,
+-  makeTransaction,
+-  startTrackingProgress,
+-  getCurrencyData
++    generateAlert,
++    makeTransaction,
++    startTrackingProgress,
++    getCurrencyData,
+@@ -621,2 +547,2 @@ export default connect(
+-  mapStateToProps,
+-  mapDispatchToProps
++    mapStateToProps,
++    mapDispatchToProps,

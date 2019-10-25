@@ -1,0 +1,85 @@
+diff a/src/desktop/src/ui/components/logo.js b/src/desktop/src/ui/components/logo.js	(rejected hunks)
+@@ -1,4 +1,4 @@
+-import React from "react";
+-import PropTypes from "prop-types";
+-import Lottie from "react-lottie";
+-import * as animationData from "animations/lottie.json";
++import React from 'react';
++import PropTypes from 'prop-types';
++import Lottie from 'react-lottie';
++import * as animationData from 'animations/lottie.json';
+@@ -10,6 +10,6 @@ export default class Logo extends React.PureComponent {
+-  static propTypes = {
+-    /** On animation end event callback */
+-    onEnd: PropTypes.func,
+-    /** Should animation loop */
+-    loop: PropTypes.bool
+-  };
++    static propTypes = {
++        /** On animation end event callback */
++        onEnd: PropTypes.func,
++        /** Should animation loop */
++        loop: PropTypes.bool,
++    };
+@@ -17,2 +17,2 @@ export default class Logo extends React.PureComponent {
+-  render() {
+-    const { size, loop, onEnd } = this.props;
++    render() {
++        const { size, loop, onEnd } = this.props;
+@@ -20,28 +20,28 @@ export default class Logo extends React.PureComponent {
+-    const defaultOptions = {
+-      loop: loop,
+-      autoplay: true,
+-      animationData: animationData.default,
+-      rendererSettings: {
+-        preserveAspectRatio: "xMidYMid slice"
+-      }
+-    };
+-    return (
+-      <div style={{ width: size, height: size }}>
+-        <Lottie
+-          width={size}
+-          height={size}
+-          options={defaultOptions}
+-          eventListeners={[
+-            {
+-              eventName: "complete",
+-              callback: () => {
+-                if (typeof onEnd === "function") {
+-                  onEnd();
+-                }
+-              }
+-            }
+-          ]}
+-        />
+-      </div>
+-    );
+-  }
++        const defaultOptions = {
++            loop: loop,
++            autoplay: true,
++            animationData: animationData.default,
++            rendererSettings: {
++                preserveAspectRatio: 'xMidYMid slice',
++            },
++        };
++        return (
++            <div style={{ width: size, height: size }}>
++                <Lottie
++                    width={size}
++                    height={size}
++                    options={defaultOptions}
++                    eventListeners={[
++                        {
++                            eventName: 'complete',
++                            callback: () => {
++                                if (typeof onEnd === 'function') {
++                                    onEnd();
++                                }
++                            },
++                        },
++                    ]}
++                />
++            </div>
++        );
++    }

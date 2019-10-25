@@ -1,0 +1,59 @@
+diff a/src/desktop/src/ui/views/settings/removeaccount.js b/src/desktop/src/ui/views/settings/removeaccount.js	(rejected hunks)
+@@ -7 +7,6 @@ import { generateAlert } from 'actions/alerts';
+-import { selectAccountInfo, getSelectedAccountName, getSelectedAccountMeta, getAccountNamesFromState } from "selectors/accounts";
++import {
++    selectAccountInfo,
++    getSelectedAccountName,
++    getSelectedAccountMeta,
++    getAccountNamesFromState,
++} from 'selectors/accounts';
+@@ -11,2 +16,2 @@ import ModalPassword from 'ui/components/modal/Password';
+-import css from "./settings.scss";
+-import classNames from "classnames";
++import css from './settings.scss';
++import classNames from 'classnames';
+@@ -16,2 +21 @@ import Info from 'ui/components/info';
+-import { getAccountInfo } from "actions/accounts";
+-
++import { getAccountInfo } from 'actions/accounts';
+@@ -28 +32 @@ class Remove extends PureComponent {
+- /** @ignore */
++        /** @ignore */
+@@ -30,4 +34,4 @@ class Remove extends PureComponent {
+-         /** @ignore */
+-    accountMeta: PropTypes.object.isRequired,
+-    /** @ignore */
+-    password: PropTypes.object.isRequired,
++        /** @ignore */
++        accountMeta: PropTypes.object.isRequired,
++        /** @ignore */
++        password: PropTypes.object.isRequired,
+@@ -40 +43,0 @@ class Remove extends PureComponent {
+-      
+@@ -57 +60 @@ class Remove extends PureComponent {
+-   
++
+@@ -60 +63 @@ class Remove extends PureComponent {
+-            
++
+@@ -62 +65 @@ class Remove extends PureComponent {
+-          
++
+@@ -65,3 +67,0 @@ class Remove extends PureComponent {
+-                
+-         
+-           
+@@ -111,2 +111 @@ class Remove extends PureComponent {
+-                            style={{ marginLeft: "31vw", marginTop: "0vw" }}
+-
++                            style={{ marginLeft: '31vw', marginTop: '0vw' }}
+@@ -137 +135 @@ class Remove extends PureComponent {
+-const mapStateToProps = state => ({
++const mapStateToProps = (state) => ({
+@@ -142,2 +140 @@ const mapStateToProps = state => ({
+-  accountMeta: getSelectedAccountMeta(state),
+-
++    accountMeta: getSelectedAccountMeta(state),
+@@ -148 +145 @@ const mapDispatchToProps = {
+-    getAccountInfo
++    getAccountInfo,

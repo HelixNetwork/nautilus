@@ -1,0 +1,600 @@
+diff a/src/desktop/src/ui/views/onboarding/seedImport.js b/src/desktop/src/ui/views/onboarding/seedImport.js	(rejected hunks)
+@@ -1,16 +1,16 @@
+-import React from "react";
+-import { connect } from "react-redux";
+-import css from "./index.scss";
+-import PropTypes from "prop-types";
+-import classNames from "classnames";
+-import { setAccountInfoDuringSetup } from "actions/accounts";
+-import { withI18n } from "react-i18next";
+-import Button from "ui/components/button";
+-import { generateAlert } from "actions/alerts";
+-import Dropzone from "ui/components/dropzone";
+-import PasswordInput from "ui/components/input/password";
+-import { indexToChar, charToIndex } from "libs/hlx/converter";
+-import { MAX_SEED_LENGTH } from "libs/hlx/utils";
+-import Modal from "ui/components/modal/Modal";
+-import SeedStore from "libs/seed";
+-import {Row} from 'react-bootstrap'
++import React from 'react';
++import { connect } from 'react-redux';
++import css from './index.scss';
++import PropTypes from 'prop-types';
++import classNames from 'classnames';
++import { setAccountInfoDuringSetup } from 'actions/accounts';
++import { withI18n } from 'react-i18next';
++import Button from 'ui/components/button';
++import { generateAlert } from 'actions/alerts';
++import Dropzone from 'ui/components/dropzone';
++import PasswordInput from 'ui/components/input/password';
++import { indexToChar, charToIndex } from 'libs/hlx/converter';
++import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
++import Modal from 'ui/components/modal/Modal';
++import SeedStore from 'libs/seed';
++import { Row } from 'react-bootstrap';
+@@ -19,9 +19,9 @@ class SeedImport extends React.PureComponent {
+-  static propTypes = {
+-    setAccountInfoDuringSetup: PropTypes.func.isRequired,
+-    wallet: PropTypes.object.isRequired,
+-    additionalAccountName: PropTypes.string.isRequired,
+-    additionalAccountMeta: PropTypes.object.isRequired,
+-    generateAlert: PropTypes.func.isRequired,
+-    history: PropTypes.object,
+-    t: PropTypes.func.isRequired
+-  };
++    static propTypes = {
++        setAccountInfoDuringSetup: PropTypes.func.isRequired,
++        wallet: PropTypes.object.isRequired,
++        additionalAccountName: PropTypes.string.isRequired,
++        additionalAccountMeta: PropTypes.object.isRequired,
++        generateAlert: PropTypes.func.isRequired,
++        history: PropTypes.object,
++        t: PropTypes.func.isRequired,
++    };
+@@ -29,19 +29,11 @@ class SeedImport extends React.PureComponent {
+-  state = {
+-    ledger: false,
+-    // eslint-disable-next-line no-undef
+-    isGenerated: Electron.getOnboardingGenerated(),
+-    importBuffer: [],
+-    password: "",
+-    seedPhrase: "",
+-    seedIn: "",
+-    importVisible: false,
+-    seed: []
+-  };
+-
+-  stepForward(route) {
+-    this.props.setAccountInfoDuringSetup({
+-      meta: { type: "keychain" }
+-    });
+-
+-    this.props.history.push(`/onboarding/${route}`);
+-  }
++    state = {
++        ledger: false,
++        // eslint-disable-next-line no-undef
++        isGenerated: Electron.getOnboardingGenerated(),
++        importBuffer: [],
++        password: '',
++        seedPhrase: '',
++        seedIn: '',
++        importVisible: false,
++        seed: [],
++    };
+@@ -49,3 +41,4 @@ class SeedImport extends React.PureComponent {
+-  onPaste = e => {
+-    e.preventDefault();
+-  };
++    stepForward(route) {
++        this.props.setAccountInfoDuringSetup({
++            meta: { type: 'keychain' },
++        });
+@@ -53,7 +46 @@ class SeedImport extends React.PureComponent {
+-  onDrop = async buffer => {
+-    if (!buffer) {
+-      return this.props.generateAlert(
+-        "error",
+-        "Error opening keystore file",
+-        "There was an error opening keystore file"
+-      );
++        this.props.history.push(`/onboarding/${route}`);
+@@ -61,6 +47,0 @@ class SeedImport extends React.PureComponent {
+-    this.setState({
+-      importVisible: true,
+-      importBuffer: buffer,
+-      hidePass: "block"
+-    });
+-  };
+@@ -68,18 +49,3 @@ class SeedImport extends React.PureComponent {
+-  onSeedChange(e) {
+-    // To do
+-    e.preventDefault();
+-    this.setState({
+-      seedPhrase: e.target.value
+-    });
+-  }
+-  onSubmit = async () => {
+-    try {
+-      // eslint-disable-next-line no-undef
+-      const seed = await Electron.importSeed(
+-        this.state.importBuffer,
+-        this.state.password
+-      );
+-      this.setState({
+-        importBuffer: null
+-        
+-      });
++    onPaste = (e) => {
++        e.preventDefault();
++    };
+@@ -87,3 +53,14 @@ class SeedImport extends React.PureComponent {
+-      if (!seed || !seed.length) {
+-        throw Error("SeedNotFound");
+-      }
++    onDrop = async (buffer) => {
++        if (!buffer) {
++            return this.props.generateAlert(
++                'error',
++                'Error opening keystore file',
++                'There was an error opening keystore file',
++            );
++        }
++        this.setState({
++            importVisible: true,
++            importBuffer: buffer,
++            hidePass: 'block',
++        });
++    };
+@@ -91,28 +68,6 @@ class SeedImport extends React.PureComponent {
+-      let seedSequence = "";
+-      seed[0].seed.map((txByte, index) => {
+-        const letter = indexToChar(txByte);
+-        seedSequence += letter;
+-        return true;
+-      });
+-      // eslint-disable-next-line no-undef
+-      Electron.setOnboardingSeed(seed[0].seed, false);
+-      // eslint-disable-next-line no-undef
+-      Electron.setOnboardingName(seed[0].title);
+-      this.setState({
+-        seed: seed[0].seed,
+-        seedPhrase: seedSequence,
+-        hidePass: "none",
+-        importVisible: false,
+-        password:""
+-      });
+-    } catch (err) {
+-      // eslint-disable-next-line no-undef
+-      Electron.setOnboardingSeed(null);
+-      this.setState({
+-        seedPhrase: ""
+-      });
+-      this.props.generateAlert(
+-        "error",
+-        "Wrong password",
+-        "The password you have entered is incorrect."
+-      );
++    onSeedChange(e) {
++        // To do
++        e.preventDefault();
++        this.setState({
++            seedPhrase: e.target.value,
++        });
+@@ -120,11 +75,7 @@ class SeedImport extends React.PureComponent {
+-  };
+-  goBack() {
+-    // eslint-disable-next-line no-undef
+-    Electron.setOnboardingSeed(null);
+-    this.setState({
+-      importBuffer: null,
+-      hidePass: "none",
+-      seedPhrase: "",
+-      password:""
+-    });
+-  }
++    onSubmit = async () => {
++        try {
++            // eslint-disable-next-line no-undef
++            const seed = await Electron.importSeed(this.state.importBuffer, this.state.password);
++            this.setState({
++                importBuffer: null,
++            });
+@@ -132,32 +83,31 @@ class SeedImport extends React.PureComponent {
+-  setSeed = async e => {
+-    if (e) {
+-      e.preventDefault();
+-    }
+-    const {
+-      setAccountInfoDuringSetup,
+-      wallet,
+-      additionalAccountName,
+-      additionalAccountMeta,
+-      history,
+-      t,
+-      generateAlert
+-    } = this.props;
+-    const { seed, isGenerated, seedPhrase } = this.state;
+-    if (!/([a-f0-9])$/.test(seedPhrase)) {
+-      return this.props.generateAlert(
+-        "error",
+-        "Invalid seed",
+-        "You have a entered an invalid character in seed.",
+-        1000
+-      );
+-    }
+-    // eslint-disable-next-line no-undef
+-    if (Electron.getOnboardingSeed() == null && seedPhrase !== "") {
+-      for (let i = 0; i < 64; i++) {
+-        seed.push(charToIndex(seedPhrase[i]));
+-      }
+-    }
+-    if (
+-      isGenerated &&
+-      // eslint-disable-next-line no-undef
+-      (seed.length !== Electron.getOnboardingSeed().length ||
++            if (!seed || !seed.length) {
++                throw Error('SeedNotFound');
++            }
++
++            let seedSequence = '';
++            seed[0].seed.map((txByte, index) => {
++                const letter = indexToChar(txByte);
++                seedSequence += letter;
++                return true;
++            });
++            // eslint-disable-next-line no-undef
++            Electron.setOnboardingSeed(seed[0].seed, false);
++            // eslint-disable-next-line no-undef
++            Electron.setOnboardingName(seed[0].title);
++            this.setState({
++                seed: seed[0].seed,
++                seedPhrase: seedSequence,
++                hidePass: 'none',
++                importVisible: false,
++                password: '',
++            });
++        } catch (err) {
++            // eslint-disable-next-line no-undef
++            Electron.setOnboardingSeed(null);
++            this.setState({
++                seedPhrase: '',
++            });
++            this.props.generateAlert('error', 'Wrong password', 'The password you have entered is incorrect.');
++        }
++    };
++    goBack() {
+@@ -165,8 +115,7 @@ class SeedImport extends React.PureComponent {
+-        !Electron.getOnboardingSeed().every((v, i) => v % 16 === seed[i] % 16))
+-    ) {
+-      generateAlert(
+-        "error",
+-        t("seedReentry:incorrectSeed"),
+-        t("seedReentry:incorrectSeedExplanation")
+-      );
+-      return;
++        Electron.setOnboardingSeed(null);
++        this.setState({
++            importBuffer: null,
++            hidePass: 'none',
++            seedPhrase: '',
++            password: '',
++        });
+@@ -175,27 +124,38 @@ class SeedImport extends React.PureComponent {
+-    if (wallet.password.length) {
+-      const seedStore = await new SeedStore[additionalAccountMeta.type](
+-        wallet.password
+-      );
+-      const isUniqueSeed = await seedStore.isUniqueSeed(seed);
+-      if (!isUniqueSeed) {
+-        generateAlert(
+-          "error",
+-          t("addAdditionalSeed:seedInUse"),
+-          t("addAdditionalSeed:seedInUseExplanation")
+-        );
+-        return;
+-      }
+-    }
+-    if (seed.length !== MAX_SEED_LENGTH) {
+-      generateAlert(
+-        "error",
+-        seed.length < MAX_SEED_LENGTH
+-          ? t("enterSeed:seedTooShort")
+-          : t("enterSeed:seedTooLong"),
+-        t("enterSeed:seedTooShortExplanation", {
+-          maxLength: MAX_SEED_LENGTH,
+-          currentLength: seed.length
+-        })
+-      );
+-      return;
+-    }
++    setSeed = async (e) => {
++        if (e) {
++            e.preventDefault();
++        }
++        const {
++            setAccountInfoDuringSetup,
++            wallet,
++            additionalAccountName,
++            additionalAccountMeta,
++            history,
++            t,
++            generateAlert,
++        } = this.props;
++        const { seed, isGenerated, seedPhrase } = this.state;
++        if (!/([a-f0-9])$/.test(seedPhrase)) {
++            return this.props.generateAlert(
++                'error',
++                'Invalid seed',
++                'You have a entered an invalid character in seed.',
++                1000,
++            );
++        }
++        // eslint-disable-next-line no-undef
++        if (Electron.getOnboardingSeed() == null && seedPhrase !== '') {
++            for (let i = 0; i < 64; i++) {
++                seed.push(charToIndex(seedPhrase[i]));
++            }
++        }
++        if (
++            isGenerated &&
++            // eslint-disable-next-line no-undef
++            (seed.length !== Electron.getOnboardingSeed().length ||
++                // eslint-disable-next-line no-undef
++                !Electron.getOnboardingSeed().every((v, i) => v % 16 === seed[i] % 16))
++        ) {
++            generateAlert('error', t('seedReentry:incorrectSeed'), t('seedReentry:incorrectSeedExplanation'));
++            return;
++        }
+@@ -203,9 +163,19 @@ class SeedImport extends React.PureComponent {
+-    if (!isGenerated) {
+-      // eslint-disable-next-line no-undef
+-      Electron.setOnboardingSeed(seed, false);
+-      history.push("/onboarding/account-name");
+-    } else {
+-      if (wallet.ready) {
+-        setAccountInfoDuringSetup({
+-          completed: true
+-        });
++        if (wallet.password.length) {
++            const seedStore = await new SeedStore[additionalAccountMeta.type](wallet.password);
++            const isUniqueSeed = await seedStore.isUniqueSeed(seed);
++            if (!isUniqueSeed) {
++                generateAlert('error', t('addAdditionalSeed:seedInUse'), t('addAdditionalSeed:seedInUseExplanation'));
++                return;
++            }
++        }
++        if (seed.length !== MAX_SEED_LENGTH) {
++            generateAlert(
++                'error',
++                seed.length < MAX_SEED_LENGTH ? t('enterSeed:seedTooShort') : t('enterSeed:seedTooLong'),
++                t('enterSeed:seedTooShortExplanation', {
++                    maxLength: MAX_SEED_LENGTH,
++                    currentLength: seed.length,
++                }),
++            );
++            return;
++        }
+@@ -213,8 +183,9 @@ class SeedImport extends React.PureComponent {
+-        const seedStore = await new SeedStore[additionalAccountMeta.type](
+-          wallet.password
+-        );
+-        await seedStore.addAccount(
+-          additionalAccountName,
+-          // eslint-disable-next-line no-undef
+-          Electron.getOnboardingSeed()
+-        );
++        if (!isGenerated) {
++            // eslint-disable-next-line no-undef
++            Electron.setOnboardingSeed(seed, false);
++            history.push('/onboarding/account-name');
++        } else {
++            if (wallet.ready) {
++                setAccountInfoDuringSetup({
++                    completed: true,
++                });
+@@ -225,21 +200,2 @@ class SeedImport extends React.PureComponent {
+-        history.push("/onboarding/login");
+-      } else {
+-        history.push("/onboarding/account-password");
+-      }
+-    }
+-  };
+-  render() {
+-    const { t } = this.props;
+-    const {
+-      importBuffer,
+-      seedPhrase,
+-      isGenerated,
+-      importVisible
+-    } = this.state;
+-    return (
+-      <div>
+-        <Row style={{marginTop:'5vw'}}>
+-          <h1>{t("seedReentry:enterYourSeed")}
+-            <span className={classNames(css.text_color)}>.</span>
+-          </h1>
+-        </Row>
++                // eslint-disable-next-line no-undef
++                Electron.setOnboardingSeed(null);
+@@ -247,66 +203,17 @@ class SeedImport extends React.PureComponent {
+-        <Row className={css.centerBox1}>
+-                <input
+-            type="text"
+-            value={seedPhrase}
+-            onChange={this.onSeedChange.bind(this)}
+-            placeholder="Seed"
+-            className={css.seedInput}
+-          ></input>
+-          <br />
+-          <br />
+-          <Dropzone onDrop={this.onDrop} />
+-          {importBuffer && (
+-            <Modal
+-              variant="confirm"
+-              isOpen={importVisible}
+-              onClose={() => this.setState({ importVisible: false })}
+-            >
+-              <form style={{ top: "-30px", left: "350px" }}>
+-                <PasswordInput
+-                  focus
+-                  value={this.state.password}
+-                  label="SeedVault Password"
+-                  showValid
+-                  onChange={value => {
+-                    this.setState({ password: value });
+-                  }}
+-                />
+-                <Button
+-                  onClick={this.goBack.bind(this)}
+-                  variant="backgroundNone"
+-                  className="modal_navleft"
+-                >
+-               <span>&lt;</span> {t("global:cancel")}  
+-                </Button>
+-                <Button
+-                  onClick={this.onSubmit.bind(this)}
+-                  variant="backgroundNone"
+-                  className="modal_navright"
+-                >
+-                  {t("seedVault:importSeedVault")}<span>></span>
+-                </Button>
+-              </form>
+-            </Modal>
+-          )}
+-          <br />
+-          <h3>
+-            <strong>{t("enterSeed:neverShare")}</strong>
+-          </h3>
+-        </Row>
+-        <Row>
+-          <Button
+-            className="navleft"
+-            variant="backgroundNone"
+-            to={`/onboarding/seed-${isGenerated ? "backup" : "intro"}`}
+-          >
+-          <span>&lt;</span>  {t("global:goBack")} 
+-          </Button>
+-          <Button
+-            className="navright"
+-            variant="backgroundNone"
+-            disabled={seedPhrase === ""}
+-            onClick={this.setSeed}
+-          >
+-            {t("global:confirm")} <span>></span>
+-          </Button>
+-        </Row>
++                history.push('/onboarding/login');
++            } else {
++                history.push('/onboarding/account-password');
++            }
++        }
++    };
++    render() {
++        const { t } = this.props;
++        const { importBuffer, seedPhrase, isGenerated, importVisible } = this.state;
++        return (
++            <div>
++                <Row style={{ marginTop: '5vw' }}>
++                    <h1>
++                        {t('seedReentry:enterYourSeed')}
++                        <span className={classNames(css.text_color)}>.</span>
++                    </h1>
++                </Row>
+@@ -314,3 +221,70 @@ class SeedImport extends React.PureComponent {
+-      </div>
+-    );
+-  }
++                <Row className={css.centerBox1}>
++                    <input
++                        type="text"
++                        value={seedPhrase}
++                        onChange={this.onSeedChange.bind(this)}
++                        placeholder="Seed"
++                        className={css.seedInput}
++                    ></input>
++                    <br />
++                    <br />
++                    <Dropzone onDrop={this.onDrop} />
++                    {importBuffer && (
++                        <Modal
++                            variant="confirm"
++                            isOpen={importVisible}
++                            onClose={() => this.setState({ importVisible: false })}
++                        >
++                            <form style={{ top: '-30px', left: '350px' }}>
++                                <PasswordInput
++                                    focus
++                                    value={this.state.password}
++                                    label="SeedVault Password"
++                                    showValid
++                                    onChange={(value) => {
++                                        this.setState({ password: value });
++                                    }}
++                                />
++                                <Button
++                                    onClick={this.goBack.bind(this)}
++                                    variant="backgroundNone"
++                                    className="modal_navleft"
++                                >
++                                    <span>&lt;</span> {t('global:cancel')}
++                                </Button>
++                                <Button
++                                    onClick={this.onSubmit.bind(this)}
++                                    variant="backgroundNone"
++                                    className="modal_navright"
++                                >
++                                    {t('seedVault:importSeedVault')}
++                                    <span>></span>
++                                </Button>
++                            </form>
++                        </Modal>
++                    )}
++                    <br />
++                    <h3>
++                        <strong>{t('enterSeed:neverShare')}</strong>
++                    </h3>
++                </Row>
++                <Row>
++                    <Button
++                        className="navleft"
++                        variant="backgroundNone"
++                        to={`/onboarding/seed-${isGenerated ? 'backup' : 'intro'}`}
++                    >
++                        <span>&lt;</span> {t('global:goBack')}
++                    </Button>
++                    <Button
++                        className="navright"
++                        variant="backgroundNone"
++                        disabled={seedPhrase === ''}
++                        onClick={this.setSeed}
++                    >
++                        {t('global:confirm')} <span>></span>
++                    </Button>
++                </Row>
++            </div>
++        );
++    }
+@@ -318,4 +292,4 @@ class SeedImport extends React.PureComponent {
+-const mapStateToProps = state => ({
+-  wallet: state.wallet,
+-  additionalAccountName: state.accounts.accountInfoDuringSetup.name,
+-  additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta
++const mapStateToProps = (state) => ({
++    wallet: state.wallet,
++    additionalAccountName: state.accounts.accountInfoDuringSetup.name,
++    additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta,
+@@ -324,4 +298,4 @@ const mapDispatchToProps = {
+-  setAccountInfoDuringSetup,
+-  generateAlert,
+-  // eslint-disable-next-line no-undef
+-  additionalAccountName: Electron.getOnboardingName()
++    setAccountInfoDuringSetup,
++    generateAlert,
++    // eslint-disable-next-line no-undef
++    additionalAccountName: Electron.getOnboardingName(),
+@@ -331,2 +305,2 @@ export default connect(
+-  mapStateToProps,
+-  mapDispatchToProps
++    mapStateToProps,
++    mapDispatchToProps,
