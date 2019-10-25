@@ -126,6 +126,13 @@ class Send extends React.PureComponent {
         this.props.startTrackingProgress(steps);
     }
 
+    handleCancel() {
+        console.log('Reset on cancel');
+
+        this.setState({ openModal: false });
+        this.resetForm();
+    }
+
     areInputsValid() {
         const { generateAlert, balance, t } = this.props;
         const { address, txamount, message } = this.state;
@@ -451,10 +458,7 @@ class Send extends React.PureComponent {
                                                         <Checksum address={address} />
                                                     </div>
                                                     <br />
-                                                    <Button
-                                                        variant="danger"
-                                                        onClick={() => this.setState({ openModal: false })}
-                                                    >
+                                                    <Button variant="danger" onClick={this.handleCancel.bind(this)}>
                                                         {t('global:cancel')}
                                                     </Button>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
