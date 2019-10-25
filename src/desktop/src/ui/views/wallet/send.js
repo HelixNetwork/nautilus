@@ -226,7 +226,7 @@ class Send extends React.PureComponent {
         hlx = hlx / this.state.conversionRate;
         hlx = Math.round(hlx / base);
         txamount = hlx * base;
-        const amount = e.event.value;
+        const amount = e.target.value;
         this.setState({
             amount: amount,
             hlxamount: hlx,
