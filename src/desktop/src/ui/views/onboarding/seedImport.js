@@ -13,6 +13,7 @@ import { indexToChar, charToIndex } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 import Modal from 'ui/components/modal/Modal';
 import SeedStore from 'libs/seed';
+import Icon from 'ui/components/icon';
 import { Row } from 'react-bootstrap';
 
 class SeedImport extends React.PureComponent {
@@ -36,6 +37,7 @@ class SeedImport extends React.PureComponent {
         seedIn: '',
         importVisible: false,
         seed: [],
+        hidden: true,
     };
 
     stepForward(route) {
@@ -206,9 +208,16 @@ class SeedImport extends React.PureComponent {
             }
         }
     };
+
+    setVisibility = () => {
+        this.setState((prevState) => ({
+            hidden: !prevState.hidden,
+        }));
+    };
+
     render() {
         const { t } = this.props;
-        const { importBuffer, seedPhrase, isGenerated, importVisible } = this.state;
+        const { importBuffer, seedPhrase, isGenerated, importVisible, hidden } = this.state;
         return (
             <div>
                 <Row style={{ marginTop: '5vw' }}>
@@ -220,12 +229,15 @@ class SeedImport extends React.PureComponent {
 
                 <Row className={css.centerBox1}>
                     <input
-                        type="text"
+                        type={hidden ? 'password' : 'text'}
                         value={seedPhrase}
                         onChange={this.onSeedChange.bind(this)}
                         placeholder="Seed"
                         className={css.seedInput}
                     ></input>
+                    <a href=" " className={hidden ? css.strike : null} onClick={this.setVisibility}>
+                        <Icon icon="eye" size={16} />
+                    </a>
                     <br />
                     <br />
                     <Dropzone onDrop={this.onDrop} />
