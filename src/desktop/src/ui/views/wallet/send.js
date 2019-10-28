@@ -39,7 +39,7 @@ class Send extends React.PureComponent {
         amount: '',
         hlxamount: '',
         txamount: '',
-        message: 'Nautilus Wallet',
+        message: '',
         openModal: false,
         selectedCurrency: this.props.currency,
         selectedHlx: 'mHLX',
@@ -63,9 +63,11 @@ class Send extends React.PureComponent {
 
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
 
-        const message =
+        let message =
             SeedStore[accountMeta.type].isMessageAvailable || parseInt(txamount || '0') === 0 ? this.state.message : '';
-
+        if (this.state.message === '') {
+            message = 'Nautilus wallet';
+        }
         this.setState({
             message: message,
         });
@@ -97,6 +99,7 @@ class Send extends React.PureComponent {
             // eslint-disable-next-line no-undef
             Electron.genFn,
         );
+        this.resetForm();
     };
 
     setProgressSteps(isZeroValueTransaction) {
@@ -121,6 +124,13 @@ class Send extends React.PureComponent {
               ];
 
         this.props.startTrackingProgress(steps);
+    }
+
+    handleCancel() {
+        console.log('Reset on cancel');
+
+        this.setState({ openModal: false });
+        this.resetForm();
     }
 
     areInputsValid() {
@@ -291,12 +301,13 @@ class Send extends React.PureComponent {
             amount: '',
             hlxamount: '',
             address: '',
+            message: '',
         });
     }
 
     render() {
         const { currencies, isSending, progress, t } = this.props;
-        const { openModal, address, amount, hlxamount, selectedCurrency, selectedHlx } = this.state;
+        const { openModal, address, amount, hlxamount, message, selectedCurrency, selectedHlx } = this.state;
 
         const progressTitle =
             progress.activeStepIndex !== progress.activeSteps.length
@@ -394,6 +405,7 @@ class Send extends React.PureComponent {
                                                 </span>
                                                 <input
                                                     className={css.msgBox}
+                                                    value={message}
                                                     style={{
                                                         marginLeft: '50px',
                                                         color: 'white',
@@ -454,10 +466,7 @@ class Send extends React.PureComponent {
                                                         <Checksum address={address} />
                                                     </div>
                                                     <br />
-                                                    <Button
-                                                        variant="danger"
-                                                        onClick={() => this.setState({ openModal: false })}
-                                                    >
+                                                    <Button variant="danger" onClick={this.handleCancel.bind(this)}>
                                                         {t('global:cancel')}
                                                     </Button>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -469,7 +478,7 @@ class Send extends React.PureComponent {
                                         )}
                                     </div>
                                     {isSending && (
-                                        <Modal isOpen={isSending} onClose={this.resetForm.bind(this)}>
+                                        <Modal isOpen={isSending} onClose={() => this.resetForm.bind(this)}>
                                             <ProgressBar
                                                 type={'send'}
                                                 progress={this.state.progress}

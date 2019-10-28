@@ -7,10 +7,12 @@ import Send from 'ui/images/svg/send.svg';
 import Receive from 'ui/images/svg/receive.svg';
 import Chart from 'ui/images/svg/chart.svg';
 import History from 'ui/images/svg/history.svg';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { setAccountInfoDuringSetup } from 'actions/accounts';
 import { connect } from 'react-redux';
 import { getAccountNamesFromState } from 'selectors/accounts';
+import { setPassword, clearWalletData } from 'actions/wallet';
 
 /**
  * Sidebar for dashboard
@@ -26,6 +28,13 @@ class DashSidebar extends React.PureComponent {
         accountNames: PropTypes.array.isRequired,
         wallet: PropTypes.object,
     };
+
+    doLogout() {
+        this.props.clearWalletData();
+        this.props.setPassword({});
+        this.props.history.push('/');
+    }
+
     render() {
         const { t, active } = this.props;
 
@@ -107,6 +116,15 @@ class DashSidebar extends React.PureComponent {
                             {t('global:support')}
                         </div>
                     </li>
+                    <li>
+                        <div
+                            onClick={this.doLogout.bind(this)}
+                            className={classNames(css.img_sr1)}
+                            style={{ opacity: '0.3' }}
+                        >
+                            <FontAwesomeIcon icon={faPowerOff} /> LOGOUT{' '}
+                        </div>
+                    </li>
                 </ul>
             </div>
         );
@@ -121,6 +139,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     setAccountInfoDuringSetup,
+    clearWalletData,
+    setPassword,
 };
 
 export default connect(
