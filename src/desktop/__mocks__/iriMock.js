@@ -1,72 +1,69 @@
-// import {composeAPI} from "@helixnetwork/core";
+import { asTransactionStrings, asTransactionObject } from '@helixnetwork/transaction-converter';
 
-// const helix = new composeAPI({ provider: 'foo://bar' });
+export default (request) => {
+    if (request.method() === 'OPTIONS') {
+        return request.respond(
+            request.respond({
+                status: 200,
+                contentType: 'text/plain',
+                headers: {
+                    'access-control-allow-headers': 'content-type,X-HELIX-API-Version',
+                    'access-control-allow-methods': 'GET, POST, OPTIONS',
+                    'access-control-allow-origin': '*',
+                },
+            }),
+        );
+    }
 
-// export default (request) => {
-//     if (request.method() === 'OPTIONS') {
-//         return request.respond(
-//             request.respond({
-//                 status: 200,
-//                 contentType: 'text/plain',
-//                 headers: {
-//                     'access-control-allow-headers': 'content-type,x-iota-api-version',
-//                     'access-control-allow-methods': 'GET, POST, OPTIONS',
-//                     'access-control-allow-origin': '*',
-//                 },
-//             }),
-//         );
-//     }
+    if (request.resourceType() !== 'xhr' || request.method() !== 'POST') {
+        return request.continue();
+    }
 
-//     if (request.resourceType() !== 'xhr' || request.method() !== 'POST') {
-//         return request.continue();
-//     }
+    const postData = JSON.parse(request.postData());
 
-//     const postData = JSON.parse(request.postData());
+    let body = {};
 
-//     let body = {};
+    // eslint-disable-next-line default-case
+    switch (postData.command) {
+        case 'getNodeInfo':
+            body = {
+                appName: 'Pendulum',
+                appVersion: '0.0.0-MOCK',
+                currentRoundIndex: 70274,
+                latestSolidRoundHash: '002adac982d3ff7611b52e1f32ccede325b54ee17f5745c2d9e46a65bb1dce14',
+                latestSolidRoundIndex: 70273,
+                roundStartIndex: 19218,
+                lastSnapshottedRoundIndex: 69217,
+                time: Number(new Date()),
+                features: ['RemotePOW'],
+            };
+            break;
 
-//     switch (postData.command) {
-//         case 'getNodeInfo':
-//             body = {
-//                 appName: 'IRI',
-//                 appVersion: '0.0.0-MOCK',
-//                 latestMilestone: 'ABCDEFGHIJKLMNOPRSTUVXYZABCDEFGHIJKLMNOPRSTUVXYZABCDEFGHIJKLMNOPRSTUVXYZABCDEFGHI',
-//                 latestMilestoneIndex: 426550,
-//                 latestSolidSubtangleMilestone:
-//                     'ABCDEFGHIJKLMNOPRSTUVXYZABCDEFGHIJKLMNOPRSTUVXYZABCDEFGHIJKLMNOPRSTUVXYZABCDEFGHI',
-//                 latestSolidSubtangleMilestoneIndex: 426550,
-//                 time: Number(new Date()),
-//                 features: ['RemotePOW'],
-//             };
-//             break;
+        case 'wereAddressesSpentFrom':
+            body = { states: Array(postData.addresses.length).fill(false) };
+            break;
 
-//         case 'wereAddressesSpentFrom':
-//             body = { states: Array(postData.addresses.length).fill(false) };
-//             break;
+        case 'getBalances':
+            body = { balances: Array(postData.addresses.length).fill(0) };
+            break;
 
-//         case 'getBalances':
-//             body = { balances: Array(postData.addresses.length).fill(0) };
-//             break;
+        case 'getTransactionStrings': {
+            const transactionObject = asTransactionObject('0'.repeat(1536));
+            const txs = asTransactionStrings(Object.assign({}, transactionObject, { timestamp: Date.now() }));
+            body = { txs: Array(postData.hashes.length).fill(txs) };
+            break;
+        }
+        case 'findTransactions':
+            body = { txs: Array(postData.addresses.length).fill('0'.repeat(64)) };
+            break;
+    }
 
-//         case 'getTrytes': {
-//             const transactionObject = iota.utils.transactionObject('9'.repeat(2673));
-//             const trytes = iota.utils.transactionTrytes(
-//                 Object.assign({}, transactionObject, { timestamp: Date.now() }),
-//             );
-//             body = { trytes: Array(postData.hashes.length).fill(trytes) };
-//             break;
-//         }
-//         case 'findTransactions':
-//             body = { trytes: Array(postData.addresses.length).fill('9'.repeat(81)) };
-//             break;
-//     }
-
-//     request.respond({
-//         status: 200,
-//         contentType: 'application/json',
-//         headers: {
-//             'access-control-allow-origin': '*',
-//         },
-//         body: JSON.stringify(body),
-//     });
-// };
+    request.respond({
+        status: 200,
+        contentType: 'application/json',
+        headers: {
+            'access-control-allow-origin': '*',
+        },
+        body: JSON.stringify(body),
+    });
+};
