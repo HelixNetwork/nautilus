@@ -1,5 +1,5 @@
 const handler = {
-    get: function (_target, name) {
+    get: function(_target, name) {
         return name;
     },
 };

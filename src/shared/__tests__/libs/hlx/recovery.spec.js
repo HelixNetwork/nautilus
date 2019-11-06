@@ -8,10 +8,11 @@ import sinon from 'sinon';
 import { asTransactionObject } from '@helixnetwork/transaction-converter';
 import { sweep } from '../../../libs/hlx/recovery';
 import {
-    LATEST_MILESTONE,
-    LATEST_MILESTONE_INDEX,
-    LATEST_SOLID_SUBTANGLE_MILESTONE,
-    LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+    NODE_INFO_CURRENT_ROUND_INDEX,
+    NODE_INFO_LATEST_SOLID_ROUND_HASH,
+    NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+    NODE_INFO_ROUND_START_INDEX,
+    NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
 } from '../../__samples__/transactions';
 import { milestoneBytes } from '../../__samples__/txBytes';
 import * as transferUtils from '../../../libs/hlx/transfers';
@@ -42,10 +43,11 @@ const defaultResultMap = {
     wereAddressesSpentFrom: { states: [false, false] },
     getNodeInfo: {
         appVersion: '1',
-        latestMilestone: LATEST_MILESTONE,
-        latestSolidSubtangleMilestone: LATEST_SOLID_SUBTANGLE_MILESTONE,
-        latestMilestoneIndex: LATEST_MILESTONE_INDEX,
-        latestSolidSubtangleMilestoneIndex: LATEST_SOLID_SUBTANGLE_MILESTONE_INDEX,
+        currentRoundIndex: NODE_INFO_CURRENT_ROUND_INDEX,
+        latestSolidRoundHash: NODE_INFO_LATEST_SOLID_ROUND_HASH,
+        latestSolidRoundIndex: NODE_INFO_LATEST_SOLID_ROUND_HASH_INDEX,
+        roundStartIndex: NODE_INFO_ROUND_START_INDEX,
+        lastSnapshottedRoundIndex: NODE_INFO_LATEST_SNAPSHOTTED_ROUND_INDEX,
     },
     getInclusionStates: { states: [false, false] },
     attachToTangle: { txs: attachedBytes },
@@ -227,7 +229,7 @@ describe('libs: helix/recovery', () => {
                                     includes(
                                         body.hashes,
                                         // Return milestone txs to mimic the scenario of checking if a node is healthy.
-                                        LATEST_MILESTONE,
+                                        NODE_INFO_LATEST_SOLID_ROUND_HASH,
                                     )
                                 ) {
                                     return { txs: milestoneBytes };
@@ -305,7 +307,7 @@ describe('libs: helix/recovery', () => {
                                     includes(
                                         body.hashes,
                                         // Return milestone txs to mimic the scenario of checking if a node is healthy.
-                                        LATEST_MILESTONE,
+                                        NODE_INFO_LATEST_SOLID_ROUND_HASH,
                                     )
                                 ) {
                                     return { txs: milestoneBytes };
@@ -395,7 +397,7 @@ describe('libs: helix/recovery', () => {
                                 includes(
                                     body.hashes,
                                     // Return milestone txBytes to mimic the scenario of checking if a node is healthy.
-                                    LATEST_MILESTONE,
+                                    NODE_INFO_LATEST_SOLID_ROUND_HASH,
                                 )
                             ) {
                                 return { txs: milestoneBytes };
@@ -442,7 +444,7 @@ describe('libs: helix/recovery', () => {
                                 includes(
                                     body.hashes,
                                     // Return milestone Bytes to mimic the scenario of checking if a node is healthy.
-                                    LATEST_MILESTONE,
+                                    NODE_INFO_LATEST_SOLID_ROUND_HASH,
                                 )
                             ) {
                                 return { txs: milestoneBytes };
@@ -494,7 +496,7 @@ describe('libs: helix/recovery', () => {
                                 includes(
                                     body.hashes,
                                     // Return milestone txBytes to mimic the scenario of checking if a node is healthy.
-                                    LATEST_MILESTONE,
+                                    NODE_INFO_LATEST_SOLID_ROUND_HASH,
                                 )
                             ) {
                                 return { txs: milestoneBytes };
