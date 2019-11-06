@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select component Render the component 1`] = `
+<div
+  className="input select"
+>
+  <fieldset>
+    <div
+      className="selectable"
+      onClick={[Function]}
+    >
+      Foo Bar
+      <small>
+        ­
+      </small>
+    </div>
+    <small>
+      Lorem Ipsum
+    </small>
+  </fieldset>
+</div>
+`;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Number from 'ui/components/input/Number';
+import Number from '../../../../src/ui/components/input/number';
 
 const props = {
     value: 10,
