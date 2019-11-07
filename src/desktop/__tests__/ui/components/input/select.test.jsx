@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Select from '../../../../src/ui/components/input/select';
+import Select from 'ui/components/input/select';
 
 const props = {
     value: 'Foo',

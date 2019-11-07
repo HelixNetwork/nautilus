@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { PasswordComponent as Password } from '../../../../src/ui/components/input/password';
+import { PasswordComponent as Password } from 'ui/components/input/password';
 
 const props = {
     value: 'LoremIpsumDolorSitAmet',
