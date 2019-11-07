@@ -939,3 +939,22 @@ a {
     background: var(--input);
   }
 }
+.privacy{
+  margin-top:0px;
+  p {
+    margin-top: 0vw !important;
+    margin-left: 0vw !important;
+  }
+}
+article {
+  display: block;
+  position: relative;
+  max-width: 780px;
+  max-height: 650px;
+  width: calc(100vw - 20px);
+  height: calc(100vh - 300px);
+  margin: 20px auto 0;
+  text-align: left;
+  background-image: linear-gradient(to right, #152353, #132145);
+  padding: 40px 10px 30px 30px;
+}

@@ -7,14 +7,18 @@ import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
 import Loading from 'ui/components/loading';
 import SeedStore from 'libs/seed';
-
 import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
 import { getSelectedAccountName, getSelectedAccountMeta, isSettingUpNewAccount } from 'selectors/accounts';
 import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
-
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
+import { NEWTERMS } from '../../../../../shared/config';
+import Modal from 'ui/components/modal';
+import { acceptNewTerms } from 'actions/settings';
+import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
+import Scrollbar from 'ui/components/scrollbar';
+import ReactMarkdown from 'react-markdown';
 
 class Login extends React.PureComponent {
     static propTypes = {
@@ -60,7 +64,23 @@ class Login extends React.PureComponent {
     state = {
         password: '',
         shouldMigrate: false,
+        showTerms: false,
+        showPrivacy: false,
+        scrollEnd: false,
     };
+
+    setShowTerms(e) {
+        this.setState({
+            showTerms: false,
+            showPrivacy: true,
+            scrollEnd: false,
+        });
+    }
+
+    setShowPrivacy(e) {
+        this.props.acceptNewTerms(NEWTERMS);
+        this.setState({ showPrivacy: false });
+    }
 
     componentDidMount() {
         const { password, addingAdditionalAccount } = this.props;
@@ -175,7 +195,13 @@ class Login extends React.PureComponent {
     };
 
     render() {
-        const { t, addingAdditionalAccount, ui, themeName, complete } = this.props;
+        const { t, addingAdditionalAccount, ui, themeName, complete, newterms } = this.props;
+        const { showPrivacy, showTerms, scrollEnd } = this.state;
+        if (newterms < NEWTERMS && !this.state.showPrivacy) {
+            this.setState({
+                showTerms: true,
+            });
+        }
         if (ui.isFetchingAccountInfo) {
             return (
                 <Loading
@@ -186,39 +212,72 @@ class Login extends React.PureComponent {
                 />
             );
         }
+        let styles = {
+            color: '#E9B339',
+            fontSize: '20px',
+        };
         return (
             <div>
-                <Row className={css.centerBox} style={{ marginTop: '10vw' }}>
-                    <form onSubmit={(e) => this.doLogin(e)}>
-                        <h5>
-                            {t('login:enterPassword')}
-                            <span className={classNames(css.text_color)}>.</span>{' '}
-                        </h5>
-                        <input
-                            type="password"
-                            value={this.state.password}
-                            label={t('password')}
-                            name="password"
-                            onChange={(e) => this.setPassword(e.target.value)}
-                            className={classNames(css.sseed_textline)}
-                        ></input>
-                        <br />
-                        <br />
-                        <Button type="submit">{t('login:login')}</Button>
-                    </form>
-                </Row>
+                {!showTerms && !showPrivacy ? (
+                    <div>
+                        <Row className={css.centerBox} style={{ marginTop: '10vw' }}>
+                            <form onSubmit={(e) => this.doLogin(e)}>
+                                <h5>
+                                    {t('login:enterPassword')}
+                                    <span className={classNames(css.text_color)}>.</span>{' '}
+                                </h5>
+                                <input
+                                    type="password"
+                                    value={this.state.password}
+                                    label={t('password')}
+                                    name="password"
+                                    onChange={(e) => this.setPassword(e.target.value)}
+                                    className={classNames(css.sseed_textline)}
+                                ></input>
+                                <br />
+                                <br />
+                                <Button type="submit">{t('login:login')}</Button>
+                            </form>
+                        </Row>
 
-                <Row>
-                    {complete ? (
-                        <React.Fragment></React.Fragment>
-                    ) : (
+                        <Row>
+                            {complete ? (
+                                <React.Fragment></React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    <Button variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>
+                                        <span>&lt;</span> {t('global:goBack')}
+                                    </Button>
+                                </React.Fragment>
+                            )}
+                        </Row>
+                    </div>
+                ) : (
+                    <div>
                         <React.Fragment>
-                            <Button variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>
-                                <span>&lt;</span> {t('global:goBack')}
-                            </Button>
+                            <div className={css.privacy}>
+                                <h1>{showTerms ? 'Terms and Conditions' : t('privacyPolicy:privacyPolicy')}</h1>
+                                <article>
+                                    <Scrollbar
+                                        contentId={'terms'}
+                                        onScrollEnd={() => this.setState({ scrollEnd: true })}
+                                    >
+                                        <ReactMarkdown source={showTerms ? enTermsAndConditions : enPrivacyPolicy} />
+                                    </Scrollbar>
+                                </article>
+                            </div>
                         </React.Fragment>
-                    )}
-                </Row>
+
+                        <Button
+                            disabled={!scrollEnd}
+                            onClick={showTerms ? this.setShowTerms.bind(this) : this.setShowPrivacy.bind(this)}
+                            className="backgroundNone"
+                        >
+                            {!scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
+                            <span style={styles}> ></span>
+                        </Button>
+                    </div>
+                )}
             </div>
         );
     }
@@ -237,6 +296,7 @@ const mapStateToProps = (state) => ({
     completedMigration: state.settings.completedMigration,
     themeName: state.settings.themeName,
     complete: state.accounts.onboardingComplete,
+    newterms: state.settings.newterms,
 });
 
 const mapDispatchToProps = {
@@ -245,6 +305,7 @@ const mapDispatchToProps = {
     clearWalletData,
     getFullAccountInfo,
     getAccountInfo,
+    acceptNewTerms,
 };
 
 export default connect(

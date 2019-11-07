@@ -79,6 +79,14 @@ export const acceptPrivacy = () => {
     };
 };
 
+export const acceptNewTerms = (payload) => {
+    Wallet.acceptNewTerms(payload);
+    return {
+        type: SettingsActionTypes.ACCEPT_NEW_TERMS,
+        payload,
+    };
+};
+
 /**
  * Dispatch to set if native notifications are enabled
  *

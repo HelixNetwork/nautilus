@@ -167,6 +167,11 @@ const settingsReducer = (state = initialState, action) => {
                 currency: action.payload.currency,
                 conversionRate: action.payload.conversionRate,
             };
+        case SettingsActionTypes.ACCEPT_NEW_TERMS:
+            return {
+                ...state,
+                newterms: action.payload,
+            };
     }
     return state;
 };
