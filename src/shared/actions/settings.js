@@ -87,6 +87,14 @@ export const acceptNewTerms = (payload) => {
     };
 };
 
+export const updateNewTermsNotice = (payload) => {
+    Wallet.updateNewTermsNotice(payload);
+    return {
+        type: SettingsActionTypes.UPDATE_NEW_TERMS_NOTICE,
+        payload,
+    };
+};
+
 /**
  * Dispatch to set if native notifications are enabled
  *

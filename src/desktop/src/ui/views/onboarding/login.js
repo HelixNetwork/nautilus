@@ -13,9 +13,8 @@ import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
-import { NEWTERMS } from '../../../../../shared/config';
-import Modal from 'ui/components/modal';
-import { acceptNewTerms } from 'actions/settings';
+import { NEWTERMS, NEWTERMSNOTICE } from '../../../../../shared/config';
+import { acceptNewTerms, updateNewTermsNotice } from 'actions/settings';
 import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
 import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
@@ -74,12 +73,21 @@ class Login extends React.PureComponent {
             showTerms: false,
             showPrivacy: true,
             scrollEnd: false,
+            showNewTermsNotification: false,
         });
     }
 
     setShowPrivacy(e) {
         this.props.acceptNewTerms(NEWTERMS);
         this.setState({ showPrivacy: false });
+    }
+
+    hideTermsNotificaition(e) {
+        console.log('hi');
+        this.props.updateNewTermsNotice(NEWTERMSNOTICE);
+        this.setState({
+            showNewTermsNotification: false,
+        });
     }
 
     componentDidMount() {
@@ -195,11 +203,16 @@ class Login extends React.PureComponent {
     };
 
     render() {
-        const { t, addingAdditionalAccount, ui, themeName, complete, newterms } = this.props;
-        const { showPrivacy, showTerms, scrollEnd } = this.state;
+        const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
+        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
+        console.log(NEWTERMSNOTICE);
         if (newterms < NEWTERMS && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
+            });
+        } else if (newterms === NEWTERMS && newtermsupdatenotice < NEWTERMSNOTICE) {
+            this.setState({
+                showNewTermsNotification: true,
             });
         }
         if (ui.isFetchingAccountInfo) {
@@ -278,6 +291,17 @@ class Login extends React.PureComponent {
                         </Button>
                     </div>
                 )}
+                {showNewTermsNotification && (
+                    <div className={css.newtermsUpdateNotice}>
+                        <p>We are updating our Terms&amp;Conditions and Privacy Policy</p>
+                        <input
+                            type="checkbox"
+                            checked={!showNewTermsNotification}
+                            onChange={this.hideTermsNotificaition.bind(this)}
+                        />
+                        <label>Don't show this message again.</label>
+                    </div>
+                )}
             </div>
         );
     }
@@ -297,6 +321,7 @@ const mapStateToProps = (state) => ({
     themeName: state.settings.themeName,
     complete: state.accounts.onboardingComplete,
     newterms: state.settings.newterms,
+    newtermsupdatenotice: state.settings.newtermsupdatenotice,
 });
 
 const mapDispatchToProps = {
@@ -306,6 +331,7 @@ const mapDispatchToProps = {
     getFullAccountInfo,
     getAccountInfo,
     acceptNewTerms,
+    updateNewTermsNotice,
 };
 
 export default connect(

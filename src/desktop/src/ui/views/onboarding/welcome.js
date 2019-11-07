@@ -5,14 +5,14 @@ import { withI18n } from 'react-i18next';
 import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
 
-import { acceptTerms, acceptPrivacy, acceptNewTerms } from 'actions/settings';
+import { acceptTerms, acceptPrivacy, acceptNewTerms, updateNewTermsNotice } from 'actions/settings';
 
 import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
 import Language from 'ui/components/input/language';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import css from './welcome.scss';
-import { NEWTERMS } from '../../../../../shared/config';
+import { NEWTERMS, NEWTERMSNOTICE } from '../../../../../shared/config';
 /**
  * Nautilus Welcome Screen component
  */
@@ -34,7 +34,15 @@ class Welcome extends React.PureComponent {
     };
 
     onNextClick = () => {
-        const { history, acceptedTerms, acceptedPrivacy, acceptTerms, acceptPrivacy, acceptNewTerms } = this.props;
+        const {
+            history,
+            acceptedTerms,
+            acceptedPrivacy,
+            acceptTerms,
+            acceptPrivacy,
+            acceptNewTerms,
+            updateNewTermsNotice,
+        } = this.props;
         const { step } = this.state;
 
         if (acceptedTerms && acceptedPrivacy) {
@@ -58,6 +66,7 @@ class Welcome extends React.PureComponent {
             default:
                 acceptPrivacy();
                 acceptNewTerms(NEWTERMS);
+                updateNewTermsNotice(NEWTERMSNOTICE);
                 history.push('/onboarding/seed-intro');
         }
     };
@@ -128,6 +137,7 @@ const mapDispatchToProps = {
     acceptTerms,
     acceptPrivacy,
     acceptNewTerms,
+    updateNewTermsNotice,
 };
 
 export default connect(
