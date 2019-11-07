@@ -9,10 +9,7 @@ exports[`Select component Render the component 1`] = `
       className="selectable"
       onClick={[Function]}
     >
-      Foo Bar
-      <small>
-        ­
-      </small>
+      English(International) 
     </div>
     <small>
       Lorem Ipsum

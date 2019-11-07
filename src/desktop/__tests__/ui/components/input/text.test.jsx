@@ -9,30 +9,28 @@ const props = {
     onChange: jest.fn(),
 };
 
+
+let wrapper;
+beforeEach(() => {
+    wrapper = shallow(<Text {...props} />);
+});
+
 describe('Text component', () => {
     test('Render the component', () => {
-        const wrapper = shallow(<Text {...props} />);
-
-        expect(wrapper).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
     });
 
     test('Input value', () => {
-        const wrapper = shallow(<Text {...props} />);
-
-        expect(wrapper.find('input').props().value).toEqual('Foo Bar');
+      expect(wrapper.find('input').props().value).toEqual('Foo Bar');
     });
 
     test('Input change callback', () => {
-        const wrapper = shallow(<Text {...props} />);
-
-        wrapper.find('input').simulate('change', { target: { value: 'Bar' } });
+      wrapper.find('input').simulate('change', { target: { value: 'Bar' } });
         expect(props.onChange).toHaveBeenLastCalledWith('Bar');
     });
 
     test('Input label', () => {
-        const wrapper = shallow(<Text {...props} />);
-
-        expect(wrapper.find('small').text()).toEqual('Foo');
+      expect(wrapper.find('small').text()).toEqual('Foo');
     });
 
     test('Input disabled state', () => {

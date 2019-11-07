@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TeNumberxt component Render the component 1`] = `
+exports[`Test component Render the component 1`] = `
 <div
   className="input number"
 >

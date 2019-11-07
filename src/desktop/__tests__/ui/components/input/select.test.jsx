@@ -4,33 +4,32 @@ import { shallow } from 'enzyme';
 import Select from 'ui/components/input/select';
 
 const props = {
-    value: 'Foo',
-    valueLabel: 'Foo Bar',
+    value: "Foo",
+    valueLabel: "English(International) ",
     options: [
         {
-            value: 'Foo',
-            label: 'Foo Bar',
+            value: "Foo",
+            label: "English(International) ",
         },
         {
-            value: 'Fizz',
-            label: 'Fizz Buzz',
+            value: "Fizz",
+            label: "Fizz Buzz",
         },
     ],
-    label: 'Lorem Ipsum',
+    label: "Lorem Ipsum",
     onChange: jest.fn(),
 };
 
 describe('Select component', () => {
     test('Render the component', () => {
         const wrapper = shallow(<Select {...props} />);
-
         expect(wrapper).toMatchSnapshot();
     });
 
     test('Input value', () => {
         const wrapper = shallow(<Select {...props} />);
 
-        expect(wrapper.find('.selectable').text()).toEqual('Foo Bar');
+        expect(wrapper.find('.selectable').text()).toEqual("English(International) ");
     });
 
     test('Input change callback', () => {

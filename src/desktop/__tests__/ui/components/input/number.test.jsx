@@ -9,24 +9,24 @@ const props = {
     onChange: jest.fn(),
 };
 
-describe('TeNumberxt component', () => {
-    test('Render the component', () => {
-        const wrapper = shallow(<Number {...props} />);
+let wrapper;
+beforeEach(() => {
+    wrapper = shallow(<Number {...props} />);
+});
 
+
+describe('Test component', () => {
+    test('Render the component', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
     test('Input value', () => {
-        const wrapper = shallow(<Number {...props} />);
-
         expect(wrapper.find('input').props().value).toEqual(10);
     });
 
     test('Input change callback', () => {
-        const wrapper = shallow(<Number {...props} />);
-
-        wrapper.find('input').simulate('change', { target: { value: '999999' } });
-        expect(props.onChange).toHaveBeenLastCalledWith(999999);
+        wrapper.find('input').simulate('change', { target: { value: '999' } });
+        expect(props.onChange).toHaveBeenLastCalledWith(999);
     });
 
     test('Input min value callback', () => {
@@ -44,14 +44,10 @@ describe('TeNumberxt component', () => {
     });
 
     test('Input label', () => {
-        const wrapper = shallow(<Number {...props} />);
-
         expect(wrapper.find('small').text()).toEqual('Foo');
     });
 
     test('Input decrement callback', () => {
-        const wrapper = shallow(<Number {...props} />);
-
         wrapper
             .find('span')
             .first()
@@ -60,8 +56,6 @@ describe('TeNumberxt component', () => {
     });
 
     test('Input decrement callback', () => {
-        const wrapper = shallow(<Number {...props} />);
-
         wrapper
             .find('span')
             .last()
