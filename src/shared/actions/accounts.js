@@ -1,43 +1,39 @@
-import assign from "lodash/assign";
-import some from "lodash/some";
-import isEmpty from "lodash/isEmpty";
-import isNumber from "lodash/isNumber";
-import { Account, Wallet } from "../database";
+import assign from 'lodash/assign';
+import some from 'lodash/some';
+import isEmpty from 'lodash/isEmpty';
+import isNumber from 'lodash/isNumber';
 import {
-  selectedAccountTasksFactory,
-  selectedAccountSetupInfoFactory,
-  getAccountNamesFromState,
-  getAccountInfoDuringSetup,
-  selectedAccountStateFactory
-} from "../selectors/accounts";
-import Errors from "../libs/errors";
+    selectedAccountTasksFactory,
+    selectedAccountSetupInfoFactory,
+    getAccountNamesFromState,
+    getAccountInfoDuringSetup,
+    selectedAccountStateFactory,
+} from 'selectors/accounts';
+import Errors from 'libs/errors';
 import {
-  generateAccountInfoErrorAlert,
-  generateSyncingCompleteAlert,
-  generateSyncingErrorAlert,
-  generateAccountDeletedAlert,
-  generateNodeOutOfSyncErrorAlert,
-  generateUnsupportedNodeErrorAlert,
-  generateAccountSyncRetryAlert,
-  generateLedgerCancelledAlert,
-  generateErrorAlert
-} from "../actions/alerts";
+    generateAccountInfoErrorAlert,
+    generateSyncingCompleteAlert,
+    generateSyncingErrorAlert,
+    generateAccountDeletedAlert,
+    generateNodeOutOfSyncErrorAlert,
+    generateUnsupportedNodeErrorAlert,
+    generateAccountSyncRetryAlert,
+    generateErrorAlert,
+} from 'actions/alerts';
 
-import {
-  nodesConfigurationFactory,
-  getNodesFromState,
-  getSelectedNodeFromState
-} from "../selectors/global";
-import { syncAccount, getAccountData } from "../libs/hlx/accounts";
-import { setSeedIndex } from "./wallet";
-import { changeNode } from "./settings";
-import { withRetriesOnDifferentNodes, getRandomNodes } from "../libs/hlx/utils";
-import { DEFAULT_RETRIES } from "../config";
-import { AccountsActionTypes } from "./types";
-import NodesManager from '../libs/hlx/NodeManager';
+import { nodesConfigurationFactory, getNodesFromState, getSelectedNodeFromState } from 'selectors/global';
+import { syncAccount, getAccountData } from 'libs/hlx/accounts';
+
+import { withRetriesOnDifferentNodes, getRandomNodes } from 'libs/hlx/utils';
+
+import NodesManager from 'libs/hlx/NodeManager';
 import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
-
+import { Account, Wallet } from '../database';
+import { setSeedIndex } from './wallet';
+import { changeNode } from './settings';
+import { DEFAULT_RETRIES } from '../config';
+import { AccountsActionTypes } from './types';
 /**
  * Dispatch when account information is successfully synced on login
  *
@@ -46,9 +42,9 @@ import map from 'lodash/map';
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const accountInfoFetchSuccess = payload => ({
-  type: AccountsActionTypes.ACCOUNT_INFO_FETCH_SUCCESS,
-  payload
+export const accountInfoFetchSuccess = (payload) => ({
+    type: AccountsActionTypes.ACCOUNT_INFO_FETCH_SUCCESS,
+    payload,
 });
 
 /**
@@ -59,7 +55,7 @@ export const accountInfoFetchSuccess = payload => ({
  * @returns {{type: {string} }}
  */
 export const accountInfoFetchError = () => ({
-  type: AccountsActionTypes.ACCOUNT_INFO_FETCH_ERROR
+    type: AccountsActionTypes.ACCOUNT_INFO_FETCH_ERROR,
 });
 
 /**
@@ -70,14 +66,13 @@ export const accountInfoFetchError = () => ({
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const setAccountInfoDuringSetup = payload => {
-  Wallet.updateAccountInfoDuringSetup(payload);
-  return {
-    type: AccountsActionTypes.SET_ACCOUNT_INFO_DURING_SETUP,
-    payload
-  };
+export const setAccountInfoDuringSetup = (payload) => {
+    Wallet.updateAccountInfoDuringSetup(payload);
+    return {
+        type: AccountsActionTypes.SET_ACCOUNT_INFO_DURING_SETUP,
+        payload,
+    };
 };
-
 
 /**
  * Performs a manual sync for an account. Syncs full account information with the ledger.
@@ -122,7 +117,7 @@ export const manuallySyncAccount = (seedStore, accountName, quorum = false) => {
  * @returns {{type: {string} }}
  */
 export const manualSyncRequest = () => ({
-  type: AccountsActionTypes.MANUAL_SYNC_REQUEST,
+    type: AccountsActionTypes.MANUAL_SYNC_REQUEST,
 });
 
 /**
@@ -134,8 +129,19 @@ export const manualSyncRequest = () => ({
  * @returns {{type: {string}, payload: {object} }}
  */
 export const manualSyncSuccess = (payload) => ({
-  type: AccountsActionTypes.MANUAL_SYNC_SUCCESS,
-  payload,
+    type: AccountsActionTypes.MANUAL_SYNC_SUCCESS,
+    payload,
+});
+
+/**
+ * Dispatch when an error occurs during manual sync
+ *
+ * @method manualSyncError
+ *
+ * @returns {{type: {string} }}
+ */
+export const manualSyncError = () => ({
+    type: AccountsActionTypes.MANUAL_SYNC_ERROR,
 });
 
 /**
@@ -147,9 +153,9 @@ export const manualSyncSuccess = (payload) => ({
  * @returns {{type: string, accountName: string, addresses: object }}
  */
 export const updateAddresses = (accountName, addresses) => ({
-  type: AccountsActionTypes.UPDATE_ADDRESSES,
-  accountName,
-  addresses
+    type: AccountsActionTypes.UPDATE_ADDRESSES,
+    accountName,
+    addresses,
 });
 
 /**
@@ -160,7 +166,7 @@ export const updateAddresses = (accountName, addresses) => ({
  * @returns {{type: {string} }}
  */
 export const fullAccountInfoFetchRequest = () => ({
-  type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_REQUEST
+    type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_REQUEST,
 });
 /**
  * Deletes an account.
@@ -171,8 +177,8 @@ export const fullAccountInfoFetchRequest = () => ({
  * @returns {function} dispatch
  */
 export const deleteAccount = (accountName) => (dispatch) => {
-  dispatch(removeAccount(accountName));
-  dispatch(generateAccountDeletedAlert());
+    dispatch(removeAccount(accountName));
+    dispatch(generateAccountDeletedAlert());
 };
 
 /**
@@ -183,22 +189,19 @@ export const deleteAccount = (accountName) => (dispatch) => {
  *
  * @returns {function(*)}
  */
-export const assignAccountIndexIfNecessary = accountInfo => dispatch => {
-  if (
-    !isEmpty(accountInfo) &&
-    some(accountInfo, ({ index }) => !isNumber(index))
-  ) {
-    dispatch(assignAccountIndex());
-  }
+export const assignAccountIndexIfNecessary = (accountInfo) => (dispatch) => {
+    if (!isEmpty(accountInfo) && some(accountInfo, ({ index }) => !isNumber(index))) {
+        dispatch(assignAccountIndex());
+    }
 };
 
-export const setOnboardingComplete = payload => {
-  Wallet.setOnboardingComplete();
+export const setOnboardingComplete = (payload) => {
+    Wallet.setOnboardingComplete();
 
-  return {
-    type: AccountsActionTypes.SET_ONBOARDING_COMPLETE,
-    payload
-  };
+    return {
+        type: AccountsActionTypes.SET_ONBOARDING_COMPLETE,
+        payload,
+    };
 };
 
 /**
@@ -209,55 +212,47 @@ export const setOnboardingComplete = payload => {
  * @returns {{type: {string} }}
  */
 export const accountInfoFetchRequest = () => ({
-  type: AccountsActionTypes.ACCOUNT_INFO_FETCH_REQUEST
+    type: AccountsActionTypes.ACCOUNT_INFO_FETCH_REQUEST,
 });
 
-export const getAccountInfo = (
-  seed,
-  accountName,
-  notificationFn,
-  navigator = null,
-  genFn,
-  withQuorum = false
-) => {
-  return (dispatch, getState) => {
-    dispatch(accountInfoFetchRequest());
+export const getAccountInfo = (seed, accountName, notificationFn, navigator = null, genFn, withQuorum = false) => {
+    return (dispatch, getState) => {
+        dispatch(accountInfoFetchRequest());
 
-    const existingAccountState = selectedAccountStateFactory(accountName)(
-      getState()
-    );
-    const selectedNode = getSelectedNodeFromState(getState());
-    return withRetriesOnDifferentNodes(
-      [
-        selectedNode,
-        ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [
-          selectedNode
-        ])
-      ],
-      () => dispatch(generateAccountSyncRetryAlert())
-    )((...args) => syncAccount(...[...args, withQuorum]))(
-      existingAccountState,
-      seed,
-      genFn,
-      notificationFn
-    )
-      .then(({ node, result }) => {
-        dispatch(changeNode(node));
-        dispatch(accountInfoFetchSuccess(result));
-      })
-      .catch(err => {
-        if (navigator) {
-          navigator.pop({ animated: false });
-        }
+        const existingAccountState = selectedAccountStateFactory(accountName)(getState());
+        const selectedNode = getSelectedNodeFromState(getState());
+        return withRetriesOnDifferentNodes(
+            [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
+            () => dispatch(generateAccountSyncRetryAlert()),
+        )((...args) => syncAccount(...[...args, withQuorum]))(existingAccountState, seed, genFn, notificationFn)
+            .then(({ node, result }) => {
+                dispatch(changeNode(node));
+                dispatch(accountInfoFetchSuccess(result));
+            })
+            .catch((err) => {
+                if (navigator) {
+                    navigator.pop({ animated: false });
+                }
 
-        dispatch(accountInfoFetchError());
-        dispatch(generateAccountInfoErrorAlert(err));
-      });
-  };
+                dispatch(accountInfoFetchError());
+                dispatch(generateAccountInfoErrorAlert(err));
+            });
+    };
 };
 
 export const fullAccountInfoFetchError = () => ({
-  type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR
+    type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
+});
+
+/**
+ * Dispatch to (automatically) assign accountIndex to every account in state
+ *
+ * @method assignAccountIndex
+ *
+ * @returns {{type: {string} }}
+ */
+export const assignAccountIndex = () => ({
+    type: AccountsActionTypes.ASSIGN_ACCOUNT_INDEX,
 });
 
 /**
@@ -268,9 +263,9 @@ export const fullAccountInfoFetchError = () => ({
  * @param {object} payload
  * @returns {{type: {string}, payload: {object} }}
  */
-export const updateAccountInfoAfterSpending = payload => ({
-  type: AccountsActionTypes.UPDATE_ACCOUNT_INFO_AFTER_SPENDING,
-  payload
+export const updateAccountInfoAfterSpending = (payload) => ({
+    type: AccountsActionTypes.UPDATE_ACCOUNT_INFO_AFTER_SPENDING,
+    payload,
 });
 
 /**
@@ -281,9 +276,9 @@ export const updateAccountInfoAfterSpending = payload => ({
  * @param {object} payload
  * @returns {{type: {string}, payload: {object} }}
  */
-export const syncAccountBeforeManualPromotion = payload => ({
-  type: AccountsActionTypes.SYNC_ACCOUNT_BEFORE_MANUAL_PROMOTION,
-  payload
+export const syncAccountBeforeManualPromotion = (payload) => ({
+    type: AccountsActionTypes.SYNC_ACCOUNT_BEFORE_MANUAL_PROMOTION,
+    payload,
 });
 
 /**
@@ -294,9 +289,9 @@ export const syncAccountBeforeManualPromotion = payload => ({
  * @param {object} payload
  * @returns {{type: {string}, payload: {object} }}
  */
-export const updateAccountAfterReattachment = payload => ({
-  type: AccountsActionTypes.UPDATE_ACCOUNT_AFTER_REATTACHMENT,
-  payload
+export const updateAccountAfterReattachment = (payload) => ({
+    type: AccountsActionTypes.UPDATE_ACCOUNT_AFTER_REATTACHMENT,
+    payload,
 });
 
 /**
@@ -309,9 +304,9 @@ export const updateAccountAfterReattachment = payload => ({
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const setBasicAccountInfo = payload => ({
-  type: AccountsActionTypes.SET_BASIC_ACCOUNT_INFO,
-  payload
+export const setBasicAccountInfo = (payload) => ({
+    type: AccountsActionTypes.SET_BASIC_ACCOUNT_INFO,
+    payload,
 });
 
 /**
@@ -322,76 +317,63 @@ export const setBasicAccountInfo = payload => ({
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const fullAccountInfoFetchSuccess = payload => ({
-  type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_SUCCESS,
-  payload
+export const fullAccountInfoFetchSuccess = (payload) => ({
+    type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_SUCCESS,
+    payload,
 });
 
-export const getFullAccountInfo = (
-  seedStore,
-  accountName,
-  withQuorum = false
-) => {
-  return (dispatch, getState) => {
-    dispatch(fullAccountInfoFetchRequest());
+export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
+    return (dispatch, getState) => {
+        dispatch(fullAccountInfoFetchRequest());
 
-    const selectedNode = getSelectedNodeFromState(getState());
-    const existingAccountNames = getAccountNamesFromState(getState());
-    const usedExistingSeed = getAccountInfoDuringSetup(getState())
-      .usedExistingSeed;
-    withRetriesOnDifferentNodes(
-      [
-        selectedNode,
-        ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [
-          selectedNode
-        ])
-      ],
-      () => dispatch(generateAccountSyncRetryAlert())
-    )((...args) => getAccountData(...[...args, withQuorum]))(
-      seedStore,
-      accountName
-    )
-      .then(({ node, result }) => {
-        dispatch(changeNode(node));
+        const selectedNode = getSelectedNodeFromState(getState());
+        const existingAccountNames = getAccountNamesFromState(getState());
+        const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
+        withRetriesOnDifferentNodes(
+            [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
+            () => dispatch(generateAccountSyncRetryAlert()),
+        )((...args) => getAccountData(...[...args, withQuorum]))(seedStore, accountName)
+            .then(({ node, result }) => {
+                dispatch(changeNode(node));
 
-        const seedIndex = existingAccountNames.length;
+                const seedIndex = existingAccountNames.length;
 
-        dispatch(setSeedIndex(seedIndex));
-        dispatch(setBasicAccountInfo({ accountName, usedExistingSeed }));
+                dispatch(setSeedIndex(seedIndex));
+                dispatch(setBasicAccountInfo({ accountName, usedExistingSeed }));
 
-        const resultWithAccountMeta = assign({}, result, {
-          meta: getAccountInfoDuringSetup(getState()).meta,
-          index: seedIndex,
-          name: result.accountName,
-          ...selectedAccountTasksFactory(accountName)(getState()),
-          ...selectedAccountSetupInfoFactory(accountName)(getState())
-        });
+                const resultWithAccountMeta = assign({}, result, {
+                    meta: getAccountInfoDuringSetup(getState()).meta,
+                    index: seedIndex,
+                    name: result.accountName,
+                    ...selectedAccountTasksFactory(accountName)(getState()),
+                    ...selectedAccountSetupInfoFactory(accountName)(getState()),
+                });
 
-        // Create account in storage (realm)
-        Wallet.addAccount(resultWithAccountMeta);
+                // Create account in storage (realm)
+                Wallet.addAccount(resultWithAccountMeta);
 
-        // Update redux store with newly fetched account info
-        dispatch(fullAccountInfoFetchSuccess(resultWithAccountMeta));
-      })
-      .catch(err => {
-        const dispatchErrors = () => {
-          if (err.message === Errors.NODE_NOT_SYNCED) {
-            dispatch(generateNodeOutOfSyncErrorAlert());
-          } else if (err.message === Errors.UNSUPPORTED_NODE) {
-            dispatch(generateUnsupportedNodeErrorAlert());
-          } else {
-            dispatch(generateAccountInfoErrorAlert(err));
-          }
-        };
-        dispatch(fullAccountInfoFetchError());
-        if (existingAccountNames.length === 0) {
-          setTimeout(dispatchErrors, 500);
-        } else {
-          dispatchErrors();
-          seedStore.removeAccount(accountName);
-        }
-      });
-  };
+                // Update redux store with newly fetched account info
+                dispatch(fullAccountInfoFetchSuccess(resultWithAccountMeta));
+            })
+            .catch((err) => {
+                const dispatchErrors = () => {
+                    if (err.message === Errors.NODE_NOT_SYNCED) {
+                        dispatch(generateNodeOutOfSyncErrorAlert());
+                    } else if (err.message === Errors.UNSUPPORTED_NODE) {
+                        dispatch(generateUnsupportedNodeErrorAlert());
+                    } else {
+                        dispatch(generateAccountInfoErrorAlert(err));
+                    }
+                };
+                dispatch(fullAccountInfoFetchError());
+                if (existingAccountNames.length === 0) {
+                    setTimeout(dispatchErrors, 500);
+                } else {
+                    dispatchErrors();
+                    seedStore.removeAccount(accountName);
+                }
+            });
+    };
 };
 
 /**
@@ -402,14 +384,14 @@ export const getFullAccountInfo = (
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const changeAccountName = payload => {
-  const { oldAccountName, newAccountName } = payload;
-  Account.migrate(oldAccountName, newAccountName);
+export const changeAccountName = (payload) => {
+    const { oldAccountName, newAccountName } = payload;
+    Account.migrate(oldAccountName, newAccountName);
 
-  return {
-    type: AccountsActionTypes.CHANGE_ACCOUNT_NAME,
-    payload
-  };
+    return {
+        type: AccountsActionTypes.CHANGE_ACCOUNT_NAME,
+        payload,
+    };
 };
 
 /**
@@ -420,9 +402,9 @@ export const changeAccountName = payload => {
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const updateAccountAfterTransition = payload => ({
-  type: AccountsActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION,
-  payload
+export const updateAccountAfterTransition = (payload) => ({
+    type: AccountsActionTypes.UPDATE_ACCOUNT_AFTER_TRANSITION,
+    payload,
 });
 /**
  * Dispatch to remove an account and its associated data from state
@@ -452,30 +434,30 @@ export const removeAccount = (payload) => {
  *   @returns {object}
  **/
 export const syncAccountDuringSnapshotTransition = (attachedTransactions, attachedAddressObject, accountState) => {
-  // Check if attached address is already part of existing address data
-  const existingAddressObject = find(accountState.addressData, { address: attachedAddressObject.address });
+    // Check if attached address is already part of existing address data
+    const existingAddressObject = find(accountState.addressData, { address: attachedAddressObject.address });
 
-  return {
-      ...accountState,
-      addressData: existingAddressObject
-          ? // If address is already part of existing address data, then simply replace the existing address object with the attached one
-            map(accountState.addressData, (addressObject) => {
-                if (addressObject.address === attachedAddressObject.address) {
-                    return attachedAddressObject;
-                }
+    return {
+        ...accountState,
+        addressData: existingAddressObject
+            ? // If address is already part of existing address data, then simply replace the existing address object with the attached one
+              map(accountState.addressData, (addressObject) => {
+                  if (addressObject.address === attachedAddressObject.address) {
+                      return attachedAddressObject;
+                  }
 
-                return addressObject;
-            })
-          : // If address is not part of existing address data, then add it to address data
-            orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
-      transactions: [
-          ...accountState.transactions,
-          ...map(attachedTransactions, (transaction) => ({
-              ...transaction,
-              persistence: false,
-              broadcasted: true,
-              fatalErrorOnRetry: false,
-          })),
-      ],
-  };
+                  return addressObject;
+              })
+            : // If address is not part of existing address data, then add it to address data
+              orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
+        transactions: [
+            ...accountState.transactions,
+            ...map(attachedTransactions, (transaction) => ({
+                ...transaction,
+                persistence: false,
+                broadcasted: true,
+                fatalErrorOnRetry: false,
+            })),
+        ],
+    };
 };

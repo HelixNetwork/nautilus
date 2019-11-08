@@ -1,24 +1,24 @@
-import get from "lodash/get";
-import filter from "lodash/filter";
-import find from "lodash/find";
-import isArray from "lodash/isArray";
-import isFunction from "lodash/isFunction";
-import isUndefined from "lodash/isUndefined";
-import includes from "lodash/includes";
-import isNull from "lodash/isNull";
-import sampleSize from "lodash/sampleSize";
-import size from "lodash/size";
-import cloneDeep from "lodash/cloneDeep";
-import URL from "url-parse";
-import { BigNumber } from "bignumber.js";
-import { txsToAscii, asciiToTxHex } from "@helixnetwork/converter";
-import { addChecksum, isValidChecksum } from "@helixnetwork/checksum";
-import { isNodeHealthy } from "./extendedApi";
-import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from "../../config";
-import Errors from "../errors";
-import { bitsToChars, hexToBits } from "./converter";
-import { roundDown } from "../utils";
-import axios from "axios";
+import get from 'lodash/get';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import isArray from 'lodash/isArray';
+import isFunction from 'lodash/isFunction';
+import isUndefined from 'lodash/isUndefined';
+import includes from 'lodash/includes';
+import isNull from 'lodash/isNull';
+import sampleSize from 'lodash/sampleSize';
+import size from 'lodash/size';
+import cloneDeep from 'lodash/cloneDeep';
+import URL from 'url-parse';
+import { BigNumber } from 'bignumber.js';
+import { txsToAscii, asciiToTxHex } from '@helixnetwork/converter';
+import { addChecksum, isValidChecksum } from '@helixnetwork/checksum';
+import { isNodeHealthy } from './extendedApi';
+import { NODELIST_URL, MAX_REQUEST_TIMEOUT } from '../../config';
+import Errors from '../errors';
+import { bitsToChars, hexToBits } from './converter';
+import { roundDown } from '../utils';
+
 export const MAX_SEED_LENGTH = 64; // should be 64
 
 export const MAX_SEED_BITS = MAX_SEED_LENGTH * 4;
@@ -43,13 +43,13 @@ export const HASH_SIZE = 64;
 
 export const TRANSACTION_BYTES_SIZE = 1536;
 
-export const EMPTY_HASH_TXBYTES = "0".repeat(HASH_SIZE);
+export const EMPTY_HASH_TXBYTES = '0'.repeat(HASH_SIZE);
 
-export const EMPTY_TRANSACTION_HEX = "0".repeat(TRANSACTION_BYTES_SIZE);
+export const EMPTY_TRANSACTION_HEX = '0'.repeat(TRANSACTION_BYTES_SIZE);
 
-export const EMPTY_TRANSACTION_MESSAGE = "Empty";
+export const EMPTY_TRANSACTION_MESSAGE = 'Empty';
 
-export const HELIX_DENOMINATIONS = ["h", "Kh", "Mh", "Gh", "Th"];
+export const HELIX_DENOMINATIONS = ['h', 'Kh', 'Mh', 'Gh', 'Th'];
 
 /**
  * Converts TxBytes to ascii
@@ -59,21 +59,21 @@ export const HELIX_DENOMINATIONS = ["h", "Kh", "Mh", "Gh", "Th"];
  *
  * @returns {string}
  */
-export const convertFromBytes = txBytes => {
-  const bytesWithoutZero = txBytes.replace(/00+$/, "");
-  let message;
-  try {
-    message = txsToAscii(bytesWithoutZero);
-  } catch (err) {
-    // Fall back to safe result in case of inconsistent conversion strings
-    message = null;
-  }
-  /* eslint-disable no-control-regex */
-  if (bytesWithoutZero && message && /^[\x00-\x7F]*$/.test(message)) {
-    return message;
-  }
-  /* eslint-enable no-control-regex */
-  return EMPTY_TRANSACTION_MESSAGE;
+export const convertFromBytes = (txBytes) => {
+    const bytesWithoutZero = txBytes.replace(/00+$/, '');
+    let message;
+    try {
+        message = txsToAscii(bytesWithoutZero);
+    } catch (err) {
+        // Fall back to safe result in case of inconsistent conversion strings
+        message = null;
+    }
+    /* eslint-disable no-control-regex */
+    if (bytesWithoutZero && message && /^[\x00-\x7F]*$/.test(message)) {
+        return message;
+    }
+    /* eslint-enable no-control-regex */
+    return EMPTY_TRANSACTION_MESSAGE;
 };
 
 /**
@@ -87,21 +87,17 @@ export const convertFromBytes = txBytes => {
  * @returns {string | array}
  */
 export const getChecksum = async (
-  input,
-  // TxBytes  to txBits conversion creates Int8Array
-  length = input instanceof Int8Array
-    ? SEED_CHECKSUM_LENGTH * 8
-    : SEED_CHECKSUM_LENGTH
+    input,
+    // TxBytes  to txBits conversion creates Int8Array
+    length = input instanceof Int8Array ? SEED_CHECKSUM_LENGTH * 8 : SEED_CHECKSUM_LENGTH,
 ) => {
-  const isInputArray = input instanceof Int8Array;
-  const finalInput = isInputArray ? bitsToChars(Array.from(input)) : input;
-  const finalLength = isInputArray ? length / 8 : length;
+    const isInputArray = input instanceof Int8Array;
+    const finalInput = isInputArray ? bitsToChars(Array.from(input)) : input;
+    const finalLength = isInputArray ? length / 8 : length;
 
-  const result = await addChecksum(finalInput, finalLength, false).slice(
-    -finalLength
-  );
-  const finalResult = isInputArray ? hexToBits(result) : result;
-  return finalResult;
+    const result = await addChecksum(finalInput, finalLength, false).slice(-finalLength);
+    const finalResult = isInputArray ? hexToBits(result) : result;
+    return finalResult;
 };
 
 /**
@@ -112,8 +108,7 @@ export const getChecksum = async (
  *
  * @returns {boolean}
  */
-export const isValidSeed = seed =>
-  seed.length === MAX_SEED_LENGTH && seed.match(VALID_SEED_REGEX);
+export const isValidSeed = (seed) => seed.length === MAX_SEED_LENGTH && seed.match(VALID_SEED_REGEX);
 
 /**
  * Formats Helix value
@@ -123,34 +118,34 @@ export const isValidSeed = seed =>
  *
  * @returns {number}
  */
-export const formatValue = value => {
-  let negative = false;
-  if (value < 0) {
-    negative = true;
-    value = -value;
-  }
-  switch (true) {
-    case value < 1000:
-      break;
-    case value < 1000000:
-      value /= 1000;
-      break;
-    case value < 1000000000:
-      value /= 1000000;
-      break;
-    case value < 1000000000000:
-      value /= 1000000000;
-      break;
-    default:
-      value /= 1000000000000;
-      break;
-  }
+export const formatValue = (value) => {
+    let negative = false;
+    if (value < 0) {
+        negative = true;
+        value = -value;
+    }
+    switch (true) {
+        case value < 1000:
+            break;
+        case value < 1000000:
+            value /= 1000;
+            break;
+        case value < 1000000000:
+            value /= 1000000;
+            break;
+        case value < 1000000000000:
+            value /= 1000000000;
+            break;
+        default:
+            value /= 1000000000000;
+            break;
+    }
 
-  if (negative === true) {
-    return -value;
-  }
+    if (negative === true) {
+        return -value;
+    }
 
-  return value;
+    return value;
 };
 
 /**
@@ -161,23 +156,23 @@ export const formatValue = value => {
  *
  * @returns {string}
  */
-export const formatUnit = value => {
-  if (value < 0) {
-    value = -value;
-  }
+export const formatUnit = (value) => {
+    if (value < 0) {
+        value = -value;
+    }
 
-  switch (true) {
-    case value < 1000:
-      return "HLX";
-    case value < 1000000:
-      return "kHLX";
-    case value < 1000000000:
-      return "mHLX";
-    case value < 1000000000000:
-      return "gHLX";
-    default:
-      return "tHLX";
-  }
+    switch (true) {
+        case value < 1000:
+            return 'HLX';
+        case value < 1000000:
+            return 'kHLX';
+        case value < 1000000000:
+            return 'mHLX';
+        case value < 1000000000000:
+            return 'gHLX';
+        default:
+            return 'tHLX';
+    }
 };
 
 /**
@@ -188,24 +183,24 @@ export const formatUnit = value => {
  *
  * @returns {number}
  */
-export const unitStringToValue = str => {
-  const value = parseInt(str);
-  const unit = str.substr(value.toString().length).toLowerCase();
+export const unitStringToValue = (str) => {
+    const value = parseInt(str);
+    const unit = str.substr(value.toString().length).toLowerCase();
 
-  switch (unit) {
-    case "kh":
-      return value * 1000;
-    case "mh":
-      return value * 1000000;
-    case "gh":
-      return value * 1000000000;
-    case "th":
-      return value * 1000000000000;
-    case "ph":
-      return value * 1000000000000000;
-    default:
-      return value;
-  }
+    switch (unit) {
+        case 'kh':
+            return value * 1000;
+        case 'mh':
+            return value * 1000000;
+        case 'gh':
+            return value * 1000000000;
+        case 'th':
+            return value * 1000000000000;
+        case 'ph':
+            return value * 1000000000000000;
+        default:
+            return value;
+    }
 };
 
 /**
@@ -217,13 +212,12 @@ export const unitStringToValue = str => {
  * @returns {string}
  */
 export const formatHlx = (hlx, showShort, showUnit) => {
-  const formattedValue = formatValue(hlx);
-  const outputValue = !showShort
-    ? formattedValue
-    : roundDown(formattedValue, 1) +
-      (hlx < 1000 || (hlx / formattedValue) % 10 === 0 ? "" : "+");
+    const formattedValue = formatValue(hlx);
+    const outputValue = !showShort
+        ? formattedValue
+        : roundDown(formattedValue, 1) + (hlx < 1000 || (hlx / formattedValue) % 10 === 0 ? '' : '+');
 
-  return `${outputValue}${showUnit ? " " + formatUnit(hlx) : ""}`;
+    return `${outputValue}${showUnit ? ' ' + formatUnit(hlx) : ''}`;
 };
 
 /**
@@ -234,12 +228,12 @@ export const formatHlx = (hlx, showShort, showUnit) => {
  *
  * @returns {boolean}
  */
-export const isValidServerAddress = server => {
-  if (!server.startsWith("http://") && !server.startsWith("https://")) {
-    return false;
-  }
+export const isValidServerAddress = (server) => {
+    if (!server.startsWith('http://') && !server.startsWith('https://')) {
+        return false;
+    }
 
-  return true;
+    return true;
 };
 
 /**
@@ -250,14 +244,13 @@ export const isValidServerAddress = server => {
  *
  * @returns {boolean}
  */
-export const isValidAddress = address => {
-  if (!isNull(address.match(VALID_SEED_REGEX))) {
-    return size(address) === 72 && isValidChecksum(address);
-  }
+export const isValidAddress = (address) => {
+    if (!isNull(address.match(VALID_SEED_REGEX))) {
+        return size(address) === 72 && isValidChecksum(address);
+    }
 
-  return false;
+    return false;
 };
-
 
 /**
  * Checks if provided Helix message is valid
@@ -267,15 +260,13 @@ export const isValidAddress = address => {
  *
  * @returns {boolean}
  */
-export const isValidMessage = message => {
-  try{
-return txsToAscii(asciiToTxHex(message)) === message;
-  }
-  catch(err){
-    // return false as it was invalid message
-    return false;
-  }
-
+export const isValidMessage = (message) => {
+    try {
+        return txsToAscii(asciiToTxHex(message)) === message;
+    } catch (err) {
+        // return false as it was invalid message
+        return false;
+    }
 };
 
 /**
@@ -289,26 +280,24 @@ return txsToAscii(asciiToTxHex(message)) === message;
  * @returns {boolean}
  */
 export const isValidAmount = (amount, multiplier, isFiat = false) => {
-  const value = new BigNumber(parseFloat(amount))
-    .times(new BigNumber(multiplier))
-    .toNumber();
-  // For sending a message
-  if (amount === "") {
-    return true;
-  }
-
-  // Ensure helix value is an integer
-  if (!isFiat) {
-    if (value % 1 !== 0) {
-      return false;
+    const value = new BigNumber(parseFloat(amount)).times(new BigNumber(multiplier)).toNumber();
+    // For sending a message
+    if (amount === '') {
+        return true;
     }
-  }
 
-  if (value < 0) {
-    return false;
-  }
+    // Ensure helix value is an integer
+    if (!isFiat) {
+        if (value % 1 !== 0) {
+            return false;
+        }
+    }
 
-  return !isNaN(amount);
+    if (value < 0) {
+        return false;
+    }
+
+    return !isNaN(amount);
 };
 
 /**
@@ -322,57 +311,54 @@ export const isValidAmount = (amount, multiplier, isFiat = false) => {
  * @param {string} input
  * @returns {ParsedURL} - The parsed address, message and/or amount values
  */
-export const parseAddress = input => {
-  const result = {
-    address: null,
-    message: null,
-    amount: null
-  };
-
-  if (!input || typeof input !== "string") {
-    return null;
-  }
-
-  if (input.match(VALID_ADDRESS_WITH_CHECKSUM_REGEX)) {
-    result.address = input;
-    return result;
-  }
-
-  try {
-    let parsed = {
-      address: null,
-      message: null,
-      amount: null
+export const parseAddress = (input) => {
+    const result = {
+        address: null,
+        message: null,
+        amount: null,
     };
 
-    if (input.toLowerCase().indexOf("helix:") === 0) {
-      const url = new URL(input, true);
-      parsed.address = url.hostname.toUpperCase();
-      parsed.message = url.query.message;
-      parsed.amount = url.query.amount;
-    } else {
-      parsed = JSON.parse(input);
+    if (!input || typeof input !== 'string') {
+        return null;
     }
 
-    if (parsed.address.match(VALID_ADDRESS_WITH_CHECKSUM_REGEX)) {
-      result.address = parsed.address;
-    } else {
-      return null;
+    if (input.match(VALID_ADDRESS_WITH_CHECKSUM_REGEX)) {
+        result.address = input;
+        return result;
     }
-    if (parsed.message && typeof parsed.message === "string") {
-      result.message = parsed.message;
-    }
-    if (
-      parsed.amount &&
-      String(parsed.amount) === String(parseInt(parsed.amount, 10))
-    ) {
-      result.amount = Math.abs(parseInt(parsed.amount, 10));
-    }
-  } catch (error) {
-    return null;
-  }
 
-  return result;
+    try {
+        let parsed = {
+            address: null,
+            message: null,
+            amount: null,
+        };
+
+        if (input.toLowerCase().indexOf('helix:') === 0) {
+            const url = new URL(input, true);
+            parsed.address = url.hostname.toUpperCase();
+            parsed.message = url.query.message;
+            parsed.amount = url.query.amount;
+        } else {
+            parsed = JSON.parse(input);
+        }
+
+        if (parsed.address.match(VALID_ADDRESS_WITH_CHECKSUM_REGEX)) {
+            result.address = parsed.address;
+        } else {
+            return null;
+        }
+        if (parsed.message && typeof parsed.message === 'string') {
+            result.message = parsed.message;
+        }
+        if (parsed.amount && String(parsed.amount) === String(parseInt(parsed.amount, 10))) {
+            result.amount = Math.abs(parseInt(parsed.amount, 10));
+        }
+    } catch (error) {
+        return null;
+    }
+
+    return result;
 };
 
 /**
@@ -386,52 +372,52 @@ export const parseAddress = input => {
  * @returns {function(function): function(...[*]): Promise}
  */
 export const withRetriesOnDifferentNodes = (nodes, failureCallbacks) => {
-  let attempt = 0;
-  let executedCallback = false;
-  const retries = size(nodes);
-  return promiseFunc => {
-    const execute = (...args) => {
-      if (isUndefined(nodes[attempt])) {
-        return Promise.reject(new Error(Errors.NO_NODE_TO_RETRY));
-      }
-
-      return promiseFunc(nodes[attempt])(...args)
-        .then(result => ({ node: nodes[attempt], result }))
-        .catch(err => {
-          if (get(err, "message") === Errors.LEDGER_INVALID_INDEX) {
-            throw new Error(Errors.LEDGER_INVALID_INDEX);
-          }
-          // Abort retries on user cancelled Ledger action
-          if (get(err, "message") === Errors.LEDGER_CANCELLED) {
-            throw new Error(Errors.LEDGER_CANCELLED);
-          }
-          // If a function is passed as failure callback
-          // Just trigger it once.
-          if (isFunction(failureCallbacks)) {
-            if (!executedCallback) {
-              executedCallback = true;
-              failureCallbacks();
+    let attempt = 0;
+    let executedCallback = false;
+    const retries = size(nodes);
+    return (promiseFunc) => {
+        const execute = (...args) => {
+            if (isUndefined(nodes[attempt])) {
+                return Promise.reject(new Error(Errors.NO_NODE_TO_RETRY));
             }
-            // If an array of functions is passed
-            // Execute callback on each failure
-          } else if (isArray(failureCallbacks)) {
-            if (isFunction(failureCallbacks[attempt])) {
-              failureCallbacks[attempt]();
-            }
-          }
 
-          attempt += 1;
+            return promiseFunc(nodes[attempt])(...args)
+                .then((result) => ({ node: nodes[attempt], result }))
+                .catch((err) => {
+                    if (get(err, 'message') === Errors.LEDGER_INVALID_INDEX) {
+                        throw new Error(Errors.LEDGER_INVALID_INDEX);
+                    }
+                    // Abort retries on user cancelled Ledger action
+                    if (get(err, 'message') === Errors.LEDGER_CANCELLED) {
+                        throw new Error(Errors.LEDGER_CANCELLED);
+                    }
+                    // If a function is passed as failure callback
+                    // Just trigger it once.
+                    if (isFunction(failureCallbacks)) {
+                        if (!executedCallback) {
+                            executedCallback = true;
+                            failureCallbacks();
+                        }
+                        // If an array of functions is passed
+                        // Execute callback on each failure
+                    } else if (isArray(failureCallbacks)) {
+                        if (isFunction(failureCallbacks[attempt])) {
+                            failureCallbacks[attempt]();
+                        }
+                    }
 
-          if (attempt < retries) {
-            return execute(...args);
-          }
+                    attempt += 1;
 
-          throw err;
-        });
+                    if (attempt < retries) {
+                        return execute(...args);
+                    }
+
+                    throw err;
+                });
+        };
+
+        return execute;
     };
-
-    return execute;
-  };
 };
 
 /**
@@ -444,25 +430,22 @@ export const withRetriesOnDifferentNodes = (nodes, failureCallbacks) => {
  * @returns {Promise<*>}
  */
 export const fetchRemoteNodes = (
-  url = NODELIST_URL,
-  options = {
-    headers: {
-      Accept: "application/json"
-    }
-  }
+    url = NODELIST_URL,
+    options = {
+        headers: {
+            Accept: 'application/json',
+        },
+    },
 ) =>
-  fetch(url, options)
-    .then(response => response.json())
-    .then(response => {
-      if (isArray(response)) {
-        return response.filter(
-          node =>
-            typeof node.node === "string" && node.node.indexOf("https://") === 0
-        );
-      }
+    fetch(url, options)
+        .then((response) => response.json())
+        .then((response) => {
+            if (isArray(response)) {
+                return response.filter((node) => typeof node.node === 'string' && node.node.indexOf('https://') === 0);
+            }
 
-      return [];
-    });
+            return [];
+        });
 
 /**
  * Gets random nodes.
@@ -475,20 +458,12 @@ export const fetchRemoteNodes = (
  *
  * @returns {Array}
  */
-export const getRandomNodes = (
-  nodes,
-  size = 5,
-  blacklistedNodes = [],
-  PoW = false
-) => {
-  let nodesToSample = cloneDeep(nodes);
-  if (PoW) {
-    nodesToSample = filter(nodes, node => node.pow === true);
-  }
-  return sampleSize(
-    filter(nodesToSample, node => !find(blacklistedNodes, { url: node.url })),
-    size
-  );
+export const getRandomNodes = (nodes, size = 5, blacklistedNodes = [], PoW = false) => {
+    let nodesToSample = cloneDeep(nodes);
+    if (PoW) {
+        nodesToSample = filter(nodes, (node) => node.pow === true);
+    }
+    return sampleSize(filter(nodesToSample, (node) => !find(blacklistedNodes, { url: node.url })), size);
 };
 
 /**
@@ -499,14 +474,14 @@ export const getRandomNodes = (
  *
  * @returns {Promise<boolean>}
  */
-export const throwIfNodeNotHealthy = settings => {
-  return isNodeHealthy(settings).then(isSynced => {
-    if (!isSynced) {
-      throw new Error(Errors.NODE_NOT_SYNCED_BY_TIMESTAMP);
-    }
+export const throwIfNodeNotHealthy = (settings) => {
+    return isNodeHealthy(settings).then((isSynced) => {
+        if (!isSynced) {
+            throw new Error(Errors.NODE_NOT_SYNCED_BY_TIMESTAMP);
+        }
 
-    return isSynced;
-  });
+        return isSynced;
+    });
 };
 
 /**
@@ -519,28 +494,28 @@ export const throwIfNodeNotHealthy = settings => {
  *
  * @returns {function}
  */
-export const withRequestTimeoutsHandler = timeout => {
-  let attempt = 1;
+export const withRequestTimeoutsHandler = (timeout) => {
+    let attempt = 1;
 
-  const getNextTimeout = () => attempt * timeout;
+    const getNextTimeout = () => attempt * timeout;
 
-  const handleTimeout = promiseFunc => {
-    return promiseFunc(getNextTimeout()).catch(error => {
-      attempt += 1;
+    const handleTimeout = (promiseFunc) => {
+        return promiseFunc(getNextTimeout()).catch((error) => {
+            attempt += 1;
 
-      if (
-        (includes(error.message, Errors.REQUEST_TIMED_OUT) ||
-          includes(error.message, Errors.REQUEST_TIMED_OUT.toLowerCase())) &&
-        getNextTimeout() < MAX_REQUEST_TIMEOUT
-      ) {
-        return handleTimeout(promiseFunc);
-      }
+            if (
+                (includes(error.message, Errors.REQUEST_TIMED_OUT) ||
+                    includes(error.message, Errors.REQUEST_TIMED_OUT.toLowerCase())) &&
+                getNextTimeout() < MAX_REQUEST_TIMEOUT
+            ) {
+                return handleTimeout(promiseFunc);
+            }
 
-      throw error;
-    });
-  };
+            throw error;
+        });
+    };
 
-  return handleTimeout;
+    return handleTimeout;
 };
 
 /**
@@ -551,25 +526,27 @@ export const withRequestTimeoutsHandler = timeout => {
  *   @returns {string | list} address (without checksum)
  **/
 export const noChecksum = function(address) {
-  var isSingleAddress = typeof address === "string";
+    const isSingleAddress = typeof address === 'string';
 
-  if (isSingleAddress && address.length === 64) {
-    return address;
-  }
+    if (isSingleAddress && address.length === 64) {
+        return address;
+    }
 
-  // If only single address, turn it into an array
-  if (isSingleAddress) address = new Array(address);
+    // If only single address, turn it into an array
+    if (isSingleAddress) {
+        address = new Array(address);
+    }
 
-  var addressesWithChecksum = [];
+    // eslint-disable-next-line prefer-const
+    let addressesWithChecksum = [];
 
-  address.forEach(function(thisAddress) {
-    addressesWithChecksum.push(thisAddress.slice(0, 64));
-  });
+    address.forEach((thisAddress) => {
+        addressesWithChecksum.push(thisAddress.slice(0, 64));
+    });
 
-  // return either string or the list
-  if (isSingleAddress) {
-    return addressesWithChecksum[0];
-  } else {
+    // return either string or the list
+    if (isSingleAddress) {
+        return addressesWithChecksum[0];
+    }
     return addressesWithChecksum;
-  }
 };

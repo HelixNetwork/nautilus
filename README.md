@@ -44,22 +44,17 @@ git clone https://github.com/netobjex/wallet.git
 cd wallet
 ```
 
-3. Install the shared dependencies
+3. Install dependencies
 ```
-yarn run deps:shared
-```
-
-4. Install the desktop dependencies
-```
-yarn run deps:desktop
+yarn run install-app
 ```
 
-5. Run desktop application
+4. Run desktop application
 ```
-yarn run start:desktop
+yarn run start
 ```
 
-6. Package app for windows , mac and linux
+5. Package app for windows , mac and linux
 
 ```
 cd src/desktop
