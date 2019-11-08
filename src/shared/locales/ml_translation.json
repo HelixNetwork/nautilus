@@ -141,7 +141,7 @@
     "isYourBalanceCorrect": "Is your balance correct?",
     "ifYourBalanceIsNotCorrect": "If your balance is not correct, it is likely that you are using a pre-snapshot seed.",
     "headToAdvancedSettingsForTransition": "Head to Advanced Settings and perform a Snapshot Transition.",
-    "usingHelixWalletWithKeePass": "Using Helix Wallet with Keepass2Android",
+    "usingHelixWalletWithKeePass": "Using Nautilus Wallet with Keepass2Android",
     "signedTxBytesBroadcastErrorExplanation": "There was a network error while broadcasting your transaction.",
     "broadcastError": "Could not broadcast transfer",
     "addressesAlreadySpentFrom": "One or more of the addresses have already been spent from.",
@@ -162,7 +162,9 @@
     "forceUpdateExplanation": "A critical update has been released. Please update the app now.",
     "missingPermission": "File system permission required",
     "missingPermissionExplanation": "Access to the file system is required in order to perform this function.",
-    "swipeToConfirm": "Swipe to confirm"
+    "swipeToConfirm": "Swipe to confirm",
+    "pending_transactions_not_confirmed": "Try again later!",
+    "pending_transactions_not_confirmed_explanation": "Please wait until the pending transactions are confirmed."
   },
   "addAdditionalSeed": {
     "seedInvalidChars": "Seed contains invalid characters",

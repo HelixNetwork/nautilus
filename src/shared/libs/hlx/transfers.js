@@ -217,7 +217,6 @@ export const prepareTransferArray = (
       ? [transfer]
       : [transfer, assign({}, transfer, { address: firstAddress })];
   }
-
   return [transfer];
 };
 
@@ -588,13 +587,13 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 };
 
 /**
- *   Performs proof of work and updates TxBytes and transaction objects with nonce.
+ *   Performs proof of work and updates txs and transaction objects with nonce.
  *
  *   @method performPow
  *
  *   @param {function} powFn
  *   @param {function} digestFn
- *   @param {array} TxBytes
+ *   @param {array} txs
  *   @param {string} trunkTransaction
  *   @param {string} branchTransaction
  *   @param {number} [minWeightMagnitude = 14]
@@ -605,7 +604,7 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
 export const performPow = (
   powFn,
   digestFn,
-  TxBytes,
+  txs,
   trunkTransaction,
   branchTransaction,
   minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
@@ -620,11 +619,11 @@ export const performPow = (
   }
 
   return batchedPow
-    ? powFn(TxBytes, trunkTransaction, branchTransaction, minWeightMagnitude)
+    ? powFn(txs, trunkTransaction, branchTransaction, minWeightMagnitude)
     : performSequentialPow(
         powFn,
         digestFn,
-        TxBytes,
+        txs,
         branchTransaction,
         trunkTransaction,
         minWeightMagnitude
@@ -639,7 +638,7 @@ export const performPow = (
  *
  * @param {function} powFn
  * @param {function} digestFn
- * @param {array} TxBytes
+ * @param {array} txs
  * @param {string} trunkTransaction
  * @param {string} branchTransaction
  * @param {number} minWeightMagnitude
@@ -649,13 +648,13 @@ export const performPow = (
 export const performSequentialPow = (
   powFn,
   digestFn,
-  TxBytes,
+  txs,
   trunkTransaction,
   branchTransaction,
   minWeightMagnitude
 ) => {
-  const transactionObjects = map(TxBytes, transactionTxBytes =>
-    assign({}, asTransactionObject(transactionTxBytes), {
+  const transactionObjects = map(txs, transactionTxs =>
+    assign({}, asTransactionObject(transactionTxs), {
       attachmentTimestamp: Date.now(),
       attachmentTimestampLowerBound: 0,
       attachmentTimestampUpperBound: (Math.pow(3, 27) - 1) / 2
@@ -686,21 +685,23 @@ export const performSequentialPow = (
           branchTransaction: index ? trunkTransaction : branchTransaction
         });
 
-        const transactionTxByteString = asTransactionStrings(
+        const transactionTxsString = asTransactionStrings(
           withParentTransactions
         );
 
-        return powFn(transactionTxByteString, minWeightMagnitude)
+        return powFn(transactionTxsString, minWeightMagnitude)
           .then(nonce => {
-            // TODO recheck
-            const TxBytesWithNonce = transactionTxByteString
+            // TODO check this padding with reference to this change
+            // https://github.com/HelixNetwork/helix-lib/blob/d4cb0a9681d21750f1c559f1bf47a73cff263e53/packages/transaction-converter/src/index.ts#L111
+            nonce = nonce+ "0".repeat(48);
+            const txsWithNonce = transactionTxsString
               .substr(0, TRANSACTION_BYTES_SIZE - nonce.length)
               .concat(nonce);
 
-            result.TxBytes.unshift(TxBytesWithNonce);
+            result.txs.unshift(txsWithNonce);
 
-            return digestFn(TxBytesWithNonce).then(digest =>
-              asTransactionObject(TxBytesWithNonce, digest)
+            return digestFn(txsWithNonce).then(digest =>
+              asTransactionObject(txsWithNonce, digest)
             );
           })
           .then(transactionObject => {
@@ -710,7 +711,7 @@ export const performSequentialPow = (
           });
       });
     },
-    Promise.resolve({ TxBytes: [], transactionObjects: [] })
+    Promise.resolve({ txs: [], transactionObjects: [] })
   );
 };
 
@@ -727,11 +728,11 @@ export const retryFailedTransaction = settings => (
   transactionObjects,
   seedStore
 ) => {
-  const convertToTxBytes = tx => asTransactionStrings(tx);
+  const convertToTxs = tx => asTransactionStrings(tx);
 
   const cached = {
     transactionObjects: cloneDeep(transactionObjects),
-    TxBytes: map(transactionObjects, convertToTxBytes)
+    txs: map(transactionObjects, convertToTxs)
   };
 
   const isInvalidTransactionHash = ({ hash }) =>
@@ -747,18 +748,18 @@ export const retryFailedTransaction = settings => (
         return attachToTangle(settings, seedStore)(
           trunkTransaction,
           branchTransaction,
-          cached.TxBytes
+          cached.txs
         );
       })
-      .then(({ TxBytes, transactionObjects }) => {
-        cached.TxBytes = TxBytes;
+      .then(({ txs, transactionObjects }) => {
+        cached.txs = txs;
         cached.transactionObjects = transactionObjects;
 
-        return storeAndBroadcast(settings)(cached.TxBytes).then(() => cached);
+        return storeAndBroadcast(settings)(cached.txs).then(() => cached);
       });
   }
 
-  return storeAndBroadcast(settings)(cached.TxBytes).then(() => cached);
+  return storeAndBroadcast(settings)(cached.txs).then(() => cached);
 };
 
 /**
@@ -846,7 +847,7 @@ export const formatRelevantRecentTransactions = (transactions, addresses) => {
  *
  */
 export const sortTransactionTxBytesArray = (
-  TxBytes,
+  txs,
   sortBy = "currentIndex",
   order = "desc"
 ) => {
@@ -861,10 +862,10 @@ export const sortTransactionTxBytesArray = (
     !includes(sortableTransactionKeys, sortBy) ||
     !includes(["desc", "asc"], order)
   ) {
-    return TxBytes;
+    return txs;
   }
 
-  const transactionObjects = map(TxBytes, TxByteString =>
+  const transactionObjects = map(txs, TxByteString =>
     asTransactionObject(
       TxByteString,
       // Pass in null hash TxBytes to avoid computing transaction hash.

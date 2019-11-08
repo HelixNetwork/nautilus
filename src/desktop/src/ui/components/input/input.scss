@@ -14,7 +14,7 @@
     select,
     .editable,
     .selectable {
-      font-family: "SourceSansPro";
+      font-family: "ProximaNova-Bold";
       font-weight: 300;
       font-size: var(--font-size-default);
       line-height: 46px;
@@ -104,7 +104,7 @@
     small {
       position: absolute;
       white-space: nowrap;
-      left: 13px;
+      left: 12px;
       top: -24px;
       color: var(--label);
       transition: color 0.2s ease-out;

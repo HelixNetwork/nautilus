@@ -1,4 +1,4 @@
-# Helix Wallet
+# Nautilus Wallet
 ```
 WALLET IS IN ACTIVE DEVELOPMENT. CODE IS NOT OPTIMIZED FOR PRODUCTION.
 ```
@@ -15,7 +15,7 @@ On **Windows** platforms you'll need to install build tools to compile native mo
 
 ```
 # Install Visual C++ Build Tools and Python 2.7
-npm install --global windows-build-tools
+npm install --global --production windows-build-tools --vs2015
 
 # Install OpenSSL VC++ Static 64bit Library
 git clone https://github.com/Microsoft/vcpkg C:\src\vcpkg
@@ -44,28 +44,40 @@ git clone https://github.com/netobjex/wallet.git
 cd wallet
 ```
 
-3. Install the shared dependencies
+3. Install dependencies
 ```
-yarn run deps:shared
-```
-
-4. Install the desktop dependencies
-```
-yarn run deps:desktop
+yarn run install-app
 ```
 
-5. Run desktop application
+4. Run desktop application
 ```
-yarn run start:desktop
+yarn run start
 ```
 
-6. Package app for Windows
+5. Package app for windows , mac and linux
 
 ```
-yarn run package:win
-```
-7. Package app for Linux
+cd src/desktop
+yarn run build
 
+# For windows
+yarn run compile:win
+
+# For linux
+yarn run compile:linux
+
+# For mac, You should be on mac OS
+yarn run compile:mac
 ```
-yarn run package:linux
-```
+## Guidelines For Branches
+
+We use the following conventions for branches used for development.
+``
+- bugfix/description
+- features/feature-name
+- features/feature-area/feature-name
+- hotfix/description
+
+Develop your features and fix bugs based off development branch. Git branches are inexpensive to create and maintain, so even small fixes and changes should have their own feature branch.
+``
+

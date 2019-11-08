@@ -3,8 +3,12 @@
     "send": "SEND",
     "cancel": "Cancel",
     "continue?": "Are you sure you want to continue?",
+    "generaterandomness":"Generate randomness by",
     "noTransactions": "NO RECENT HISTORY",
     "refresh": "Refresh",
+    "clicking":"clicking",
+    "strength":"Strength",
+    "onthecharacters":"on the characters.",
     "balanceError": "Not enough balance",
     "balanceErrorMessage": "You do not have enough HELIX to complete this transfer.",
     "totalBalance": "Total balance",
@@ -19,7 +23,7 @@
     "invalidResponse": "Node error",
     "invalidResponseExplanation": "The node returned an error. Try changing node.",
     "invalidResponseFetchingAccount": "The node returned an error while fetching your account information. Try changing node.",
-    "invalidResponseFetchingAccountDesktop": "The node returned an error while fetching your account information. If your problem persists, try changing node or disabling your system proxy in Helix Settings.",
+    "invalidResponseFetchingAccountDesktop": "The node returned an error while fetching your account information. If your problem persists, try changing node or disabling your system proxy in Nautilus Settings.",
     "nodeOutOfSync": "Node out of sync",
     "nodeOutOfSyncExplanation": "Your currently selected node is out of sync. Please change node or try again.",
     "experimentalNode": "Node version not supported",
@@ -28,6 +32,7 @@
     "seed": "Seed",
     "checksum": "Checksum",
     "back": "Back",
+    "support":"SUPPORT",
     "goBack": "Go back",
     "goBackStep": "Go back a step",
     "done": "Done",
@@ -56,7 +61,8 @@
     "no": "No",
     "okay": "Okay",
     "skip": "Skip",
-    "password": "Password",
+   
+    "password": " Account Password",
     "unrecognisedPassword": "Unrecognised password",
     "unrecognisedPasswordExplanation": "The password was not recognised. Please try again.",
     "unrecognisedAccount": "Unrecognised account",
@@ -107,7 +113,7 @@
     "cannotSendToOwnExplanation": "You cannot send to an address that is being used as an input in the transaction.",
     "pleaseWait": "Please wait",
     "pleaseWaitEllipses": "Please wait...",
-    "pleaseWaitExplanation": "Helix is performing another function. Please wait and try again.",
+    "pleaseWaitExplanation": "Nautilus is performing another function. Please wait and try again.",
     "pleaseWaitTransferExplanation": "Your available balance is currently being used in other transfers. Please wait for one to confirm before trying again.",
     "pleaseWaitIncomingTransferExplanation": "You have incoming transfers. Please wait for them to confirm before trying again.",
     "snapshotTransitionInProgress": "Snapshot transition in progress",
@@ -115,11 +121,13 @@
     "checkForUpdates": "Check for Updates",
     "account": "Account",
     "changeNode": "Change Node",
-    "addCustomNode": "Add Custom Node",
+    "addCustomNode": "Add custom node",
     "nodeMustUseHTTPS": "Invalid node (non HTTPS)",
     "nodeMustUseHTTPSExplanation": "Only custom nodes using HTTPS are allowed.",
     "nodeDuplicated": "Duplicated node",
     "nodeDuplicatedExplanation": "The custom node is already listed.",
+    "customNodeAdded": "Custom node added",
+    "customNodeAddedExplanation": "You have successfully added {{nodeAddress}} as a custom node.",
     "nodeAutoChanged": "Auto-switched node",
     "nodeAutoChangedExplanation": "Switched to new node {{- nodeAddress}} as selected node is offline.",
     "touchSensor": "Touch the fingerprint sensor",
@@ -141,7 +149,7 @@
     "isYourBalanceCorrect": "Is your balance correct?",
     "ifYourBalanceIsNotCorrect": "If your balance is not correct, it is likely that you are using a pre-snapshot seed.",
     "headToAdvancedSettingsForTransition": "Head to Advanced Settings and perform a Snapshot Transition.",
-    "usingHelixWalletWithKeePass": "Using Helix Wallet with Keepass2Android",
+    "usingHelixWalletWithKeePass": "Using Nautilus Wallet with Keepass2Android",
     "signedTxBytesBroadcastErrorExplanation": "There was a network error while broadcasting your transaction.",
     "broadcastError": "Could not broadcast transfer",
     "addressesAlreadySpentFrom": "One or more of the addresses have already been spent from.",
@@ -162,7 +170,9 @@
     "forceUpdateExplanation": "A critical update has been released. Please update the app now.",
     "missingPermission": "File system permission required",
     "missingPermissionExplanation": "Access to the file system is required in order to perform this function.",
-    "swipeToConfirm": "Swipe to confirm"
+    "swipeToConfirm": "Swipe to confirm",
+    "pending_transactions_not_confirmed": "Try again later!",
+    "pending_transactions_not_confirmed_explanation": "Please wait until the pending transactions are confirmed."
   },
   "addAdditionalSeed": {
     "seedInvalidChars": "Seed contains invalid characters",
@@ -191,9 +201,9 @@
     "oldPassword": "Cannot set old password",
     "oldPasswordExplanation": "You cannot use the old password as your new password. Please try again with a new password.",
     "ensureStrongPassword": "Ensure you use a strong password of at least 11 characters.",
-    "currentPassword": "Current Password",
-    "newPassword": "New Password",
-    "confirmPassword": "Confirm New Password",
+    "currentPassword": "Current Account Password",
+    "newPassword": "New Account Password",
+    "confirmPassword": "Confirm New Account Password",
     "passwordTooWeak": "Password too weak",
     "passwordTooWeakReason": "Your password is too weak. Use a combination of words, and avoid common phrases, names or dates.",
     "reasonRow": "Straight rows of keys are easy to guess.",
@@ -216,8 +226,8 @@
     "passwordTooShortExplanation": "Your password must be at least {{minLength}} characters. It is currently {{currentLength}} characters long. Please try again.",
     "passwordMismatch": "Passwords do not match",
     "passwordMismatchExplanation": "The passwords you have entered do not match. Please try again.",
-    "anEncryptedCopy": "This is your main wallet password. You will use it to log in.",
-    "retypePassword": "Retype Password"
+    "anEncryptedCopy": "This is your account password. You will use it to log in.",
+    "retypePassword": "Retype Account Password"
   },
   "copyToClipboard": {
     "seedCleared": "Clipboard cleared",
@@ -237,7 +247,8 @@
     "send": "SEND",
     "receive": "RECEIVE",
     "history": "HISTORY",
-    "settings": "SETTINGS"
+    "settings": "SETTINGS",
+    "chart":"CHART"
   },
   "languageSetup": {
     "language": "Language",
@@ -251,7 +262,7 @@
     "setNode": "Set Node",
     "whyBiometricDisabled": "Why is biometric authentication disabled?",
     "whyBiometricDisabledExplanationPart1": "Biometric authentication is disabled on first app load for your security.",
-    "whyBiometricDisabledExplanationPart2": "When using Helix you will be logged out for inactivity. You can then log back in with biometric authentication."
+    "whyBiometricDisabledExplanationPart2": "When using Nautilus you will be logged out for inactivity. You can then log back in with biometric authentication."
   },
   "loading": {
     "loadingFirstTime": "Loading seed for the first time.",
@@ -304,7 +315,7 @@
     "copyAddress": "Copy address",
     "addressCopied": "Address copied",
     "addressCopiedExplanation": "Your address has been copied to the clipboard.",
-    "generateNewAddress": "Generate address",
+    "generateNewAddress": "CLICK TO GENERATE",
     "noAddresses": "NO ADDRESSES",
     "spent": "Spent",
     "tag": "Tag",
@@ -312,8 +323,12 @@
     "generateAnAddressTitle": "Generate an address",
     "generateAnAddressExplanation": "Please generate an address before using this function.",
     "generateAddressInformation": "Generate a new deposit address every time you wish to receive HELIX",
-    "receiveCoins": "Receive HLX Coins",
-    "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!"
+    "receiveCoins": "RECEIVE HLX ",
+    "irrevocableTransactionWarning": "Please note that receiving fund requires",
+    "TransactionWarning": "generating a receiver address!",
+    "Address":"ADDRESS HISTORY",
+    "Overviewstatus": "Overview of your generated",
+    "AddressStatus": "address and their status!"
   },
   "saveYourSeed": {
     "saveYourSeed": "Back up your seed",
@@ -335,7 +350,7 @@
   },
   "seedReentry": {
     "pleaseConfirmYourSeed": "Please confirm your seed",
-    "helixWillNeverAskToReenter": "Helix will never ask you to re-enter this seed unless you reset your wallet or delete the app.",
+    "helixWillNeverAskToReenter": "Nautilus will never ask you to re-enter this seed unless you reset your wallet or delete the app.",
     "enterYourSeed": "Enter your seed or Upload seed",
     "incorrectSeed": "Incorrect seed",
     "incorrectSeedExplanation": "The seed you entered is incorrect. Please try again.",
@@ -352,8 +367,9 @@
     "invalidAddressExplanation4": "Please check that you have entered the address correctly.",
     "invalidAddressExplanationGeneric": "Valid addresses should be 90 characters and contain only A-Z or 9.",
     "notEnoughFunds": "Insufficient funds",
-    "notEnoughFundsExplanation": "You do not have enough HELIX to complete this transfer.",
+    "notEnoughFundsExplanation": "You do not have enough HLX to complete this transfer.",
     "recipientAddress": "Recipient address",
+    "continuetransaction":"Continue transaction with",
     "amount": "Amount",
     "max": "MAX",
     "message": "Message",
@@ -372,9 +388,10 @@
     "addressPasteExplanation": "It looks like you have pasted an address. Make sure that the address matches the one you want to send to.",
     "invalid": "INVALID",
     "swipeToSend": "Swipe to send",
-    "sendCoins": "Send HLX Coins",
+    "sendCoins": "SEND HLX",
     "irrevocableTransactionWarning": "Please note once funds are submitted, the transactions are irrevocable!",
-    "enterReceiverAddress": "Enter Receiver Address"
+    "enterReceiverAddress": "Enter Receiver Address",
+    "note":"NOTE"
   },
   "setSeedName": {
     "letsAddName": "Let's add a name",
@@ -392,7 +409,10 @@
   },
   "settings": {
     "settings": "Settings",
+    "generalSettings":"General Settings",
+    "accountSettings":"Account Settings",
     "transferSending": "Transfer sending",
+    "removeAccount":"Remove Account",
     "transferSendingExplanation": "Please wait until your transfer has been sent.",
     "mode": "Mode",
     "theme": "Theme",
@@ -409,6 +429,7 @@
     "nodeSettings": "Node settings",
     "account": "Account settings",
     "accountName": "Account name",
+    "remotequorum":"Remote Quorum",
     "logout": "Log out",
     "reset": "Reset wallet",
     "syncingComplete": "Syncing complete",
@@ -437,7 +458,7 @@
     "fetchedConversionRatesExplanation": "Successfully fetched latest conversion rate for {{currency}}.",
     "undo": "Undo",
     "redo": "Redo",
-    "aboutHelix": "About Helix",
+    "aboutHelix": "About Nautilus",
     "lockScreenTimeout": "Lock Screen Timeout (Minutes)",
     "autoNodeSwitching": "Automatically switch node when selected is unreachable",
     "nodeChangeSuccess": "Successfully changed node",
@@ -454,7 +475,7 @@
     "seed": "seed",
     "okay": "Okay. Let's set up your wallet!",
     "doYouNeedASeed": "Do you need to create a new",
-    "seedExplanation": "Your HELIX seed is the master key to your funds. It is 81 characters long, using only letters A-Z or the number 9.",
+    "seedExplanation": "Your HELIX seed is the master key to your funds. It is 64 characters long, using only hexadecimal numbers.",
     "noIHaveOne": "No, I have one",
     "yesINeedASeed": "Yes, I need a seed",
     "explanation": "You can use it to access your funds from any wallet, or any device.",
@@ -467,7 +488,7 @@
   "welcome": {
     "welcome": "Welcome",
     "thankYou": "Thank you ",
-    "thankYouDescription": "for downloading the HelixWallet"
+    "thankYouDescription": "for downloading the Nautilus Wallet"
   },
   "writeSeedDown": {
     "writeDownYourSeed": "<0> Write down your seed and checksum and </0><1>triple check</1><2> that they are correct.</2>",
@@ -489,7 +510,7 @@
     "retrying": "Retrying",
     "yesterday": "Yesterday",
     "promotingAnotherBundle": "Promoting another bundle",
-    "pleaseWait": "Please wait, Helix is promoting another bundle.",
+    "pleaseWait": "Please wait, Nautilus is promoting another bundle.",
     "typeHelp": "Type !help for available commands",
     "searchHelpText": "Search by bundle hash or message content",
     "searchHelpValue": "Find transactions by exact HELIX value",
@@ -672,7 +693,7 @@
     "seedFileError": "Failed to open SeedVault",
     "seedFileErrorExplanation": "There was a problem opening the SeedVault. If you selected the correct file then it may be corrupted.",
     "invalidSeedFileError": "Invalid SeedVault file",
-    "invalidSeedFileErrorExplanation": "This file format is not supported. Only SeedVault files (.kdbx) created via Helix or a password manager are supported.",
+    "invalidSeedFileErrorExplanation": "This file format is not supported. Only SeedVault files (.kdbx) created via Nautilus or a password manager are supported.",
     "seedVaultKeyExplanation": "First we need to secure your SeedVault. Please choose a key to encrypt the file. You will use this key if you need to restore your seed from the SeedVault back up.",
     "retypeKey": "Retype key",
     "key": "Key"
@@ -741,8 +762,8 @@
   "deepLink": {
     "autofill": "Autofill success",
     "autofillExplanation": "Transaction data autofilled from link.",
-    "deepLinkingOverview": "Deep links are clickable links (HELIX://...) that automatically fill transaction data in Helix.",
-    "deepLinkingWarning": "Be aware of phishing scams. Make sure the link you open navigates to the official Helix app.",
+    "deepLinkingOverview": "Deep links are clickable links (HELIX://...) that automatically fill transaction data in Nautilus.",
+    "deepLinkingWarning": "Be aware of phishing scams. Make sure the link you open navigates to the official Nautilus app.",
     "deepLinkingUpdated": "Deep linking settings",
     "deepLinkingEnabled": "You have enabled deep linking.",
     "deepLinkingDisabled": "You have disabled deep linking.",
@@ -752,11 +773,11 @@
   "updates": {
     "errorRetrievingUpdateData": "Error retrieving update data",
     "noUpdatesAvailable": "No updates available",
-    "noUpdatesAvailableExplanation": "You have the latest version of Helix!",
+    "noUpdatesAvailableExplanation": "You have the latest version of Nautilus!",
     "newVersionAvailable": "New version available",
-    "newVersionAvailableExplanation": "A new Helix version is available. Do you want to update now?",
+    "newVersionAvailableExplanation": "A new Nautilus version is available. Do you want to update now?",
     "installUpdate": "Install update and restart",
-    "installUpdateExplanation": "Download complete, Helix will now restart to install the update.",
+    "installUpdateExplanation": "Download complete, Nautilus will now restart to install the update.",
     "downloadingUpdate": "Downloading update",
     "downloadProgress": "{{transferred}} of {{total}} downloaded"
   },
@@ -766,10 +787,10 @@
   "terms": {
     "termsAndConditions": "Terms & Conditions",
     "accept": "I accept",
-    "readAllToContinue": "Please read the full text"
+    "readAllToContinue": "Please read all the points carefully"
   },
   "privacyPolicy": {
-    "privacyPolicy": "Privacy Policy",
+    "privacyPolicy": "Privacy Statement",
     "agree": "I agree"
   },
   "tray": {
@@ -800,17 +821,17 @@
     "sweepError": "Error unlocking funds",
     "sweepErrorExplanation": "Something went wrong while unlocking your funds. Trying again.",
     "warningTitle": "Warning: Locked funds detected",
-    "explanation": "Helix Desktop version 0.3.4 contained a bug that can temporarily lock funds. This affects a small number of users that performed transactions with 0.3.4.",
-    "explanationAccounts": "Locked funds have been detected on your accounts: {{accounts}}. Helix will now automatically recover your funds, by moving them to a new address.",
+    "explanation": "Nautilus Desktop version 0.3.4 contained a bug that can temporarily lock funds. This affects a small number of users that performed transactions with 0.3.4.",
+    "explanationAccounts": "Locked funds have been detected on your accounts: {{accounts}}. Nautilus will now automatically recover your funds, by moving them to a new address.",
     "proceed": "Proceed to Recovery",
     "sweepConfirmation": "You are about to sweep {{amount}} to the address {{address}}. Account: {{accountName}}, address index: {{index}}",
     "sweepConfirmationTitle": "Sweep confirmation"
   },
   "migration": {
     "dataMigration": "Data migration",
-    "dataMigrationExplanation": "Due to performance and storage limitations, Helix is using a new database for storing settings and account data. Please wait while Helix automatically migrates your existing data.",
+    "dataMigrationExplanation": "Due to performance and storage limitations, Nautilus is using a new database for storing settings and account data. Please wait while Nautilus automatically migrates your existing data.",
     "problemMigratingYourData": "There was a problem migrating your data. Please try again",
-    "seedMigrationExplanation": "As part of Helix's continued effort to improve wallet security, your seed will be migrated to an enhanced storage methodology. Please wait while Helix automatically migrates seed storage."
+    "seedMigrationExplanation": "As part of Helix's continued effort to improve wallet security, your seed will be migrated to an enhanced storage methodology. Please wait while Nautilus automatically migrates seed storage."
   },
   "ledger": {
     "ready": "Ledger device connected and ready",
@@ -831,8 +852,8 @@
     "connectionExplanation": "A Ledger device must be connected to perform this function.",
     "transactionTitle": "Scroll through and approve the transaction on your Ledger",
     "transactionExplanation": "Use your Ledger device to approve the outgoing transaction.",
-    "applicationTitle": "Open Ledger HELIX app",
-    "applicationExplanation": "Go to your Ledger and open the HELIX app to continue using Helix.",
+    "applicationTitle": "Open Ledger Nautilus app",
+    "applicationExplanation": "Go to your Ledger and open the Nautilus app to continue using Nautilus.",
     "cannotSendZeroValueTitle": "Cannot send zero value transfer",
     "cannotSendZeroValueExplanation": "Cannot send zero value transfers with a Ledger device.",
     "ledgerDisconnectedTitle": "Ledger device disconnected",
@@ -844,8 +865,27 @@
     "checkAddress": "Check the receive address",
     "checkAddressExplanation": "Check that the address matches the one displayed on your Ledger device.",
     "applicationNotInitialised": "Warning unconfirmed",
-    "applicationNotInitialisedExplanation": "Reopen the HELIX app on your Ledger device, accept the informational warning and try again.",
+    "applicationNotInitialisedExplanation": "Reopen the Nautilus app on your Ledger device, accept the informational warning and try again.",
     "udevError": "Could not communicate with Ledger device",
-    "udevErrorExplanation": "Helix could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
-  }
+    "udevErrorExplanation": "Nautilus could not communicate with your Ledger device. Please visit the URL below to resolve this issue."
+  },
+  "nodeSettings": {
+    "automaticNodeManagement": "Automatic node management",
+    "addCustomNodes": "Add nodes",
+    "autoNodeList": "Use default node list",
+    "nodeAutoswitching": "Autoselect primary node",
+    "primaryNode": "Primary node",
+    "enableQuorum": "Enable quorum",
+    "quorumSize": "Quorum size",
+    "noCustomNodes": "No custom nodes",
+    "mustAddCustomNodes": "You must add at least one custom node before disabling the remote node list.",
+    "nodeEnoughNodesTitle": "Not enough nodes",
+    "nodeEnoughNodesExplanation": "There are not enough nodes to enable quorum.",
+    "nodeEnoughNodesExplanationCustomNodes": "Add more custom nodes or enable the remote node list.",
+    "nodeSettingsUpdatedTitle": "Node settings updated",
+    "nodeSettingsUpdatedExplanation": "You have successfully updated your node settings.",
+    "outsourcePow": "Outsource proof of work",
+    "autoSelectPowNode": "Autoselect proof of work node",
+    "nodeForPow": "Proof of work node"
+}
 }

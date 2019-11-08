@@ -14,7 +14,8 @@ class Scrollbar extends React.PureComponent {
     /* Unique ID of the content, required for scroll position reset if changed */
     contentId: PropTypes.string,
     /* Scrollbar container content */
-    children: PropTypes.any.isRequired
+    children: PropTypes.any.isRequired,
+    style: PropTypes.object
   };
 
   componentDidMount() {
@@ -57,6 +58,7 @@ class Scrollbar extends React.PureComponent {
           this.container = container;
         }}
         className={css.scrollbar}
+        style={this.props.style}
       >
         {this.props.children}
       </div>

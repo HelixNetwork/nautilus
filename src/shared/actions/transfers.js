@@ -32,7 +32,6 @@ import {
   withRetriesOnDifferentNodes,
   fetchRemoteNodes,
   getRandomNodes,
-  isLastBitZero
 } from "../libs/hlx/utils";
 import { setNextStepAsActive, reset as resetProgress } from "./progress";
 import { clearSendFields } from "./ui";
@@ -314,12 +313,13 @@ export const promoteTransaction = (
         )
       );
     })
-    .then(hash => {
+    .then(hash => {  
+      const txHash = asTransactionObject(hash[0]).hash;      
       dispatch(
         generateAlert(
           "success",
           i18next.t("global:promoted"),
-          i18next.t("global:promotedExplanation", { hash })
+          i18next.t("global:promotedExplanation", { hash:txHash })
         )
       );
 
@@ -527,7 +527,7 @@ export const makeTransaction = (
           // Progressbar step => (Syncing account)
           dispatch(setNextStepAsActive());
 
-          return syncAccount()(accountState, seedStore, genFn);
+          return syncAccount()(accountState, seedStore);
         }
 
         throw new Error(Errors.KEY_REUSE);
@@ -684,9 +684,7 @@ export const makeTransaction = (
         throw new Error(Errors.INVALID_BUNDLE);
       })
       .then(({ trunkTransaction, branchTransaction }) => {
-        const shouldOffloadPow = getRemotePoWFromState(getState());
-
-        // const shouldOffloadPow = true;
+       const shouldOffloadPow = getRemotePoWFromState(getState());
         // Progressbar step => (Proof of work)
         dispatch(setNextStepAsActive());
 
@@ -797,7 +795,7 @@ export const makeTransaction = (
 
         // Progressbar step => (Broadcasting)
         dispatch(setNextStepAsActive());
-
+        
         // Make an attempt to broadcast transaction on selected node
         // If it fails, auto retry broadcast on random nodes
         const selectedNode = getSelectedNodeFromState(getState());
@@ -986,6 +984,15 @@ export const makeTransaction = (
               i18next.t("ledger:ledgerIncorrectIndexExplanation"),
               20000
             )
+          );
+        } else if (message === Errors.PENDING_TRANSACTIONS_NOT_CONFIRMED) {
+          return dispatch(
+              generateAlert(
+                  "error",
+                  i18next.t("global:pending_transactions_not_confirmed"),
+                  i18next.t("global:pending_transactions_not_confirmed_explanation"),
+                  20000
+              )
           );
         } else if (message === Errors.LEDGER_CANCELLED) {
           return;

@@ -1,158 +1,162 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { withI18n, Trans } from "react-i18next";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withI18n } from 'react-i18next';
 
-import { getAccountNamesFromState } from "selectors/accounts";
-import { generateAlert } from "actions/alerts";
-import classNames from "classnames";
-import Button from "ui/components/button";
-import Input from "ui/components/input/text";
-import { setAccountInfoDuringSetup } from "actions/accounts";
-import css from "./index.scss";
-import Logos from "ui/components/logos";
-import { MAX_ACC_LENGTH } from "libs/crypto";
-import SeedStore from "libs/seed";
+import { getAccountNamesFromState } from 'selectors/accounts';
+import { generateAlert } from 'actions/alerts';
+import classNames from 'classnames';
+import Button from 'ui/components/button';
+import Input from 'ui/components/input/text';
+import { setAccountInfoDuringSetup } from 'actions/accounts';
+import css from './index.scss';
+import Logos from 'ui/components/logos';
+import { MAX_ACC_LENGTH } from 'libs/crypto';
+import SeedStore from 'libs/seed';
+import { Row } from 'react-bootstrap';
 
 class AccountName extends React.PureComponent {
-  static propTypes = {
-    history: PropTypes.object,
-    t: PropTypes.func.isRequired,
-    generateAlert: PropTypes.func.isRequired,
-    accountNames: PropTypes.array.isRequired,
-    additionalAccountMeta: PropTypes.object.isRequired,
-    additionalAccountName: PropTypes.string.isRequired,
-    setAccountInfoDuringSetup: PropTypes.func.isRequired
-  };
-  state = {
-    isGenerated: Electron.getOnboardingGenerated(),
+    static propTypes = {
+        history: PropTypes.object,
+        t: PropTypes.func.isRequired,
+        generateAlert: PropTypes.func.isRequired,
+        accountNames: PropTypes.array.isRequired,
+        additionalAccountMeta: PropTypes.object.isRequired,
+        additionalAccountName: PropTypes.string.isRequired,
+        setAccountInfoDuringSetup: PropTypes.func.isRequired,
+    };
+    state = {
+        // eslint-disable-next-line no-undef
+        isGenerated: Electron.getOnboardingGenerated(),
 
-    name:
-      Electron.getOnboardingName() && Electron.getOnboardingName().length
-        ? Electron.getOnboardingName()
-        : ""
-  };
+        name:
+            // eslint-disable-next-line no-undef
+            Electron.getOnboardingName() && Electron.getOnboardingName().length
+                ? // eslint-disable-next-line no-undef
+                  Electron.getOnboardingName()
+                : '',
+    };
 
-  setName = async event => {
-    event.preventDefault();
+    setName = async (event) => {
+        event.preventDefault();
 
-    const { wallet, accountNames, history, generateAlert, t } = this.props;
-    const name = this.state.name.replace(/^\s+|\s+$/g, "");
+        const { wallet, accountNames, history, generateAlert, t } = this.props;
+        const name = this.state.name.replace(/^\s+|\s+$/g, '');
 
-    Electron.setOnboardingName(name);
-    if (!name.length) {
-      generateAlert(
-        "error",
-        t("addAdditionalSeed:noNickname"),
-        t("addAdditionalSeed:noNicknameExplanation"),
-        1000
-      );
-      return;
-    }
+        // eslint-disable-next-line no-undef
+        Electron.setOnboardingName(name);
+        if (!name.length) {
+            generateAlert(
+                'error',
+                t('addAdditionalSeed:noNickname'),
+                t('addAdditionalSeed:noNicknameExplanation'),
+                1000,
+            );
+            return;
+        }
 
-    if (name.length > MAX_ACC_LENGTH) {
-      generateAlert(
-        "error",
-        t("addAdditionalSeed:accountNameTooLong"),
-        t("addAdditionalSeed:accountNameTooLongExplanation", {
-          maxLength: MAX_ACC_LENGTH
-        }),
-        1000
-      );
-      return;
-    }
+        if (name.length > MAX_ACC_LENGTH) {
+            generateAlert(
+                'error',
+                t('addAdditionalSeed:accountNameTooLong'),
+                t('addAdditionalSeed:accountNameTooLongExplanation', {
+                    maxLength: MAX_ACC_LENGTH,
+                }),
+                1000,
+            );
+            return;
+        }
 
-    this.props.setAccountInfoDuringSetup({
-      name: this.state.name,
-      completed: !Electron.getOnboardingGenerated() && accountNames.length > 0
-    });
+        if (accountNames.map((accountName) => accountName.toLowerCase()).indexOf(name.toLowerCase()) > -1) {
+            generateAlert('error', t('addAdditionalSeed:nameInUse'), t('addAdditionalSeed:nameInUseExplanation'));
+            return;
+        }
 
-    if (Electron.getOnboardingGenerated()) {
-      history.push("/onboarding/seed-backup");
-    } else {
-      if (accountNames.length > 0) {
-        const seedStore = await new SeedStore.keychain(wallet.password);
-        await seedStore.addAccount(
-          this.state.name,
-          Electron.getOnboardingSeed()
+        this.props.setAccountInfoDuringSetup({
+            name: this.state.name,
+            // eslint-disable-next-line no-undef
+            completed: !Electron.getOnboardingGenerated() && accountNames.length > 0,
+        });
+
+        // eslint-disable-next-line no-undef
+        if (Electron.getOnboardingGenerated()) {
+            history.push('/onboarding/seed-backup');
+        } else {
+            if (accountNames.length > 0) {
+                const seedStore = await new SeedStore.keychain(wallet.password);
+                await seedStore.addAccount(
+                    this.state.name,
+                    // eslint-disable-next-line no-undef
+                    Electron.getOnboardingSeed(),
+                );
+                history.push('/onboarding/login');
+            } else {
+                history.push('/onboarding/account-password');
+            }
+        }
+    };
+
+    render() {
+        const { history, t } = this.props;
+        const { name, isGenerated } = this.state;
+
+        return (
+            <div>
+                <Logos size={20} history={history} />
+                <form onSubmit={this.setName}>
+                    <Row>
+                        <h1>
+                            {t('setSeedName:setAccountName')}
+                            <span className={classNames(css.text_color)}>.</span>
+                        </h1>
+                    </Row>
+                    <Row className={css.centerBox}>
+                        <div style={{ margin: '5vw' }}>
+                            <Input
+                                value={name}
+                                focus
+                                label={t('addAdditionalSeed:accountName')}
+                                onChange={(value) => this.setState({ name: value })}
+                            />
+                        </div>
+                    </Row>
+
+                    <Row>
+                        <Button
+                            className="navleft"
+                            variant="backgroundNone"
+                            to={`/onboarding/seed-${isGenerated ? 'generate' : 'import'}`}
+                        >
+                            <span>&lt;</span> {t('global:goBack')}
+                        </Button>
+                        <Button type="submit" className="navright" variant="backgroundNone">
+                            {t('global:confirm')} <span>></span>
+                        </Button>
+                    </Row>
+                </form>
+            </div>
         );
-        history.push("/onboarding/login");
-      } else {
-        history.push("/onboarding/account-password");
-      }
     }
-  };
-
-  render() {
-    const { t, generateAlert } = this.props;
-    const { name, isGenerated } = this.state;
-
-    return (
-      <section className="spage_1">
-        <Logos size={20} />
-        <div className="container">
-          <div className="row">
-            <form onSubmit={this.setName}>
-              <div className="col-lg-12">
-                <h1>
-                  {t("setSeedName:setAccountName")}
-                  <span className={classNames(css.text_color)}>.</span>
-                </h1>
-              </div>
-              <div
-                className={classNames(css.sseed_box, css.cre_pgs, css.hlx_box)}
-              >
-                <h4 style={{ marginTop: "8vw" }}>
-                  {t("setSeedName:letsAddName")}
-                </h4>
-                <Input
-                  value={name}
-                  focus
-                  label={t("addAdditionalSeed:accountName")}
-                  onChange={value => this.setState({ name: value })}
-                />
-              </div>
-              <div className={css.onboard_btn}>
-                <Button
-                  className="navleft"
-                  variant="backgroundNone"
-                  to={`/onboarding/seed-${isGenerated ? "generate" : "import"}`}
-                >
-                  {t("global:goBack")} <span>></span>
-                </Button>
-                <Button
-                  type="submit"
-                  className="navright"
-                  variant="backgroundNone"
-                >
-                  {t("global:confirm")} <span>></span>
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-    );
-  }
 }
 
-const mapStateToProps = state => ({
-  accountNames: getAccountNamesFromState(state),
-  additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta
-    ? state.accounts.accountInfoDuringSetup.meta
-    : { type: "Keychain" },
-  additionalAccountName: state.accounts.accountInfoDuringSetup.name
-    ? state.accounts.accountInfoDuringSetup.name
-    : Electron.getOnboardingName(),
-  wallet: state.wallet
+const mapStateToProps = (state) => ({
+    accountNames: getAccountNamesFromState(state),
+    additionalAccountMeta: state.accounts.accountInfoDuringSetup.meta
+        ? state.accounts.accountInfoDuringSetup.meta
+        : { type: 'Keychain' },
+    additionalAccountName: state.accounts.accountInfoDuringSetup.name
+        ? state.accounts.accountInfoDuringSetup.name
+        : // eslint-disable-next-line no-undef
+          Electron.getOnboardingName(),
+    wallet: state.wallet,
 });
 
 const mapDispatchToProps = {
-  setAccountInfoDuringSetup,
-  generateAlert
+    setAccountInfoDuringSetup,
+    generateAlert,
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps,
 )(withI18n()(AccountName));
