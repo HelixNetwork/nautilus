@@ -127,8 +127,6 @@ class Send extends React.PureComponent {
     }
 
     handleCancel() {
-        console.log('Reset on cancel');
-
         this.setState({ openModal: false });
         this.resetForm();
     }

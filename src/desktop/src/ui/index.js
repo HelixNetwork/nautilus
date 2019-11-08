@@ -11,7 +11,6 @@ import { getAccountNamesFromState, isSettingUpNewAccount } from 'selectors/accou
 import { fetchNodeList } from 'actions/polling';
 import { setPassword, setSeedIndex } from 'actions/wallet';
 import { generateAlert } from 'actions/alerts';
-
 import About from 'ui/global/about';
 import ErrorLog from 'ui/global/errorLog';
 import Theme from 'ui/global/theme';
@@ -106,6 +105,7 @@ class App extends React.Component {
             if (!this.props.onboardingComplete) {
                 this.props.setOnboardingComplete(true);
             }
+
             this.props.history.push('/wallet/');
         }
     }
