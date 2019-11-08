@@ -13,7 +13,7 @@ import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
-import { NEWTERMS, NEWTERMSNOTICE } from '../../../../../shared/config';
+import { newTerms, newTermsNotice } from 'shared/config';
 import { acceptNewTerms, updateNewTermsNotice } from 'actions/settings';
 import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
 import Scrollbar from 'ui/components/scrollbar';
@@ -78,13 +78,12 @@ class Login extends React.PureComponent {
     }
 
     setShowPrivacy(e) {
-        this.props.acceptNewTerms(NEWTERMS);
+        this.props.acceptNewTerms(newTerms);
         this.setState({ showPrivacy: false });
     }
 
     hideTermsNotificaition(e) {
-        console.log('hi');
-        this.props.updateNewTermsNotice(NEWTERMSNOTICE);
+        this.props.updateNewTermsNotice(newTermsNotice);
         this.setState({
             showNewTermsNotification: false,
         });
@@ -205,12 +204,11 @@ class Login extends React.PureComponent {
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
         const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
-        console.log(NEWTERMSNOTICE);
-        if (newterms < NEWTERMS && !this.state.showPrivacy) {
+        if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
             });
-        } else if (newterms === NEWTERMS && newtermsupdatenotice < NEWTERMSNOTICE) {
+        } else if (newterms === newTerms && newtermsupdatenotice < newTermsNotice) {
             this.setState({
                 showNewTermsNotification: true,
             });

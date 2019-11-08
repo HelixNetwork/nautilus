@@ -12,7 +12,7 @@ import Language from 'ui/components/input/language';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import css from './welcome.scss';
-import { NEWTERMS, NEWTERMSNOTICE } from '../../../../../shared/config';
+import { NEWTERMS, newTermsNotice } from 'shared/config';
 /**
  * Nautilus Welcome Screen component
  */
@@ -66,7 +66,7 @@ class Welcome extends React.PureComponent {
             default:
                 acceptPrivacy();
                 acceptNewTerms(NEWTERMS);
-                updateNewTermsNotice(NEWTERMSNOTICE);
+                updateNewTermsNotice(newTermsNotice);
                 history.push('/onboarding/seed-intro');
         }
     };

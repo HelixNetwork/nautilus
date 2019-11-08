@@ -76,5 +76,5 @@ export const MAXIMUM_QUORUM_SIZE = 7; // 7
 
 /** Maximum milestone fallbehind threshold for node sync checks */
 export const MAX_MILESTONE_FALLBEHIND = 2;
-export const NEWTERMSNOTICE = 1;
-export const NEWTERMS = 0;
+export const newTermsNotice = 1;
+export const newTerms = 0;
