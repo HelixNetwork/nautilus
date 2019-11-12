@@ -15,7 +15,7 @@ beforeEach(() => {
 });
 
 
-describe('Test component', () => {
+describe('Test number component', () => {
     test('Render the component', () => {
         expect(wrapper).toMatchSnapshot();
     });

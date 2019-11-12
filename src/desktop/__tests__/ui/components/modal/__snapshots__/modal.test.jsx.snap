@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal component Render the component 1`] = `
+<div>
+  <div
+    className="backdrop undefined hidden"
+  >
+    <div
+      className="wrapper"
+    >
+      <div
+        className="content"
+      >
+        Lorem ipsum
+      </div>
+    </div>
+  </div>
+</div>
+`;
