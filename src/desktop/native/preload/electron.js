@@ -1,4 +1,4 @@
-import { ipcRenderer as ipc, clipboard, remote } from 'electron';
+import { ipcRenderer as ipc, clipboard, remote, shell } from 'electron';
 import { indexToChar } from 'libs/hlx/converter';
 import { getChecksum as checksum } from 'libs/hlx/utils';
 
@@ -486,6 +486,10 @@ const Electron = {
         notification.onclick = () => {
             remote.getCurrentWindow().webContents.send('account.switch', accountName);
         };
+    },
+
+    openExternal: (url) => {
+        shell.openExternal(url);
     },
 };
 

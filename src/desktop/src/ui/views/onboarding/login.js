@@ -97,6 +97,9 @@ class Login extends React.PureComponent {
         this.setState({
             showNewTermsNotification: false,
         });
+
+        // eslint-disable-next-line no-undef
+        Electron.openExternal('https://hlx.ai');
     }
 
     componentDidMount() {
