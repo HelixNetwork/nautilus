@@ -67,7 +67,7 @@ class Login extends React.PureComponent {
         showTerms: false,
         showPrivacy: false,
         scrollEnd: false,
-        dontshow: false,
+        dontshowmsg: false,
     };
 
     setShowTerms(e) {
@@ -84,14 +84,14 @@ class Login extends React.PureComponent {
         this.setState({ showPrivacy: false });
     }
 
-    changedontshow(e) {
+    setDontShowMsgStatus(e) {
         this.setState({
-            dontshow: true,
+            dontshowmsg: true,
         });
     }
 
     hideTermsNotificaition(e) {
-        if (this.state.dontshow) {
+        if (this.state.dontshowmsg) {
             this.props.updateNewTermsNotice(newTermsNotice);
         }
         this.setState({
@@ -216,7 +216,7 @@ class Login extends React.PureComponent {
 
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
-        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification, dontshow } = this.state;
+        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification, dontshowmsg } = this.state;
         if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
@@ -310,7 +310,11 @@ class Login extends React.PureComponent {
                         <div className={css.newtermsUpdateNotice}>
                             <p>We are updating our Terms&amp;Conditions and Privacy Policy</p>
                             <div>
-                                <input type="checkbox" checked={dontshow} onChange={this.changedontshow.bind(this)} />
+                                <input
+                                    type="checkbox"
+                                    checked={dontshowmsg}
+                                    onChange={this.setDontShowMsgStatus.bind(this)}
+                                />
                                 <label>Don't show this message again.</label>
                             </div>
                             <br />

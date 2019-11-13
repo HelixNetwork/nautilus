@@ -487,7 +487,10 @@ const Electron = {
             remote.getCurrentWindow().webContents.send('account.switch', accountName);
         };
     },
-
+    /**
+     * Generate address
+     * @param {string} url - Input url
+     */
     openExternal: (url) => {
         shell.openExternal(url);
     },
