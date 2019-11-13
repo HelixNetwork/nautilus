@@ -959,23 +959,30 @@ article {
   padding: 40px 10px 30px 30px;
 }
 
-.newtermsUpdateNotice{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  background: #eaac32;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  width: 60vw;
-  height: 90px;
+// .newtermsUpdateNotice{
+//   position: absolute;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   margin: auto;
+//   background: #eaac32;
+//   border-top-left-radius: 10px;
+//   border-top-right-radius: 10px;
+//   width: 60vw;
+//   height: 90px;
 
-}
+// }
 
 .newtermsUpdateNotice p{
   position: relative;
   margin-top: 10px;
-  margin-bottom: 0;
+  margin-bottom: 5px !important;
+  margin-left: -10px;
+}
+
+.newtermsUpdateNotice div{
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 5px !important;
   margin-left: -10px;
 }

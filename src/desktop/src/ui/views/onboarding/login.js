@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
+import Modal from 'ui/components/modal';
 import Loading from 'ui/components/loading';
 import SeedStore from 'libs/seed';
 import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
@@ -66,6 +67,7 @@ class Login extends React.PureComponent {
         showTerms: false,
         showPrivacy: false,
         scrollEnd: false,
+        dontshow: false,
     };
 
     setShowTerms(e) {
@@ -82,8 +84,16 @@ class Login extends React.PureComponent {
         this.setState({ showPrivacy: false });
     }
 
+    changedontshow(e) {
+        this.setState({
+            dontshow: true,
+        });
+    }
+
     hideTermsNotificaition(e) {
-        this.props.updateNewTermsNotice(newTermsNotice);
+        if (this.state.dontshow) {
+            this.props.updateNewTermsNotice(newTermsNotice);
+        }
         this.setState({
             showNewTermsNotification: false,
         });
@@ -203,8 +213,7 @@ class Login extends React.PureComponent {
 
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
-        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
-        console.log(newTermsNotice, newTerms, newterms);
+        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification, dontshow } = this.state;
         if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
@@ -291,15 +300,20 @@ class Login extends React.PureComponent {
                     </div>
                 )}
                 {showNewTermsNotification && (
-                    <div className={css.newtermsUpdateNotice}>
-                        <p>We are updating our Terms&amp;Conditions and Privacy Policy</p>
-                        <input
-                            type="checkbox"
-                            checked={!showNewTermsNotification}
-                            onChange={this.hideTermsNotificaition.bind(this)}
-                        />
-                        <label>Don't show this message again.</label>
-                    </div>
+                    <Modal
+                        isOpen={showNewTermsNotification}
+                        onClose={() => this.setState({ showNewTermsNotification: false })}
+                    >
+                        <div className={css.newtermsUpdateNotice}>
+                            <p>We are updating our Terms&amp;Conditions and Privacy Policy</p>
+                            <div>
+                                <input type="checkbox" checked={dontshow} onChange={this.changedontshow.bind(this)} />
+                                <label>Don't show this message again.</label>
+                            </div>
+                            <br />
+                            <Button onClick={this.hideTermsNotificaition.bind(this)}>Accept</Button>
+                        </div>
+                    </Modal>
                 )}
             </div>
         );
