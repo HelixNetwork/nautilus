@@ -68,6 +68,7 @@ class Login extends React.PureComponent {
         showPrivacy: false,
         scrollEnd: false,
         dontshowmsg: false,
+        skipdontshow: false,
     };
 
     setShowTerms(e) {
@@ -93,13 +94,17 @@ class Login extends React.PureComponent {
     hideTermsNotificaition(e) {
         if (this.state.dontshowmsg) {
             this.props.updateNewTermsNotice(newTermsNotice);
+        } else {
+            this.setState({
+                skipdontshow: true,
+            });
         }
         this.setState({
             showNewTermsNotification: false,
         });
 
         // eslint-disable-next-line no-undef
-        Electron.openExternal('https://hlx.ai');
+        Electron.openExternal(newTermsNotice);
     }
 
     componentDidMount() {
@@ -216,14 +221,19 @@ class Login extends React.PureComponent {
 
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
-        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification, dontshowmsg } = this.state;
+        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification, dontshowmsg, skipdontshow } = this.state;
         if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
             });
-        } else if (newterms === newTerms && newtermsupdatenotice < newTermsNotice) {
+        } else if (newterms === newTerms && newtermsupdatenotice !== newTermsNotice) {
             this.setState({
                 showNewTermsNotification: true,
+            });
+        }
+        if (skipdontshow) {
+            this.setState({
+                showNewTermsNotification: false,
             });
         }
         if (ui.isFetchingAccountInfo) {
