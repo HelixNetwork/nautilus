@@ -78,3 +78,4 @@ export const MAXIMUM_QUORUM_SIZE = 7; // 7
 export const MAX_MILESTONE_FALLBEHIND = 2;
 export const newTermsNotice = 'https://hlx.ai';
 export const newTerms = 0;
+export const newTermsDate = '11/14/2019';
