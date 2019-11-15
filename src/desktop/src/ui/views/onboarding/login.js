@@ -318,7 +318,7 @@ class Login extends React.PureComponent {
                         onClose={() => this.setState({ showNewTermsNotification: false })}
                     >
                         <div className={css.newtermsUpdateNotice}>
-                            <p>We are updating our Terms&amp;Conditions and Privacy Policy on {newTermsDate}</p>
+                            <p>We are updating our Terms &amp; Conditions and Privacy Policy on {newTermsDate}</p>
                             <div>
                                 <input
                                     type="checkbox"
