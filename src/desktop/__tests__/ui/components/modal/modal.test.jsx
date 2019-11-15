@@ -25,16 +25,28 @@ describe('Modal component', () => {
 
     // test('Modal hidden', () => {
     //     const wrapper = shallow(<Modal {...props} />);
-    //     console.log("isOPen To be False", props );
-
+    //     
     //     expect(wrapper.hasClass('hidden')).toBeTruthy();
     // });
 
     test('Modal visible', () => {
         const mockProps = Object.assign({}, props, { isOpen: true });
-        console.log("mockProps", mockProps );
         const wrapper = shallow(<Modal {...mockProps} />);
 
         expect(wrapper.hasClass('hidden')).toBeFalsy();
     });
+
+    // test('Modal variant is global', () => {
+    //     const mockProps = Object.assign({}, props, { className: 'global' });
+    //     const wrapper = shallow(<Modal {...mockProps} />);
+
+    //     expect(wrapper.hasClass('global')).toBeTruthy();
+    // });
+
+    // test('Modal variant is confirm', () => {
+    //     const mockProps = Object.assign({}, props, { className: 'confirm' });
+    //     const wrapper = shallow(<Modal {...mockProps} />);
+
+    //     expect(wrapper.hasClass('confirm')).toBeTruthy();
+    // });
 });

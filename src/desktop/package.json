@@ -90,7 +90,7 @@
     "auditjs": "./../../node_modules/.bin/auditjs -n -l error -w whitelist.json",
     "prepare-release": "yarn version && echo Successfully incremented version number! Please remember to run git add ., git commit, git push --tags, and git push",
     "release": "./node_modules/.bin/cross-env CSC_IDENTITY_AUTO_DISCOVERY=false build -mwl",
-    "test": "npm run build-app && jest --no-cache",
+    "test": "npm run build-app && jest --no-cache --coverage --coverageDirectory=output/coverage",
     "jest-test": "jest --no-cache"
   },
   "eslintConfig": {
