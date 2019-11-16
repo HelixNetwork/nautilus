@@ -99,6 +99,7 @@ class Welcome extends React.PureComponent {
                         </React.Fragment>
                     )}
                     <Button
+                        id="to-seed-intro"
                         disabled={step !== 'language' && !scrollEnd}
                         onClick={this.onNextClick}
                         className="backgroundNone"
