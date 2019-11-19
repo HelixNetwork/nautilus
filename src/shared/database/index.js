@@ -381,6 +381,18 @@ class Wallet {
         });
     }
 
+    static acceptNewTerms(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.newterms = payload;
+        });
+    }
+
+    static updateNewTermsNotice(payload) {
+        realm.write(() => {
+            Wallet.latestSettings.newtermsupdatenotice = payload;
+        });
+    }
+
     static updateAccountInfoDuringSetup(payload) {
         realm.write(() => {
             const data = Wallet.latestData;

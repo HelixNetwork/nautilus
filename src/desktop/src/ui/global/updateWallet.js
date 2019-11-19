@@ -44,7 +44,7 @@ export class UpdateWallet extends React.PureComponent {
                     <article>
                         {progress && (
                             <Progress
-                                type={'update'}
+                                pageType={'update'}
                                 progress={progress.percent}
                                 title={t('updates:downloadProgress', {
                                     transferred: (progress.transferred / 1048576).toFixed(2) + ' MB',
