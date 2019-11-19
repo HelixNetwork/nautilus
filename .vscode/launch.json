@@ -1,30 +1,54 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Electron: Main",
-      "protocol": "inspector",
-      "runtimeExecutable": "${workspaceFolder}/src/desktop/node_modules/.bin/electron",
-      "runtimeArgs": ["--remote-debugging-port=9223", "."],
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      }
-    },
-    {
-      "name": "Electron: Renderer",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9223,
-      "webRoot": "${workspaceFolder}",
-      "timeout": 30000
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Electron: All",
-      "configurations": ["Electron: Main", "Electron: Renderer"]
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Remote",
+            "address": "TCP/IP address of process to be debugged",
+            "port": 9229,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "Absolute path to the remote directory containing the program",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach",
+            "port": 9229,
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach by Process ID",
+            "processId": "${command:PickProcess}",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Electron: Main",
+            "protocol": "inspector",
+            "runtimeExecutable": "${workspaceFolder}/src/desktop/node_modules/.bin/electron",
+            "runtimeArgs": ["--remote-debugging-port=9223", "."],
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            }
+        },
+        {
+            "name": "Electron: Renderer",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9223,
+            "webRoot": "${workspaceFolder}",
+            "timeout": 30000
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Electron: All",
+            "configurations": ["Electron: Main", "Electron: Renderer"]
+        }
+    ]
 }

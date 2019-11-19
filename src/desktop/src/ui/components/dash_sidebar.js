@@ -37,7 +37,6 @@ class DashSidebar extends React.PureComponent {
 
     render() {
         const { t, active } = this.props;
-
         return (
             <div className={classNames(css.sidebar)}>
                 <ul className={classNames(css.acco_pg)}>
@@ -57,7 +56,6 @@ class DashSidebar extends React.PureComponent {
                             <img src={Send} alt=" " className={css.sidebar_icon} /> {t('home:send')}
                         </div>
                     </li>
-
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/receive')}

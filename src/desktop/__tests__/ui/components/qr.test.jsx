@@ -16,7 +16,6 @@ describe('QR component', () => {
 
     test('Render QR code', () => {
         const wrapper = shallow(<QR {...props} />);
-        console.log(wrapper.debug());
 
         expect(wrapper.find('rect')).toHaveLength(441);
     });

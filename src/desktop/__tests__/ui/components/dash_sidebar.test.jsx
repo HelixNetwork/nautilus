@@ -1,7 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import DashSidebar  from 'ui/components/dash_sidebar';
+import store from 'store';
+import Provider from 'react-redux';
 
 const props = {
         t: (str) => str,
@@ -18,13 +20,14 @@ const props = {
 
 describe('DashSidebar component', () => {
     test('Render the DashSidebar component', () => {
-        const wrapper = shallow(<DashSidebar {...props} />);
+        const wrapper = mount(<Provider store={store}> <DashSidebar {...props} /></Provider>);
+        console.log('wrapper in dash_sidebar: ', wrapper.debug());
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('Copy to clipboard event', () => {
-        const wrapper = shallow(<DashSidebar {...props} />);
+        const wrapper = mount(<Provider store={store}><DashSidebar {...props} /></Provider>);
 
         wrapper.simulate('click');
 

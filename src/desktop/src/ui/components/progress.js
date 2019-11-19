@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import css from './progress.scss';
 import { Progress } from 'react-sweet-progress';
-import 'react-sweet-progress/lib/style.css';
+// import 'react-sweet-progress/lib/style.css';
 /**
  * Progress bar component
  */
@@ -24,7 +24,7 @@ export default class ProgressBar extends React.PureComponent {
         /** Progress bar subtitle */
         subtitle: PropTypes.string,
         /** Progress bar style type */
-        type: PropTypes.oneOf(['large']),
+        type: PropTypes.oneOf(['send', 'circle']),
     };
     state = {
         color: 'error',
@@ -33,6 +33,8 @@ export default class ProgressBar extends React.PureComponent {
     render() {
         const { progress, title, pageType, type } = this.props;
         if (pageType === 'send') {
+            console.log('type expected send', type);
+            console.log('Progress expected ', progress);
             if (Math.min(progress, 100) === 0) {
                 this.setState({
                     color: 'error',
@@ -51,11 +53,14 @@ export default class ProgressBar extends React.PureComponent {
                 });
             }
         } else {
+            console.log('Progress expected 2 ', progress);
             if (Math.min(Math.round(progress), 100) < 100) {
+                console.log('Progress expected  3', progress);
                 this.setState({
                     color: 'default',
                 });
             } else {
+                console.log('Progress expected  4', progress);
                 this.setState({
                     color: 'success',
                 });

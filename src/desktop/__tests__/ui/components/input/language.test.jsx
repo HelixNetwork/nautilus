@@ -6,7 +6,7 @@ import LanguageSelect from 'ui/components/input/language';
 
 const Provider = require('react-redux').Provider;
 const createStore = require('redux').createStore;
-const reducers = require('./reducers').default;
+const reducers = require('reducers').default;
 
 let store = createStore(reducers);
 
@@ -18,7 +18,7 @@ const props = {
 
 let wrapper;
 beforeEach(() => {
-    wrapper = shallow(<LanguageSelect store ={store}  />).dive();
+    wrapper = shallow(<Provider store ={store}><LanguageSelect /></Provider>).dive();
 });
 
 

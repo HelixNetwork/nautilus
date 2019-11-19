@@ -5,6 +5,7 @@ import { ClipboardComponent as Clipboard } from 'ui/components/clipboard';
 
 const props = {
     text: 'Lorem ipsum',
+    timeout: 10,
     title: 'Foo',
     success: 'Bar',
     generateAlert: jest.fn(),
@@ -42,4 +43,20 @@ describe('Clipboard component', () => {
         expect(props.generateAlert).toHaveBeenCalledTimes(1);
         expect(Electron.clipboard).toHaveBeenCalledTimes(1);
     });
+
+    // test('Timeout event', () => {
+    //     const wrapper = shallow(<Clipboard {...props} />);
+
+    //     //wrapper.simulate('click');
+
+    //     expect(wrapper.props().timeout).toHaveBeenCalledTimes(1);
+    //     //expect(Electron.clipboard).toHaveBeenCalledTimes(0);
+    // });
+
+    // test('copy event', () => {
+    //     const wrapper = shallow(<Clipboard {...props} />);
+
+    //     expect(wrapper.find(onclick).props() ).toHaveBeenCalled();
+      
+    // });
 });
