@@ -478,7 +478,7 @@ class Send extends React.PureComponent {
                                     {isSending && (
                                         <Modal isOpen={isSending} onClose={() => this.resetForm.bind(this)}>
                                             <ProgressBar
-                                                type={'send'}
+                                                pageType={'send'}
                                                 progress={this.state.progress}
                                                 title={progressTitle}
                                             />
