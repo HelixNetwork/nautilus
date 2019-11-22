@@ -479,7 +479,7 @@ const Electron = {
             message = message.replace('{{value}}', formatHlx(confirmations[0].transferValue));
         }
 
-        const notification = new Notification('Trinity', {
+        const notification = new Notification('Helix', {
             body: message.replace('{{account}}', accountName),
         });
 
