@@ -54,7 +54,6 @@ class AdvancedSettings extends React.PureComponent {
         // eslint-disable-next-line no-undef
         Electron.setStorage('ignore-proxy', enabled);
         this.props.setProxy(enabled);
-        console.log('setting node proxy');
     };
 
     //reset wallet

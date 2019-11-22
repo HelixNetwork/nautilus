@@ -19,7 +19,7 @@ describe('Icon component', () => {
     test('Render svg element', () => {
         const wrapper = shallow(<Icon {...props} />);
 
-        expect(wrapper.text()).toEqual('💥');
+        expect(wrapper.text()).toEqual('');
     });
 
     test('Icon size', () => {

@@ -1,59 +1,64 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Progress from 'ui/components/progress';
+import ProgressComponent from 'ui/components/progress';
 
 const props = {
     progress: 45,
-    title: 'Dolor sit amet',
-    type: 'large',
+    title: 'Updated',
+    type: 'circle',
 };
 
-state = {
-    color: 'error',
-};
 
 describe('Progress component', () => {
     test('Render the component', () => {
-        const wrapper = shallow(<Progress {...props} />);
+        const wrapper = shallow(<ProgressComponent {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    // test('Correct progress', () => {
-    //     const wrapper = shallow(<ProgressComponent {...props} />);
+    test('Correct progress', () => {
+        const wrapper = shallow(<ProgressComponent {...props} />);
 
-    //     expect(
-    //         wrapper
-    //             .find('.bar')
-    //             .first()
-    //             .props().style.width,
-    //     ).toEqual(`${props.progress}%`);
-    // });
+        const titleE2 = wrapper.find('Progress');
+        console.log('titleE2  ', wrapper.debug());
+        expect(titleE2.type).toEqual('circle');
 
-    test('with default type', () => {
-        const wrapper = shallow(<Progress {...props} />);
-        
-        expect(wrapper.hasClass('type')).toBeTruthy();
+        // expect(
+        //     wrapper
+        //         .find(type)
+        //         .props().theme.symbol,
+        // ).toEqual(`${props.progress}%`);
     });
 
+ 
     test('without type ', () => {
         const mockProps = Object.assign({}, props, { type: null });
-        const wrapper = shallow(<Progress {...mockProps} />);
-        
+        const wrapper = shallow(<ProgressComponent {...mockProps} />);
+        console.log('without type  ', wrapper.debug());
+
         expect(wrapper.hasClass('type')).toBeFalsy();
     });
 
-    // test('with type send', () => {
-    //     const mockProps = Object.assign({}, props, { type: send });
-    //     const wrapper = shallow(<Progress {...mockProps} />);
+    test('with type send', () => {
+        const mockProps1 = Object.assign({}, props, { type: 'send', progress: 45 });
+        const wrapper = shallow(<ProgressComponent {...mockProps1} />);
+
+        console.log('with type send   ', wrapper.debug());
+
+
+        console.log("mockProps in send type:   ", mockProps1 );
+        expect(wrapper.hasClass('type')).toBeTruthy();
         
-    //     expect(wrapper.props().progress).toEqual(0);
-    // });
+        // expect(wrapper.mockProps1.type).toEqual('send');
+        // expect(wrapper.mockProps1.progress).toEqual(45);
+    });
  
     test('With title', () => {
-        const wrapper = shallow(<Progress {...props} />);
+        const wrapper = shallow(<ProgressComponent {...props} />);
         const titleEl = wrapper.find('p');
+
+        console.log('With title  ', wrapper.debug());
 
         expect(titleEl).toHaveLength(1);
         expect(titleEl.text()).toEqual(props.title);
@@ -61,17 +66,9 @@ describe('Progress component', () => {
 
     test('Without title', () => {
         const mockProps = Object.assign({}, props, { title: null });
-        const wrapper = shallow(<Progress {...mockProps} />);
+        const wrapper = shallow(<ProgressComponent {...mockProps} />);
 
         expect(wrapper.find('p')).toHaveLength(0);
     });
-
-    // test('With subtitle', () => {
-    //     const wrapper = shallow(<Progress {...props} />);
-    //     const titleEl = wrapper.find('small');
-
-    //     expect(titleEl).toHaveLength(1);
-    //     expect(titleEl.text()).toEqual(props.subtitle);
-    // });
 
 });
