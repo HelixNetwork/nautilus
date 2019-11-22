@@ -364,7 +364,7 @@ class NodeSettings extends React.PureComponent {
                                     primaryNode.password === settings.node.password
                                 }
                                 type="submit"
-                                style={{ marginLeft: '178px' }}
+                                style={{ margin: '2% 0 0 50%' }}
                                 onClick={this.saveSettings}
                             >
                                 {t('global:save')}
