@@ -204,7 +204,6 @@ class Login extends React.PureComponent {
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
         const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
-        console.log(newTermsNotice, newTerms, newterms);
         if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
