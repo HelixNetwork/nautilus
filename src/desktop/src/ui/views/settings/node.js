@@ -293,10 +293,10 @@ class NodeSettings extends React.PureComponent {
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <Scrollbar>
-                    <div className={classNames(css.nodebox)}>
-                        <form>
-                            <article>
+                <div className={classNames(css.nodebox)}>
+                    <form>
+                        <article>
+                            <Scrollbar>
                                 <Toggle
                                     inline={t('nodeSettings:automaticNodeManagement')}
                                     checked={autoNodeSelection}
@@ -351,27 +351,28 @@ class NodeSettings extends React.PureComponent {
                                     label={t('nodeSettings:quorumSize')}
                                     onChange={this.setQuorumSize.bind(this)}
                                 />
-                            </article>
-                            <Button
-                                loading={loading}
-                                disabled={
-                                    autoNodeList === settings.autoNodeList &&
-                                    nodeAutoSwitch === settings.nodeAutoSwitch &&
-                                    quorumEnabled === settings.quorumEnabled &&
-                                    quorumSize === settings.quorumSize &&
-                                    primaryNode.url === settings.node.url &&
-                                    primaryNode.token === settings.node.token &&
-                                    primaryNode.password === settings.node.password
-                                }
-                                type="submit"
-                                style={{ margin: '2% 0 0 50%' }}
-                                onClick={this.saveSettings}
-                            >
-                                {t('global:save')}
-                            </Button>
-                        </form>
-                    </div>
-                </Scrollbar>
+                            </Scrollbar>
+                        </article>
+
+                        <Button
+                            loading={loading}
+                            disabled={
+                                autoNodeList === settings.autoNodeList &&
+                                nodeAutoSwitch === settings.nodeAutoSwitch &&
+                                quorumEnabled === settings.quorumEnabled &&
+                                quorumSize === settings.quorumSize &&
+                                primaryNode.url === settings.node.url &&
+                                primaryNode.token === settings.node.token &&
+                                primaryNode.password === settings.node.password
+                            }
+                            type="submit"
+                            style={{ margin: '2% 0 0 50%' }}
+                            onClick={this.saveSettings}
+                        >
+                            {t('global:save')}
+                        </Button>
+                    </form>
+                </div>
             </div>
         );
     }
