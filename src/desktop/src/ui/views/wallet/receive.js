@@ -332,7 +332,7 @@ class Receive extends React.PureComponent {
                     </div>
 
                     <div>
-                        <h3 style={{ fontSize: '16px', marginLeft: '72vw', marginTop: '-58vw' }}>
+                        <h3 style={{ fontSize: '16px', marginLeft: '72vw', marginTop: '-61vw' }}>
                             {t('receive:Address')}
                         </h3>
                         <h3 style={{ fontSize: '14px', marginLeft: '71vw', opacity: '0.3' }}>
