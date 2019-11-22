@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading component Render the component 1`] = `
+<div
+  className="loading inline transparent"
+>
+  <Logo
+    animate={true}
+    loop={true}
+    onEnd={[MockFunction]}
+    size={300}
+  />
+</div>
+`;

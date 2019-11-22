@@ -1,13 +1,13 @@
-console.log("Account name test proceeds");
-describe('Onboarding account name view', () => {
+console.log("onboarding Backup");
+describe('Onboarding login view', () => {
     test('Render view', async () => {
-        const snapshot = await global.__screenshot('onboarding/accountName', false);
+        const snapshot = await global.__screenshot('onboarding/seedBackup', false);
 
         expect(snapshot).toMatchImageSnapshot({
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'accountName.test.jsx',
+            customSnapshotIdentifier: 'seedBackup.test.jsx',
         });
     }, 10000);
 });
