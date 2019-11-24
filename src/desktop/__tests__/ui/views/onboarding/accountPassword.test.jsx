@@ -1,4 +1,3 @@
-console.log("account  passwoord test")
 describe('Onboarding account password view', () => {
     test('Render view', async () => {
         const snapshot = await global.__screenshot('onboarding/accountPassword', false);

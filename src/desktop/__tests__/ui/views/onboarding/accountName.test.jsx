@@ -1,4 +1,3 @@
-console.log("Account name test proceeds");
 describe('Onboarding account name view', () => {
     test('Render view', async () => {
         const snapshot = await global.__screenshot('onboarding/accountName', false);

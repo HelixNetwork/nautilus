@@ -1,7 +1,6 @@
 describe('Settings removeaccount view', () => {
     test('Render view', async () => {
         const snapshot = await global.__screenshot('settings/remove', true);
-console.log("snapshot",snapshot);
         expect(snapshot).toMatchImageSnapshot({
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',

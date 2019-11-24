@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Text from 'ui/components/input/Text';
+import Text from 'ui/components/input/text';
 
 const props = {
     value: 'Foo Bar',

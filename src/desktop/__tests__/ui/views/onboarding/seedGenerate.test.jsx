@@ -1,4 +1,3 @@
- console.log("Seed generate proceeds");
  describe('Onboarding seed generate view', () => {
     test('Render view', async () => {
         const snapshot = await global.__screenshot('onboarding/seedGenerate', false);

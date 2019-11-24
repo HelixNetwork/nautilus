@@ -1,4 +1,3 @@
-console.log("Seed Intro test proceeds");
 describe('Onboarding seed intro view', () => {
     test('Render view', async () => {
         const snapshot = await global.__screenshot('onboarding/seedIntro', false);

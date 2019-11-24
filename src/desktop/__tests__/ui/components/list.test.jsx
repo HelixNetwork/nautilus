@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ListComponent  from 'ui/components/list';
+import {ListComponent}  from 'ui/components/list';
 
 import * as dateLib from 'libs/date';
 dateLib.formatTime = () => 'DD/MM/YYYY';
@@ -24,6 +24,8 @@ const props = {
         type: 'keychain',
     },
     password: {},
+    ui:{
+    }
 };
 
 describe('List component', () => {
@@ -76,7 +78,7 @@ describe('List component', () => {
 
     // test('Display single transaction', () => {
     //     const mockProps = Object.assign({}, props, {
-    //         currentItem: 'ABCDEFGHIJKLMONPRSTUVXYZABCDEFGHIJKLMONPRSTUVXYZABCDEFGHIJKLMONPRSTUVXYZABCDEFGHI',
+    //         currentItem: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     //     });
     //     const wrapper = shallow(<ListComponent {...mockProps} />);
 

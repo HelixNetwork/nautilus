@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Checksum from 'ui/components/Checksum';
+import Checksum from 'ui/components/checksum';
 
 const props = {
     address: 'a28c44524d557d2276170f1e662a9a3abccebb7cc6559a0c00b628613793a710125dc65c',

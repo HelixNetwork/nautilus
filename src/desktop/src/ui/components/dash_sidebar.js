@@ -17,7 +17,7 @@ import { setPassword, clearWalletData } from 'actions/wallet';
 /**
  * Sidebar for dashboard
  */
-class DashSidebar extends React.PureComponent {
+export class DashSidebar extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
         t: PropTypes.func.isRequired,

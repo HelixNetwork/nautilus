@@ -1,4 +1,3 @@
-console.log("Onboarding login continues ");
 describe('Onboarding done view', () => {
     test('Render view', async () => {
         const snapshot = await global.__screenshot('onboarding/done', false, 3000);
