@@ -1,64 +1,64 @@
-import assign from "lodash/assign";
-import cloneDeep from "lodash/cloneDeep";
-import clone from "lodash/clone";
-import get from "lodash/get";
-import each from "lodash/each";
-import every from "lodash/every";
-import find from "lodash/find";
-import findIndex from "lodash/findIndex";
-import flatMap from "lodash/flatMap";
-import head from "lodash/head";
-import has from "lodash/has";
-import isObject from "lodash/isObject";
-import isNumber from "lodash/isNumber";
-import map from "lodash/map";
-import pick from "lodash/pick";
-import includes from "lodash/includes";
-import isArray from "lodash/isArray";
-import isEmpty from "lodash/isEmpty";
-import isFunction from "lodash/isFunction";
-import filter from "lodash/filter";
-import some from "lodash/some";
-import size from "lodash/size";
-import reduce from "lodash/reduce";
-import transform from "lodash/transform";
-import orderBy from "lodash/orderBy";
-import xor from "lodash/xor";
-import bundleValidator from "@helixnetwork/bundle-validator";
-import { asciiToTxHex } from "@helixnetwork/converter";
-import { addChecksum, removeChecksum } from "@helixnetwork/checksum";
+import assign from 'lodash/assign';
+import cloneDeep from 'lodash/cloneDeep';
+import clone from 'lodash/clone';
+import get from 'lodash/get';
+import each from 'lodash/each';
+import every from 'lodash/every';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
+import flatMap from 'lodash/flatMap';
+import head from 'lodash/head';
+import has from 'lodash/has';
+import isObject from 'lodash/isObject';
+import isNumber from 'lodash/isNumber';
+import map from 'lodash/map';
+import pick from 'lodash/pick';
+import pickBy from 'lodash/pickBy';
+import includes from 'lodash/includes';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
+import isFunction from 'lodash/isFunction';
+import filter from 'lodash/filter';
+import some from 'lodash/some';
+import size from 'lodash/size';
+import reduce from 'lodash/reduce';
+import transform from 'lodash/transform';
+import orderBy from 'lodash/orderBy';
+import xor from 'lodash/xor';
+import keys from 'lodash/keys';
+import bundleValidator from '@helixnetwork/bundle-validator';
+import { asciiToTxHex } from '@helixnetwork/converter';
+import { addChecksum, removeChecksum } from '@helixnetwork/checksum';
+import { asTransactionObject, asTransactionStrings } from '@helixnetwork/transaction-converter';
+import { isHash } from '@helixnetwork/validators';
 import {
-  asTransactionObject,
-  asTransactionStrings
-} from "@helixnetwork/transaction-converter";
-import { isHash } from "@helixnetwork/validators";
+    DEFAULT_TAG,
+    DEFAULT_MIN_WEIGHT_MAGNITUDE,
+    BUNDLE_OUTPUTS_THRESHOLD,
+    DEFAULT_BALANCES_THRESHOLD,
+} from '../../config';
+import { getBalancesSync, accumulateBalance } from './addresses';
 import {
-  DEFAULT_TAG,
-  DEFAULT_MIN_WEIGHT_MAGNITUDE,
-  BUNDLE_OUTPUTS_THRESHOLD
-} from "../../config";
-import { accumulateBalance } from "./addresses";
+    getBalances,
+    getTransactionsObjects,
+    getLatestInclusion,
+    findTransactionObjects,
+    getTransactionsToApprove,
+    attachToTangle,
+    storeAndBroadcast,
+    isPromotable,
+    promoteTransaction,
+    replayBundle,
+} from './extendedApi';
+import i18next from '../../libs/i18next.js';
 import {
-  getBalances,
-  getTransactionsObjects,
-  getLatestInclusion,
-  findTransactionObjects,
-  getTransactionsToApprove,
-  attachToTangle,
-  storeAndBroadcast,
-  isPromotable,
-  promoteTransaction,
-  replayBundle
-} from "./extendedApi";
-import i18next from "../../libs/i18next.js";
-import {
-  convertFromBytes,
-  EMPTY_HASH_TXBYTES,
-  EMPTY_TRANSACTION_MESSAGE,
-  TRANSACTION_BYTES_SIZE,
-  VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX
-} from "./utils";
-import Errors from "./../errors";
+    convertFromBytes,
+    EMPTY_HASH_TXBYTES,
+    EMPTY_TRANSACTION_MESSAGE,
+    TRANSACTION_BYTES_SIZE,
+    VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX,
+} from './utils';
+import Errors from './../errors';
 
 /**
  * Gets total transfer value from a bundle
@@ -71,29 +71,21 @@ import Errors from "./../errors";
  * @returns {number}
  */
 export const getTransferValue = (inputs, outputs, addresses) => {
-  const remainderValue = get(
-    find(
-      outputs,
-      output =>
-        output.currentIndex === output.lastIndex && output.lastIndex !== 0
-    ),
-    "value"
-  );
+    const remainderValue = get(
+        find(outputs, (output) => output.currentIndex === output.lastIndex && output.lastIndex !== 0),
+        'value',
+    );
 
-  const ownInputs = filter(inputs, input => includes(addresses, input.address));
-  const inputsValue = reduce(
-    inputs,
-    (acc, input) => acc + Math.abs(input.value),
-    0
-  );
+    const ownInputs = filter(inputs, (input) => includes(addresses, input.address));
+    const inputsValue = reduce(inputs, (acc, input) => acc + Math.abs(input.value), 0);
 
-  return size(ownInputs)
-    ? inputsValue - remainderValue
-    : reduce(
-        filter(outputs, output => includes(addresses, output.address)),
-        (acc, output) => acc + output.value,
-        0
-      );
+    return size(ownInputs)
+        ? inputsValue - remainderValue
+        : reduce(
+              filter(outputs, (output) => includes(addresses, output.address)),
+              (acc, output) => acc + output.value,
+              0,
+          );
 };
 
 /**
@@ -104,18 +96,18 @@ export const getTransferValue = (inputs, outputs, addresses) => {
  *
  * @returns {string}
  */
-export const computeTransactionMessage = bundle => {
-  let message = EMPTY_TRANSACTION_MESSAGE;
+export const computeTransactionMessage = (bundle) => {
+    let message = EMPTY_TRANSACTION_MESSAGE;
 
-  each(bundle, tx => {
-    message = convertFromBytes(tx.signatureMessageFragment);
+    each(bundle, (tx) => {
+        message = convertFromBytes(tx.signatureMessageFragment);
 
-    if (message !== EMPTY_TRANSACTION_MESSAGE) {
-      return false;
-    }
-  });
+        if (message !== EMPTY_TRANSACTION_MESSAGE) {
+            return false;
+        }
+    });
 
-  return message;
+    return message;
 };
 
 /**
@@ -126,34 +118,31 @@ export const computeTransactionMessage = bundle => {
  *
  * @returns {function(array, number): Promise<object|boolean>}
  */
-export const findPromotableTail = settings => (tails, idx) => {
-  let tailsAboveMaxDepth = [];
+export const findPromotableTail = (settings) => (tails, idx) => {
+    let tailsAboveMaxDepth = [];
 
-  if (idx === 0) {
-    tailsAboveMaxDepth = filter(tails, tx =>
-      isAboveMaxDepth(tx.attachmentTimestamp)
-    ).sort((a, b) => b.attachmentTimestamp - a.attachmentTimestamp);
-  }
+    if (idx === 0) {
+        tailsAboveMaxDepth = filter(tails, (tx) => isAboveMaxDepth(tx.attachmentTimestamp)).sort(
+            (a, b) => b.attachmentTimestamp - a.attachmentTimestamp,
+        );
+    }
 
-  if (!tailsAboveMaxDepth[idx]) {
-    return Promise.resolve(false);
-  }
+    if (!tailsAboveMaxDepth[idx]) {
+        return Promise.resolve(false);
+    }
 
-  const thisTail = tailsAboveMaxDepth[idx];
+    const thisTail = tailsAboveMaxDepth[idx];
 
-  return isPromotable(settings)(get(thisTail, "hash"))
-    .then(state => {
-      if (
-        state === true &&
-        isAboveMaxDepth(get(thisTail, "attachmentTimestamp"))
-      ) {
-        return thisTail;
-      }
+    return isPromotable(settings)(get(thisTail, 'hash'))
+        .then((state) => {
+            if (state === true && isAboveMaxDepth(get(thisTail, 'attachmentTimestamp'))) {
+                return thisTail;
+            }
 
-      idx += 1;
-      return findPromotableTail(settings)(tailsAboveMaxDepth, idx);
-    })
-    .catch(() => false);
+            idx += 1;
+            return findPromotableTail(settings)(tailsAboveMaxDepth, idx);
+        })
+        .catch(() => false);
 };
 
 /**
@@ -164,11 +153,8 @@ export const findPromotableTail = settings => (tails, idx) => {
  *
  * @returns {boolean}
  */
-export const isAboveMaxDepth = attachmentTimestamp => {
-  return (
-    attachmentTimestamp < Date.now() &&
-    Date.now() - attachmentTimestamp < 11 * 60 * 1000
-  );
+export const isAboveMaxDepth = (attachmentTimestamp) => {
+    return attachmentTimestamp < Date.now() && Date.now() - attachmentTimestamp < 11 * 60 * 1000;
 };
 
 /**
@@ -187,37 +173,28 @@ export const isAboveMaxDepth = attachmentTimestamp => {
  *
  *   @returns {array} Transfer object
  **/
-export const prepareTransferArray = (
-  address,
-  value,
-  message,
-  addressData,
-  tag = DEFAULT_TAG
-) => {
-  const firstAddress = get(find(addressData, { index: 0 }), "address");
-  if (!firstAddress) {
-    throw new Error(Errors.EMPTY_ADDRESS_DATA);
-  }
+export const prepareTransferArray = (address, value, message, addressData, tag = DEFAULT_TAG) => {
+    const firstAddress = get(find(addressData, { index: 0 }), 'address');
+    if (!firstAddress) {
+        throw new Error(Errors.EMPTY_ADDRESS_DATA);
+    }
 
-  const TxBytesConvertedMessage = asciiToTxHex(message);
-  const transfer = {
-    address,
-    value,
-    message: TxBytesConvertedMessage,
-    tag
-  };
+    const TxBytesConvertedMessage = asciiToTxHex(message);
+    const transfer = {
+        address,
+        value,
+        message: TxBytesConvertedMessage,
+        tag,
+    };
 
-  const isZeroValueTransaction = value === 0;
+    const isZeroValueTransaction = value === 0;
 
-  if (isZeroValueTransaction) {
-    return includes(
-      map(addressData, addressObject => addressObject.address),
-      removeChecksum(address)
-    )
-      ? [transfer]
-      : [transfer, assign({}, transfer, { address: firstAddress })];
-  }
-  return [transfer];
+    if (isZeroValueTransaction) {
+        return includes(map(addressData, (addressObject) => addressObject.address), removeChecksum(address))
+            ? [transfer]
+            : [transfer, assign({}, transfer, { address: firstAddress })];
+    }
+    return [transfer];
 };
 
 /**
@@ -230,57 +207,52 @@ export const prepareTransferArray = (
  *
  *   @returns {object}
  **/
-export const categoriseBundleByInputsOutputs = (
-  bundle,
-  addresses,
-  outputsThreshold = BUNDLE_OUTPUTS_THRESHOLD
-) => {
-  const isRemainder = tx =>
-    tx.currentIndex === tx.lastIndex && tx.lastIndex !== 0;
+export const categoriseBundleByInputsOutputs = (bundle, addresses, outputsThreshold = BUNDLE_OUTPUTS_THRESHOLD) => {
+    const isRemainder = (tx) => tx.currentIndex === tx.lastIndex && tx.lastIndex !== 0;
 
-  const categorisedBundle = transform(
-    bundle,
-    (acc, tx) => {
-      const meta = {
-        ...pick(tx, ["address", "value", "hash", "currentIndex", "lastIndex"]),
-        checksum: addChecksum(tx.address).slice(tx.address.length)
-      };
+    const categorisedBundle = transform(
+        bundle,
+        (acc, tx) => {
+            const meta = {
+                ...pick(tx, ['address', 'value', 'hash', 'currentIndex', 'lastIndex']),
+                checksum: addChecksum(tx.address).slice(tx.address.length),
+            };
 
-      if (tx.value < 0) {
-        acc.inputs.push(meta);
-      } else {
-        acc.outputs.push(meta);
-      }
-    },
-    {
-      inputs: [],
-      outputs: []
-    }
-  );
+            if (tx.value < 0) {
+                acc.inputs.push(meta);
+            } else {
+                acc.outputs.push(meta);
+            }
+        },
+        {
+            inputs: [],
+            outputs: [],
+        },
+    );
 
-  // Note: Ideally we should categorise all outputs
-  // But some bundles are huge
-  // and on devices with restricted storage storing them can cause the problem.
+    // Note: Ideally we should categorise all outputs
+    // But some bundles are huge
+    // and on devices with restricted storage storing them can cause the problem.
 
-  // Now this does not mean that large bundles should not be validated.
-  // Categorisation should always happen after the bundle is construction and validated.
+    // Now this does not mean that large bundles should not be validated.
+    // Categorisation should always happen after the bundle is construction and validated.
 
-  // This step can lead to an inconsistent behavior if addresses aren't properly synced
-  // That is why as a safety check remainder transaction objects would always be considered as outputs
+    // This step can lead to an inconsistent behavior if addresses aren't properly synced
+    // That is why as a safety check remainder transaction objects would always be considered as outputs
 
-  // TODO: But to make this process more secure, always sync addresses during poll
-  return size(categorisedBundle.outputs) <= outputsThreshold
-    ? {
-        inputs: categorisedBundle.inputs,
-        outputs: categorisedBundle.outputs
-      }
-    : {
-        inputs: categorisedBundle.inputs,
-        outputs: filter(
-          categorisedBundle.outputs,
-          output => includes(addresses, output.address) || isRemainder(output)
-        )
-      };
+    // TODO: But to make this process more secure, always sync addresses during poll
+    return size(categorisedBundle.outputs) <= outputsThreshold
+        ? {
+              inputs: categorisedBundle.inputs,
+              outputs: categorisedBundle.outputs,
+          }
+        : {
+              inputs: categorisedBundle.inputs,
+              outputs: filter(
+                  categorisedBundle.outputs,
+                  (output) => includes(addresses, output.address) || isRemainder(output),
+              ),
+          };
 };
 
 /**
@@ -292,23 +264,19 @@ export const categoriseBundleByInputsOutputs = (
  *   @returns {boolean}
  **/
 export const isSentTransfer = (bundle, addresses) => {
-  const categorisedBundle = categoriseBundleByInputsOutputs(bundle, addresses);
-  const value = getTransferValue(
-    categorisedBundle.inputs,
-    categorisedBundle.outputs,
-    addresses
-  );
+    const categorisedBundle = categoriseBundleByInputsOutputs(bundle, addresses);
+    const value = getTransferValue(categorisedBundle.inputs, categorisedBundle.outputs, addresses);
 
-  if (value === 0) {
-    return (
-      !includes(addresses, get(categorisedBundle.outputs, "[0].address")) &&
-      includes(addresses, get(categorisedBundle.outputs, "[1].address"))
-    );
-  }
-  return some(bundle, tx => {
-    const isRemainder = tx.currentIndex === tx.lastIndex && tx.lastIndex !== 0;
-    return includes(addresses, tx.address) && tx.value < 0 && !isRemainder;
-  });
+    if (value === 0) {
+        return (
+            !includes(addresses, get(categorisedBundle.outputs, '[0].address')) &&
+            includes(addresses, get(categorisedBundle.outputs, '[1].address'))
+        );
+    }
+    return some(bundle, (tx) => {
+        const isRemainder = tx.currentIndex === tx.lastIndex && tx.lastIndex !== 0;
+        return includes(addresses, tx.address) && tx.value < 0 && !isRemainder;
+    });
 };
 
 /**
@@ -319,8 +287,7 @@ export const isSentTransfer = (bundle, addresses) => {
  *   @param {array} addresses
  *   @returns {boolean}
  **/
-export const isReceivedTransfer = (bundle, addresses) =>
-  !isSentTransfer(bundle, addresses);
+export const isReceivedTransfer = (bundle, addresses) => !isSentTransfer(bundle, addresses);
 
 /**
  *   Accepts tail transaction object and all transaction objects from bundle hashes
@@ -333,50 +300,49 @@ export const isReceivedTransfer = (bundle, addresses) =>
  *   @returns {array}
  **/
 export const constructBundle = (tailTransaction, allTransactionObjects) => {
-  // Start from the tail transaction object
-  // This will also preserve the order since the next objects will be pushed
+    // Start from the tail transaction object
+    // This will also preserve the order since the next objects will be pushed
 
-  const bundle = [tailTransaction];
+    const bundle = [tailTransaction];
 
-  // In case tail transaction is only transfer in the bundle
-  // Just return the tail transaction as a bundle
-  if (tailTransaction.currentIndex === tailTransaction.lastIndex) {
-    return bundle;
-  }
-
-  let hasFoundLastTransfer = false;
-
-  // Start off from by searching for trunk transaction of tail transaction object,
-  // Which is hash of the next transfer i.e. transfer with current index 1
-  let nextTrunkTransaction = tailTransaction.trunkTransaction;
-
-  // Finds the next transfer which would basically be that transfer that has hash === nextTrunkTransaction
-  const nextTransfer = () =>
-    find(allTransactionObjects, { hash: nextTrunkTransaction });
-
-  while (
-    // Safety check to see if the next transfer exists
-    nextTransfer() &&
-    // Next check if bundle hash for tail transaction matches the next found transfer
-    nextTransfer().bundle === tailTransaction.bundle &&
-    // Make sure it hasn't already found the last transfer in the bundle
-    !hasFoundLastTransfer
-  ) {
-    const transfer = nextTransfer();
-    const isLastTransferInBundle = transfer.currentIndex === transfer.lastIndex;
-
-    // Assign trunk transaction of this transaction as the next trunk transaction to be searched for,
-    // Next trunk transaction should always be the hash of currentIndex + 1 except for the case in remainder objects (currentIndex === lastIndex)
-    nextTrunkTransaction = transfer.trunkTransaction;
-
-    bundle.push(transfer);
-
-    if (isLastTransferInBundle) {
-      hasFoundLastTransfer = true;
+    // In case tail transaction is only transfer in the bundle
+    // Just return the tail transaction as a bundle
+    if (tailTransaction.currentIndex === tailTransaction.lastIndex) {
+        return bundle;
     }
-  }
 
-  return bundle;
+    let hasFoundLastTransfer = false;
+
+    // Start off from by searching for trunk transaction of tail transaction object,
+    // Which is hash of the next transfer i.e. transfer with current index 1
+    let nextTrunkTransaction = tailTransaction.trunkTransaction;
+
+    // Finds the next transfer which would basically be that transfer that has hash === nextTrunkTransaction
+    const nextTransfer = () => find(allTransactionObjects, { hash: nextTrunkTransaction });
+
+    while (
+        // Safety check to see if the next transfer exists
+        nextTransfer() &&
+        // Next check if bundle hash for tail transaction matches the next found transfer
+        nextTransfer().bundle === tailTransaction.bundle &&
+        // Make sure it hasn't already found the last transfer in the bundle
+        !hasFoundLastTransfer
+    ) {
+        const transfer = nextTransfer();
+        const isLastTransferInBundle = transfer.currentIndex === transfer.lastIndex;
+
+        // Assign trunk transaction of this transaction as the next trunk transaction to be searched for,
+        // Next trunk transaction should always be the hash of currentIndex + 1 except for the case in remainder objects (currentIndex === lastIndex)
+        nextTrunkTransaction = transfer.trunkTransaction;
+
+        bundle.push(transfer);
+
+        if (isLastTransferInBundle) {
+            hasFoundLastTransfer = true;
+        }
+    }
+
+    return bundle;
 };
 
 /**
@@ -387,41 +353,36 @@ export const constructBundle = (tailTransaction, allTransactionObjects) => {
  *
  *   @returns {array}
  **/
-export const constructBundlesFromTransactions = transactions => {
-  if (isEmpty(transactions)) {
-    return [];
-  }
-  if (!isArray(transactions)) {
-    throw new Error(Errors.INVALID_TRANSACTIONS_PROVIDED);
-  }
+export const constructBundlesFromTransactions = (transactions) => {
+    if (isEmpty(transactions)) {
+        return [];
+    }
+    if (!isArray(transactions)) {
+        throw new Error(Errors.INVALID_TRANSACTIONS_PROVIDED);
+    }
 
-  const { broadcastedTailTransactions, failedTailTransactions } = transform(
-    transactions,
-    (acc, transaction) => {
-      if (transaction.currentIndex === 0) {
-        if (transaction.broadcasted === true) {
-          acc.broadcastedTailTransactions.push(transaction);
-        } else {
-          acc.failedTailTransactions.push(transaction);
-        }
-      }
-    },
-    { broadcastedTailTransactions: [], failedTailTransactions: [] }
-  );
-  return [
-    ...map(broadcastedTailTransactions, tailTransaction =>
-      constructBundle(tailTransaction, transactions)
-    ),
-    // Bundles for failed transactions cannot be properly constructed because trunk/branch hashes aren't properly set.
-    // Manually construct bundles for failed transactions based on bundleHash.
-    // Note: Failed bundles only have a single (local) instance.
-    ...map(failedTailTransactions, failedTailTransaction =>
-      filter(
+    const { broadcastedTailTransactions, failedTailTransactions } = transform(
         transactions,
-        transaction => transaction.bundle === failedTailTransaction.bundle
-      )
-    )
-  ];
+        (acc, transaction) => {
+            if (transaction.currentIndex === 0) {
+                if (transaction.broadcasted === true) {
+                    acc.broadcastedTailTransactions.push(transaction);
+                } else {
+                    acc.failedTailTransactions.push(transaction);
+                }
+            }
+        },
+        { broadcastedTailTransactions: [], failedTailTransactions: [] },
+    );
+    return [
+        ...map(broadcastedTailTransactions, (tailTransaction) => constructBundle(tailTransaction, transactions)),
+        // Bundles for failed transactions cannot be properly constructed because trunk/branch hashes aren't properly set.
+        // Manually construct bundles for failed transactions based on bundleHash.
+        // Note: Failed bundles only have a single (local) instance.
+        ...map(failedTailTransactions, (failedTailTransaction) =>
+            filter(transactions, (transaction) => transaction.bundle === failedTailTransaction.bundle),
+        ),
+    ];
 };
 
 /**
@@ -432,7 +393,7 @@ export const constructBundlesFromTransactions = transactions => {
  *
  * @returns {array}
  */
-export const filterInvalidBundles = bundles => filter(bundles, isBundle);
+export const filterInvalidBundles = (bundles) => filter(bundles, isBundle);
 
 /**
  *   Normalises bundle.
@@ -445,41 +406,25 @@ export const filterInvalidBundles = bundles => filter(bundles, isBundle);
  *
  *   @returns {object} - Normalised bundle
  **/
-export const normaliseBundle = (
-  bundle,
-  addressData,
-  tailTransactions,
-  persistence
-) => {
-  const addresses = map(addressData, addressObject => addressObject.address);
-  const transaction = get(bundle, "[0]");
-  const bundleHash = transaction.bundle;
-  const { inputs, outputs } = categoriseBundleByInputsOutputs(
-    bundle,
-    addresses
-  );
+export const normaliseBundle = (bundle, addressData, tailTransactions, persistence) => {
+    const addresses = map(addressData, (addressObject) => addressObject.address);
+    const transaction = get(bundle, '[0]');
+    const bundleHash = transaction.bundle;
+    const { inputs, outputs } = categoriseBundleByInputsOutputs(bundle, addresses);
 
-  return {
-    ...pick(transaction, [
-      "bundle",
-      "timestamp",
-      "attachmentTimestamp",
-      "broadcasted"
-    ]),
-    inputs,
-    outputs,
-    persistence,
-    incoming: isReceivedTransfer(bundle, addresses),
-    transferValue: getTransferValue(inputs, outputs, addresses),
-    message: computeTransactionMessage(bundle),
-    tailTransactions: map(
-      filter(tailTransactions, tx => tx.bundle === bundleHash),
-      tx => ({
-        hash: tx.hash,
-        attachmentTimestamp: tx.attachmentTimestamp
-      })
-    )
-  };
+    return {
+        ...pick(transaction, ['bundle', 'timestamp', 'attachmentTimestamp', 'broadcasted']),
+        inputs,
+        outputs,
+        persistence,
+        incoming: isReceivedTransfer(bundle, addresses),
+        transferValue: getTransferValue(inputs, outputs, addresses),
+        message: computeTransactionMessage(bundle),
+        tailTransactions: map(filter(tailTransactions, (tx) => tx.bundle === bundleHash), (tx) => ({
+            hash: tx.hash,
+            attachmentTimestamp: tx.attachmentTimestamp,
+        })),
+    };
 };
 
 /**
@@ -491,86 +436,82 @@ export const normaliseBundle = (
  *
  *   @returns {function(array, array): Promise<object>}
  **/
-export const syncTransactions = settings => (diff, existingTransactions) => {
-  const pullNewTransactions = diff => {
-    const bundleHashes = new Set();
+export const syncTransactions = (settings) => (diff, existingTransactions) => {
+    const pullNewTransactions = (diff) => {
+        const bundleHashes = new Set();
 
-    return getTransactionsObjects(settings)(diff)
-      .then(transactionObjects => {
-        each(transactionObjects, transactionObject => {
-          if (transactionObject.bundle !== EMPTY_HASH_TXBYTES) {
-            bundleHashes.add(transactionObject.bundle);
-          }
-        });
+        return getTransactionsObjects(settings)(diff)
+            .then((transactionObjects) => {
+                each(transactionObjects, (transactionObject) => {
+                    if (transactionObject.bundle !== EMPTY_HASH_TXBYTES) {
+                        bundleHashes.add(transactionObject.bundle);
+                    }
+                });
 
-        // Find all transaction objects for bundle hashes
-        return findTransactionObjects(settings)({
-          bundles: Array.from(bundleHashes)
-        });
-      })
-      .then(transactionObjects => {
-        const existingTransactionHashes = map(
-          existingTransactions,
-          transaction => transaction.hash
+                // Find all transaction objects for bundle hashes
+                return findTransactionObjects(settings)({
+                    bundles: Array.from(bundleHashes),
+                });
+            })
+            .then((transactionObjects) => {
+                const existingTransactionHashes = map(existingTransactions, (transaction) => transaction.hash);
+
+                // In the previous step, we pulled all transactions against the bundle hash
+                // Querying by bundle hash retrieves all transactions including reattachments
+                // It is possible that we have already retrieved and validated some of these reattachments
+                // Therefore, there is no need to reconstruct bundles for the transactions that are already stored locally
+                // Bundle validation is expensive and could lead to performance issues
+                const newTransactions = filter(
+                    transactionObjects,
+                    (transaction) => !includes(existingTransactionHashes, transaction.hash),
+                );
+
+                // Construct bundles only for newer (not yet seen/stored) transactions
+                const bundles = constructBundlesFromTransactions(
+                    map(newTransactions, (transaction) => ({
+                        ...transaction,
+                        // Assign broadcasted as true as all these transactions were pulled in from the ledger
+                        broadcasted: true,
+                        // Temporarily assign persistence false
+                        // In the next step, communicate with the ledger to get correct inclusion state (persistence) and assign those
+                        persistence: false,
+                        fatalErrorOnRetry: false,
+                    })),
+                );
+
+                const transactions = flatMap(
+                    // Get rid of invalid bundles
+                    filterInvalidBundles(bundles),
+                );
+
+                return transactions;
+            });
+    };
+
+    return (size(diff) ? pullNewTransactions(diff) : Promise.resolve([])).then((newTransactions) => {
+        const transactions = [...existingTransactions, ...newTransactions];
+
+        const { confirmed, unconfirmed } = transform(
+            constructBundlesFromTransactions(transactions),
+            (acc, bundle) => {
+                if (some(bundle, (transaction) => transaction.persistence === true)) {
+                    acc.confirmed.push(bundle);
+                } else {
+                    acc.unconfirmed.push(bundle);
+                }
+            },
+            { confirmed: [], unconfirmed: [] },
         );
 
-        // In the previous step, we pulled all transactions against the bundle hash
-        // Querying by bundle hash retrieves all transactions including reattachments
-        // It is possible that we have already retrieved and validated some of these reattachments
-        // Therefore, there is no need to reconstruct bundles for the transactions that are already stored locally
-        // Bundle validation is expensive and could lead to performance issues
-        const newTransactions = filter(
-          transactionObjects,
-          transaction => !includes(existingTransactionHashes, transaction.hash)
-        );
+        if (isEmpty(unconfirmed)) {
+            return [...flatMap(confirmed), ...flatMap(unconfirmed)];
+        }
 
-        // Construct bundles only for newer (not yet seen/stored) transactions
-        const bundles = constructBundlesFromTransactions(
-          map(newTransactions, transaction => ({
-            ...transaction,
-            // Assign broadcasted as true as all these transactions were pulled in from the ledger
-            broadcasted: true,
-            // Temporarily assign persistence false
-            // In the next step, communicate with the ledger to get correct inclusion state (persistence) and assign those
-            persistence: false,
-            fatalErrorOnRetry: false
-          }))
-        );
-
-        const transactions = flatMap(
-          // Get rid of invalid bundles
-          filterInvalidBundles(bundles)
-        );
-
-        return transactions;
-      });
-  };
-
-  return (size(diff) ? pullNewTransactions(diff) : Promise.resolve([])).then(
-    newTransactions => {
-      const transactions = [...existingTransactions, ...newTransactions];
-
-      const { confirmed, unconfirmed } = transform(
-        constructBundlesFromTransactions(transactions),
-        (acc, bundle) => {
-          if (some(bundle, transaction => transaction.persistence === true)) {
-            acc.confirmed.push(bundle);
-          } else {
-            acc.unconfirmed.push(bundle);
-          }
-        },
-        { confirmed: [], unconfirmed: [] }
-      );
-
-      if (isEmpty(unconfirmed)) {
-        return [...flatMap(confirmed), ...flatMap(unconfirmed)];
-      }
-
-      return assignInclusionStatesToBundles(settings)(unconfirmed).then(
-        bundles => [...flatMap(confirmed), ...flatMap(bundles)]
-      );
-    }
-  );
+        return assignInclusionStatesToBundles(settings)(unconfirmed).then((bundles) => [
+            ...flatMap(confirmed),
+            ...flatMap(bundles),
+        ]);
+    });
 };
 
 /**
@@ -583,7 +524,7 @@ export const syncTransactions = settings => (diff, existingTransactions) => {
  *  @returns {array}
  **/
 export const getTransactionsDiff = (existingHashes, newHashes) => {
-  return xor(existingHashes, newHashes);
+    return xor(existingHashes, newHashes);
 };
 
 /**
@@ -602,32 +543,25 @@ export const getTransactionsDiff = (existingHashes, newHashes) => {
  *   @returns {Promise}
  **/
 export const performPow = (
-  powFn,
-  digestFn,
-  txs,
-  trunkTransaction,
-  branchTransaction,
-  minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
-  batchedPow = true
+    powFn,
+    digestFn,
+    txs,
+    trunkTransaction,
+    branchTransaction,
+    minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
+    batchedPow = true,
 ) => {
-  if (!isFunction(powFn)) {
-    return Promise.reject(new Error(Errors.POW_FUNCTION_UNDEFINED));
-  }
+    if (!isFunction(powFn)) {
+        return Promise.reject(new Error(Errors.POW_FUNCTION_UNDEFINED));
+    }
 
-  if (!isFunction(digestFn)) {
-    return Promise.reject(new Error(Errors.DIGEST_FUNCTION_UNDEFINED));
-  }
+    if (!isFunction(digestFn)) {
+        return Promise.reject(new Error(Errors.DIGEST_FUNCTION_UNDEFINED));
+    }
 
-  return batchedPow
-    ? powFn(txs, trunkTransaction, branchTransaction, minWeightMagnitude)
-    : performSequentialPow(
-        powFn,
-        digestFn,
-        txs,
-        branchTransaction,
-        trunkTransaction,
-        minWeightMagnitude
-      );
+    return batchedPow
+        ? powFn(txs, trunkTransaction, branchTransaction, minWeightMagnitude)
+        : performSequentialPow(powFn, digestFn, txs, branchTransaction, trunkTransaction, minWeightMagnitude);
 };
 
 /**
@@ -645,74 +579,59 @@ export const performPow = (
  *
  * @returns {Promise}
  */
-export const performSequentialPow = (
-  powFn,
-  digestFn,
-  txs,
-  trunkTransaction,
-  branchTransaction,
-  minWeightMagnitude
-) => {
-  const transactionObjects = map(txs, transactionTxs =>
-    assign({}, asTransactionObject(transactionTxs), {
-      attachmentTimestamp: Date.now(),
-      attachmentTimestampLowerBound: 0,
-      attachmentTimestampUpperBound: (Math.pow(3, 27) - 1) / 2
-    })
-  );
+export const performSequentialPow = (powFn, digestFn, txs, trunkTransaction, branchTransaction, minWeightMagnitude) => {
+    const transactionObjects = map(txs, (transactionTxs) =>
+        assign({}, asTransactionObject(transactionTxs), {
+            attachmentTimestamp: Date.now(),
+            attachmentTimestampLowerBound: 0,
+            attachmentTimestampUpperBound: (Math.pow(3, 27) - 1) / 2,
+        }),
+    );
 
-  // Order transaction objects in descending to make sure it starts from remainder object.
-  const sortedTransactionObjects = orderBy(transactionObjects, "currentIndex", [
-    "desc"
-  ]);
+    // Order transaction objects in descending to make sure it starts from remainder object.
+    const sortedTransactionObjects = orderBy(transactionObjects, 'currentIndex', ['desc']);
 
-  return reduce(
-    sortedTransactionObjects,
-    (promise, transaction, index) => {
-      return promise.then(result => {
-        // Assign parent transactions (trunk and branch)
-        // Starting from the remainder transaction object (index = 0 in sortedTransactionObjects)
-        // - When index === 0 i.e. remainder transaction object
-        //    * Assign trunkTransaction with provided trunk transaction from (getTransactionsToApprove)
-        //    * Assign branchTransaction with provided branch transaction from (getTransactionsToApprove)
-        // - When index > 0 i.e. not remainder transaction objects
-        //    * Assign trunkTransaction with hash of previous transaction object
-        //    * Assign branchTransaction with provided trunk transaction from (getTransactionsToApprove)
-        const withParentTransactions = assign({}, transaction, {
-          trunkTransaction: index
-            ? head(result.transactionObjects).hash
-            : trunkTransaction,
-          branchTransaction: index ? trunkTransaction : branchTransaction
-        });
+    return reduce(
+        sortedTransactionObjects,
+        (promise, transaction, index) => {
+            return promise.then((result) => {
+                // Assign parent transactions (trunk and branch)
+                // Starting from the remainder transaction object (index = 0 in sortedTransactionObjects)
+                // - When index === 0 i.e. remainder transaction object
+                //    * Assign trunkTransaction with provided trunk transaction from (getTransactionsToApprove)
+                //    * Assign branchTransaction with provided branch transaction from (getTransactionsToApprove)
+                // - When index > 0 i.e. not remainder transaction objects
+                //    * Assign trunkTransaction with hash of previous transaction object
+                //    * Assign branchTransaction with provided trunk transaction from (getTransactionsToApprove)
+                const withParentTransactions = assign({}, transaction, {
+                    trunkTransaction: index ? head(result.transactionObjects).hash : trunkTransaction,
+                    branchTransaction: index ? trunkTransaction : branchTransaction,
+                });
 
-        const transactionTxsString = asTransactionStrings(
-          withParentTransactions
-        );
+                const transactionTxsString = asTransactionStrings(withParentTransactions);
 
-        return powFn(transactionTxsString, minWeightMagnitude)
-          .then(nonce => {
-            // TODO check this padding with reference to this change
-            // https://github.com/HelixNetwork/helix-lib/blob/d4cb0a9681d21750f1c559f1bf47a73cff263e53/packages/transaction-converter/src/index.ts#L111
-            nonce = nonce+ "0".repeat(48);
-            const txsWithNonce = transactionTxsString
-              .substr(0, TRANSACTION_BYTES_SIZE - nonce.length)
-              .concat(nonce);
+                return powFn(transactionTxsString, minWeightMagnitude)
+                    .then((nonce) => {
+                        // TODO check this padding with reference to this change
+                        // https://github.com/HelixNetwork/helix-lib/blob/d4cb0a9681d21750f1c559f1bf47a73cff263e53/packages/transaction-converter/src/index.ts#L111
+                        nonce = nonce + '0'.repeat(48);
+                        const txsWithNonce = transactionTxsString
+                            .substr(0, TRANSACTION_BYTES_SIZE - nonce.length)
+                            .concat(nonce);
 
-            result.txs.unshift(txsWithNonce);
+                        result.txs.unshift(txsWithNonce);
 
-            return digestFn(txsWithNonce).then(digest =>
-              asTransactionObject(txsWithNonce, digest)
-            );
-          })
-          .then(transactionObject => {
-            result.transactionObjects.unshift(transactionObject);
+                        return digestFn(txsWithNonce).then((digest) => asTransactionObject(txsWithNonce, digest));
+                    })
+                    .then((transactionObject) => {
+                        result.transactionObjects.unshift(transactionObject);
 
-            return result;
-          });
-      });
-    },
-    Promise.resolve({ txs: [], transactionObjects: [] })
-  );
+                        return result;
+                    });
+            });
+        },
+        Promise.resolve({ txs: [], transactionObjects: [] }),
+    );
 };
 
 /**
@@ -724,42 +643,34 @@ export const performSequentialPow = (
  *
  * @returns {function(array, object): Promise<object>}
  **/
-export const retryFailedTransaction = settings => (
-  transactionObjects,
-  seedStore
-) => {
-  const convertToTxs = tx => asTransactionStrings(tx);
+export const retryFailedTransaction = (settings) => (transactionObjects, seedStore) => {
+    const convertToTxs = (tx) => asTransactionStrings(tx);
 
-  const cached = {
-    transactionObjects: cloneDeep(transactionObjects),
-    txs: map(transactionObjects, convertToTxs)
-  };
+    const cached = {
+        transactionObjects: cloneDeep(transactionObjects),
+        txs: map(transactionObjects, convertToTxs),
+    };
 
-  const isInvalidTransactionHash = ({ hash }) =>
-    hash === EMPTY_HASH_TXBYTES || !isHash(hash);
-  // TODO recheck
+    const isInvalidTransactionHash = ({ hash }) => hash === EMPTY_HASH_TXBYTES || !isHash(hash);
+    // TODO recheck
 
-  // Verify if all transaction objects have valid hash
-  // Proof of work was not performed correctly if any transaction has invalid hash
-  if (some(transactionObjects, isInvalidTransactionHash)) {
-    // If proof of work failed, select new tips and retry
-    return getTransactionsToApprove(settings)()
-      .then(({ trunkTransaction, branchTransaction }) => {
-        return attachToTangle(settings, seedStore)(
-          trunkTransaction,
-          branchTransaction,
-          cached.txs
-        );
-      })
-      .then(({ txs, transactionObjects }) => {
-        cached.txs = txs;
-        cached.transactionObjects = transactionObjects;
+    // Verify if all transaction objects have valid hash
+    // Proof of work was not performed correctly if any transaction has invalid hash
+    if (some(transactionObjects, isInvalidTransactionHash)) {
+        // If proof of work failed, select new tips and retry
+        return getTransactionsToApprove(settings)()
+            .then(({ trunkTransaction, branchTransaction }) => {
+                return attachToTangle(settings, seedStore)(trunkTransaction, branchTransaction, cached.txs);
+            })
+            .then(({ txs, transactionObjects }) => {
+                cached.txs = txs;
+                cached.transactionObjects = transactionObjects;
 
-        return storeAndBroadcast(settings)(cached.txs).then(() => cached);
-      });
-  }
+                return storeAndBroadcast(settings)(cached.txs).then(() => cached);
+            });
+    }
 
-  return storeAndBroadcast(settings)(cached.txs).then(() => cached);
+    return storeAndBroadcast(settings)(cached.txs).then(() => cached);
 };
 
 /**
@@ -774,13 +685,9 @@ export const retryFailedTransaction = settings => (
  */
 
 export const computeStatusText = (outputs, persistence, incoming) => {
-  const receiveStatus = persistence
-    ? i18next.t("global:received")
-    : i18next.t("global:receiving");
-  const sendStatus = persistence
-    ? i18next.t("global:sent")
-    : i18next.t("global:sending");
-  return incoming ? receiveStatus : sendStatus;
+    const receiveStatus = persistence ? i18next.t('global:received') : i18next.t('global:receiving');
+    const sendStatus = persistence ? i18next.t('global:sent') : i18next.t('global:sending');
+    return incoming ? receiveStatus : sendStatus;
 };
 
 /**
@@ -789,21 +696,18 @@ export const computeStatusText = (outputs, persistence, incoming) => {
  * @return {Array} Formatted transaction list
  */
 export const formatRelevantTransactions = (transactions, addresses) => {
-  const relevantTransactions = [];
-  map(transactions, transaction => {
-    if (
-      !transaction.incoming &&
-      transaction.outputs.every(tx => addresses.includes(tx.address))
-    ) {
-      const sendToSelfTransaction = clone(transaction);
-      sendToSelfTransaction.incoming = true;
-      relevantTransactions.push(sendToSelfTransaction);
-      relevantTransactions.push(transaction);
-    } else {
-      relevantTransactions.push(transaction);
-    }
-  });
-  return relevantTransactions;
+    const relevantTransactions = [];
+    map(transactions, (transaction) => {
+        if (!transaction.incoming && transaction.outputs.every((tx) => addresses.includes(tx.address))) {
+            const sendToSelfTransaction = clone(transaction);
+            sendToSelfTransaction.incoming = true;
+            relevantTransactions.push(sendToSelfTransaction);
+            relevantTransactions.push(transaction);
+        } else {
+            relevantTransactions.push(transaction);
+        }
+    });
+    return relevantTransactions;
 };
 
 /**
@@ -816,25 +720,22 @@ export const formatRelevantTransactions = (transactions, addresses) => {
  * @return {array} Formatted recent transactions
  */
 export const formatRelevantRecentTransactions = (transactions, addresses) => {
-  const relevantTransactions = [];
-  map(transactions, transaction => {
-    if (relevantTransactions.length < 4) {
-      if (
-        !transaction.incoming &&
-        transaction.outputs.every(tx => addresses.includes(tx.address))
-      ) {
-        const sendToSelfTransaction = clone(transaction);
-        sendToSelfTransaction.incoming = true;
-        relevantTransactions.push(sendToSelfTransaction);
+    const relevantTransactions = [];
+    map(transactions, (transaction) => {
         if (relevantTransactions.length < 4) {
-          relevantTransactions.push(transaction);
+            if (!transaction.incoming && transaction.outputs.every((tx) => addresses.includes(tx.address))) {
+                const sendToSelfTransaction = clone(transaction);
+                sendToSelfTransaction.incoming = true;
+                relevantTransactions.push(sendToSelfTransaction);
+                if (relevantTransactions.length < 4) {
+                    relevantTransactions.push(transaction);
+                }
+            } else {
+                relevantTransactions.push(transaction);
+            }
         }
-      } else {
-        relevantTransactions.push(transaction);
-      }
-    }
-  });
-  return relevantTransactions;
+    });
+    return relevantTransactions;
 };
 
 /**
@@ -846,37 +747,22 @@ export const formatRelevantRecentTransactions = (transactions, addresses) => {
  * @param {string} [order]
  *
  */
-export const sortTransactionTxBytesArray = (
-  txs,
-  sortBy = "currentIndex",
-  order = "desc"
-) => {
-  const sortableTransactionKeys = [
-    "currentIndex",
-    "lastIndex",
-    "timestamp",
-    "attachmentTimestamp"
-  ];
+export const sortTransactionTxBytesArray = (txs, sortBy = 'currentIndex', order = 'desc') => {
+    const sortableTransactionKeys = ['currentIndex', 'lastIndex', 'timestamp', 'attachmentTimestamp'];
 
-  if (
-    !includes(sortableTransactionKeys, sortBy) ||
-    !includes(["desc", "asc"], order)
-  ) {
-    return txs;
-  }
+    if (!includes(sortableTransactionKeys, sortBy) || !includes(['desc', 'asc'], order)) {
+        return txs;
+    }
 
-  const transactionObjects = map(txs, TxByteString =>
-    asTransactionObject(
-      TxByteString,
-      // Pass in null hash TxBytes to avoid computing transaction hash.
-      EMPTY_HASH_TXBYTES
-    )
-  );
+    const transactionObjects = map(txs, (TxByteString) =>
+        asTransactionObject(
+            TxByteString,
+            // Pass in null hash TxBytes to avoid computing transaction hash.
+            EMPTY_HASH_TXBYTES,
+        ),
+    );
 
-  return map(
-    orderBy(transactionObjects, [sortBy], [order]),
-    asTransactionStrings
-  );
+    return map(orderBy(transactionObjects, [sortBy], [order]), asTransactionStrings);
 };
 
 /**
@@ -887,12 +773,10 @@ export const sortTransactionTxBytesArray = (
  *
  *   @returns {boolean}
  **/
-export const isValidTransfer = transfer => {
-  return (
-    isObject(transfer) &&
-    VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX.test(transfer.address) &&
-    isNumber(transfer.value)
-  );
+export const isValidTransfer = (transfer) => {
+    return (
+        isObject(transfer) && VALID_ADDRESS_WITHOUT_CHECKSUM_REGEX.test(transfer.address) && isNumber(transfer.value)
+    );
 };
 
 /**
@@ -908,22 +792,19 @@ export const isValidTransfer = transfer => {
  * @returns {function(array): Promise<boolean>}
  **/
 
-export const isFundedBundle = (settings, withQuorum) => bundle => {
-  if (isEmpty(bundle)) {
-    return Promise.reject(new Error(Errors.EMPTY_BUNDLE_PROVIDED));
-  }
+export const isFundedBundle = (settings, withQuorum) => (bundle) => {
+    if (isEmpty(bundle)) {
+        return Promise.reject(new Error(Errors.EMPTY_BUNDLE_PROVIDED));
+    }
 
-  return getBalances(settings, withQuorum)(
-    reduce(bundle, (acc, tx) => (tx.value < 0 ? [...acc, tx.address] : acc), [])
-  ).then(balances => {
-    return (
-      reduce(
-        bundle,
-        (acc, tx) => (tx.value < 0 ? acc + Math.abs(tx.value) : acc),
-        0
-      ) <= accumulateBalance(map(balances.balances, Number))
-    );
-  });
+    return getBalances(settings, withQuorum)(
+        reduce(bundle, (acc, tx) => (tx.value < 0 ? [...acc, tx.address] : acc), []),
+    ).then((balances) => {
+        return (
+            reduce(bundle, (acc, tx) => (tx.value < 0 ? acc + Math.abs(tx.value) : acc), 0) <=
+            accumulateBalance(map(balances.balances, Number))
+        );
+    });
 };
 
 /**
@@ -932,10 +813,8 @@ export const isFundedBundle = (settings, withQuorum) => bundle => {
  * @method filterZeroValueBundles
  * @param {array} bundles
  */
-export const filterZeroValueBundles = bundles => {
-  return filter(bundles, bundle =>
-    some(bundle, transaction => transaction.value < 0)
-  );
+export const filterZeroValueBundles = (bundles) => {
+    return filter(bundles, (bundle) => some(bundle, (transaction) => transaction.value < 0));
 };
 
 /**
@@ -949,27 +828,27 @@ export const filterZeroValueBundles = bundles => {
  *
  * @returns {function(array): Promise<boolean>}
  **/
-export const filterNonFundedBundles = (settings, withQuorum) => bundles => {
-  if (isEmpty(bundles)) {
-    return Promise.reject(new Error(Errors.EMPTY_BUNDLES_PROVIDED));
-  }
+export const filterNonFundedBundles = (settings, withQuorum) => (bundles) => {
+    if (isEmpty(bundles)) {
+        return Promise.reject(new Error(Errors.EMPTY_BUNDLES_PROVIDED));
+    }
 
-  return reduce(
-    // Only check funds for value transactions
-    filterZeroValueBundles(bundles),
-    (promise, bundle) => {
-      return promise.then(result => {
-        return isFundedBundle(settings, withQuorum)(bundle).then(isFunded => {
-          if (isFunded) {
-            return [...result, bundle];
-          }
+    return reduce(
+        // Only check funds for value transactions
+        filterZeroValueBundles(bundles),
+        (promise, bundle) => {
+            return promise.then((result) => {
+                return isFundedBundle(settings, withQuorum)(bundle).then((isFunded) => {
+                    if (isFunded) {
+                        return [...result, bundle];
+                    }
 
-          return result;
-        });
-      });
-    },
-    Promise.resolve([])
-  );
+                    return result;
+                });
+            });
+        },
+        Promise.resolve([]),
+    );
 };
 
 /**
@@ -982,26 +861,22 @@ export const filterNonFundedBundles = (settings, withQuorum) => bundles => {
  *
  * @returns {object}
  */
-export const categoriseInclusionStatesByBundleHash = (
-  tailTransactions,
-  inclusionStates
-) => {
-  if (size(tailTransactions) !== size(inclusionStates)) {
-    throw new Error(Errors.INCLUSION_STATES_SIZE_MISMATCH);
-  }
+export const categoriseInclusionStatesByBundleHash = (tailTransactions, inclusionStates) => {
+    if (size(tailTransactions) !== size(inclusionStates)) {
+        throw new Error(Errors.INCLUSION_STATES_SIZE_MISMATCH);
+    }
 
-  return transform(
-    tailTransactions,
-    (acc, tailTransaction, idx) => {
-      if (tailTransaction.bundle in acc) {
-        acc[tailTransaction.bundle] =
-          acc[tailTransaction.bundle] || inclusionStates[idx];
-      } else {
-        acc[tailTransaction.bundle] = inclusionStates[idx];
-      }
-    },
-    {}
-  );
+    return transform(
+        tailTransactions,
+        (acc, tailTransaction, idx) => {
+            if (tailTransaction.bundle in acc) {
+                acc[tailTransaction.bundle] = acc[tailTransaction.bundle] || inclusionStates[idx];
+            } else {
+                acc[tailTransaction.bundle] = inclusionStates[idx];
+            }
+        },
+        {},
+    );
 };
 
 /**
@@ -1015,79 +890,69 @@ export const categoriseInclusionStatesByBundleHash = (
  * @returns {function(array, [number]): Promise<object>}
  */
 export const promoteTransactionTilConfirmed = (settings, seedStore) => (
-  tailTransactions,
-  promotionsAttemptsLimit = 50
+    tailTransactions,
+    promotionsAttemptsLimit = 50,
 ) => {
-  let promotionAttempt = 0;
-  const tailTransactionsClone = cloneDeep(tailTransactions);
+    let promotionAttempt = 0;
+    const tailTransactionsClone = cloneDeep(tailTransactions);
 
-  const _promote = tailTransaction => {
-    promotionAttempt += 1;
+    const _promote = (tailTransaction) => {
+        promotionAttempt += 1;
 
-    if (promotionAttempt === promotionsAttemptsLimit) {
-      return Promise.reject(new Error(Errors.PROMOTIONS_LIMIT_REACHED));
-    }
+        if (promotionAttempt === promotionsAttemptsLimit) {
+            return Promise.reject(new Error(Errors.PROMOTIONS_LIMIT_REACHED));
+        }
 
-    // Before every promotion, check confirmation state
-    return getLatestInclusion(settings)(
-      map(tailTransactionsClone, tx => tx.hash)
-    ).then(states => {
-      if (some(states, state => state === true)) {
-        // If any of the tail is confirmed, return the "confirmed" tail transaction object.
-        return find(
-          tailTransactionsClone,
-          (_, idx) => idx === findIndex(states, state => state === true)
-        );
-      }
+        // Before every promotion, check confirmation state
+        return getLatestInclusion(settings)(map(tailTransactionsClone, (tx) => tx.hash)).then((states) => {
+            if (some(states, (state) => state === true)) {
+                // If any of the tail is confirmed, return the "confirmed" tail transaction object.
+                return find(tailTransactionsClone, (_, idx) => idx === findIndex(states, (state) => state === true));
+            }
 
-      const { hash, attachmentTimestamp } = tailTransaction;
+            const { hash, attachmentTimestamp } = tailTransaction;
 
-      // Promote transaction
-      return promoteTransaction(settings, seedStore)(hash)
-        .then(() => {
-          return _promote(tailTransaction);
-        })
-        .catch(error => {
-          const isTransactionInconsistent = includes(
-            error.message,
-            Errors.TRANSACTION_IS_INCONSISTENT
-          );
+            // Promote transaction
+            return promoteTransaction(settings, seedStore)(hash)
+                .then(() => {
+                    return _promote(tailTransaction);
+                })
+                .catch((error) => {
+                    const isTransactionInconsistent = includes(error.message, Errors.TRANSACTION_IS_INCONSISTENT);
 
-          if (isTransactionInconsistent) {
-            // Temporarily disable reattachments if transaction is still above max depth
-            return !isAboveMaxDepth(attachmentTimestamp)
-              ? _reattachAndPromote()
-              : _promote(tailTransaction);
-          }
+                    if (isTransactionInconsistent) {
+                        // Temporarily disable reattachments if transaction is still above max depth
+                        return !isAboveMaxDepth(attachmentTimestamp)
+                            ? _reattachAndPromote()
+                            : _promote(tailTransaction);
+                    }
 
-          throw error;
+                    throw error;
+                });
         });
+    };
+
+    const _reattachAndPromote = () => {
+        // Grab first tail transaction hash
+        const tailTransaction = head(tailTransactionsClone);
+        const hash = tailTransaction.hash;
+
+        return replayBundle(settings, seedStore)(hash).then((reattachment) => {
+            const tailTransaction = find(reattachment, { currentIndex: 0 });
+            // Add newly reattached transaction
+            tailTransactionsClone.push(tailTransaction);
+
+            return _promote(tailTransaction);
+        });
+    };
+
+    return findPromotableTail(settings)(tailTransactionsClone, 0).then((consistentTail) => {
+        if (has(consistentTail, 'hash')) {
+            return _promote(consistentTail);
+        }
+
+        return _reattachAndPromote();
     });
-  };
-
-  const _reattachAndPromote = () => {
-    // Grab first tail transaction hash
-    const tailTransaction = head(tailTransactionsClone);
-    const hash = tailTransaction.hash;
-
-    return replayBundle(settings, seedStore)(hash).then(reattachment => {
-      const tailTransaction = find(reattachment, { currentIndex: 0 });
-      // Add newly reattached transaction
-      tailTransactionsClone.push(tailTransaction);
-
-      return _promote(tailTransaction);
-    });
-  };
-
-  return findPromotableTail(settings)(tailTransactionsClone, 0).then(
-    consistentTail => {
-      if (has(consistentTail, "hash")) {
-        return _promote(consistentTail);
-      }
-
-      return _reattachAndPromote();
-    }
-  );
 };
 
 /**
@@ -1098,34 +963,29 @@ export const promoteTransactionTilConfirmed = (settings, seedStore) => (
  * @param {object} [settings]
  * @returns {array}
  */
-export const assignInclusionStatesToBundles = settings => bundles => {
-  if (!isArray(bundles)) {
-    return Promise.reject(new Error(Errors.INVALID_BUNDLES_PROVIDED));
-  }
+export const assignInclusionStatesToBundles = (settings) => (bundles) => {
+    if (!isArray(bundles)) {
+        return Promise.reject(new Error(Errors.INVALID_BUNDLES_PROVIDED));
+    }
 
-  if (isEmpty(bundles)) {
-    return Promise.resolve([]);
-  }
+    if (isEmpty(bundles)) {
+        return Promise.resolve([]);
+    }
 
-  const tailTransactions = map(bundles, bundle =>
-    find(bundle, { currentIndex: 0 })
-  );
-  const tailTransactionsHashes = map(
-    tailTransactions,
-    transaction => transaction.hash
-  );
+    const tailTransactions = map(bundles, (bundle) => find(bundle, { currentIndex: 0 }));
+    const tailTransactionsHashes = map(tailTransactions, (transaction) => transaction.hash);
 
-  return getLatestInclusion(settings)(tailTransactionsHashes).then(states => {
-    return map(tailTransactions, (tailTransaction, idx) => {
-      const bundleForThisTailTransaction = find(bundles, bundle =>
-        some(bundle, transaction => transaction.hash === tailTransaction.hash)
-      );
+    return getLatestInclusion(settings)(tailTransactionsHashes).then((states) => {
+        return map(tailTransactions, (tailTransaction, idx) => {
+            const bundleForThisTailTransaction = find(bundles, (bundle) =>
+                some(bundle, (transaction) => transaction.hash === tailTransaction.hash),
+            );
 
-      return map(bundleForThisTailTransaction, transaction =>
-        assign({}, transaction, { persistence: states[idx] })
-      );
+            return map(bundleForThisTailTransaction, (transaction) =>
+                assign({}, transaction, { persistence: states[idx] }),
+            );
+        });
     });
-  });
 };
 
 /**
@@ -1137,33 +997,27 @@ export const assignInclusionStatesToBundles = settings => bundles => {
  * @returns {object}
  */
 export const mapNormalisedTransactions = (transactions, addressData) => {
-  const tailTransactions = filter(transactions, tx => tx.currentIndex === 0);
+    const tailTransactions = filter(transactions, (tx) => tx.currentIndex === 0);
 
-  const bundles = constructBundlesFromTransactions(transactions);
+    const bundles = constructBundlesFromTransactions(transactions);
 
-  return transform(
-    bundles,
-    (acc, bundle) => {
-      const bundleHead = head(bundle);
-      const bundleHash = bundleHead.bundle;
+    return transform(
+        bundles,
+        (acc, bundle) => {
+            const bundleHead = head(bundle);
+            const bundleHash = bundleHead.bundle;
 
-      // If we have already normalised bundle, then this is a reattached bundle
-      // The only thing we are interested in is persistence of the bundle
-      // Either the original transaction or a reattachment can be confirmed.
-      if (bundleHash in acc) {
-        acc[bundleHash].persistence =
-          acc[bundleHash].persistence || bundleHead.persistence;
-      } else {
-        acc[bundleHash] = normaliseBundle(
-          bundle,
-          addressData,
-          tailTransactions,
-          bundleHead.persistence
-        );
-      }
-    },
-    {}
-  );
+            // If we have already normalised bundle, then this is a reattached bundle
+            // The only thing we are interested in is persistence of the bundle
+            // Either the original transaction or a reattachment can be confirmed.
+            if (bundleHash in acc) {
+                acc[bundleHash].persistence = acc[bundleHash].persistence || bundleHead.persistence;
+            } else {
+                acc[bundleHash] = normaliseBundle(bundle, addressData, tailTransactions, bundleHead.persistence);
+            }
+        },
+        {},
+    );
 };
 
 /**
@@ -1176,25 +1030,22 @@ export const mapNormalisedTransactions = (transactions, addressData) => {
  *
  * @returns {Promise<array>}
  */
-export const constructBundleFromAttachedTxBytes = (
-  attachedTxBytes,
-  seedStore
-) => {
-  return reduce(
-    attachedTxBytes,
-    (promise, TxByteString) => {
-      return promise.then(result => {
-        return seedStore.getDigest(TxByteString).then(digest => {
-          const transactionObject = asTransactionObject(TxByteString, digest);
+export const constructBundleFromAttachedTxBytes = (attachedTxBytes, seedStore) => {
+    return reduce(
+        attachedTxBytes,
+        (promise, TxByteString) => {
+            return promise.then((result) => {
+                return seedStore.getDigest(TxByteString).then((digest) => {
+                    const transactionObject = asTransactionObject(TxByteString, digest);
 
-          result.unshift(transactionObject);
+                    result.unshift(transactionObject);
 
-          return result;
-        });
-      });
-    },
-    Promise.resolve([])
-  );
+                    return result;
+                });
+            });
+        },
+        Promise.resolve([]),
+    );
 };
 
 /**
@@ -1208,21 +1059,14 @@ export const constructBundleFromAttachedTxBytes = (
  *
  * @returns {boolean}
  */
-export const isBundleTraversable = (
-  bundle,
-  trunkTransaction,
-  branchTransaction
-) =>
-  !isEmpty(bundle) &&
-  every(
-    orderBy(bundle, ["currentIndex"], ["desc"]),
-    (transaction, index, transactions) =>
-      index
-        ? transaction.trunkTransaction === transactions[index - 1].hash &&
-          transaction.branchTransaction === trunkTransaction
-        : transaction.trunkTransaction === trunkTransaction &&
-          transaction.branchTransaction === branchTransaction
-  );
+export const isBundleTraversable = (bundle, trunkTransaction, branchTransaction) =>
+    !isEmpty(bundle) &&
+    every(orderBy(bundle, ['currentIndex'], ['desc']), (transaction, index, transactions) =>
+        index
+            ? transaction.trunkTransaction === transactions[index - 1].hash &&
+              transaction.branchTransaction === trunkTransaction
+            : transaction.trunkTransaction === trunkTransaction && transaction.branchTransaction === branchTransaction,
+    );
 
 /**
  * Ensures transaction objects in bundle are in correct (ascending) order
@@ -1233,8 +1077,7 @@ export const isBundleTraversable = (
  *
  * @returns {boolean}
  */
-export const isBundle = bundle =>
-  bundleValidator(orderBy(bundle, ["currentIndex"], ["asc"]));
+export const isBundle = (bundle) => bundleValidator(orderBy(bundle, ['currentIndex'], ['asc']));
 
 /**
  * Determines if a transaction error should be considere fatal
@@ -1245,44 +1088,174 @@ export const isBundle = bundle =>
  *
  * @returns {boolean}
  */
-export const isFatalTransactionError = err => {
-  const fatalTransferErrors = [
-    Errors.BUNDLE_NO_LONGER_FUNDED,
-    Errors.DETECTED_INPUT_WITH_ZERO_BALANCE,
-    Errors.INVALID_TRANSFER,
-    Errors.TRANSACTION_IS_INCONSISTENT,
-    Errors.ALREADY_SPENT_FROM_ADDRESSES,
-    Errors.INVALID_BUNDLE,
-    Errors.BUNDLE_NO_LONGER_VALID,
-    Errors.FUNDS_AT_SPENT_ADDRESSES,
-    Errors.KEY_REUSE
-  ];
-  return some(
-    fatalTransferErrors,
-    error => err.message && err.message.includes(error)
-  );
+export const isFatalTransactionError = (err) => {
+    const fatalTransferErrors = [
+        Errors.BUNDLE_NO_LONGER_FUNDED,
+        Errors.DETECTED_INPUT_WITH_ZERO_BALANCE,
+        Errors.INVALID_TRANSFER,
+        Errors.TRANSACTION_IS_INCONSISTENT,
+        Errors.ALREADY_SPENT_FROM_ADDRESSES,
+        Errors.INVALID_BUNDLE,
+        Errors.BUNDLE_NO_LONGER_VALID,
+        Errors.FUNDS_AT_SPENT_ADDRESSES,
+        Errors.KEY_REUSE,
+    ];
+    return some(fatalTransferErrors, (error) => err.message && err.message.includes(error));
 };
 
-export const filterInvalidPendingTransactions = provider => (
-  transactions,
-  addressData
-) => {
-  const pendingTransactions = filter(transactions, tx => !tx.persistence);
+// TODO: FROM master branch, Should be replaced with the latest
 
-  if (isEmpty(pendingTransactions)) {
-    return Promise.resolve([]);
-  }
+/**
+ * Takes addresses and transactions and returns outgoing transfers for those addresses.
+ *
+ * @param {array} addresses
+ * @param {object} transactions
+ * @returns {array}
+ */
+export const getOutgoingTransfersForAddresses = (addresses, transactions) => {
+    const selectedTransactions = new Set();
+    each(transactions, (tx) => {
+        each(tx.inputs, (input) => {
+            if (addresses.indexOf(input.address) > -1) {
+                selectedTransactions.add(tx);
+            }
+        });
+    });
 
-  const { incoming, outgoing } = categoriseTransactions(pendingTransactions);
+    return Array.from(selectedTransactions);
+};
+/**
+ * Takes addresses and transactions and returns pending outgoing transfers for those addresses.
+ *
+ * @param {array} addresses
+ * @param {object} transfers
+ * @returns {array}
+ */
+export const getPendingOutgoingTransfersForAddresses = (addresses, transfers) => {
+    const addressesWithBalance = pickBy(addresses, (address) => address.balance > 0);
+    const relevantTransfers = filter(transfers, (tx) => !tx.persistence);
 
-  const validOutgoingTransfers = filterInvalidTransactionsSync(
-    outgoing,
-    addressData
-  );
+    return getOutgoingTransfersForAddresses(keys(addressesWithBalance), relevantTransfers);
+};
 
-  return filterInvalidTransactionsAsync(provider)(incoming).then(
-    validIncomingTransfers => {
-      return [...validOutgoingTransfers, ...validIncomingTransfers];
+export const filterInvalidPendingTransactions = (provider) => (transactions, addressData) => {
+    const pendingTransactions = filter(transactions, (tx) => !tx.persistence);
+
+    if (isEmpty(pendingTransactions)) {
+        return Promise.resolve([]);
     }
-  );
+
+    const { incoming, outgoing } = categoriseTransactions(pendingTransactions);
+
+    const validOutgoingTransfers = filterInvalidTransactionsSync(outgoing, addressData);
+
+    return filterInvalidTransactionsAsync(provider)(incoming).then((validIncomingTransfers) => {
+        return [...validOutgoingTransfers, ...validIncomingTransfers];
+    });
+};
+
+/**
+ *   Categorises transactions as incoming/outgoing
+ *
+ *   @method categoriseTransactions
+ *   @param {array} transactions - Array of transfer objects
+ *   @returns {object} Categorised transactions by incoming/outgoing.
+ **/
+export const categoriseTransactions = (transactions) => {
+    return transform(transactions, (acc, tx) => (tx.incoming ? acc.incoming.push(tx) : acc.outgoing.push(tx)), {
+        incoming: [],
+        outgoing: [],
+    });
+};
+
+/**
+ *   Filters out invalid transactions (Transactions that no longer have enough balance on their input addresses)
+ *
+ *   IMPORTANT: Since, inputs balances would be checked against locally stored addresses data,
+ *   this function should only be used after account is synced.
+ *
+ *   @method filterInvalidTransactionsSync
+ *   @param {array} transactions
+ *   @param {object} addressData
+ *   @returns {array}
+ **/
+export const filterInvalidTransactionsSync = (transactions, addressData) => {
+    const validTransactions = [];
+
+    each(transactions, (transaction) => {
+        const isValidTransaction = isValidTransactionSync(transaction, addressData);
+
+        if (isValidTransaction) {
+            validTransactions.push(transaction);
+        }
+    });
+
+    return validTransactions;
+};
+
+/**
+ *   Checks if transaction's input addresses still have enough balance.
+ *
+ *   IMPORTANT: Since, inputs balances would be checked against locally stored addresses data,
+ *   this function should only be used after account is synced.
+ *
+ *   @method isValidTransactionSync
+ *   @param {object} transaction
+ *   @param {object} addressData
+ *   @returns {boolean}
+ **/
+export const isValidTransactionSync = (transaction, addressData) => {
+    const knownTransactionBalanceOnInputs = reduce(transaction.inputs, (acc, input) => acc + Math.abs(input.value), 0);
+
+    const balances = getBalancesSync(map(transaction.inputs, (input) => input.address), addressData);
+    const latestBalanceOnInputs = accumulateBalance(balances);
+
+    return knownTransactionBalanceOnInputs <= latestBalanceOnInputs;
+};
+
+/**
+ *   Communicates with the tangle and filters out invalid transactions,
+ *   (Transactions that no longer have enough balance on their input addresses)
+ *
+ *   @method filterInvalidTransactionsAsync
+ *   @param {string} provider
+ *
+ *   @returns {function(array): Promise<array>}
+ **/
+export const filterInvalidTransactionsAsync = (provider) => (transactions) => {
+    return reduce(
+        transactions,
+        (promise, transaction) => {
+            return promise.then((result) => {
+                return isValidTransactionAsync(provider)(transaction).then((isValid) => {
+                    if (isValid) {
+                        result.push(transaction);
+                    }
+
+                    return result;
+                });
+            });
+        },
+        Promise.resolve([]),
+    );
+};
+
+/**
+ *   Communicates with the tangle and checks if transaction's input addresses still have enough balance.
+ *
+ *   @method isValidTransactionAsync
+ *   @param {string} provider
+ *
+ *   @returns {function(object): Promise<boolean>}
+ **/
+export const isValidTransactionAsync = (provider) => (transaction) => {
+    const knownTransactionBalanceOnInputs = reduce(transaction.inputs, (acc, input) => acc + Math.abs(input.value), 0);
+
+    return getBalances(provider)(map(transaction.inputs, (input) => input.address), DEFAULT_BALANCES_THRESHOLD).then(
+        (balances) => {
+            const latestBalanceOnInputs = accumulateBalance(map(balances.balances, Number));
+
+            return knownTransactionBalanceOnInputs <= latestBalanceOnInputs;
+        },
+    );
 };
