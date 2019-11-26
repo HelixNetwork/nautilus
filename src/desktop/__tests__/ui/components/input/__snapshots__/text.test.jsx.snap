@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Text component Render the component 1`] = `
+exports[`test for Text component Render the Text component 1`] = `
 <div
   className="input"
 >

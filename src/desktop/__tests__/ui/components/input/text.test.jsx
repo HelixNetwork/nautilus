@@ -15,21 +15,21 @@ beforeEach(() => {
     wrapper = shallow(<Text {...props} />);
 });
 
-describe('Text component', () => {
-    test('Render the component', () => {
+describe('test for Text component', () => {
+    test('Render the Text component', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    test('Input value', () => {
+    test('Check with sample input value', () => {
       expect(wrapper.find('input').props().value).toEqual('Foo Bar');
     });
 
-    test('Input change callback', () => {
+    test('Check with Input value change ', () => {
       wrapper.find('input').simulate('change', { target: { value: 'Bar' } });
         expect(props.onChange).toHaveBeenLastCalledWith('Bar');
     });
 
-    test('Input label', () => {
+    test('Check with sample input label', () => {
       expect(wrapper.find('small').text()).toEqual('Foo');
     });
 
