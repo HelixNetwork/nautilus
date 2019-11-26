@@ -1,3 +1,5 @@
+
+
 describe('Wallet receive view', () => {
    test('Render view', async () => {
        const snapshot = await global.__screenshot('wallet/receive');
@@ -7,7 +9,7 @@ describe('Wallet receive view', () => {
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
            customSnapshotIdentifier: 'receive.test.jsx',
-        
+  
        });
    }, 10000);
 });
