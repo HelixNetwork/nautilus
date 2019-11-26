@@ -41,11 +41,9 @@ export default class Modal extends React.Component {
         const { variant, isOpen, inline } = this.props;
 
         const content = (
-            <div>
-                <div className={classNames(css.backdrop, css[variant], !isOpen ? css.hidden : null)}>
-                    <div className={css.wrapper}>
-                        <div className={css.content}>{this.props.children}</div>
-                    </div>
+            <div className={classNames(css.backdrop, css[variant], !isOpen ? css.hidden : null)}>
+                <div className={css.wrapper}>
+                    <div className={css.content}>{this.props.children}</div>
                 </div>
             </div>
         );

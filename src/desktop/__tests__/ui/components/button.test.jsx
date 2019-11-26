@@ -4,6 +4,8 @@ import { shallow } from 'enzyme';
 import Button from 'ui/components/button';
 
 const props = {
+    className:'icon',
+    disabled: true,
     onClick: jest.fn(),
    };
 
@@ -36,8 +38,8 @@ describe('Test for Button component', () => {
     });
 
     test('Button in disabled state', () => {
-        const mockProps = Object.assign({}, props, { disabled: true });
-        const wrapper = shallow(<Button {...mockProps} />);
+        //const mockProps = Object.assign({}, props, { disabled: true });
+        const wrapper = shallow(<Button {...props} />);
 
         expect(wrapper.props().disabled).toBeTruthy();
     });

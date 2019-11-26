@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Button component Render the component 1`] = `
+exports[`Test for Button component Render the Button component 1`] = `
 <button
-  className="button undefined undefined"
+  className="button icon undefined"
+  disabled={true}
   onClick={[MockFunction]}
   type="button"
 />
