@@ -1,6 +1,6 @@
 {
   "name": "nautilus-wallet",
-  "version": "v1.0.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Desktop wallet for Helix",
   "license": "Apache-2.0 OR EPL-2.0",
@@ -11,13 +11,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "install-app":"yarn && yarn run install-desktop && yarn run install-shared",
-    "install-desktop":"cd src/desktop && yarn",
-    "install-shared":"cd src/shared && yarn",
-    "start":"cd src/desktop && yarn run start",
-    "lint": "./node_modules/.bin/eslint .",
-    "lint:shared": "./node_modules/.bin/eslint src/shared/",
-    "lint:desktop": "./node_modules/.bin/eslint src/desktop/",
+    "install-app": "yarn && yarn run install-desktop && yarn run install-shared",
+    "install-desktop": "cd src/desktop && yarn",
+    "install-shared": "cd src/shared && yarn",
+    "start": "cd src/desktop && yarn run start",
+    "lint": "eslint .",
+    "lint:shared": "eslint src/shared/",
+    "lint:desktop": "eslint src/desktop/",
     "format": "prettier --write \"**/*.{js,json,css}\""
   },
   "lint-staged": {
@@ -58,5 +58,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/HelixNetwork/nautilus/issues"
   }
 }

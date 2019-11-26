@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test component Render the component 1`] = `undefined`;
+exports[`Test for Language component component Render the Language component 1`] = `
+<Select
+  label="languageSetup:language"
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "English (International)",
+        "value": "en",
+      },
+    ]
+  }
+  value="English (International)"
+/>
+`;

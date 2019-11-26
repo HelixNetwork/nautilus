@@ -15,12 +15,14 @@ beforeEach(() => {
 });
 
 
-describe('Test number component', () => {
-    test('Render the component', () => {
+describe('Test for Number component', () => {
+    test('Render the Number component', () => {
+
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Input value', () => {
+    test('Input value should resolve to 10', () => {
+        
         expect(wrapper.find('input').props().value).toEqual(10);
     });
 

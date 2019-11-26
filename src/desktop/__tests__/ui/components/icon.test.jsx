@@ -9,8 +9,8 @@ const props = {
     color: '#ff0000',
 };
 
-describe('Icon component', () => {
-    test('Render the component', () => {
+describe('Test for Icon component', () => {
+    test('Render the Icon component', () => {
         const wrapper = shallow(<Icon {...props} />);
 
         expect(wrapper).toMatchSnapshot();

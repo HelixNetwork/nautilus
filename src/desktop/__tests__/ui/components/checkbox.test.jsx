@@ -9,8 +9,8 @@ const props = {
     onChange: jest.fn(),
 };
 
-describe('Checkbox component', () => {
-    test('Render the component', () => {
+describe('Test for Checkbox component', () => {
+    test('Render the Checkbox component', () => {
         const wrapper = shallow(<Checkbox {...props} />);
 
         expect(wrapper).toMatchSnapshot();
