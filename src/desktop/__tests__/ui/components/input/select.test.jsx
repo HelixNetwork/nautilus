@@ -20,19 +20,19 @@ const props = {
     onChange: jest.fn(),
 };
 
-describe('Select component', () => {
-    test('Render the component', () => {
+describe('Test for Select component', () => {
+    test('Render the Select component', () => {
         const wrapper = shallow(<Select {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Input value', () => {
+    test('Select component Input value is English(International)', () => {
         const wrapper = shallow(<Select {...props} />);
 
         expect(wrapper.find('.selectable').text()).toEqual("English(International) ");
     });
 
-    test('Input change callback', () => {
+    test('Select component Input value is changed ', () => {
         const wrapper = shallow(<Select {...props} />);
 
         wrapper.setState({ open: true });
@@ -45,7 +45,7 @@ describe('Select component', () => {
         expect(props.onChange).toHaveBeenLastCalledWith('Fizz');
     });
 
-    test('Input disabled state', () => {
+    test('Select component Input value is disabled state', () => {
         const mockProps = Object.assign({}, props, { disabled: true });
         const wrapper = shallow(<Select {...mockProps} />);
 
