@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Checkbox component Render the component 1`] = `
+exports[`Test for Checkbox component Render the Checkbox component 1`] = `
 <div
   className="checkbox undefined"
   onClick={[Function]}
