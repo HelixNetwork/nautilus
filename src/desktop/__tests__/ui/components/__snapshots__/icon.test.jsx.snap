@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Icon component Render the component 1`] = `
+exports[`Test for Icon component Render the Icon component 1`] = `
 <span
   className="icon hlx"
   style={
