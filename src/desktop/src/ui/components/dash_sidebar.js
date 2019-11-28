@@ -41,18 +41,13 @@ class DashSidebar extends React.PureComponent {
         return (
             <div className={classNames(css.sidebar)}>
                 <ul className={classNames(css.acco_pg)}>
-                    <p style={{ marginLeft: '43px', marginBottom: '20px', marginTop: '-20px', opacity: '0.3' }}>
-                        MENU <span style={{ margin: '10px' }}> v </span>
+                    <p className={css.sidebar_p}>
+                        MENU <span className={css.menu_span}> v </span>
                     </p>
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/send')}
-                            className={classNames(css.img_sr1)}
-                            style={
-                                active === 'send'
-                                    ? { opacity: '1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)' }
-                                    : { opacity: '0.3' }
-                            }
+                            className={classNames(css.img_sr1, active === 'send' ? css.menu_link : css.link_opacity)}
                         >
                             <img src={Send} alt=" " className={css.sidebar_icon} /> {t('home:send')}
                         </div>
@@ -61,12 +56,7 @@ class DashSidebar extends React.PureComponent {
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/receive')}
-                            className={classNames(css.img_sr1)}
-                            style={
-                                active === 'receive'
-                                    ? { opacity: '1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)' }
-                                    : { opacity: '0.3' }
-                            }
+                            className={classNames(css.img_sr1, active === 'receive' ? css.menu_link : css.link_opacity)}
                         >
                             <img src={Receive} alt=" " className={css.sidebar_icon} /> {t('home:receive')}
                         </div>
@@ -75,12 +65,7 @@ class DashSidebar extends React.PureComponent {
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/chart')}
-                            className={classNames(css.img_sr1)}
-                            style={
-                                active === 'chart'
-                                    ? { opacity: '1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)' }
-                                    : { opacity: '0.3' }
-                            }
+                            className={classNames(css.img_sr1, active === 'chart' ? css.menu_link : css.link_opacity)}
                         >
                             <img src={Chart} alt=" " className={css.sidebar_icon} /> {t('home:chart')}
                         </div>
@@ -88,12 +73,7 @@ class DashSidebar extends React.PureComponent {
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/history')}
-                            className={classNames(css.img_sr1)}
-                            style={
-                                active === 'history'
-                                    ? { opacity: '1', borderBottom: '1px solid rgba(250, 192, 0, 0.75)' }
-                                    : { opacity: '0.3' }
-                            }
+                            className={classNames(css.img_sr1, active === 'history' ? css.menu_link : css.link_opacity)}
                         >
                             <img src={History} alt=" " className={css.sidebar_icon} /> {t('home:history')}
                         </div>
@@ -101,8 +81,7 @@ class DashSidebar extends React.PureComponent {
                     <li>
                         <div
                             onClick={() => this.props.history.push('/settings/editname')}
-                            className={classNames(css.img_sr1)}
-                            style={{ paddingTop: '20px', opacity: '0.3' }}
+                            className={classNames(css.img_sr1, css.menu_settings)}
                         >
                             {t('home:settings')}
                         </div>
@@ -110,18 +89,13 @@ class DashSidebar extends React.PureComponent {
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/support')}
-                            className={classNames(css.img_sr1)}
-                            style={{ opacity: '0.3' }}
+                            className={classNames(css.img_sr1, css.link_opacity)}
                         >
                             {t('global:support')}
                         </div>
                     </li>
                     <li>
-                        <div
-                            onClick={this.doLogout.bind(this)}
-                            className={classNames(css.img_sr1)}
-                            style={{ opacity: '0.3' }}
-                        >
+                        <div onClick={this.doLogout.bind(this)} className={classNames(css.img_sr1, css.link_opacity)}>
                             <FontAwesomeIcon icon={faPowerOff} /> LOGOUT{' '}
                         </div>
                     </li>
