@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`QR component Render the component 1`] = `
+exports[`Test for QR component Render the QR component 1`] = `
 <svg
   height="90"
   style={

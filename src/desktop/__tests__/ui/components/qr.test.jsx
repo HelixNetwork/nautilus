@@ -7,14 +7,14 @@ const props = {
     data: 'hlx',
 };
 
-describe('QR component', () => {
-    test('Render the component', () => {
+describe('Test for QR component', () => {
+    test('Render the QR component', () => {
         const wrapper = shallow(<QR {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Render QR code', () => {
+    test('checks the QR code', () => {
         const wrapper = shallow(<QR {...props} />);
 
         expect(wrapper.find('rect')).toHaveLength(441);
