@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Loading component Render the component 1`] = `
+exports[`Test for Loading component Render the Loading component 1`] = `
 <div
   className="loading inline transparent"
 >
