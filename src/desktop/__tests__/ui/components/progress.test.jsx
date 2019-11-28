@@ -1,21 +1,21 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+// import React from 'react';
+// import { shallow } from 'enzyme';
 
-import ProgressComponent from 'ui/components/progress';
+// import ProgressComponent from 'ui/components/progress';
 
-const props = {
-    progress: 45,
-    title: 'Updated',
-    type: 'circle',
-};
+// const props = {
+//     progress: 45,
+//     title: 'Updated',
+//     type: 'circle',
+// };
 
 
-describe('Progress component', () => {
-    test('Render the component', () => {
-        const wrapper = shallow(<ProgressComponent {...props} />);
+// describe('Progress component', () => {
+//     test('Render the component', () => {
+//         const wrapper = shallow(<ProgressComponent {...props} />);
 
-        expect(wrapper).toMatchSnapshot();
-    });
+//         expect(wrapper).toMatchSnapshot();
+//     });
 
     test('Correct progress', () => {
         const wrapper = shallow(<ProgressComponent {...props} />);
@@ -71,4 +71,4 @@ describe('Progress component', () => {
     //     expect(wrapper.find('p')).toHaveLength(0);
     // });
 
-});
+// });
