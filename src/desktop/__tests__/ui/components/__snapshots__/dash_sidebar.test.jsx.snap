@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DashSidebar component Render the DashSidebar component 1`] = `
+exports[`Test for DashSidebar component Render the DashSidebar component 1`] = `
 <div
   className="sidebar"
 >
@@ -31,6 +31,7 @@ exports[`DashSidebar component Render the DashSidebar component 1`] = `
     <li>
       <div
         className="img_sr1"
+        id="Send"
         onClick={[Function]}
         style={
           Object {

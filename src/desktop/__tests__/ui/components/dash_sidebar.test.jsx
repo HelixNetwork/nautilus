@@ -10,25 +10,23 @@ const props = {
             {
             push:  jest.fn(),
             },
-        accountNames:[],
-        onClick: jest.fn(),
+        accountNames:[]        
    };
 
    const onClick =  jest.fn();
 
-describe('DashSidebar component', () => {
+describe('Test for DashSidebar component', () => {
     test('Render the DashSidebar component', () => {
         const wrapper = shallow( <DashSidebar {...props} />);
-
+      
         expect(wrapper).toMatchSnapshot();
     });
 
-    // test('Copy to clipboard event', () => {
-    //     const wrapper = shallow(<DashSidebar {...props} />);
+    test('Test for page active type', () => {
+        const wrapper = shallow(<DashSidebar {...props} />);
+        const pushComp = wrapper.find('.list li').simulate('click');
 
-    //     wrapper.simulate('click');
-
-    //     expect(props.history.push).toHaveBeenCalledTimes(7);
+        expect(pushComp.props().style.active).toHaveLength(7);
         
-    // });
+    });
 });

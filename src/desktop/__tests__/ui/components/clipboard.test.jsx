@@ -5,7 +5,7 @@ import { ClipboardComponent as Clipboard } from 'ui/components/clipboard';
 
 const props = {
     text: 'Lorem ipsum',
-    timeout: 10,
+    timeout: 0,
     title: 'Foo',
     success: 'Bar',
     generateAlert: jest.fn(),
@@ -15,27 +15,27 @@ global.Electron = {
     clipboard: jest.fn(),
 };
 
-describe('Clipboard component', () => {
-    test('Render the component', () => {
+describe('Test for Clipboard component', () => {
+    test('Render the Clipboard component', () => {
         const wrapper = shallow(<Clipboard {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Text content', () => {
+    test('Check for Text content', () => {
         const wrapper = shallow(<Clipboard {...props} />);
 
         expect(wrapper.text()).toEqual('Lorem ipsum');
     });
 
-    test('Custom content', () => {
+    test('Check for Custom content', () => {
         const mockProps = Object.assign({}, props, { children: 'Fizz Buzz' });
         const wrapper = shallow(<Clipboard {...mockProps} />);
 
         expect(wrapper.text()).toEqual('Fizz Buzz');
     });
 
-    test('Copy to clipboard event', () => {
+    test('Checks Copy to clipboard event', () => {
         const wrapper = shallow(<Clipboard {...props} />);
 
         wrapper.simulate('click');
@@ -44,19 +44,16 @@ describe('Clipboard component', () => {
         expect(Electron.clipboard).toHaveBeenCalledTimes(1);
     });
 
-    // test('Timeout event', () => {
-    //     const wrapper = shallow(<Clipboard {...props} />);
+    test('Checks the Timeout event', () => {
+        const wrapper = shallow(<Clipboard {...props} />);
+        wrapper.simulate('click');
+        expect(Electron.clipboard).toHaveBeenCalledTimes(2);
+    });
 
-    //     //wrapper.simulate('click');
+    test('checks the copy event', () => {
+        const wrapper = shallow(<Clipboard {...props} />);
 
-    //     expect(wrapper.props().timeout).toHaveBeenCalledTimes(1);
-    //     //expect(Electron.clipboard).toHaveBeenCalledTimes(0);
-    // });
-
-    // test('copy event', () => {
-    //     const wrapper = shallow(<Clipboard {...props} />);
-
-    //     expect(wrapper.find(onclick).props() ).toHaveBeenCalled();
+        expect(wrapper.find(onclick).props() ).toHaveBeenCalled();
       
-    // });
+    });
 });

@@ -17,19 +17,19 @@ describe('Progress component', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    // test('Correct progress', () => {
-    //     const wrapper = shallow(<ProgressComponent {...props} />);
+    test('Correct progress', () => {
+        const wrapper = shallow(<ProgressComponent {...props} />);
 
-    //     const titleE2 = wrapper.find('Progress');
-    //     console.log('titleE2  ', wrapper.debug());
-    //     expect(titleE2.type).toEqual('circle');
+        const titleE2 = wrapper.find('Progress');
+        console.log('titleE2  ', wrapper.debug());
+        expect(titleE2.percent).toEqual('${props.progress}%');
 
-    //     // expect(
-    //     //     wrapper
-    //     //         .find(type)
-    //     //         .props().theme.symbol,
-    //     // ).toEqual(`${props.progress}%`);
-    // });
+        // expect(
+        //     wrapper
+        //         .find(type)
+        //         .props().theme.symbol,
+        // ).toEqual(`${props.progress}%`);
+    });
 
  
     // test('without type ', () => {
