@@ -14,10 +14,7 @@ class Logos extends React.PureComponent {
                 </div>
                 {this.props.wallet.ready && (
                     <React.Fragment>
-                        <span
-                            style={{ float: 'right', cursor: 'pointer', marginRight: '50px' }}
-                            onClick={() => this.props.history.push('/wallet/')}
-                        >
+                        <span className={css.logos_span} onClick={() => this.props.history.push('/wallet/')}>
                             <Icon icon="cross" size={18} />
                         </span>
                     </React.Fragment>
