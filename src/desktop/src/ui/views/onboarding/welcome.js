@@ -76,10 +76,7 @@ class Welcome extends React.PureComponent {
         const { step, scrollEnd } = this.state;
         let markdown = '';
         markdown = step === 'terms' ? enTermsAndConditions : enPrivacyPolicy;
-        let styles = {
-            color: '#E9B339',
-            fontSize: '20px',
-        };
+
         return (
             <div>
                 <Logos size={20} history={history} />
