@@ -89,7 +89,7 @@ class AccountName extends React.PureComponent {
             <div className={classNames(css.foo_bxx12)}>
                 <div className={classNames(css.set_bxac)}>
                     <form
-                        style={{ marginTop: '7vw' }}
+                        className={css.margin_form}
                         onSubmit={(e) => {
                             e.preventDefault();
                             this.setAccountName();
