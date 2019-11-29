@@ -101,7 +101,7 @@ class Changepassword extends React.PureComponent {
             <div className={classNames(css.foo_bxx12)}>
                 <div className={classNames(css.set_bxac)}>
                     <form onSubmit={(e) => this.changePassword(e)}>
-                        <div style={{ marginLeft: '22vw', marginTop: '6vw ' }}></div>
+                        <div className={css.form_div}></div>
                         <Password
                             style={{ marginTop: '-2vw' }}
                             type="text"
@@ -112,7 +112,7 @@ class Changepassword extends React.PureComponent {
                         />
                         <br />
                         <br />
-                        <div style={{ marginLeft: '22vw', marginTop: '-3vw' }}></div>
+                        <div className={css.form_div1}></div>
                         <Password
                             style={{ marginTop: '-2vw' }}
                             type="text"
@@ -124,7 +124,7 @@ class Changepassword extends React.PureComponent {
                         />
                         <br />
                         <br />
-                        <div style={{ marginLeft: '22vw', marginTop: '-3vw' }}></div>
+                        <div className={css.form_div1}></div>
                         <Password
                             style={{ marginTop: '-2vw' }}
                             type="text"
