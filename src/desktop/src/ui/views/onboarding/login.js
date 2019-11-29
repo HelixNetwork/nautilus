@@ -224,15 +224,12 @@ class Login extends React.PureComponent {
                 />
             );
         }
-        let styles = {
-            color: '#E9B339',
-            fontSize: '20px',
-        };
+
         return (
             <div>
                 {!showTerms && !showPrivacy ? (
                     <div>
-                        <Row className={css.centerBox} style={{ marginTop: '10vw' }}>
+                        <Row className={classNames(css.centerBox, css.centerBox_Row)}>
                             <form onSubmit={(e) => this.doLogin(e)}>
                                 <h5>
                                     {t('login:enterPassword')}
@@ -286,7 +283,7 @@ class Login extends React.PureComponent {
                             className="backgroundNone"
                         >
                             {!scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
-                            <span style={styles}> ></span>
+                            <span classname={css.scrollend_span}> ></span>
                         </Button>
                     </div>
                 )}
