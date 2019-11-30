@@ -2265,19 +2265,19 @@ margin-right: 16px;
 }
 
 .receive_coins_h3 {
-  font-size: 16px;
-  margin-left: 252px;
-  margin-top: -5vw;
-  width: 32%;
+  font-size: 16px !important;
+  margin-left: 252px !important;
+  margin-top: -5vw !important;
+  width: 32% !important;
 }
 
 .receive_h3 {
-  font-size: 14px;
-  margin-left: 0px;
-  margin-top: -2vw;
-  opacity: 0.3;
-  width: 60%;
-  text-align: center;
+  font-size: 14px !important;
+  margin-left: 0px !important;
+  margin-top: -2vw !important;
+  opacity: 0.3 !important;
+  width: 60% !important;
+  text-align: center !important;
 }
 
 .receive_p {
@@ -2348,12 +2348,12 @@ margin-right: 16px;
 }
 
 .send_coins {
-  margin-left: 494px;
+  margin-left: 494px !important;
 }
 
 .send_h6 {
   opacity:0.3;
-  margin-left:275px;
+  margin-left:275px !important;
 }
 
 .send_options {
