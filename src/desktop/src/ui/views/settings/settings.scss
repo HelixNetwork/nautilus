@@ -221,11 +221,19 @@ p {
       margin-right: 10px;
   }
   .p_style {
+    float: left;
+    width: 61%;
+    margin-left: 0%;
     font-size: 14px;
     line-height: 24px;
     font-family: monospace;
     margin-top: 2vw !important;
   }
+
+.addr_strong {
+  float: right;
+  margin-top:5%;
+}
   
 .paragraph {
   font-size: 16px;
@@ -294,3 +302,36 @@ p {
 .margin_form{
   margin-top: 7vw;
 }
+
+.mode_h5{
+  margin-left: 14vw;
+  margin-top: 11vw;
+}
+
+.snapshot_article {
+  margin-left: 10vw;
+}
+
+.snapshot_h3 {
+  margin-left: 14vw;
+  margin-top: 6vw;
+}
+
+.h3_sync {
+  margin-left: 16vw;
+  margin-top: 6vw;
+}
+
+.addr_h5 {
+  margin-left: 28vw;
+}
+
+.addresses {
+  margin-left: 25px !important;
+  padding-top:0px !important;
+}
+
+.address_li {
+  overflow: hidden;
+}
+
