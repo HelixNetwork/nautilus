@@ -17,7 +17,7 @@ describe('Test for Button component', () => {
     test('Button click event', () => {
         const wrapper = shallow(<Button {...props} />);
 
-        wrapper.simulate('click');
+        wrapper.simulate('click');   
         expect(props.onClick).toHaveBeenCalledTimes(1);
     });
 

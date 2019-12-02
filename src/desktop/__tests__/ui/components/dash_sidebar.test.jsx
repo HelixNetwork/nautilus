@@ -28,7 +28,7 @@
 
 //         wrapper.simulate('click');
 
-//         expect(props.history.push).toHaveBeenCalledTimes(7);
+//         expect(props.history.push).toHaveBeenCalledTimes(7); sr
         
 //     });
 // });

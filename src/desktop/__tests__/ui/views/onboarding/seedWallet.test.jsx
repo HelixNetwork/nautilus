@@ -1,6 +1,6 @@
 describe('Onboarding login view', () => {
     test('Render view', async () => {
-        const snapshot = await global.__screenshot('onboarding/seedWallet', false);
+        const snapshot = await global.__screenshot('onboarding/seed-wallet', false);
 
         expect(snapshot).toMatchImageSnapshot({
             customSnapshotsDir: `${__dirname}/__snapshots__/`,

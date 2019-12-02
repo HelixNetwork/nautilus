@@ -443,19 +443,19 @@ class Send extends React.PureComponent {
                                                     <br />
                                                     <div className={css.transferLoading}>
                                                         <br />
-                                                        {/*<Lottie*/}
-                                                        {/*  options={defaultOptions}*/}
-                                                        {/*  eventListeners={[*/}
-                                                        {/*    {*/}
-                                                        {/*      eventName: "complete",*/}
-                                                        {/*      callback: () => {*/}
-                                                        {/*        if (typeof onEnd === "function") {*/}
-                                                        {/*          onEnd();*/}
-                                                        {/*        }*/}
-                                                        {/*      }*/}
-                                                        {/*    }*/}
-                                                        {/*  ]}*/}
-                                                        {/*/>*/}
+                                                        {/* <Lottie
+                                                    options={defaultOptions}
+                                                        eventListeners={[
+                                                      {
+                                                              eventName: "complete",
+                                                             callback: () => {
+                                                                if (typeof onEnd === "function") {
+                                                                onEnd();
+                                                                }
+                                                              }
+                                                            }
+                                                         ]}
+                                                        />  */}
                                                     </div>
                                                     <br />
                                                     <div>

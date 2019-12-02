@@ -55,6 +55,7 @@ class PuppeteerEnvironment extends ElectronEnvironment {
             page.evaluateOnNewDocument(electronMock, settings, stateMock);
 
             await page.goto(`http://localhost:1074/${route}`, { waitUntil: 'domcontentloaded' });
+            console.log('Page===', page);
 
             return page;
         };
@@ -62,12 +63,16 @@ class PuppeteerEnvironment extends ElectronEnvironment {
         this.global.__getBrowserPage = (route, isAuthorised) => getNewPage(route, isAuthorised);
 
         this.global.__screenshot = async (route, isAuthorised, timeout) => {
-            const page = await getNewPage(route, isAuthorised);
+            console.log('Route==', route);
 
+            const page = await getNewPage(route, isAuthorised);
+            console.log('page', page);
             await new Promise((resolve) => setTimeout(resolve, timeout || 800));
 
             const screenshot = await page.screenshot(route, isAuthorised);
 
+            console.log('page which provides', route);
+            console.log('sreenshotr', screenshot);
             page.close();
 
             return screenshot;

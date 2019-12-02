@@ -145,7 +145,8 @@
             "iconSize": 120,
             "title": "${productName}",
             "sign": false,
-            "contents": [{
+            "contents": [
+                {
                     "x": 520,
                     "y": 250,
                     "type": "link",
@@ -209,7 +210,7 @@
         "file-loader": "^4.2.0",
         "jest": "^24.9.0",
         "jest-image-snapshot": "^2.11.0",
-        "puppeteer": "1.18.1",
+        "puppeteer": "^2.0.0",
         "redux-mock-store": "^1.5.3",
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
@@ -236,8 +237,8 @@
         "moduleNameMapper": {
             "\\.(scss)$": "<rootDir>/__mocks__/styleMock.js",
             "\\.(svg)$": "<rootDir>/__mocks__/fileMock.js",
-            "\\.(md)$": "<rootDir>/__mocks__/markdownMock.js",
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/scripts/assetTransformer.js"
+            "\\.(md)$": "<rootDir>/__mocks__/markdownMock.js"
+           
         },
         "transformIgnorePatterns": [
             "node_modules/react-qr-reader/"
