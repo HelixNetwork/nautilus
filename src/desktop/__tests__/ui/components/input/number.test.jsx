@@ -26,26 +26,26 @@ describe('Test for Number component', () => {
         expect(wrapper.find('input').props().value).toEqual(10);
     });
 
-    test('Input change callback', () => {
+    test('Input component change callback value =999', () => {
         wrapper.find('input').simulate('change', { target: { value: '999' } });
         expect(props.onChange).toHaveBeenLastCalledWith(999);
     });
 
-    test('Input min value callback', () => {
+    test('Input min value callback =5', () => {
         const wrapper = shallow(<Number min={10} {...props} />);
 
         wrapper.find('input').simulate('change', { target: { value: '5' } });
         expect(props.onChange).toHaveBeenLastCalledWith(10);
     });
 
-    test('Input max value callback', () => {
+    test('Input max value callback =15', () => {
         const wrapper = shallow(<Number max={10} {...props} />);
 
         wrapper.find('input').simulate('change', { target: { value: '15' } });
         expect(props.onChange).toHaveBeenLastCalledWith(10);
     });
 
-    test('Input label', () => {
+    test('Checking Input label', () => {
         expect(wrapper.find('small').text()).toEqual('Foo');
     });
 

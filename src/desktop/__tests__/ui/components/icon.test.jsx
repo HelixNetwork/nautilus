@@ -16,20 +16,20 @@ describe('Test for Icon component', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Render svg element', () => {
+    test('Test for Render svg element', () => {
         const wrapper = shallow(<Icon {...props} />);
 
         expect(wrapper.text()).toEqual('');
     });
 
-    test('Icon size', () => {
+    test('Test for Icon size', () => {
         const wrapper = shallow(<Icon {...props} />);
 
         expect(wrapper.props().style.fontSize).toEqual(32);
         expect(wrapper.props().style.lineHeight).toEqual('32px');
     });
 
-    test('Icon color', () => {
+    test('Test for Icon color', () => {
         const wrapper = shallow(<Icon {...props} />);
 
         expect(wrapper.props().style.color).toEqual('#ff0000');

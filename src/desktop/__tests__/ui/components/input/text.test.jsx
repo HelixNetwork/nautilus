@@ -15,23 +15,23 @@ import {Text} from 'ui/components/input/text';
 //     wrapper = shallow(<Text {...props} />);
 // });
 
-// describe('Text component', () => {
-//     test('Render the component', () => {
-//       expect(wrapper).toMatchSnapshot();
-//     });
+describe('test for Text component', () => {
+    test('Render the Text component', () => {
+      expect(wrapper).toMatchSnapshot();
+    });
 
-//     test('Input value', () => {
-//       expect(wrapper.find('input').props().value).toEqual('Foo Bar');
-//     });
+    test('Check with sample input value', () => {
+      expect(wrapper.find('input').props().value).toEqual('Foo Bar');
+    });
 
-//     test('Input change callback', () => {
-//       wrapper.find('input').simulate('change', { target: { value: 'Bar' } });
-//         expect(props.onChange).toHaveBeenLastCalledWith('Bar');
-//     });
+    test('Check with Input value change ', () => {
+      wrapper.find('input').simulate('change', { target: { value: 'Bar' } });
+        expect(props.onChange).toHaveBeenLastCalledWith('Bar');
+    });
 
-//     test('Input label', () => {
-//       expect(wrapper.find('small').text()).toEqual('Foo');
-//     });
+    test('Check with sample input label', () => {
+      expect(wrapper.find('small').text()).toEqual('Foo');
+    });
 
 //     test('Input disabled state', () => {
 //         const mockProps = Object.assign({}, props, { disabled: true });
@@ -39,4 +39,4 @@ import {Text} from 'ui/components/input/text';
 
 //         expect(wrapper.hasClass('disabled')).toBeTruthy();
 //     });
-// });
+ });

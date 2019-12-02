@@ -10,27 +10,27 @@ const props = {
     onChange: jest.fn(),
 };
 
-describe('Toggle component', () => {
-    test('Render the component', () => {
+describe('Test for Toggle component', () => {
+    test('Render the Toggle component', () => {
         const wrapper = shallow(<Toggle {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Off state', () => {
+    test('Checks Toggle Off state', () => {
         const wrapper = shallow(<Toggle {...props} />);
 
         expect(wrapper.find('div div').hasClass('on')).toBeFalsy();
     });
 
-    test('On state', () => {
+    test('Checks Toggle On state', () => {
         const mockProps = Object.assign({}, props, { checked: true });
         const wrapper = shallow(<Toggle {...mockProps} />);
 
         expect(wrapper.find('div div').hasClass('on')).toBeTruthy();
     });
 
-    test('Toggle event', () => {
+    test('Checks the Toggle event', () => {
         const wrapper = shallow(<Toggle {...props} />);
 
         wrapper.simulate('click');

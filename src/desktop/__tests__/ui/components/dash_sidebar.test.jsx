@@ -4,15 +4,14 @@
 // import {DashSidebar}  from 'ui/components/dash_sidebar';
 
 
-// const props = {
-//         t: (str) => str,
-//         history:
-//             {
-//             push:  jest.fn(),
-//             },
-//         accountNames:[],
-//         onClick: jest.fn(),
-//    };
+const props = {
+        t: (str) => str,
+        history:
+            {
+            push:  jest.fn(),
+            },
+        accountNames:[]        
+   };
 
 // //    const onClick =  jest.fn();
 

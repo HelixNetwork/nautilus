@@ -32,8 +32,10 @@ export default class ProgressBar extends React.PureComponent {
 
     render() {
         const { progress, title, pageType, type } = this.props;
+        console.log('page type', pageType);
         if (pageType === 'send') {
             console.log('type expected send', type);
+            console.log('pageType expected send', pageType);
             console.log('Progress expected ', progress);
             if (Math.min(progress, 100) === 0) {
                 this.setState({

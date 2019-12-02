@@ -45,6 +45,7 @@ export class DashSidebar extends React.PureComponent {
                     </p>
                     <li>
                         <div
+                            id="Send"
                             onClick={() => this.props.history.push('/wallet/send')}
                             className={classNames(css.img_sr1)}
                             style={
