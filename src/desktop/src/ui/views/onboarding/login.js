@@ -67,8 +67,6 @@ class Login extends React.PureComponent {
         showTerms: false,
         showPrivacy: false,
         scrollEnd: false,
-        dontshowmsg: false,
-        skipdontshow: false,
     };
 
     setShowTerms(e) {
@@ -85,26 +83,16 @@ class Login extends React.PureComponent {
         this.setState({ showPrivacy: false });
     }
 
-    setDontShowMsgStatus(e) {
-        this.setState({
-            dontshowmsg: true,
-        });
+    openTermsInBrowser(e) {
+        // eslint-disable-next-line no-undef
+        Electron.openExternal(newTermsNotice);
     }
 
     hideTermsNotificaition(e) {
-        if (this.state.dontshowmsg) {
-            this.props.updateNewTermsNotice({ newTermsNotice, newTermsDate });
-        } else {
-            this.setState({
-                skipdontshow: true,
-            });
-        }
+        this.props.updateNewTermsNotice({ newTermsNotice, newTermsDate });
         this.setState({
             showNewTermsNotification: false,
         });
-
-        // eslint-disable-next-line no-undef
-        Electron.openExternal(newTermsNotice);
     }
 
     componentDidMount() {
@@ -221,7 +209,7 @@ class Login extends React.PureComponent {
 
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
-        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification, dontshowmsg, skipdontshow } = this.state;
+        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
         if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,
@@ -229,11 +217,6 @@ class Login extends React.PureComponent {
         } else if (newterms === newTerms && newtermsupdatenotice !== newTermsNotice) {
             this.setState({
                 showNewTermsNotification: true,
-            });
-        }
-        if (skipdontshow) {
-            this.setState({
-                showNewTermsNotification: false,
             });
         }
         if (ui.isFetchingAccountInfo) {
@@ -319,16 +302,9 @@ class Login extends React.PureComponent {
                     >
                         <div className={css.newtermsUpdateNotice}>
                             <p>We are updating our Terms &amp; Conditions and Privacy Policy on {newTermsDate}</p>
-                            <div>
-                                <input
-                                    type="checkbox"
-                                    checked={dontshowmsg}
-                                    onChange={this.setDontShowMsgStatus.bind(this)}
-                                />
-                                <label>Don't show this message again.</label>
-                            </div>
                             <br />
                             <Button onClick={this.hideTermsNotificaition.bind(this)}>Accept</Button>
+                            <Button onClick={this.openTermsInBrowser.bind(this)}>Review</Button>
                         </div>
                     </Modal>
                 )}
