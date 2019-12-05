@@ -17,7 +17,7 @@ import { setPassword, clearWalletData } from 'actions/wallet';
 /**
  * Sidebar for dashboard
  */
-class DashSidebar extends React.PureComponent {
+export class DashSidebar extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
         t: PropTypes.func.isRequired,
@@ -37,7 +37,6 @@ class DashSidebar extends React.PureComponent {
 
     render() {
         const { t, active } = this.props;
-
         return (
             <div className={classNames(css.sidebar)}>
                 <ul className={classNames(css.acco_pg)}>
@@ -46,6 +45,7 @@ class DashSidebar extends React.PureComponent {
                     </p>
                     <li>
                         <div
+                            id="Send"
                             onClick={() => this.props.history.push('/wallet/send')}
                             className={classNames(css.img_sr1)}
                             style={
@@ -57,7 +57,6 @@ class DashSidebar extends React.PureComponent {
                             <img src={Send} alt=" " className={css.sidebar_icon} /> {t('home:send')}
                         </div>
                     </li>
-
                     <li>
                         <div
                             onClick={() => this.props.history.push('/wallet/receive')}

@@ -12,7 +12,7 @@ import css from './input.scss';
 /**
  * Password input component
  */
-class PasswordInput extends React.PureComponent {
+export class PasswordInput extends React.PureComponent {
     static propTypes = {
         /** Current password value */
         value: PropTypes.string.isRequired,
@@ -93,10 +93,11 @@ class PasswordInput extends React.PureComponent {
                 style={this.props.style ? this.props.style : {}}
             >
                 <fieldset>
-                    <a href=" " className={hidden ? css.strike : null} onClick={this.setVisibility}>
+                    <a className={hidden ? css.strike : null} onClick={this.setVisibility}>
                         <Icon icon="eye" size={16} />
                     </a>
                     <input
+                        {...(disabled && { tabIndex: '-1' })}
                         type={hidden ? 'password' : 'text'}
                         ref={(input) => {
                             this.input = input;

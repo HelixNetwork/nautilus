@@ -28,7 +28,7 @@ import Scrollbar from 'ui/components/scrollbar';
 /**
  *
  */
-class Receive extends React.PureComponent {
+export class Receive extends React.PureComponent {
     static propTypes = {
         location: PropTypes.object,
         history: PropTypes.shape({

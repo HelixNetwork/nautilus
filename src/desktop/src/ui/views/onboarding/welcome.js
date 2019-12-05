@@ -12,7 +12,7 @@ import Language from 'ui/components/input/language';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import css from './welcome.scss';
-import { NEWTERMS, newTermsNotice } from 'shared/config';
+import { newTerms, newTermsNotice } from '../../../../../shared/config';
 /**
  * Nautilus Welcome Screen component
  */
@@ -65,7 +65,7 @@ class Welcome extends React.PureComponent {
                 break;
             default:
                 acceptPrivacy();
-                acceptNewTerms(NEWTERMS);
+                acceptNewTerms(newTerms);
                 updateNewTermsNotice(newTermsNotice);
                 history.push('/onboarding/seed-intro');
         }
@@ -110,6 +110,7 @@ class Welcome extends React.PureComponent {
                         </React.Fragment>
                     )}
                     <Button
+                        id="to-seed-intro"
                         disabled={step !== 'language' && !scrollEnd}
                         onClick={this.onNextClick}
                         className="backgroundNone"

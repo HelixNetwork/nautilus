@@ -13,7 +13,7 @@ import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
-import { newTerms, newTermsNotice } from 'shared/config';
+import { newTerms, newTermsNotice } from '../../../../../shared/config';
 import { acceptNewTerms, updateNewTermsNotice } from 'actions/settings';
 import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
 import Scrollbar from 'ui/components/scrollbar';
@@ -204,6 +204,7 @@ class Login extends React.PureComponent {
     render() {
         const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
         const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
+        console.log(newTermsNotice, newTerms, newterms);
         if (newterms < newTerms && !this.state.showPrivacy) {
             this.setState({
                 showTerms: true,

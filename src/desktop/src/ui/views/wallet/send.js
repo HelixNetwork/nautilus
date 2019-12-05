@@ -443,19 +443,19 @@ class Send extends React.PureComponent {
                                                     <br />
                                                     <div className={css.transferLoading}>
                                                         <br />
-                                                        {/*<Lottie*/}
-                                                        {/*  options={defaultOptions}*/}
-                                                        {/*  eventListeners={[*/}
-                                                        {/*    {*/}
-                                                        {/*      eventName: "complete",*/}
-                                                        {/*      callback: () => {*/}
-                                                        {/*        if (typeof onEnd === "function") {*/}
-                                                        {/*          onEnd();*/}
-                                                        {/*        }*/}
-                                                        {/*      }*/}
-                                                        {/*    }*/}
-                                                        {/*  ]}*/}
-                                                        {/*/>*/}
+                                                        {/* <Lottie
+                                                    options={defaultOptions}
+                                                        eventListeners={[
+                                                      {
+                                                              eventName: "complete",
+                                                             callback: () => {
+                                                                if (typeof onEnd === "function") {
+                                                                onEnd();
+                                                                }
+                                                              }
+                                                            }
+                                                         ]}
+                                                        />  */}
                                                     </div>
                                                     <br />
                                                     <div>
@@ -478,7 +478,7 @@ class Send extends React.PureComponent {
                                     {isSending && (
                                         <Modal isOpen={isSending} onClose={() => this.resetForm.bind(this)}>
                                             <ProgressBar
-                                                type={'send'}
+                                                pageType={'send'}
                                                 progress={this.state.progress}
                                                 title={progressTitle}
                                             />

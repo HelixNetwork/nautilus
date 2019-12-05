@@ -838,15 +838,26 @@
     "@helixnetwork/transaction-converter" "^1.0.0-alpha.6"
     "@helixnetwork/winternitz" "^1.0.0-alpha.6"
 
-"@helixnetwork/bundle@^1.0.0-alpha.6":
-  version "1.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@helixnetwork/bundle/-/bundle-1.0.0-alpha.6.tgz#001961b8f8ce920502949e31fa6a310bf4bfd47b"
-  integrity sha512-ZbmwOVYsg6M+cu1OI8VJKi6F5ui3PP6KDz8jQ9NQvNlfoX46ZRGR16DFg3Um66FAXZ6G+4P3qEQnciepbxeIHg==
+"@helixnetwork/bundle-validator@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/bundle-validator/-/bundle-validator-1.0.0-alpha.7.tgz#ca556072c66d0d98dd36e397771a91f2af6a3c9d"
+  integrity sha512-wtrovLTdPLOJXKRkdKqI5KAJLPCqaUSenGwiqFpylQcAHAnTo9i2rg/NIiDQ44+b7DVNkW91+oiA4UpWkw4l1Q==
   dependencies:
-    "@helixnetwork/converter" "^1.0.0-alpha.6"
-    "@helixnetwork/hash-module" "^1.0.0-alpha.6"
-    "@helixnetwork/pad" "^1.0.0-alpha.6"
-    "@helixnetwork/winternitz" "^1.0.0-alpha.6"
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
+    "@helixnetwork/transaction" "^1.0.0-alpha.7"
+    "@helixnetwork/transaction-converter" "^1.0.0-alpha.7"
+    "@helixnetwork/winternitz" "^1.0.0-alpha.7"
+
+"@helixnetwork/bundle@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/bundle/-/bundle-1.0.0-alpha.7.tgz#131a1ec8a79209297cf3fa8f6f367a17e46c201f"
+  integrity sha512-RsSqGMqlskkBhaSUAodewmHrxYTDZFIeMIUDzkKSgK+sI3WLBxN3x3HPz5SmoBQtpGjsgCAntoLToJGTy/3nfw==
+  dependencies:
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
+    "@helixnetwork/pad" "^1.0.0-alpha.7"
+    "@helixnetwork/winternitz" "^1.0.0-alpha.7"
 
 "@helixnetwork/checksum@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
@@ -856,26 +867,39 @@
     "@helixnetwork/converter" "^1.0.0-alpha.6"
     "@helixnetwork/hash-module" "^1.0.0-alpha.6"
 
+"@helixnetwork/checksum@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/checksum/-/checksum-1.0.0-alpha.7.tgz#be21d20026e3b21a84311f75a12f0f3301434adf"
+  integrity sha512-GyFCDptLSW/5CrZtfQC9IAoR+RQSGTz0pvEujbTiTiq+92rpBAofg/FHvkHtpoUNCpNDZguy5zajyvBxy91ATg==
+  dependencies:
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
+
 "@helixnetwork/converter@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@helixnetwork/converter/-/converter-1.0.0-alpha.6.tgz#69d3a1abe05b0168201399c4cc0bc7229e28edc7"
   integrity sha512-mAxxlinnsrbgnVttzLRbGqHmjQyyqv7ise2I7m6NpUy2BQ9+uomt+8fSVJNQe8qhODsaiJn0ERKaFCvXREiLAQ==
 
-"@helixnetwork/core@^1.0.0-alpha.6":
-  version "1.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@helixnetwork/core/-/core-1.0.0-alpha.6.tgz#550f8b66f9c28423a7acdbbe8512bbe135e4cba2"
-  integrity sha512-mHJ6EKdTACP+fLJJY+iZ/dogMLq0tCTAed2Qyy6HylM3AR78ZGtybpv1N7rhtxFRUuyWFLyNInDY/wNP+YqJIA==
+"@helixnetwork/converter@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/converter/-/converter-1.0.0-alpha.7.tgz#f6cd22bc7a1c585ad19bdf410b6f89111c27845b"
+  integrity sha512-+w3Z3FsBfEPMliw0+M0oSLWOq9rPHjSZJKcNh3m2FqWR/llM8+OOkfOCVKmvOBfbO+VEsipzIZJ5prHprkzH8g==
+
+"@helixnetwork/core@^1.0.0-alpha.8":
+  version "1.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/core/-/core-1.0.0-alpha.8.tgz#9120d03418061cee7b9b477d67749f7a133dfeb1"
+  integrity sha512-ShDnx7av9pLFlzerKY6nAfJlIPtNNrTVbREVm9AvL+tFGIPdPVh9ZJdYHphejmu8fynZaM/Z3Xv/2A8fxJDmxg==
   dependencies:
-    "@helixnetwork/bundle" "^1.0.0-alpha.6"
-    "@helixnetwork/bundle-validator" "^1.0.0-alpha.6"
-    "@helixnetwork/checksum" "^1.0.0-alpha.6"
-    "@helixnetwork/converter" "^1.0.0-alpha.6"
-    "@helixnetwork/hash-module" "^1.0.0-alpha.6"
-    "@helixnetwork/http-client" "^1.0.0-alpha.6"
-    "@helixnetwork/pad" "^1.0.0-alpha.6"
-    "@helixnetwork/transaction" "^1.0.0-alpha.6"
-    "@helixnetwork/transaction-converter" "^1.0.0-alpha.6"
-    "@helixnetwork/winternitz" "^1.0.0-alpha.6"
+    "@helixnetwork/bundle" "^1.0.0-alpha.7"
+    "@helixnetwork/bundle-validator" "^1.0.0-alpha.7"
+    "@helixnetwork/checksum" "^1.0.0-alpha.7"
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
+    "@helixnetwork/http-client" "^1.0.0-alpha.7"
+    "@helixnetwork/pad" "^1.0.0-alpha.7"
+    "@helixnetwork/transaction" "^1.0.0-alpha.7"
+    "@helixnetwork/transaction-converter" "^1.0.0-alpha.7"
+    "@helixnetwork/winternitz" "^1.0.0-alpha.7"
     "@types/bluebird" "^3.5.20"
     bluebird "^3.5.1"
 
@@ -884,10 +908,15 @@
   resolved "https://registry.yarnpkg.com/@helixnetwork/hash-module/-/hash-module-1.0.0-alpha.6.tgz#483af04b2597602a2f3b4f7da070d8954d633b4c"
   integrity sha512-XU7z04SUwdFDh18VAg6O0hBtQwrrf0FwqfjPhjsJFC21SjoGLvKdj/YEYIJA+TOzR3plopp6Vbsd182Hr1AYXw==
 
-"@helixnetwork/http-client@^1.0.0-alpha.6":
-  version "1.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@helixnetwork/http-client/-/http-client-1.0.0-alpha.6.tgz#8d52dd01c1ad721fd5d10d525aeb4ba626aff383"
-  integrity sha512-9EEZs27FMKaqGXbjSVy/PWv0LxsfRJsoPop0qQKRL0R15j3c8hhGct8Ng2eVlpbWnZYlYCX4Zoj9hf7rVzxLSw==
+"@helixnetwork/hash-module@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/hash-module/-/hash-module-1.0.0-alpha.7.tgz#cd8df244f7ebece0bb7cdc008b83c77db39d8b04"
+  integrity sha512-RwGiFdOdIDDwKaVehFMRPALbuF18wJ/uTfXp+x4C4QCzTSQw7O5Opyauhz6HwPra69PqXTRrfdv0SU3g3AjmEA==
+
+"@helixnetwork/http-client@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/http-client/-/http-client-1.0.0-alpha.7.tgz#9d3f5d4bfbcf714d02b37f7e9c5db6a42a66ceac"
+  integrity sha512-40wuFeVKIr+fRpDz+3VjkDvdFcHOOL+x3gVvasyMxj0Ra1dFvfiSDf0RZa6c7xVCtN3LMBwkSb/QwZEijLmHpA==
   dependencies:
     "@types/bluebird" "^3.5.20"
     "@types/isomorphic-fetch" "^0.0.34"
@@ -900,10 +929,24 @@
   resolved "https://registry.yarnpkg.com/@helixnetwork/pad/-/pad-1.0.0-alpha.6.tgz#0099a9509508ebcc93f6066579065ecb0daddc0b"
   integrity sha512-AohO1MEaPA7OLntAtCF/PRDK6nAG3q2VkD0FGigS+Lu2U7RXi0SsbaQ28MqHDnatXtq8WjJn+3sXEOCQ8D0d2A==
 
+"@helixnetwork/pad@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/pad/-/pad-1.0.0-alpha.7.tgz#b448b148091043fd847e980d4ca5026abd06cd42"
+  integrity sha512-oWfNg7iJIeZ3CmSL6Olv7PicMY674OTh7eQ62mIuBAa7R4/kyH9hW3L7Do2es8Raori+gqO3kBF9kxK9ESFY2A==
+
 "@helixnetwork/sha3@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@helixnetwork/sha3/-/sha3-1.0.0-alpha.6.tgz#2e17b282283843cb202b885ebdcb828714b9e6b1"
   integrity sha512-k11sY3DwjgwUFVGOyPwUJaEoFwSf3rboFpWS/PZJeQirJ8zUzC9si/6KeNyTxiA9zuw+J8++UsSKu71EqgwtYg==
+  dependencies:
+    bn.js "^4.11.8"
+    js-sha3 "^0.8.0"
+    types-bn "0.0.1"
+
+"@helixnetwork/sha3@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/sha3/-/sha3-1.0.0-alpha.7.tgz#ecd089da71849a02e9184a51b14549bb40fbb51b"
+  integrity sha512-eWWCyGVuHdIKgboNkynUEr0knG2s1hENs4xVmzvYlG/BES4JJdS6XY7jVaJHjeqmoXK3m34LYem+QsK8g3k0XQ==
   dependencies:
     bn.js "^4.11.8"
     js-sha3 "^0.8.0"
@@ -919,6 +962,16 @@
     "@helixnetwork/pad" "^1.0.0-alpha.6"
     "@helixnetwork/transaction" "^1.0.0-alpha.6"
 
+"@helixnetwork/transaction-converter@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/transaction-converter/-/transaction-converter-1.0.0-alpha.7.tgz#0c7b786b7586cc137ebac3cfacf59d044452336e"
+  integrity sha512-1oiFMB0z9jkJ0GR0k3PXojiC6XHlqi6qPj70trwVyjGrjqci7zkWq7mpQSgXkxQKsBb5YhR3UxejGc/f8/GAVg==
+  dependencies:
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
+    "@helixnetwork/pad" "^1.0.0-alpha.7"
+    "@helixnetwork/transaction" "^1.0.0-alpha.7"
+
 "@helixnetwork/transaction@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@helixnetwork/transaction/-/transaction-1.0.0-alpha.6.tgz#b6932c0606e68c64412be14ff86e65ed6464d2a7"
@@ -926,6 +979,14 @@
   dependencies:
     "@helixnetwork/converter" "^1.0.0-alpha.6"
     "@helixnetwork/hash-module" "^1.0.0-alpha.6"
+
+"@helixnetwork/transaction@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/transaction/-/transaction-1.0.0-alpha.7.tgz#de9f335cf8cd04d94cf9eb526866ebb351675160"
+  integrity sha512-TidawIwv650jh0rswOe/JaTwC4delji23aqAgyHi0DTxjtRkqBqyAnjsEh8CKIVL5s1SDQqhqK7DE24xU4Co5g==
+  dependencies:
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
 
 "@helixnetwork/validators@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
@@ -944,6 +1005,17 @@
     "@helixnetwork/hash-module" "^1.0.0-alpha.6"
     "@helixnetwork/pad" "^1.0.0-alpha.6"
     "@helixnetwork/sha3" "^1.0.0-alpha.6"
+    bcrypto "^2.0.0"
+
+"@helixnetwork/winternitz@^1.0.0-alpha.7":
+  version "1.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@helixnetwork/winternitz/-/winternitz-1.0.0-alpha.7.tgz#dcc772de07e66ca2e18c646ba5ec456f528c4d7b"
+  integrity sha512-TmPOQmqdQjWaY9vic4mc7TzTwmFNMOfOILq9f199rWRwMF5XI1DywhzuatRJNhFBuITR9JJvXhwtqVIX6EpPBg==
+  dependencies:
+    "@helixnetwork/converter" "^1.0.0-alpha.7"
+    "@helixnetwork/hash-module" "^1.0.0-alpha.7"
+    "@helixnetwork/pad" "^1.0.0-alpha.7"
+    "@helixnetwork/sha3" "^1.0.0-alpha.7"
     bcrypto "^2.0.0"
 
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.0.2", "@sinonjs/commons@^1.4.0":

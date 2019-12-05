@@ -1,7 +1,11 @@
-import { app, Menu, ipcMain, dialog, shell, clipboard } from 'electron';
+import { app, Menu, ipcMain, ipc, dialog, shell, clipboard } from 'electron';
 import logger from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import os from 'os';
+import fs from 'fs';
+import path from 'path';
+import URL from 'url';
+
 //  Wallet Application Menu
 
 autoUpdater.logger = logger;
@@ -62,7 +66,22 @@ let language = {
         installUpdateExplanation: `Download complete, ${app.getName()} will now restart to install the update`,
     },
 };
+/**
+ * Define wallet windows
+ */
+const windows = {
+    main: null,
+    tray: null,
+};
+/**
+ * Set environment mode
+ */
+const devMode = process.env.NODE_ENV === 'development';
 
+const paths = {
+    assets: path.resolve(devMode ? __dirname : app.getAppPath(), devMode ? '../' : './', 'assets'),
+    preload: path.resolve(devMode ? __dirname : app.getAppPath(), devMode ? '../' : './', 'dist'),
+};
 let getWindow = null;
 
 // Disable automatic update downloads
@@ -510,3 +529,18 @@ export const contextMenu = () => {
         },
     ]);
 };
+/**
+ * On screenshot event, create a screenshot of the wallet
+ * Enabled only in development mode
+ */
+ipc.on('screenshot', (e, fileName) => {
+    if (devMode && windows.main) {
+        windows.main.capturePage((image) => {
+            fs.writeFile(fileName, image.toPNG(), (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
+        });
+    }
+});
