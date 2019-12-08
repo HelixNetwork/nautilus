@@ -529,18 +529,3 @@ export const contextMenu = () => {
         },
     ]);
 };
-/**
- * On screenshot event, create a screenshot of the wallet
- * Enabled only in development mode
- */
-ipc.on('screenshot', (e, fileName) => {
-    if (devMode && windows.main) {
-        windows.main.capturePage((image) => {
-            fs.writeFile(fileName, image.toPNG(), (err) => {
-                if (err) {
-                    throw err;
-                }
-            });
-        });
-    }
-});
