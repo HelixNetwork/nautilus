@@ -169,10 +169,8 @@ class Snapshot extends PureComponent {
                 <Top bal={'none'} main={'block'} user={'none'} history={this.props.history} />
                 <section className="spage_1">
                     <div className={classNames(css.foo_bxx12)}>
-                        <article style={{ marginLeft: '10vw' }}>
-                            <h3 style={{ marginLeft: '14vw', marginTop: '6vw' }}>
-                                {t('advancedSettings:snapshotTransition')}
-                            </h3>
+                        <article className={css.snapshot_article}>
+                            <h3 className={css.snapshot_h3}>{t('advancedSettings:snapshotTransition')}</h3>
                             <p className={css.p_opacity}>
                                 {t('snapshotTransition:snapshotExplanation')} <br />
                                 {t('snapshotTransition:hasSnapshotTakenPlace')}
@@ -200,7 +198,7 @@ class Snapshot extends PureComponent {
                                     cancel: t('global:no'),
                                 }}
                             />
-                            <h3 style={{ marginLeft: '16vw', marginTop: '6vw' }}>{t('advancedSettings:manualSync')}</h3>
+                            <h3 className={css.h3_sync}>{t('advancedSettings:manualSync')}</h3>
                             {ui.isSyncing ? (
                                 <p className={css.p_opacity}>
                                     {t('manualSync:syncingYourAccount')} <br />

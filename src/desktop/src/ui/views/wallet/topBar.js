@@ -79,12 +79,12 @@ class TopBar extends Component {
                 <div className={css.top}>
                     <img src={logo} alt=" " />
                     <div className={css.topIn}>
-                        <h4 style={{ marginBottom: '-13px' }}>BALANCE</h4>
+                        <h4 className={css.topBar_h4}>BALANCE</h4>
                         <br />
                         <div>
                             {' '}
                             <span className={css.dot}></span>
-                            <h6 style={{ opacity: '0.3' }}>
+                            <h6 className={css.link_opacity}>
                                 <IntlProvider locale="en">
                                     <FormattedNumber value={amount} currency={currency} />
                                 </IntlProvider>

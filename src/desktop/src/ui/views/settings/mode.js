@@ -27,7 +27,7 @@ class SettingsMode extends React.PureComponent {
         return (
             <div className={classNames(css.foo_bxx12)}>
                 <div className={classNames(css.set_bxac)}>
-                    <h5 style={{ marginLeft: '14vw', marginTop: '11vw' }}>{t('settings:mode')}</h5>
+                    <h5 className={css.mode_h5}>{t('settings:mode')}</h5>
                     <input type="text" className={classNames(css.ssetting_textline)}></input>
                     <br />
                     <br />

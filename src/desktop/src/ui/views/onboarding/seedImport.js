@@ -220,7 +220,7 @@ class SeedImport extends React.PureComponent {
         const { importBuffer, seedPhrase, isGenerated, importVisible, hidden } = this.state;
         return (
             <div>
-                <Row style={{ marginTop: '5vw' }}>
+                <Row className={css.done_row}>
                     <h1>
                         {t('seedReentry:enterYourSeed')}
                         <span className={classNames(css.text_color)}>.</span>
@@ -247,7 +247,7 @@ class SeedImport extends React.PureComponent {
                             isOpen={importVisible}
                             onClose={() => this.setState({ importVisible: false })}
                         >
-                            <form style={{ top: '-30px', left: '350px' }}>
+                            <form className={css.import_form}>
                                 <PasswordInput
                                     focus
                                     value={this.state.password}

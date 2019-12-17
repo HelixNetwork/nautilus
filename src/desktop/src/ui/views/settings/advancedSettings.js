@@ -108,10 +108,10 @@ class AdvancedSettings extends React.PureComponent {
             <div className={classNames(css.foo_bxx12)}>
                 <Scrollbar>
                     <div className={classNames(css.set_bxac)}>
-                        <h3 style={{ marginLeft: '25vw', marginTop: '0vw' }}>{t('pow:powUpdated')}</h3>
+                        <h3 className={css.advanced_powupdateh3}>{t('pow:powUpdated')}</h3>
 
                         {/* <hr className={classNames(css.setinghr)} /> */}
-                        <p className={css.p_opacity} style={{ marginLeft: '5vw', marginTop: '2vw' }}>
+                        <p className={classNames(css.p_opacity, css.advanced_pow_p)}>
                             {t('pow:feeless')} {t('pow:localOrRemote')}
                         </p>
                         <Toggle
@@ -121,7 +121,7 @@ class AdvancedSettings extends React.PureComponent {
                             off={t('pow:local')}
                         />
                         {/* <hr className={classNames(css.setinghr)}/> */}
-                        <h3 style={{ marginLeft: '27vw', marginTop: '3vw' }}>{t('advancedSettings:autoPromotion')}</h3>
+                        <h3 className={css.advanced_h3}>{t('advancedSettings:autoPromotion')}</h3>
 
                         <p className={css.p_opacity}>{t('advancedSettings:autoPromotionExplanation')}</p>
                         <Toggle
@@ -131,7 +131,7 @@ class AdvancedSettings extends React.PureComponent {
                             off={t('disabled')}
                         />
                         {/* <hr className={classNames(css.setinghr)}/> */}
-                        <h3 style={{ marginLeft: '27vw' }}>{t('notifications:notifications')}</h3>
+                        <h3 className={css.advanced_notification}>{t('notifications:notifications')}</h3>
                         <Toggle
                             checked={settings.notifications.general}
                             onChange={() =>
@@ -155,12 +155,12 @@ class AdvancedSettings extends React.PureComponent {
                             onChange={(value) => setNotifications({ type: 'messages', enabled: value })}
                         />
 
-                        <p className={css.p_opacity} style={{ marginLeft: '19vw', marginTop: '2vw' }}>
+                        <p className={classNames(css.p_opacity, css.advanced_notification_p)}>
                             {t('notifications:notificationExplanation')}
                         </p>
                         {/* <hr className={classNames(css.setinghr1)} /> */}
                         <React.Fragment>
-                            <h3 style={{ marginLeft: '27vw' }}>{t('proxy:proxy')}</h3>
+                            <h3 className={css.advanced_notification}>{t('proxy:proxy')}</h3>
                             <Toggle
                                 checked={!settings.ignoreProxy}
                                 onChange={this.setProxy}
@@ -170,7 +170,7 @@ class AdvancedSettings extends React.PureComponent {
                             <p className={css.p_opacity}>{t('proxy:proxyExplanation')}</p>
                         </React.Fragment>
                         {/* <hr className={classNames(css.setinghr2)} /> */}
-                        <h3 style={{ marginLeft: '29vw', marginTop: '2vw' }}>{t('settings:reset')}</h3>
+                        <h3 className={css.advanced_reset}>{t('settings:reset')}</h3>
                         {/* <hr className={classNames(css.setinghr3)} /> */}
                         <Trans i18nKey="walletResetConfirmation:warning">
                             <p className={css.p_opacity}>

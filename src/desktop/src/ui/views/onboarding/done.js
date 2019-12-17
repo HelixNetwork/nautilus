@@ -46,7 +46,7 @@ class Done extends React.PureComponent {
         return (
             <div>
                 <Logos history={history} />
-                <Row style={{ marginTop: '5vw' }}>
+                <Row className={css.done_row}>
                     <h1 className={classNames(css.head_h1)}>
                         {t('onboardingComplete:allDone')}
                         <span className={classNames(css.text_color)}>!</span>
