@@ -136,7 +136,7 @@ class Changepassword extends React.PureComponent {
                         <br />
                         <br />
                         <Button
-                            style={{ marginLeft: '32vw', marginTop: '-2vw' }}
+                            style={{ marginLeft: '27vw', marginTop: '-2vw' }}
                             type="submit"
                             disabled={!passwordCurrent.length || !passwordNew.length || !passwordConfirm.length}
                         >
