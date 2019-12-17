@@ -269,7 +269,7 @@ class Receive extends React.PureComponent {
                                                             message: message,
                                                         })}
                                                     />
-                                                    <p classname={css.shareqr}>{t('receive:shareQr')}</p>
+                                                    <p className={css.shareqr}>{t('receive:shareQr')}</p>
                                                 </div>
                                             </Clipboard>
                                         )}

@@ -288,7 +288,7 @@ class Login extends React.PureComponent {
                             className="backgroundNone"
                         >
                             {!scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
-                            <span classname={css.scrollend_span}> ></span>
+                            <span className={css.scrollend_span}> ></span>
                         </Button>
                     </div>
                 )}
