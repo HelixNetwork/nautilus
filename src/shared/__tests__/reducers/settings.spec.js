@@ -7,13 +7,21 @@ describe('Reducer: settings', () => {
     describe('initial state', () => {
         it('should have an initial state', () => {
             const initialState = {
-                completedByteTritSweep: false,
                 locale: 'en',
+                language: 'English (International)',
                 node: DEFAULT_NODE,
+                remotePoW: false,
+                ignoreProxy: false,
+                autoPromotion: true,
                 nodes: DEFAULT_NODES,
                 customNodes: [],
                 mode: 'Standard',
-                language: 'English (International)',
+                quorum: {
+                    size: QUORUM_SIZE,
+                    enabled: true,
+                },
+                nodeAutoSwitch: true,
+                autoNodeList: true,
                 currency: 'USD',
                 availableCurrencies: [
                     'USD',
@@ -50,35 +58,18 @@ describe('Reducer: settings', () => {
                     'TRY',
                     'ZAR',
                 ],
-                conversionRate: 1,
+
                 themeName: 'Default',
-                remotePoW: false,
-                powNode: '',
-                powNodeAutoSwitch: true,
-                lockScreenTimeout: 3,
-                versions: {},
-                isFingerprintEnabled: false,
                 acceptedTerms: false,
                 acceptedPrivacy: false,
-                autoPromotion: true,
-                hideEmptyTransactions: false,
-                isTrayEnabled: true,
                 notifications: {
                     general: true,
                     confirmations: true,
                     messages: true,
                 },
                 completedMigration: false,
-                ignoreProxy: false,
-                deepLinking: false,
-                quorum: {
-                    size: QUORUM_SIZE,
-                    enabled: true,
-                },
-                nodeAutoSwitch: true,
-                autoNodeList: true,
+                lockScreenTimeout: 3,
             };
-
             expect(reducer(undefined, {})).to.eql(initialState);
         });
     });
@@ -125,27 +116,6 @@ describe('Reducer: settings', () => {
         });
     });
 
-    describe(SettingsActionTypes.SET_POW_NODE, () => {
-        it('should update remotePoW in state', () => {
-            const initialState = {
-                powNode: '',
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_POW_NODE,
-                payload: 'https://foo.bar',
-            };
-
-            const newState = reducer(initialState, action);
-
-            const expectedState = {
-                powNode: 'https://foo.bar',
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe(SettingsActionTypes.SET_AUTO_PROMOTION, () => {
         it('should update autoPromotion in state', () => {
             const initialState = {
@@ -183,29 +153,6 @@ describe('Reducer: settings', () => {
 
                 const expectedState = {
                     nodeAutoSwitch: true,
-                };
-
-                expect(newState).to.eql(expectedState);
-            });
-        });
-    });
-
-    describe(SettingsActionTypes.UPDATE_POW_NODE_AUTO_SWITCH_SETTING, () => {
-        describe('when action.payload is defined', () => {
-            it('should set powNodeAutoSwitch to action.payload', () => {
-                const initialState = {
-                    powNodeAutoSwitch: true,
-                };
-
-                const action = {
-                    type: SettingsActionTypes.UPDATE_POW_NODE_AUTO_SWITCH_SETTING,
-                    payload: false,
-                };
-
-                const newState = reducer(initialState, action);
-
-                const expectedState = {
-                    powNodeAutoSwitch: false,
                 };
 
                 expect(newState).to.eql(expectedState);
@@ -676,44 +623,6 @@ describe('Reducer: settings', () => {
         });
     });
 
-    describe(SettingsActionTypes.SET_DEEP_LINKING, () => {
-        it('should set deepLinking to true', () => {
-            const initialState = {
-                deepLinking: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_DEEP_LINKING,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                deepLinking: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.TOGGLE_EMPTY_TRANSACTIONS, () => {
-        it('should invert state.hideEmptyTransactions', () => {
-            const initialState = {
-                hideEmptyTransactions: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.TOGGLE_EMPTY_TRANSACTIONS,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                hideEmptyTransactions: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe(SettingsActionTypes.SET_COMPLETED_FORCED_PASSWORD_UPDATE, () => {
         it('should set completedForcedPasswordUpdate to true', () => {
             const initialState = {
@@ -727,26 +636,6 @@ describe('Reducer: settings', () => {
             const newState = reducer(initialState, action);
             const expectedState = {
                 completedForcedPasswordUpdate: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.SET_BYTETRIT_STATUS, () => {
-        it('should set completedByteTritSweep to action.payload', () => {
-            const initialState = {
-                completedByteTritSweep: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_BYTETRIT_STATUS,
-                payload: true,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                completedByteTritSweep: true,
             };
 
             expect(newState).to.eql(expectedState);
