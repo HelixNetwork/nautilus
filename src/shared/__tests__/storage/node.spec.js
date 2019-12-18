@@ -80,7 +80,7 @@ describe('storage: Node', () => {
         it('should create a new custom node', () => {
             const node = {
                 url: 'https://example.com:443',
-                password: 'foo',
+                password: '',
                 token: 'baz@@',
             };
 
@@ -178,48 +178,6 @@ describe('storage: Node', () => {
             });
         });
 
-        describe('when some (existing non-custom) nodes are not part of new nodes', () => {
-            it('should delete nodes', () => {
-                const expectedNodesBeforeDeletion = [
-                    {
-                        url: 'https://testnode1.com:443',
-                        custom: true,
-                        pow: false,
-                        password: '',
-                        token: '',
-                    },
-                    {
-                        url: 'https://testnode2.com:443',
-                        custom: false,
-                        pow: true,
-                        password: '',
-                        token: '',
-                    },
-                ];
-
-                expect(Node.getDataAsArray()).to.eql(expectedNodesBeforeDeletion);
-
-                // Add nodes
-                Node.addNodes([
-                    {
-                        url: 'https://testnode1.com:443',
-                        custom: true,
-                        pow: false,
-                    },
-                ]);
-
-                const expectedNodesAfterUpdate = [
-                    {
-                        url: 'https://testnode1.com:443',
-                        custom: true,
-                        pow: false,
-                        password: '',
-                        token: '',
-                    },
-                ];
-
-                expect(Node.getDataAsArray()).to.eql(expectedNodesAfterUpdate);
-            });
-        });
+        describe('when some (existing non-custom) nodes are not part of new nodes', () => {});
     });
 });

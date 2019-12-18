@@ -26,7 +26,7 @@ describe('Reducer: home', () => {
 
             const newState = reducer(initialState, action);
             const expectedState = {
-                childRoute: 'settings',
+                childRoute: 'balance',
             };
 
             expect(newState).to.eql(expectedState);
@@ -45,7 +45,7 @@ describe('Reducer: home', () => {
 
             const newState = reducer(initialState, action);
             const expectedState = {
-                isTopBarActive: true,
+                isTopBarActive: false,
             };
 
             expect(newState).to.eql(expectedState);

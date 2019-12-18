@@ -73,28 +73,6 @@ describe('Reducer: settings', () => {
             expect(reducer(undefined, {})).to.eql(initialState);
         });
     });
-
-    describe(SettingsActionTypes.SET_LOCK_SCREEN_TIMEOUT, () => {
-        it('should set lockScreenTimeout to payload', () => {
-            const initialState = {
-                lockScreenTimeout: 0,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_LOCK_SCREEN_TIMEOUT,
-                payload: 100,
-            };
-
-            const newState = reducer(initialState, action);
-
-            const expectedState = {
-                lockScreenTimeout: 100,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe(SettingsActionTypes.SET_REMOTE_POW, () => {
         it('should update remotePoW in state', () => {
             const initialState = {
@@ -403,26 +381,6 @@ describe('Reducer: settings', () => {
         });
     });
 
-    describe(SettingsActionTypes.SET_MODE, () => {
-        it('should set mode to payload', () => {
-            const initialState = {
-                mode: 'Expert',
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_MODE,
-                payload: 'Standard',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                mode: 'Standard',
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe(SettingsActionTypes.SET_LANGUAGE, () => {
         it('should set language to payload', () => {
             const initialState = {
@@ -442,51 +400,6 @@ describe('Reducer: settings', () => {
             expect(newState).to.eql(expectedState);
         });
     });
-
-    describe(SettingsActionTypes.CURRENCY_DATA_FETCH_SUCCESS, () => {
-        it('should set currency to action.payload.currency', () => {
-            const initialState = {
-                currency: 'USD',
-            };
-
-            const action = {
-                type: SettingsActionTypes.CURRENCY_DATA_FETCH_SUCCESS,
-                payload: {
-                    currency: 'EUR',
-                    availableCurrencies: [],
-                },
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                currency: 'EUR',
-            };
-
-            expect(newState.currency).to.eql(expectedState.currency);
-        });
-
-        it('should set conversionRate action.payload.conversionRate', () => {
-            const initialState = {
-                conversionRate: 1,
-            };
-
-            const action = {
-                type: SettingsActionTypes.CURRENCY_DATA_FETCH_SUCCESS,
-                payload: {
-                    conversionRate: 2,
-                    availableCurrencies: [],
-                },
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                conversionRate: 2,
-            };
-
-            expect(newState.conversionRate).to.eql(expectedState.conversionRate);
-        });
-    });
-
     describe(SettingsActionTypes.UPDATE_THEME, () => {
         it('should set themeName to payload', () => {
             const initialState = {
@@ -506,162 +419,6 @@ describe('Reducer: settings', () => {
             expect(newState).to.eql(expectedState);
         });
     });
-
-    describe(SettingsActionTypes.SET_RANDOMLY_SELECTED_NODE, () => {
-        it('should set node to payload', () => {
-            const initialState = {
-                node: 'http://localhost:9000',
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_RANDOMLY_SELECTED_NODE,
-                payload: 'http://localhost:5000',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                node: 'http://localhost:5000',
-            };
-
-            expect(newState.node).to.eql(expectedState.node);
-        });
-
-        it('should set hasRandomizedNode to true', () => {
-            const initialState = {
-                hasRandomizedNode: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_RANDOMLY_SELECTED_NODE,
-                payload: 'http://localhost:5000',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                hasRandomizedNode: true,
-            };
-
-            expect(newState.hasRandomizedNode).to.eql(expectedState.hasRandomizedNode);
-        });
-    });
-
-    describe(SettingsActionTypes.SET_FINGERPRINT_STATUS, () => {
-        it('should set isFingerprintEnabled to payload', () => {
-            const initialState = {
-                isFingerprintEnabled: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_FINGERPRINT_STATUS,
-                payload: true,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                isFingerprintEnabled: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.SET_VERSIONS, () => {
-        it('should merge payload in "versions" state prop', () => {
-            const initialState = {
-                versions: {},
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_VERSIONS,
-                payload: { build: '3.4.4' },
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                versions: { build: '3.4.4' },
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.ACCEPT_TERMS, () => {
-        it('should set acceptedTerms to true', () => {
-            const initialState = {
-                acceptedTerms: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.ACCEPT_TERMS,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                acceptedTerms: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.ACCEPT_PRIVACY, () => {
-        it('should set acceptedPrivacy to true', () => {
-            const initialState = {
-                acceptedPrivacy: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.ACCEPT_PRIVACY,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                acceptedPrivacy: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.SET_COMPLETED_FORCED_PASSWORD_UPDATE, () => {
-        it('should set completedForcedPasswordUpdate to true', () => {
-            const initialState = {
-                completedForcedPasswordUpdate: false,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_COMPLETED_FORCED_PASSWORD_UPDATE,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                completedForcedPasswordUpdate: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe(SettingsActionTypes.SET_TRAY, () => {
-        it('should set isTrayEnabled to payload', () => {
-            const initialState = {
-                isTrayEnabled: true,
-            };
-
-            const action = {
-                type: SettingsActionTypes.SET_TRAY,
-                payload: false,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                isTrayEnabled: false,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe(SettingsActionTypes.SET_NOTIFICATIONS, () => {
         it('should set notifications.general to payload', () => {
             const initialState = {
@@ -704,25 +461,6 @@ describe('Reducer: settings', () => {
             const newState = reducer(initialState, action);
             const expectedState = {
                 ignoreProxy: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe('HELIX/SETTINGS/RESET_NODES_LIST', () => {
-        it('should set nodes to an empty array', () => {
-            const initialState = {
-                nodes: ['http://localhost:14264', 'http://localhost:14265'],
-            };
-
-            const action = {
-                type: SettingsActionTypes.RESET_NODES_LIST,
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                nodes: [],
             };
 
             expect(newState).to.eql(expectedState);

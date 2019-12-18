@@ -1,5 +1,12 @@
 import { expect } from 'chai';
 import reducer from '../../reducers/ui';
+import {
+    SettingsActionTypes,
+    UiActionTypes,
+    WalletActionTypes,
+    TransfersActionTypes,
+    PollingActionTypes,
+} from '../../actions/types';
 
 describe('Reducer: ui', () => {
     describe('initial state', () => {
@@ -24,18 +31,18 @@ describe('Reducer: ui', () => {
                 sendDenomination: 'i',
                 doNotMinimise: false,
                 isModalActive: false,
+                modalProps: {},
+                modalContent: 'snapshotTransitionInfo',
                 isCheckingCustomNode: false,
                 isChangingNode: false,
                 currentlyPromotingBundleHash: '',
-                loginRoute: 'login',
-                isRetryingFailedTransaction: false,
-                qrAmount: '',
-                qrDenomination: 'i',
                 qrMessage: '',
                 qrTag: '',
+                qrAmount: '',
+                loginRoute: 'login',
+                isRetryingFailedTransaction: false,
+                qrDenomination: 'i',
                 selectedQrTab: 'message',
-                modalContent: 'snapshotTransitionInfo',
-                modalProps: {},
                 currentRoute: 'login',
                 hadErrorGeneratingNewAddress: false,
                 isKeyboardActive: false,
@@ -53,7 +60,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/SETTINGS/CURRENCY_DATA_FETCH_REQUEST',
+                type: SettingsActionTypes.CURRENCY_DATA_FETCH_REQUEST,
             };
 
             const newState = reducer(initialState, action);
@@ -62,23 +69,6 @@ describe('Reducer: ui', () => {
             };
 
             expect(newState.isFetchingCurrencyData).to.eql(expectedState.isFetchingCurrencyData);
-        });
-
-        it('should set "hasErrorFetchingCurrencyData" state prop to false', () => {
-            const initialState = {
-                hasErrorFetchingCurrencyData: true,
-            };
-
-            const action = {
-                type: 'HELIX/SETTINGS/CURRENCY_DATA_FETCH_REQUEST',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                hasErrorFetchingCurrencyData: false,
-            };
-
-            expect(newState.hasErrorFetchingCurrencyData).to.eql(expectedState.hasErrorFetchingCurrencyData);
         });
     });
 
@@ -89,7 +79,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/SETTINGS/CURRENCY_DATA_FETCH_SUCCESS',
+                type: SettingsActionTypes.CURRENCY_DATA_FETCH_SUCCESS,
             };
 
             const newState = reducer(initialState, action);
@@ -108,7 +98,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/SETTINGS/CURRENCY_DATA_FETCH_ERROR',
+                type: SettingsActionTypes.CURRENCY_DATA_FETCH_ERROR,
             };
 
             const newState = reducer(initialState, action);
@@ -117,23 +107,6 @@ describe('Reducer: ui', () => {
             };
 
             expect(newState.isFetchingCurrencyData).to.eql(expectedState.isFetchingCurrencyData);
-        });
-
-        it('should set "hasErrorFetchingCurrencyData" state prop to true', () => {
-            const initialState = {
-                hasErrorFetchingCurrencyData: false,
-            };
-
-            const action = {
-                type: 'HELIX/SETTINGS/CURRENCY_DATA_FETCH_ERROR',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                hasErrorFetchingCurrencyData: true,
-            };
-
-            expect(newState.hasErrorFetchingCurrencyData).to.eql(expectedState.hasErrorFetchingCurrencyData);
         });
     });
 
@@ -144,7 +117,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/UI/SET_SEND_ADDRESS_FIELD',
+                type: UiActionTypes.SET_SEND_ADDRESS_FIELD,
                 payload: 'foo',
             };
 
@@ -164,7 +137,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/UI/SET_SEND_AMOUNT_FIELD',
+                type: UiActionTypes.SET_SEND_AMOUNT_FIELD,
                 payload: 'foo',
             };
 
@@ -184,7 +157,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/UI/SET_SEND_MESSAGE_FIELD',
+                type: UiActionTypes.SET_SEND_MESSAGE_FIELD,
                 payload: 'foo',
             };
 
@@ -204,7 +177,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/UI/CLEAR_SEND_FIELDS',
+                type: UiActionTypes.CLEAR_SEND_FIELDS,
             };
 
             const newState = reducer(initialState, action);
@@ -221,7 +194,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/UI/CLEAR_SEND_FIELDS',
+                type: UiActionTypes.CLEAR_SEND_FIELDS,
             };
 
             const newState = reducer(initialState, action);
@@ -231,81 +204,7 @@ describe('Reducer: ui', () => {
 
             expect(newState.sendAmountFieldText).to.eql(expectedState.sendAmountFieldText);
         });
-
-        it('should set "sendMessageFieldText" state prop to an empty string', () => {
-            const initialState = {
-                sendMessageFieldText: 'foo',
-            };
-
-            const action = {
-                type: 'HELIX/UI/CLEAR_SEND_FIELDS',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                sendMessageFieldText: '',
-            };
-
-            expect(newState.sendMessageFieldText).to.eql(expectedState.sendMessageFieldText);
-        });
     });
-
-    describe('HELIX/APP/WALLET/SET_DEEP_LINK_CONTENT:', () => {
-        it('should set "sendAddressFieldText" state prop to "address" in action', () => {
-            const initialState = {
-                sendAddressFieldText: '',
-            };
-
-            const action = {
-                type: 'HELIX/APP/WALLET/SET_DEEP_LINK_CONTENT',
-                address: '9'.repeat(81),
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                sendAddressFieldText: '9'.repeat(81),
-            };
-
-            expect(newState.sendAddressFieldText).to.eql(expectedState.sendAddressFieldText);
-        });
-
-        it('should set "sendAmountFieldText" state prop to "amount" in action', () => {
-            const initialState = {
-                sendAmountFieldText: '',
-            };
-
-            const action = {
-                type: 'HELIX/APP/WALLET/SET_DEEP_LINK_CONTENT',
-                amount: '100',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                sendAmountFieldText: '100',
-            };
-
-            expect(newState.sendAmountFieldText).to.eql(expectedState.sendAmountFieldText);
-        });
-
-        it('should set "sendMessageFieldText" state prop to "message" in action', () => {
-            const initialState = {
-                sendMessageFieldText: '',
-            };
-
-            const action = {
-                type: 'HELIX/APP/WALLET/SET_DEEP_LINK_CONTENT',
-                message: 'YNWA',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                sendMessageFieldText: 'YNWA',
-            };
-
-            expect(newState.sendMessageFieldText).to.eql(expectedState.sendMessageFieldText);
-        });
-    });
-
     describe('HELIX/UI/SET_SEND_DENOMINATION', () => {
         it('should set "sendDenomination" state prop to "payload" in action', () => {
             const initialState = {
@@ -313,7 +212,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/UI/SET_SEND_DENOMINATION',
+                type: UiActionTypes.SET_SEND_DENOMINATION,
                 payload: 'Mi',
             };
 
@@ -333,7 +232,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/TRANSFERS/PROMOTE_TRANSACTION_REQUEST',
+                type: TransfersActionTypes.PROMOTE_TRANSACTION_REQUEST,
             };
 
             const newState = reducer(initialState, action);
@@ -343,43 +242,7 @@ describe('Reducer: ui', () => {
 
             expect(newState.isPromotingTransaction).to.eql(expectedState.isPromotingTransaction);
         });
-
-        it('should set "currentlyPromotingBundleHash" state prop to payload in action', () => {
-            const initialState = {
-                currentlyPromotingBundleHash: '',
-            };
-
-            const action = {
-                type: 'HELIX/TRANSFERS/PROMOTE_TRANSACTION_REQUEST',
-                payload: 'foo',
-            };
-
-            const newState = reducer(initialState, action);
-            expect(newState.currentlyPromotingBundleHash).to.eql('foo');
-        });
     });
-
-    describe('HELIX/TRANSFERS/PROMOTE_TRANSACTION_SUCCESS', () => {
-        it('should set "isPromotingTransaction" state prop to false and "currentlyPromotingBundleHash" to empty strings', () => {
-            const initialState = {
-                isPromotingTransaction: true,
-                currentlyPromotingBundleHash: 'foo',
-            };
-
-            const action = {
-                type: 'HELIX/TRANSFERS/PROMOTE_TRANSACTION_SUCCESS',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                isPromotingTransaction: false,
-                currentlyPromotingBundleHash: '',
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe('HELIX/TRANSFERS/PROMOTE_TRANSACTION_ERROR', () => {
         it('should set "isPromotingTransaction" state prop to true and "currentlyPromotingBundleHash" to empty strings', () => {
             const initialState = {
@@ -388,7 +251,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/TRANSFERS/PROMOTE_TRANSACTION_ERROR',
+                type: PollingActionTypes.PROMOTE_TRANSACTION_ERROR,
             };
 
             const newState = reducer(initialState, action);
@@ -406,7 +269,7 @@ describe('Reducer: ui', () => {
             const initialState = {};
 
             const action = {
-                type: 'HELIX/UI/SET_USER_ACTIVITY',
+                type: UiActionTypes.SET_USER_ACTIVITY,
                 payload: { foo: {} },
             };
 
@@ -427,7 +290,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/GENERATE_NEW_ADDRESS_REQUEST',
+                type: WalletActionTypes.GENERATE_NEW_ADDRESS_REQUEST,
             };
 
             const newState = reducer(initialState, action);
@@ -447,7 +310,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/GENERATE_NEW_ADDRESS_SUCCESS',
+                type: WalletActionTypes.GENERATE_NEW_ADDRESS_SUCCESS,
             };
 
             const newState = reducer(initialState, action);
@@ -467,7 +330,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/GENERATE_NEW_ADDRESS_ERROR',
+                type: WalletActionTypes.GENERATE_NEW_ADDRESS_ERROR,
             };
 
             const newState = reducer(initialState, action);
@@ -487,7 +350,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/TRANSFERS/SEND_TRANSFER_REQUEST',
+                type: TransfersActionTypes.SEND_TRANSFER_REQUEST,
             };
 
             const newState = reducer(initialState, action);
@@ -506,7 +369,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/TRANSFERS/SEND_TRANSFER_SUCCESS',
+                type: TransfersActionTypes.SEND_TRANSFER_SUCCESS,
             };
 
             const newState = reducer(initialState, action);
@@ -525,7 +388,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/TRANSFERS/SEND_TRANSFER_ERROR',
+                type: TransfersActionTypes.SEND_TRANSFER_ERROR,
             };
 
             const newState = reducer(initialState, action);
@@ -544,7 +407,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/CLEAR_WALLET_DATA',
+                type: WalletActionTypes.CLEAR_WALLET_DATA,
             };
 
             const newState = reducer(initialState, action);
@@ -561,7 +424,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/CLEAR_WALLET_DATA',
+                type: WalletActionTypes.CLEAR_WALLET_DATA,
             };
 
             const newState = reducer(initialState, action);
@@ -578,7 +441,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/CLEAR_WALLET_DATA',
+                type: WalletActionTypes.CLEAR_WALLET_DATA,
             };
 
             const newState = reducer(initialState, action);
@@ -595,7 +458,7 @@ describe('Reducer: ui', () => {
             };
 
             const action = {
-                type: 'HELIX/WALLET/CLEAR_WALLET_DATA',
+                type: WalletActionTypes.CLEAR_WALLET_DATA,
             };
 
             const newState = reducer(initialState, action);
@@ -605,86 +468,7 @@ describe('Reducer: ui', () => {
 
             expect(newState.sendAmountFieldText).to.eql(expectedState.sendAmountFieldText);
         });
-
-        it('should set "sendMessageFieldText" state prop to an empty string', () => {
-            const initialState = {
-                sendMessageFieldText: 'foo',
-            };
-
-            const action = {
-                type: 'HELIX/WALLET/CLEAR_WALLET_DATA',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                sendMessageFieldText: '',
-            };
-
-            expect(newState.sendMessageFieldText).to.eql(expectedState.sendMessageFieldText);
-        });
     });
-
-    describe('HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST', () => {
-        it('should set "hasErrorFetchingAccountInfo" state prop to false', () => {
-            const initialState = {
-                hasErrorFetchingFullAccountInfo: true,
-            };
-
-            const action = {
-                type: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_REQUEST',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                hasErrorFetchingFullAccountInfo: false,
-                isFetchingAccountInfo: true,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe('HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR', () => {
-        it('should set "hasErrorFetchingAccountInfo" state prop to true', () => {
-            const initialState = {
-                hasErrorFetchingFullAccountInfo: false,
-            };
-
-            const action = {
-                type: 'HELIX/ACCOUNTS/FULL_ACCOUNT_INFO_FETCH_ERROR',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                hasErrorFetchingFullAccountInfo: true,
-                isFetchingAccountInfo: false,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
-    describe('HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_REQUEST', () => {
-        it('should set "isFetchingAccountInfo" state prop to true', () => {
-            const initialState = {
-                isFetchingAccountInfo: false,
-                hasErrorFetchingAccountInfo: false,
-            };
-
-            const action = {
-                type: 'HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_REQUEST',
-            };
-
-            const newState = reducer(initialState, action);
-            const expectedState = {
-                isFetchingAccountInfo: true,
-                hasErrorFetchingAccountInfo: false,
-            };
-
-            expect(newState).to.eql(expectedState);
-        });
-    });
-
     describe('HELIX/ACCOUNTS/ACCOUNT_INFO_FETCH_SUCCESS', () => {
         it('should set "isFetchingAccountInfo" state prop to false', () => {
             const initialState = {
