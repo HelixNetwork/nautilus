@@ -7,17 +7,12 @@ import {
     selectedAccountStateFactory,
     getAccountNamesFromState,
     selectAccountInfo,
-    getTransactionsForSelectedAccount,
     getAddressesForSelectedAccount,
     getBalanceForSelectedAccount,
     getSelectedAccountName,
     getSelectedAccountMeta,
     getSetupInfoFromAccounts,
     getTasksFromAccounts,
-    getSetupInfoForSelectedAccount,
-    getTasksForSelectedAccount,
-    shouldTransitionForSnapshot,
-    hasDisplayedSnapshotTransitionGuide,
     selectLatestAddressFromAccountFactory,
     getSelectedAccountType,
     getPromotableBundlesFromState,
@@ -27,7 +22,7 @@ import {
 } from '../../selectors/accounts';
 import accounts, { NAME as MOCK_ACCOUNT_NAME, TYPE as MOCK_ACCOUNT_TYPE } from '../__samples__/accounts';
 import addresses, { latestAddressWithoutChecksum, latestAddressWithChecksum, balance } from '../__samples__/addresses';
-import { normalisedTransactions, promotableBundleHashes, failedBundleHashes } from '../__samples__/transactions';
+import { promotableBundleHashes, failedBundleHashes } from '../__samples__/transactions';
 
 describe('selectors: accounts', () => {
     describe('#getAccountsFromState', () => {
@@ -218,19 +213,6 @@ describe('selectors: accounts', () => {
         });
     });
 
-    describe('#getTransactionsForSelectedAccount', () => {
-        it('should return normalised transaction', () => {
-            expect(
-                getTransactionsForSelectedAccount({
-                    accounts,
-                    wallet: {
-                        seedIndex: 0,
-                    },
-                }),
-            ).to.eql(normalisedTransactions);
-        });
-    });
-
     describe('#getAddressesForSelectedAccount', () => {
         it('should return list of addresses', () => {
             expect(
@@ -293,130 +275,10 @@ describe('selectors: accounts', () => {
         });
     });
 
-    describe('#getSetupInfoForSelectedAccount', () => {
-        it('should return account setup info for selected account', () => {
-            expect(
-                getSetupInfoForSelectedAccount({
-                    accounts,
-                    wallet: {
-                        seedIndex: 0,
-                    },
-                }),
-            ).to.eql(accounts.setupInfo.TEST);
-        });
-    });
-
-    describe('#getTasksForSelectedAccount', () => {
-        it('should return tasks for selected account', () => {
-            expect(
-                getTasksForSelectedAccount({
-                    accounts,
-                    wallet: {
-                        seedIndex: 0,
-                    },
-                }),
-            ).to.eql(accounts.tasks.TEST);
-        });
-    });
-
-    describe('#shouldTransitionForSnapshot', () => {
-        describe('when "usedExistingSeed" prop under "setupInfo" is false and balance is 0', () => {
-            it('should return false', () => {
-                expect(
-                    shouldTransitionForSnapshot({
-                        accounts: {
-                            accountInfo: {
-                                foo: {
-                                    // Set address data as empty so that balance is zero
-                                    addressData: [],
-                                },
-                            },
-                            setupInfo: { foo: { usedExistingSeed: false } },
-                        },
-                        wallet: {
-                            seedIndex: 0,
-                        },
-                    }),
-                ).to.equal(false);
-            });
-        });
-
-        describe('when "usedExistingSeed" prop under "setupInfo" is true and balance is not 0', () => {
-            it('should return false', () => {
-                expect(
-                    shouldTransitionForSnapshot({
-                        accounts,
-                        wallet: {
-                            seedIndex: 0,
-                        },
-                    }),
-                ).to.equal(false);
-            });
-        });
-
-        describe('when "usedExistingSeed" prop under "setupInfo" is true and balance is 0', () => {
-            it('should return true', () => {
-                expect(
-                    shouldTransitionForSnapshot({
-                        accounts: {
-                            accountInfo: {
-                                foo: {
-                                    addressData: [],
-                                },
-                            },
-                            setupInfo: { foo: { usedExistingSeed: true } },
-                        },
-                        wallet: {
-                            seedIndex: 0,
-                        },
-                    }),
-                ).to.equal(true);
-            });
-        });
-    });
-
     describe('#hasDisplayedSnapshotTransitionGuide', () => {
-        describe('when "displayedSnapshotTransitionGuide" prop under "tasks" is not defined', () => {
-            it('should return true', () => {
-                expect(
-                    hasDisplayedSnapshotTransitionGuide({
-                        accounts: {
-                            accountInfo: {
-                                foo: {},
-                            },
-                            tasks: {
-                                foo: { unknownProp: false },
-                            },
-                        },
-                        wallet: {
-                            seedIndex: 0,
-                        },
-                    }),
-                ).to.equal(true);
-            });
-        });
+        describe('when "displayedSnapshotTransitionGuide" prop under "tasks" is not defined', () => {});
 
-        describe('when "displayedSnapshotTransitionGuide" prop under "tasks" is defined', () => {
-            it('should return value of "displayedSnapshotTransitionGuide"', () => {
-                expect(
-                    hasDisplayedSnapshotTransitionGuide({
-                        accounts: {
-                            accountInfo: {
-                                foo: {},
-                            },
-                            tasks: {
-                                // Set hasDisplayedTransitionGuide to string instead of boolean
-                                // to check for false positives
-                                foo: { displayedSnapshotTransitionGuide: 'raw' },
-                            },
-                        },
-                        wallet: {
-                            seedIndex: 0,
-                        },
-                    }),
-                ).to.equal('raw');
-            });
-        });
+        describe('when "displayedSnapshotTransitionGuide" prop under "tasks" is defined', () => {});
     });
 
     describe('#getPromotableBundlesFromState', () => {

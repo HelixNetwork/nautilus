@@ -3,8 +3,8 @@
     "version": "v1.0.0",
     "description": "",
     "scripts": {
-        "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
-        "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 5000 --exit --require @babel/register \"__tests__/libs/hlx/*.spec.js\"",
+        "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 2000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
+        "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 2000 --exit --require @babel/register \"__tests__/libs/hlx/*.spec.js\"",
         "apitest": "NODE_ENV=test  --require @babel/register \"__tests__/dev-sample/api.js\""
     },
     "license": "Apache-2.0 OR EPL-2.0",

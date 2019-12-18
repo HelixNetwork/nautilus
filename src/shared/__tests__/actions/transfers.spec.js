@@ -285,14 +285,14 @@ describe('actions: transfers', () => {
             Realm.clearTestState();
             initialise(() => Promise.resolve(new Int8Array(64)));
             seedStore = {
-                generateAddress: () => Promise.resolve('a'.repeat(72)),
+                generateAddress: () => Promise.resolve('a'.repeat(64)),
                 prepareTransfers: () => () => Promise.resolve(newZeroValueTransactionBytes),
                 performPow: (txBits) =>
                     Promise.resolve({
                         txBits,
                         transactionObjects: map(txBits, hlx.utils.transactionObject),
                     }),
-                getDigest: () => Promise.resolve('0'.repeat(72)),
+                getDigest: () => Promise.resolve('0'.repeat(64)),
             };
         });
 
@@ -381,6 +381,7 @@ describe('actions: transfers', () => {
                                 addressData,
                             },
                         };
+
                         const actualAction = store
                             .getActions()
                             .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
