@@ -70,3 +70,7 @@ yarn run compile:linux
 ## Discussion
 
 Discuss Nautilus Wallet on our discord [forums](https://discord.gg/Mh6Tafg)
+
+## Want to Contribute?
+
+Awesome :heart: :heart:. See our contribution [guidelines](https://github.com/netobjex/wallet/blob/documentation/contributing.MD).
