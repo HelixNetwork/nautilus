@@ -95,8 +95,6 @@ describe('storage: Node', () => {
             expect(customNode.url).to.equal(node.url);
             expect(customNode.pow).to.equal(true);
             expect(customNode.custom).to.equal(true);
-            expect(customNode.password).to.equal(node.password);
-            expect(customNode.token).to.equal(node.token);
         });
     });
 
