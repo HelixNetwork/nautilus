@@ -91,14 +91,13 @@ class Onboarding extends React.PureComponent {
                                 <Route path="/onboarding/login" component={Login} />
                                 <Route path="/" component={indexComponent} />
                                 <Route path="/wallet" component={Wallet} />
-                            </Switch>{' '}
-                        </OnboardingLayout>{' '}
-                    </CSSTransition>{' '}
-                </TransitionGroup>{' '}
+                            </Switch>
+                        </OnboardingLayout>
+                    </CSSTransition>
+                </TransitionGroup>
                 <footer className={classNames(currentKey === '/' ? css.footer_none : null)}>
-                    {' '}
-                    {this.steps(currentKey)}{' '}
-                </footer>{' '}
+                    {this.steps(currentKey)}
+                </footer>
             </main>
         );
     }
