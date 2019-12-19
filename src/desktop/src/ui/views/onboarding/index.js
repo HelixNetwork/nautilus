@@ -80,17 +80,17 @@ class Onboarding extends React.PureComponent {
                     <CSSTransition classNames="slide" timeout={2000} mountOnEnter unmountOnExit>
                         <OnboardingLayout history={history}>
                             <Switch>
-                                <Route path="/onboarding/seed-intro" component={SeedIntro} />{' '}
-                                <Route path="/onboarding/seed-generate" component={GenerateSeed} />{' '}
-                                <Route path="/onboarding/seed-import" component={seedImport} />{' '}
-                                <Route path="/onboarding/account-name" component={SeedName} />{' '}
-                                <Route path="/onboarding/account-password" component={SecurityEnter} />{' '}
-                                <Route path="/onboarding/done" component={Done} />{' '}
-                                <Route path="/onboarding/seed-wallet" component={SeedWallet} />{' '}
-                                <Route path="/onboarding/seed-backup" component={SeedBackup} />{' '}
-                                <Route path="/onboarding/login" component={Login} />{' '}
-                                <Route path="/" component={indexComponent} />{' '}
-                                <Route path="/wallet" component={Wallet} />{' '}
+                                <Route path="/onboarding/seed-intro" component={SeedIntro} />
+                                <Route path="/onboarding/seed-generate" component={GenerateSeed} />
+                                <Route path="/onboarding/seed-import" component={seedImport} />
+                                <Route path="/onboarding/account-name" component={SeedName} />
+                                <Route path="/onboarding/account-password" component={SecurityEnter} />
+                                <Route path="/onboarding/done" component={Done} />
+                                <Route path="/onboarding/seed-wallet" component={SeedWallet} />
+                                <Route path="/onboarding/seed-backup" component={SeedBackup} />
+                                <Route path="/onboarding/login" component={Login} />
+                                <Route path="/" component={indexComponent} />
+                                <Route path="/wallet" component={Wallet} />
                             </Switch>{' '}
                         </OnboardingLayout>{' '}
                     </CSSTransition>{' '}
