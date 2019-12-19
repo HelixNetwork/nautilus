@@ -65,7 +65,8 @@ yarn run compile:win
 yarn run compile:linux
 
 # For mac, You should be on mac OS
-yarn run compile:mac
 ```
-``
 
+## Discussion
+
+Discuss Nautilus Wallet on our discord [forums](https://discord.gg/Mh6Tafg)
