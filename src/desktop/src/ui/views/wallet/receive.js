@@ -197,20 +197,11 @@ export class Receive extends React.PureComponent {
             <section className={css.home}>
                 <div className={classNames(css.pg1_foo3)}>
                     <div className={classNames(css.foo_bxx1)}>
-                        <h3 style={{ fontSize: '16px', marginLeft: '252px', marginTop: '-5vw', width: '32%' }}>
+                        <h3 className={css.receive_coins_h3}>
                             {t('receive:receiveCoins')}
                             <span>.</span>
                         </h3>
-                        <h3
-                            style={{
-                                fontSize: '14px',
-                                marginLeft: '0px',
-                                marginTop: '-2vw',
-                                opacity: '0.3',
-                                width: '60%',
-                                textAlign: 'center',
-                            }}
-                        >
+                        <h3 className={css.receive_h3}>
                             {t('receive:irrevocableTransactionWarning')} {t('receive:TransactionWarning')}
                         </h3>
                         <div className={classNames(css.hlx_wallet_box)}>
@@ -225,17 +216,7 @@ export class Receive extends React.PureComponent {
                                 >
                                     <Icon icon="sync" size={28} />
                                     <br />
-                                    <p
-                                        style={{
-                                            fontSize: '12px',
-                                            opacity: '0.3',
-                                            marginTop: '-5px',
-                                            width: '120px',
-                                            marginLeft: '12px',
-                                        }}
-                                    >
-                                        {t('receive:generateNewAddress')}
-                                    </p>
+                                    <p className={css.receive_p}>{t('receive:generateNewAddress')}</p>
                                     {t('receive:generateNewAddress')} <span> > </span>
                                 </Button>
                             </div>
@@ -264,7 +245,7 @@ export class Receive extends React.PureComponent {
                                                             );
                                                         })}
 
-                                                    <span style={{ color: '#eaac32' }}>
+                                                    <span className={css.span_color}>
                                                         {receiveAddress
                                                             .substring(64, 72)
                                                             .split('')
@@ -288,16 +269,7 @@ export class Receive extends React.PureComponent {
                                                             message: message,
                                                         })}
                                                     />
-                                                    <p
-                                                        style={{
-                                                            marginTop: '30px',
-                                                            marginLeft: '2px',
-                                                            fontSize: '11px',
-                                                            opacity: '0.3',
-                                                        }}
-                                                    >
-                                                        {t('receive:shareQr')}
-                                                    </p>
+                                                    <p className={css.shareqr}>{t('receive:shareQr')}</p>
                                                 </div>
                                             </Clipboard>
                                         )}
@@ -332,43 +304,20 @@ export class Receive extends React.PureComponent {
                     </div>
 
                     <div>
-                        <h3 style={{ fontSize: '16px', marginLeft: '72vw', marginTop: '-58vw' }}>
-                            {t('receive:Address')}
-                        </h3>
-                        <h3 style={{ fontSize: '14px', marginLeft: '71vw', opacity: '0.3' }}>
-                            {t('receive:Overviewstatus')}
-                        </h3>
+                        <h3 className={css.receive_addr_h3}>{t('receive:Address')}</h3>
+                        <h3 className={css.receive_status_h3}>{t('receive:Overviewstatus')}</h3>
                         <br />
-                        <h3 style={{ fontSize: '14px', marginLeft: '72vw', marginTop: '-28px', opacity: '0.3' }}>
-                            {t('receive:AddressStatus')}
-                        </h3>
+                        <h3 className={css.receive_addr_status_h3}>{t('receive:AddressStatus')}</h3>
                         <br />
                         <div className={classNames(css.hlx_wallet_addr)}>
                             <Scrollbar>
                                 {addresses.map((value) => {
                                     return (
-                                        <div
-                                            style={{
-                                                padding: '14px',
-                                                backgroundImage:
-                                                    'linear-gradient(to right, rgb(21, 35, 83),rgb(19, 33, 69))',
-                                                marginLeft: '10px',
-                                                marginBottom: '10px',
-                                                fontSize: '14px',
-                                                overflow: 'hidden',
-                                            }}
-                                            key={`${value.address}1`}
-                                        >
-                                            <span
-                                                style={{ display: 'inline-block', float: 'left', width: '74%' }}
-                                                key={`${value.address}2`}
-                                            >
+                                        <div className={css.receive_div_style} key={`${value.address}1`}>
+                                            <span className={css.addr_substr} key={`${value.address}2`}>
                                                 {value.address.substring(0, 30) + '...'}
                                             </span>
-                                            <span
-                                                style={{ width: '18%', float: 'right', display: 'inline-block' }}
-                                                key={`${value.address}3`}
-                                            >
+                                            <span className={css.addr_value} key={`${value.address}3`}>
                                                 {' '}
                                                 <span
                                                     className={value.spent === true ? css.used_dot : css.ready_dot}

@@ -175,7 +175,8 @@ const settingsReducer = (state = initialState, action) => {
         case SettingsActionTypes.UPDATE_NEW_TERMS_NOTICE:
             return {
                 ...state,
-                newtermsupdatenotice: action.payload,
+                newtermsupdatenotice: action.payload.newTermsNotice,
+                newtermsdate: action.payload.newTermsDate,
             };
     }
     return state;

@@ -39,7 +39,7 @@ class SeedIntro extends React.PureComponent {
 
         return (
             <div>
-                <Row style={{ marginTop: '3vw' }}>
+                <Row className={css.row_intro}>
                     <h1>
                         {t('walletSetup:doYouNeedASeed')}
                         <span className={classNames(css.text_color)}> {t('walletSetup:seed')} </span>?
@@ -49,7 +49,7 @@ class SeedIntro extends React.PureComponent {
                 <Row className={css.centerBox}>
                     <img src={image} alt="" />
                     <h5>{t('walletSetup:helixSeedIsAccess')}</h5>
-                    <h6 style={{ color: '#F0F2F6' }}>{t('walletSetup:explanation')}</h6>
+                    <h6 className={css.centerBox_h6}>{t('walletSetup:explanation')}</h6>
                 </Row>
                 <Row>
                     <Button

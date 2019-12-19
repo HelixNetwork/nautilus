@@ -1,4 +1,4 @@
-import { ipcRenderer as ipc, clipboard, remote } from 'electron';
+import { ipcRenderer as ipc, clipboard, remote, shell } from 'electron';
 import { indexToChar } from 'libs/hlx/converter';
 import { getChecksum as checksum } from 'libs/hlx/utils';
 
@@ -479,13 +479,20 @@ const Electron = {
             message = message.replace('{{value}}', formatHlx(confirmations[0].transferValue));
         }
 
-        const notification = new Notification('Trinity', {
+        const notification = new Notification('Helix', {
             body: message.replace('{{account}}', accountName),
         });
 
         notification.onclick = () => {
             remote.getCurrentWindow().webContents.send('account.switch', accountName);
         };
+    },
+    /**
+     * Generate address
+     * @param {string} url - Input url
+     */
+    openExternal: (url) => {
+        shell.openExternal(url);
     },
 };
 

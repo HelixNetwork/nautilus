@@ -31,6 +31,9 @@
             {
                 "loose": true
             }
-        ]
+        ],
+        ["module-resolver", {
+            "root": ["./"]
+          }]
     ]
 }

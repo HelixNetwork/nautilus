@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test for Modal component Render the Model component 1`] = `
+<div
+  className="backdrop confirm hidden"
+>
+  <div
+    className="wrapper"
+  >
+    <div
+      className="content"
+    >
+      Lorem ipsum
+    </div>
+  </div>
+</div>
+`;

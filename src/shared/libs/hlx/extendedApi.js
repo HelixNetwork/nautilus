@@ -311,8 +311,6 @@ const sendTransfer = (settings) => (
     depth = DEFAULT_DEPTH,
     minWeightMagnitude = DEFAULT_MIN_WEIGHT_MAGNITUDE,
 ) => {
-    // return console.log(settings);
-
     const cached = {
         txs: [],
         transactionObjects: [],

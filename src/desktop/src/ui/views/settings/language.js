@@ -40,7 +40,7 @@ class SettingsLanguage extends React.PureComponent {
         const { selection } = this.state;
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <form style={{ marginTop: '7vw' }} onSubmit={(e) => this.changeLocale(e)}>
+                <form className={css.margin_form} onSubmit={(e) => this.changeLocale(e)}>
                     <Select
                         label={t('languageSetup:language')}
                         value={I18N_LOCALE_LABELS[I18N_LOCALES.indexOf(selection || locale)]}

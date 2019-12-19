@@ -30,8 +30,10 @@ export default map(defaultSchemas, (schema) => {
                     default: 0,
                 },
                 newtermsupdatenotice: {
-                    type: 'int',
-                    default: 0,
+                    type: 'string',
+                },
+                newtermsdate: {
+                    type: 'string',
                 },
             },
         });
