@@ -80,8 +80,6 @@ describe('storage: Node', () => {
         it('should create a new custom node', () => {
             const node = {
                 url: 'https://example.com:443',
-                password: '',
-                token: 'baz@@',
             };
 
             // Assert that a node with this url does not exist
@@ -95,8 +93,6 @@ describe('storage: Node', () => {
             expect(customNode.url).to.equal(node.url);
             expect(customNode.pow).to.equal(true);
             expect(customNode.custom).to.equal(true);
-            expect(customNode.password).to.equal(node.password);
-            expect(customNode.token).to.equal(node.token);
         });
     });
 
