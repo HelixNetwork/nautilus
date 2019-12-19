@@ -40,7 +40,7 @@ class Currency extends React.PureComponent {
         return (
             <div className={classNames(css.foo_bxx12)}>
                 <form
-                    style={{ marginTop: '7vw' }}
+                    className={css.margin_form}
                     onSubmit={(e) => {
                         e.preventDefault();
                         this.setCurrency(this.state.selection);

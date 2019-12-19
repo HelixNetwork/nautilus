@@ -389,7 +389,8 @@ class Wallet {
 
     static updateNewTermsNotice(payload) {
         realm.write(() => {
-            Wallet.latestSettings.newtermsupdatenotice = payload;
+            Wallet.latestSettings.newtermsupdatenotice = payload.newTermsNotice;
+            Wallet.latestSettings.newtermsdate = payload.newTermsDate;
         });
     }
 

@@ -1,17 +1,10 @@
 import React from 'react';
 import { Chart } from 'react-charts';
-
+import css from 'ui/views/wallet/wallet.scss';
 class Chartss extends React.PureComponent {
     render() {
         return (
-            <div
-                style={{
-                    backgroundcolor: 'transparent',
-                    marginLeft: '40px',
-                    width: '600px',
-                    height: '250px',
-                }}
-            >
+            <div className={css.chart_div}>
                 <Chart
                     data={[
                         {

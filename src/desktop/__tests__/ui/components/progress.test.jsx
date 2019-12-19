@@ -1,50 +1,43 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ProgressComponent from 'ui/components/progress';
+import ProgressBar from 'ui/components/progress';
 
 const props = {
     progress: 45,
     title: 'Updated',
+    pageType:'send',
     type: 'circle',
 };
 
 
 describe('Progress component', () => {
     test('Render the component', () => {
-        const wrapper = shallow(<ProgressComponent {...props} />);
+        const wrapper = shallow(<ProgressBar {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('Correct progress', () => {
-        const wrapper = shallow(<ProgressComponent {...props} />);
-        console.log("wrapper in correct progress", wrapper);
-        const titleE2 = wrapper.find('Progress');
-        console.log('titleE2 in correct progress ',titleE2);
-        console.log('titleE2  ', wrapper.debug());
-        expect(titleE2.type).toEqual('circle');
+        let wrapper = shallow(<ProgressBar {...props} />);
+        expect(wrapper.find('t').prop('type')).toEqual('circle');
         expect(
             wrapper
-                .find(type)
-                .props().theme.symbol,
-        ).toEqual(`${props.progress}%`);
+                .find('t')
+                .prop('percent'),
+        ).toEqual(props.progress);
     });
 
  
     test('without type ', () => {
         const mockProps = Object.assign({}, props, { type: null });
-        const wrapper = shallow(<ProgressComponent {...mockProps} />);
-    
-        console.log('without type  ', wrapper.debug());
+        const wrapper = shallow(<ProgressBar {...mockProps} />);
       
         expect(wrapper.hasClass('type')).toBeFalsy();
     });
 
     test('with type send', () => {
         const mockProps1 = Object.assign({}, props, { type: 'send', progress: 45 });
-        const wrapper = shallow(<ProgressComponent {...mockProps1} />);
-       
-        console.log('with type send   ', wrapper.debug());
+        const wrapper = shallow(<ProgressBar {...mockProps1} />);
     
         // expect(wrapper.hasClass('type')).toBe('true');
         
@@ -53,10 +46,9 @@ describe('Progress component', () => {
     });
  
     test('With title', () => {
-        const wrapper = shallow(<ProgressComponent {...props} />);
+        const wrapper = shallow(<ProgressBar {...props} />);
         const titleEl = wrapper.find('p');
 
-        console.log('With title  ', wrapper.debug());
 
         expect(titleEl).toHaveLength(1);
         expect(titleEl.text()).toEqual(props.title);
@@ -64,7 +56,7 @@ describe('Progress component', () => {
 
     test('Without title', () => {
         const mockProps = Object.assign({}, props, { title: null });
-        const wrapper = shallow(<ProgressComponent {...mockProps} />);
+        const wrapper = shallow(<ProgressBar {...mockProps} />);
 
         expect(wrapper.find('p')).toHaveLength(0);
     });

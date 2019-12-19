@@ -32,11 +32,7 @@ export default class ProgressBar extends React.PureComponent {
 
     render() {
         const { progress, title, pageType, type } = this.props;
-        console.log('page type', pageType);
         if (pageType === 'send') {
-            console.log('type expected send', type);
-            console.log('pageType expected send', pageType);
-            console.log('Progress expected ', progress);
             if (Math.min(progress, 100) === 0) {
                 this.setState({
                     color: 'error',
@@ -55,14 +51,11 @@ export default class ProgressBar extends React.PureComponent {
                 });
             }
         } else {
-            console.log('Progress expected 2 ', progress);
             if (Math.min(Math.round(progress), 100) < 100) {
-                console.log('Progress expected  3', progress);
                 this.setState({
                     color: 'default',
                 });
             } else {
-                console.log('Progress expected  4', progress);
                 this.setState({
                     color: 'success',
                 });
@@ -71,10 +64,6 @@ export default class ProgressBar extends React.PureComponent {
 
         return (
             <div className={classNames(css.progress, type ? css[type] : null)}>
-                {/* <div>
-                    <div className={css.bar} style={{ width: `${Math.min(progress, 100)}%` }} />
-                    
-                </div> */}
                 <Progress
                     type="circle"
                     percent={Math.min(progress, 100)}

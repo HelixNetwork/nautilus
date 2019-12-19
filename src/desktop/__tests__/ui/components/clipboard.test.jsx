@@ -41,19 +41,24 @@ describe('Test for Clipboard component', () => {
         wrapper.simulate('click');
 
         expect(props.generateAlert).toHaveBeenCalledTimes(1);
+        // eslint-disable-next-line no-undef
         expect(Electron.clipboard).toHaveBeenCalledTimes(1);
     });
 
     test('Checks the Timeout event', () => {
         const wrapper = shallow(<Clipboard {...props} />);
         wrapper.simulate('click');
+        // eslint-disable-next-line no-undef
         expect(Electron.clipboard).toHaveBeenCalledTimes(2);
     });
 
     test('checks the copy event', () => {
         const wrapper = shallow(<Clipboard {...props} />);
-
-        expect(wrapper.find(onclick).props() ).toHaveBeenCalled();
+        const spy = jest.spyOn(wrapper.instance(), 'copy');
+        console.log(spy);
+        wrapper.update();
+        wrapper.find('span').simulate('click');
+        expect(spy).toHaveBeenCalled();
       
     });
 });

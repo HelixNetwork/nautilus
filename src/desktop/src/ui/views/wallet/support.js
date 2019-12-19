@@ -45,7 +45,7 @@ class Support extends React.PureComponent {
                                         <h3 className={css.heading}>SUPPORT</h3>
 
                                         <section className={style.about}>
-                                            <div style={{ width: '100%', marginTop: '15%', opacity: '0.3' }}>
+                                            <div className={css.support_div}>
                                                 <img src={hlx} alt="" />
                                             </div>
                                             <h1>Nautilus Wallet</h1>
