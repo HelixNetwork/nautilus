@@ -2755,6 +2755,7 @@ describe('#categoriseAddressesBySpentStatus', () => {
     });
 
     afterEach(() => {
+        quorum.wereAddressesSpentFrom.restore();
         sandbox.restore();
     });
 

@@ -2,7 +2,6 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import assign from 'lodash/assign';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
-import home from './reducers/home';
 import settings from './reducers/settings';
 import wallet from './reducers/wallet';
 import accounts from './reducers/accounts';
@@ -21,7 +20,6 @@ const middlewares = [];
 
 const reducers = combineReducers({
     accounts,
-    home,
     settings,
     wallet,
     polling,

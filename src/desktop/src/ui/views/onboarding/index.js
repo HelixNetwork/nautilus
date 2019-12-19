@@ -55,6 +55,7 @@ class Onboarding extends React.PureComponent {
         }
         return (
             <ul>
+                {' '}
                 {steps.map((step, index) => (
                     <li
                         key={step}
@@ -63,7 +64,7 @@ class Onboarding extends React.PureComponent {
                             index === steps.length - 1 ? css.done : null,
                         )}
                     ></li>
-                ))}
+                ))}{' '}
             </ul>
         );
     }
@@ -76,7 +77,7 @@ class Onboarding extends React.PureComponent {
         return (
             <main className={css.onboarding}>
                 <TransitionGroup>
-                    <CSSTransition classNames="slide" timeout={1000} mountOnEnter unmountOnExit>
+                    <CSSTransition classNames="slide" timeout={2000} mountOnEnter unmountOnExit>
                         <OnboardingLayout history={history}>
                             <Switch>
                                 <Route path="/onboarding/seed-intro" component={SeedIntro} />
