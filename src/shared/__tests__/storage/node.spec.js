@@ -80,8 +80,6 @@ describe('storage: Node', () => {
         it('should create a new custom node', () => {
             const node = {
                 url: 'https://example.com:443',
-                password: '',
-                token: 'baz@@',
             };
 
             // Assert that a node with this url does not exist
