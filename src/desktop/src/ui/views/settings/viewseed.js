@@ -86,7 +86,7 @@ class Viewseed extends React.PureComponent {
                                 <Icon icon="cross" size={14} />
                             </span>
                         </Button>
-                        <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewSeed')}</h5>
+                        <h5 className={css.seed_h5}>{t('accountManagement:viewSeed')}</h5>
                         {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
 
                         {typeof accountMeta.index === 'number' && (
@@ -132,7 +132,7 @@ class Viewseed extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className={classNames(css.foo_bxx12)}>
-                    <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewSeed')}</h5>
+                    <h5 className={css.seed_h5}>{t('accountManagement:viewSeed')}</h5>
                     <form>
                         <div>
                             <p className={css.seed}>
@@ -159,7 +159,7 @@ class Viewseed extends React.PureComponent {
                                 )}
                             </p>
                         </div>
-                        <div style={{ marginTop: '12vw' }}>
+                        <div className={css.seed_div}>
                             <Button
                                 className="navleft"
                                 onClick={() => this.setState({ action: action !== 'view' ? 'view' : null })}

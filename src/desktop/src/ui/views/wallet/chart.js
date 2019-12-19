@@ -37,7 +37,7 @@ class Charts extends React.PureComponent {
                         <hr/>
                       </div>
                   */}
-                                    <p style={{ margin: '205px', marginLeft: '400px' }}>Currently not available</p>
+                                    <p className={css.chart_p}>Currently not available</p>
                                 </div>
                             </div>
                         </div>

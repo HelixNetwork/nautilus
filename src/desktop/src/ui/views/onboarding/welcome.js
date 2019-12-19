@@ -67,20 +67,17 @@ class Welcome extends React.PureComponent {
         const { step, scrollEnd } = this.state;
         let markdown = '';
         markdown = step === 'terms' ? enTermsAndConditions : enPrivacyPolicy;
-        let styles = {
-            color: '#E9B339',
-            fontSize: '20px',
-        };
+
         return (
             <div>
                 <Logos size={20} history={history} />
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
-                            <h1 style={{ fontSize: '63px' }}>{t('welcome:thankYou')}</h1>
+                            <h1 className={css.language_h1}>{t('welcome:thankYou')}</h1>
                             <h6>
                                 {t('welcome:thankYouDescription')}
-                                <span style={styles}>
+                                <span className={css.span_style}>
                                     <b>.</b>
                                 </span>
                             </h6>
@@ -110,7 +107,7 @@ class Welcome extends React.PureComponent {
                             : !scrollEnd
                             ? t('terms:readAllToContinue')
                             : t('terms:accept')}
-                        <span style={styles}> ></span>
+                        <span className={css.span_style}> ></span>
                     </Button>
                 </section>
             </div>

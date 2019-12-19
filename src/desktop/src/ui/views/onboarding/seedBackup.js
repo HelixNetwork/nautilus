@@ -49,7 +49,7 @@ class SeedBackup extends React.PureComponent {
 
         return (
             <div>
-                <Row style={{ marginTop: '5vw' }}>
+                <Row className={css.done_row}>
                     <h1>
                         {t('saveYourSeed:saveYourSeed')}
                         <span className={classNames(css.text_color)}>.</span>

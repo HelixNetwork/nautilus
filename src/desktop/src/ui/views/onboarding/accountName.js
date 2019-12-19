@@ -111,7 +111,7 @@ class AccountName extends React.PureComponent {
                         </h1>
                     </Row>
                     <Row className={css.centerBox}>
-                        <div style={{ margin: '5vw' }}>
+                        <div className={css.centerBox_div}>
                             <Input
                                 value={name}
                                 focus

@@ -331,7 +331,6 @@ footer li::after {
 
 .setting {
     display: inline-block;
-    float: right;
     cursor: pointer;
     padding: 10px;
     color: #fff;
@@ -393,6 +392,14 @@ footer li::after {
     color: #dcab49;
 }
 
+.row_main{
+  margin-top: 2vw;
+}
+
+.row_inro{
+  margin-top: 3vw;
+}
+
 .text_color {
     color: #dcab49;
 }
@@ -436,6 +443,10 @@ footer li::after {
 .text_align {
     float: left;
     margin-left: 348px;
+}
+
+.done_row {
+  margin-top: 5vw;
 }
 
 .head_h1 {
@@ -902,8 +913,25 @@ modal_footer {
     border-image: linear-gradient(to right, rgba(250, 192, 0, 0.25), rgba(250, 192, 0, 0.75), rgba(250, 192, 0, 0.25)) 1 0%;
 }
 
-.centerBox h5 {
-    font-size: 20px;
+.centerBox_h6{
+  color: #F0F2F6 ;
+}
+
+.centerBox_Row {
+  margin-top: 10vw;
+}
+
+.scrollend_span {
+  color: #E9B339;
+  font-size: 20px;
+}
+
+.centerBox_div{
+  margin: 5vw;
+}
+
+.centerBox h5{
+  font-size: 20px;
 }
 
 .centerBox h6 {
@@ -1024,4 +1052,9 @@ article {
 .newtermsUpdateNotice button {
     margin-left: 5%;
     margin-right: 2%;
+}
+
+.import_form {
+    top: -30px;
+    left: 350px;
 }
