@@ -255,6 +255,13 @@
   .currencyBox:active{
     color:white
   }
+  .unitOption {
+    margin-left: 0.5%;
+    font-size: 18px;
+    background-color: var(--body-bg);
+    color: white;
+    border: none;
+  }
   .tr_box1 {
     position: relative;
   }
@@ -1912,7 +1919,7 @@ margin-right: 16px;
   position: absolute;
   left: 80px;
   top: 3px;
-  width:200px
+  width: 755px;
 }
 
 .topBal hr{
