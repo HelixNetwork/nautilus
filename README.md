@@ -1,6 +1,6 @@
 # Nautilus Wallet<img align="right" src="https://hlx.ai/images/Helix_Logo-white.svg" height="70px" />
 
-The Official Desktop Wallet based on electron for Managing Helix tokens developed by the Helix Network.
+The Official Desktop Wallet for Managing Helix tokens developed by the [Helix Network](https://www.hlx.ai).
 ## Prerequisites
 
 - Node.js (10.16.0)
