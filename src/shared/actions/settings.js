@@ -79,6 +79,13 @@ export const acceptPrivacy = () => {
     };
 };
 
+/**
+ * Dispatch when user has accepted wallet's new terms
+ *
+ * @method acceptNewTerms
+ *
+ * @returns {{type: {string} }}
+ */
 export const acceptNewTerms = (payload) => {
     Wallet.acceptNewTerms(payload);
     return {
