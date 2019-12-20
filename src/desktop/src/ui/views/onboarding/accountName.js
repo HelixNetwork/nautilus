@@ -15,14 +15,24 @@ import { MAX_ACC_LENGTH } from 'libs/crypto';
 import SeedStore from 'libs/seed';
 import { Row } from 'react-bootstrap';
 
+/**
+ * Onboarding, Set account name
+ */
 class AccountName extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.object,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         generateAlert: PropTypes.func.isRequired,
+        /** @ignore */
         accountNames: PropTypes.array.isRequired,
+        /** @ignore */
         additionalAccountMeta: PropTypes.object.isRequired,
+        /** @ignore */
         additionalAccountName: PropTypes.string.isRequired,
+        /** @ignore */
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
     state = {
@@ -36,6 +46,12 @@ class AccountName extends React.PureComponent {
                   Electron.getOnboardingName()
                 : '',
     };
+
+    /**
+     * Check for valid account name
+     * @param {Event} event - Form submit event
+     * @returns {undefined}
+     */
 
     setName = async (event) => {
         event.preventDefault();

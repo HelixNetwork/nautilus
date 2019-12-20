@@ -5,12 +5,18 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
 
+/**
+ * Chart component
+ */
 class Charts extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         location: PropTypes.object,
+        /**@ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /**@ignore */
         t: PropTypes.func.isRequired,
     };
     render() {
@@ -21,22 +27,6 @@ class Charts extends React.PureComponent {
                         <div className="row">
                             <div className="col-lg-12">
                                 <div className={classNames(css.foo_bxx1)}>
-                                    {/* <h5>
-                      Overview HLX chart<span>.</span>
-                    </h5>
-                   
-                      <div className={classNames(css.topRight2)}>
-                        <button style={{ right: "109px" }}>EUR</button>
-                        <h6 >€0.02/mHLX</h6>
-                        <hr/>
-                        <button>24/h</button>
-                      </div>
-                      <Chartss />
-
-                      <div className={classNames(css.topbottom)}>
-                        <hr/>
-                      </div>
-                  */}
                                     <p className={css.chart_p}>Currently not available</p>
                                 </div>
                             </div>

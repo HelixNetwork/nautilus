@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,12 +13,19 @@ import { createRandomSeed, randomTxBytes } from 'libs/crypto';
 import { indexToChar } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 import { Row } from 'react-bootstrap';
+
+/**
+ * Onboarding, Seed generation component
+ */
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         loop: PropTypes.bool,
     };
 

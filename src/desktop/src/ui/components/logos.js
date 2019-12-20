@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import logo from 'ui/images/logo.png';
 import Icon from 'ui/components/icon';
+
+/**
+ * Animated/static logos component
+ */
 class Logos extends React.PureComponent {
     render() {
         return (

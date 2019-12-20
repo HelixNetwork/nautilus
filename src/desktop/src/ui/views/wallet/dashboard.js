@@ -6,6 +6,7 @@ import Send from 'ui/views/wallet/send';
 import Receive from 'ui/views/wallet/receive';
 import Chart from 'ui/views/wallet/chart';
 import WalletHistory from 'ui/views/wallet/wallet_history';
+
 /**
  * Wallet dashboard component
  */

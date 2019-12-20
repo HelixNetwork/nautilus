@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Logos from 'ui/components/logos';
+
+/**
+ * Onboarding Layout component
+ */
 export class OnboardingLayout extends Component {
     render() {
         return (

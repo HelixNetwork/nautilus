@@ -18,7 +18,7 @@ import {
     getFailedBundleHashes,
 } from 'selectors/accounts';
 import {
-    fetchMarketData,
+    // fetchMarketData,
     fetchChartData,
     fetchPrice,
     fetchNodeList,
@@ -46,7 +46,7 @@ class Polling extends React.PureComponent {
         /** @ignore */
         allPollingServices: PropTypes.array.isRequired,
         /** @ignore */
-        isPollingMarketData: PropTypes.bool.isRequired,
+        // isPollingMarketData: PropTypes.bool.isRequired,
         /** @ignore */
         unconfirmedBundleTails: PropTypes.object.isRequired,
         /** @ignore */
@@ -56,7 +56,7 @@ class Polling extends React.PureComponent {
         /** @ignore */
         // marketData: PropTypes.object.isRequired,
         /** @ignore */
-        fetchMarketData: PropTypes.func.isRequired,
+        // fetchMarketData: PropTypes.func.isRequired,
         /** @ignore */
         fetchPrice: PropTypes.func.isRequired,
         /** @ignore */
@@ -118,7 +118,7 @@ class Polling extends React.PureComponent {
         const isAlreadyPollingSomething =
             props.isPollingPrice ||
             props.isPollingChartData ||
-            props.isPollingMarketData ||
+            // props.isPollingMarketData ||
             props.isPollingAccountInfo ||
             props.isAutoPromoting;
 
@@ -219,7 +219,7 @@ const mapStateToProps = (state) => ({
     allPollingServices: state.polling.allPollingServices,
     isPollingPrice: state.polling.isFetchingPrice,
     isPollingChartData: state.polling.isFetchingChartData,
-    isPollingMarketData: state.polling.isFetchingMarketData,
+    // isPollingMarketData: state.polling.isFetchingMarketData,
     isPollingAccountInfo: state.polling.isFetchingAccountInfo,
     isAutoPromoting: state.polling.isAutoPromoting,
     isSyncing: state.ui.isSyncing,
@@ -240,7 +240,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    fetchMarketData,
+    // fetchMarketData,
     fetchChartData,
     fetchPrice,
     fetchNodeList,

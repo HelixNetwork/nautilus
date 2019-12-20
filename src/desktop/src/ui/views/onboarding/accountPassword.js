@@ -19,16 +19,26 @@ import css from './index.scss';
 import Button from 'ui/components/button';
 import { Row } from 'react-bootstrap';
 
+/**
+ * Onboarding, Set account password
+ */
 class AccountPassword extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         setPassword: PropTypes.func.isRequired,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         generateAlert: PropTypes.func.isRequired,
+        /** @ignore */
         additionalAccountName: PropTypes.string.isRequired,
+        /** @ignore */
         additionalAccountMeta: PropTypes.object.isRequired,
+        /** @ignore */
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
 
@@ -39,6 +49,10 @@ class AccountPassword extends React.PureComponent {
         loading: false,
     };
 
+    /**
+     * Check for valid password, create new account, reset onboarding state
+     * @returns {undefined}
+     */
     createAccount = async (e) => {
         const { additionalAccountMeta, additionalAccountName, setPassword, history, t, generateAlert } = this.props;
         const { password, passwordConfirm } = this.state;

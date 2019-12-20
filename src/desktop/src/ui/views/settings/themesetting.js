@@ -15,10 +15,13 @@ import { updateTheme } from 'actions/settings';
 
 class SettingsTheme extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
     state = {

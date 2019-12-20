@@ -55,6 +55,13 @@ export const getAccountInfoDuringSetup = createSelector(
     (state) => state.accountInfoDuringSetup || {},
 );
 
+/**
+ *   Determines if a new account is being setup.
+ *
+ *   @method isSettingUpNewAccount
+ *   @param {object} state
+ *   @returns {boolean}
+ **/
 export const isSettingUpNewAccount = createSelector(
     getAccountInfoDuringSetup,
     (accountInfoDuringSetup) =>
@@ -63,11 +70,26 @@ export const isSettingUpNewAccount = createSelector(
         !isEmpty(accountInfoDuringSetup.meta),
 );
 
+/**
+ *   Selects accountInfo prop from accounts reducer state object.
+ *   Uses getAccountFromState selector for slicing accounts state from the whole state object.
+ *
+ *   @method getAccountInfoFromState
+ *   @param {object} state
+ *   @returns {object}
+ **/
 export const getAccountInfoFromState = createSelector(
     getAccountsFromState,
     (state) => state.accountInfo || {},
 );
 
+/**
+ *   Determines if certain actions should be prevented when any heavy polling service is active.
+ *
+ *   @method getSelectedAccountName
+ *   @param {object} state
+ *   @returns {string}
+ **/
 export const getSelectedAccountName = createSelector(
     getAccountNamesFromState,
     getSeedIndexFromState,
@@ -76,6 +98,13 @@ export const getSelectedAccountName = createSelector(
     },
 );
 
+/**
+ *   Selects account information (balance, addresses, transfers) from accounts reducer state object.
+ *
+ *   @method selectAccountInfo
+ *   @param {object} state
+ *   @returns {object}
+ **/
 export const selectAccountInfo = createSelector(
     getAccountInfoFromState,
     getSelectedAccountName,
@@ -98,6 +127,13 @@ export const selectLatestAddressFromAccountFactory = (withChecksum = true) =>
         (state) => getLatestAddress(state.addressData, withChecksum),
     );
 
+/**
+ *   Selects account meta from account info state partial.
+ *
+ *   @method getSelectedAccountMeta
+ *   @param {object} state
+ *   @returns {object}
+ **/
 export const getSelectedAccountMeta = createSelector(
     selectAccountInfo,
     (account) => get(account, 'meta'),
@@ -178,11 +214,26 @@ export const getTasksFromAccounts = createSelector(
     getAccountsFromState,
     (state) => state.tasks || {},
 );
+
+/**
+ *   Selects addresses from accountInfo object.
+ *
+ *   @method getAddressesForSelectedAccount
+ *   @param {object} state
+ *   @returns {array}
+ **/
 export const getAddressesForSelectedAccount = createSelector(
     selectAccountInfo,
     (account) => map(account.addressData, (addressObject) => addressObject.address),
 );
 
+/**
+ *   Selects balance from accountInfo object.
+ *
+ *   @method getBalanceForSelectedAccount
+ *   @param {object} state
+ *   @returns {number}
+ **/
 export const getBalanceForSelectedAccount = createSelector(
     selectAccountInfo,
     (account) => accumulateBalance(map(account.addressData, (addressObject) => addressObject.balance)),

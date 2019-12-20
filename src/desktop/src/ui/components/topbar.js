@@ -13,6 +13,7 @@ import { setPassword, clearWalletData } from 'actions/wallet';
 
 class Top extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         wallet: PropTypes.object,
     };
 

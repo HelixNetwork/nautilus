@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import css from './wallet.scss';
@@ -20,16 +21,15 @@ import { startTrackingProgress } from 'actions/progress';
 import { MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
 import { getCurrencyData } from 'actions/settings';
 
+/**
+ * Send transaction component
+ */
+
 class Send extends React.PureComponent {
     static propTypes = {
         /** @ignore */
         balance: PropTypes.number.isRequired,
         /** @ignore */
-        // settings: PropTypes.shape({
-        //     conversionRate: PropTypes.number.isRequired,
-        //     currency: PropTypes.string.isRequired,
-        //     usdPrice: PropTypes.number.isRequired,
-        // }),
         makeTransaction: PropTypes.func.isRequired,
         /** @ignore */
         t: PropTypes.func.isRequired,
@@ -170,10 +170,6 @@ class Send extends React.PureComponent {
             generateAlert('error', t('send:invalidMessage'), t('send:invalidMessageExplanation'));
             return false;
         }
-
-        // this.setState({
-        //   openModal: true
-        // });
         return true;
     }
 
@@ -403,19 +399,6 @@ class Send extends React.PureComponent {
                                                     <br />
                                                     <div className={css.transferLoading}>
                                                         <br />
-                                                        {/*<Lottie*/}
-                                                        {/*  options={defaultOptions}*/}
-                                                        {/*  eventListeners={[*/}
-                                                        {/*    {*/}
-                                                        {/*      eventName: "complete",*/}
-                                                        {/*      callback: () => {*/}
-                                                        {/*        if (typeof onEnd === "function") {*/}
-                                                        {/*          onEnd();*/}
-                                                        {/*        }*/}
-                                                        {/*      }*/}
-                                                        {/*    }*/}
-                                                        {/*  ]}*/}
-                                                        {/*/>*/}
                                                     </div>
                                                     <br />
                                                     <div>

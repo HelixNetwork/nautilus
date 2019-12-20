@@ -26,16 +26,19 @@ import OnboardingLayout from 'ui/components/onboarding';
  */
 class Onboarding extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         isAuthorised: PropTypes.bool,
+        /** @ignore */
         complete: PropTypes.bool,
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
-
-    state = {};
 
     steps(currentKey) {
         const steps = [

@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -9,10 +10,18 @@ import { setAccountInfoDuringSetup } from 'actions/accounts';
 import Button from 'ui/components/button';
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
+
+/**
+ * Onboarding, Seed introduction
+ */
 class SeedIntro extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.object,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
+
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
 

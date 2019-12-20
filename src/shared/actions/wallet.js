@@ -110,10 +110,26 @@ export const generateNewAddressSuccess = () => ({
     type: WalletActionTypes.GENERATE_NEW_ADDRESS_SUCCESS,
 });
 
+/**
+ * Dispatch to set password hash on login
+ *
+ * @method setPassword
+ * @param {string} payload
+ *
+ * @returns {{type: {string}, payload: {string} }}
+ */
 export const setPassword = (payload) => ({
     type: WalletActionTypes.SET_PASSWORD,
     payload,
 });
+
+/**
+ * Dispatch to clear "wallet" reducer state
+ *
+ * @method clearWalletData
+ *
+ * @returns {{type: {string} }}
+ */
 
 export const clearWalletData = () => ({
     type: WalletActionTypes.CLEAR_WALLET_DATA,
