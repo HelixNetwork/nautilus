@@ -31,7 +31,6 @@ class PuppeteerEnvironment extends ElectronEnvironment {
         this.browser = null;
 
         const getNewPage = async (route, isAuthorised) => {
-            console.log('isAuth', isAuthorised);
             if (!this.browser) {
                 this.browser = await puppeteer.connect({
                     browserWSEndpoint: wsEndpoint,
