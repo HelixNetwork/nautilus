@@ -5,13 +5,17 @@ Please be sure to read our code of conduct on: https://hlx.readme.io/docs/contri
 
 When contributing to a HelixNetwork repository, please first propose the changes you wish to make via an issue. If there is an existing issue that has been passed by the reviewers and addresses the change, please commit the change to your dedicated branch.
 
+## Security Disclosures
+
+Please refer to our [security policy](SECURITY.MD)
+
 ## Contribution Example
 
-1.  Open issue, e.g. "Unexpected beheaviour while sending token (#153)" (note that each issue has an unique id).
+1.  Open issue, e.g. "Unexpected behaviour while sending token (#153)" (note that each issue has an unique id).
 2. Issue has been discussed and specs for implementation have been approved.
 3. Fork `dev` branch to `dev-<feature>`.
 4. Implement changes and compile build, then commit to dev-conversion-patch. It may be a good idea to include the issue id, in this case #153 in the commit, e.g. `$ git commit -am "Fix conversion (#153)"`.
-5. Push to `dev-<feature>` and submit a pull request to `develepoment`.
+5. Push to `dev-<feature>` and submit a pull request to `development`.
 6. Pull request is reviewed and approved
 
 # Branch Policies
