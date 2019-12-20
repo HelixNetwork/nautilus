@@ -166,7 +166,7 @@ export class ListComponent extends React.PureComponent {
         const isLoading = ui.isFetchingAccountInfo;
         const currentlyPromotingBundleHash = ui.currentlyPromotingBundleHash;
         const isRetryingFailedTransaction = ui.isRetryingFailedTransaction;
-        const tx = this.getAccountTransactions(accountInfo);
+        const tx = this.props.transactions ? this.props.transactions : this.getAccountTransactions(accountInfo);
         this.setState({
             isBusy: isBusy,
             isLoading: isLoading,
@@ -328,7 +328,6 @@ export class ListComponent extends React.PureComponent {
                         </div>
                     </div>
                 </nav>
-
                 <Scrollbar style={scrollStyle}>
                     {filteredTransactions.length ? (
                         filteredTransactions.map((transaction, key) => {
@@ -336,7 +335,7 @@ export class ListComponent extends React.PureComponent {
                             const isConfirmed = transaction.persistence;
 
                             return (
-                                <div key={key} onClick={() => setItem(transaction.bundle)}>
+                                <div className={css.lists} key={key} onClick={() => setItem(transaction.bundle)}>
                                     {isConfirmed ? (
                                         <div className={isReceived ? css.column_receive : css.column_sent}>
                                             <div className={css.column_cnt}>

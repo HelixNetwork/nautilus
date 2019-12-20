@@ -55,8 +55,7 @@ describe('Test for Clipboard component', () => {
     test('checks the copy event', () => {
         const wrapper = shallow(<Clipboard {...props} />);
         const spy = jest.spyOn(wrapper.instance(), 'copy');
-        console.log(spy);
-        wrapper.update();
+        wrapper.instance().forceUpdate();
         wrapper.find('span').simulate('click');
         expect(spy).toHaveBeenCalled();
       
