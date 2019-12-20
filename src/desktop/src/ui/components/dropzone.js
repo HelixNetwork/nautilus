@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import shield from '../../ui/images/svg/shield.svg';
+import shield from 'ui/images/svg/shield.svg';
 import css from './dropzone.scss';
 
 /**

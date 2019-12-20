@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { getAccountInfo } from 'actions/accounts';
 import { generateAlert } from 'actions/alerts';
 import { promoteTransaction, retryFailedTransaction } from 'actions/transfers';
 import { toggleEmptyTransactions } from 'actions/settings';
@@ -20,12 +21,13 @@ import { formatHlx, unitStringToValue } from 'libs/hlx/utils';
 import { formatModalTime, convertUnixTimeToJSDate, detectedTimezone } from 'libs/date';
 import SeedStore from 'libs/seed';
 import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
+
 import Clipboard from 'ui/components/clipboard';
 import Icon from 'ui/components/icon';
 import Scrollbar from 'ui/components/scrollbar';
 import Button from 'ui/components/button';
 import css from './list.scss';
-import { getAccountInfo } from 'actions/accounts';
+
 /**
  * Transaction history list component
  */
@@ -139,8 +141,6 @@ export class ListComponent extends React.PureComponent {
 
         const { accountMeta, password } = this.props;
         const seedStore = await new SeedStore[accountMeta.type](password);
-
-        // this.props.promoteTransaction(bundle, seedStore);
         this.props.promoteTransaction(bundle, this.props.accountName, seedStore);
     }
 
@@ -149,8 +149,6 @@ export class ListComponent extends React.PureComponent {
 
         const { accountMeta, password } = this.props;
         const seedStore = await new SeedStore[accountMeta.type](password);
-
-        // this.props.retryFailedTransaction(bundle, seedStore);
         this.props.retryFailedTransaction(this.props.accountName, bundle, seedStore);
     }
 
@@ -291,7 +289,6 @@ export class ListComponent extends React.PureComponent {
                             onChange={(e) => this.setState({ search: e.target.value })}
                         />
                     </div>
-                    {/* Should be changed to isLoading and isBusy */}
                     <div className={css.nav_div}>
                         <p className={css.title_refresh}>Click To Refresh:</p>
                         <div

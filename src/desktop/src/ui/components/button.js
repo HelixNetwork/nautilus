@@ -9,16 +9,22 @@ import css from './button.scss';
  */
 export default class Button extends React.PureComponent {
     static propTypes = {
+        /** Target link */
         to: PropTypes.string,
         /** Click event callback function
          * @param {object} Event - Click event object
          * @returns {undefined}
          */
         onClick: PropTypes.func,
+        /** Button content */
         children: PropTypes.node,
+        /** Custom button style definitions */
         style: PropTypes.object,
+        /** Is button disabled */
         disabled: PropTypes.bool,
+        /** Button element type */
         type: PropTypes.oneOf(['button', 'submit']),
+        /** Buttons secondary class */
         className: PropTypes.oneOf([
             'outline',
             'small',
@@ -35,6 +41,7 @@ export default class Button extends React.PureComponent {
             'log_navright',
             'reset_button',
         ]),
+        /** Is button loading state active */
         loading: PropTypes.bool,
     };
 
