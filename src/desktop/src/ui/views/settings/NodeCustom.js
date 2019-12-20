@@ -15,10 +15,15 @@ import css from './settings.scss';
  */
 class NodeCustom extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         customNodes: PropTypes.array.isRequired,
+        /** @ignore */
         loading: PropTypes.bool.isRequired,
+        /** @ignore */
         onClose: PropTypes.func.isRequired,
+        /** @ignore */
         setNode: PropTypes.func.isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
 
@@ -46,10 +51,6 @@ class NodeCustom extends React.PureComponent {
 
     render() {
         const { customNodes, loading, onClose, removeCustomNode, t } = this.props;
-        // const [url, setUrl] = useState('');
-        // const [token, setToken] = useState('');
-        // const [password, setPassword] = useState('');
-        // const [authVisible, setAuthVisible] = useState(false);
 
         return (
             <Modal variant="fullscreen" isOpen onClose={onClose}>
@@ -61,18 +62,6 @@ class NodeCustom extends React.PureComponent {
                             label={t('addCustomNode:customNode')}
                             onChange={this.setUrl.bind(this)}
                         />
-                        {/*
-                    // Temporary disable authorisation entry #https://github.com/iotaledger/trinity-wallet/pull/1654
-                    authVisible ? (
-                        <Fragment>
-                            <Text value={token} label={t('addCustomNode:username')} onChange={setToken} />
-                            <Text value={password} label={t('addCustomNode:password')} onChange={setPassword} />
-                        </Fragment>
-                    ) : (
-                        <a className={css.authLink} onClick={() => setAuthVisible(true)}>
-                            <Icon icon="plusAlt" size={10} /> {t('addCustomNode:addAuthKey')}
-                        </a>
-                    )*/}
 
                         {customNodes.length ? (
                             <ul>

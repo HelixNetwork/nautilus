@@ -18,14 +18,21 @@ import { newTerms } from '../../../../../shared/config';
  */
 class Welcome extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         acceptedPrivacy: PropTypes.bool.isRequired,
+        /** @ignore */
         acceptedTerms: PropTypes.bool.isRequired,
+        /** @ignore */
         acceptTerms: PropTypes.func.isRequired,
+        /** @ignore */
         acceptPrivacy: PropTypes.func.isRequired,
+        /** @ignore */
         forceUpdate: PropTypes.bool.isRequired,
     };
     state = {

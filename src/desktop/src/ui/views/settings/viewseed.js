@@ -1,3 +1,4 @@
+/* global Electron */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
@@ -23,14 +24,21 @@ import classNames from 'classnames';
 
 class Viewseed extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         accountName: PropTypes.string.isRequired,
+        /** @ignore */
         accountMeta: PropTypes.object.isRequired,
+        /** @ignore */
         password: PropTypes.object.isRequired,
+        /** @ignore */
         account: PropTypes.object.isRequired,
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
     state = {

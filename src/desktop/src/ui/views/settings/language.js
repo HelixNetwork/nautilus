@@ -10,12 +10,14 @@ import { I18N_LOCALE_LABELS, I18N_LOCALES } from 'libs/i18n';
 import { setLocale } from 'actions/settings';
 import i18next from 'libs/i18next';
 /**
- * Setting component
+ * Setting Language component
  */
 
 class SettingsLanguage extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         setLocale: PropTypes.func.isRequired,
     };
     state = {
