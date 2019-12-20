@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
 import { zxcvbn } from 'libs/exports';
-
 import { passwordReasons } from 'libs/password';
 
 import Icon from 'ui/components/icon';
@@ -107,10 +106,7 @@ class PasswordInput extends React.PureComponent {
                         onChange={(e) => onChange(e.target.value)}
                     />
                     <small>{label}</small>
-                    <strong>
-                        {/* <Icon icon="attention" size={14} /> */}
-                        {t('capsLockIsOn')}
-                    </strong>
+                    <strong>{t('capsLockIsOn')}</strong>
                     {showScore ? (
                         <React.Fragment>
                             <div className={css.score} data-strength={score.score}>
