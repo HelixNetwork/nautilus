@@ -872,6 +872,14 @@ export const filterAddressDataWithPendingOutgoingTransactions = (addressData, tr
     return filter(addressData, (addressObject) => !includes(inputAddressesFromTransactions, addressObject.address));
 };
 
+/**
+ * Make sure that the address a user is about to send to is secure.
+ *
+ * @method shouldAllowSendingToAddress
+ * @param {array} addresses
+ *
+ * @returns {number}
+ */
 export const shouldAllowSendingToAddress = (provider) => (addresses) => {
     return wereAddressesSpentFrom(provider)(addresses).then((wereSpent) => {
         const spentAddresses = filter(addresses, (address, idx) => wereSpent[idx]);

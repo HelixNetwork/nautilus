@@ -15,10 +15,13 @@ import { updateTheme } from 'actions/settings';
 
 class SettingsTheme extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
     state = {
@@ -31,7 +34,7 @@ class SettingsTheme extends React.PureComponent {
         return (
             <div className={classNames(css.foo_bxx12)}>
                 <form
-                    style={{ marginTop: '7vw' }}
+                    className={css.margin_form}
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (themeName) {

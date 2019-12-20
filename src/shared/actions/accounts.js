@@ -195,6 +195,14 @@ export const assignAccountIndexIfNecessary = (accountInfo) => (dispatch) => {
     }
 };
 
+/**
+ * Dispatch to set onboarding as completed
+ *
+ * @method setOnboardingComplete
+ * @param {boolean} payload
+ *
+ * @returns {{type: {string}, payload: {boolean} }}
+ */
 export const setOnboardingComplete = (payload) => {
     Wallet.setOnboardingComplete();
 
@@ -215,6 +223,18 @@ export const accountInfoFetchRequest = () => ({
     type: AccountsActionTypes.ACCOUNT_INFO_FETCH_REQUEST,
 });
 
+/**
+ * Gets latest account information: including transfers, balance and spend status information.
+ *
+ * @method getAccountInfo
+ * @param {object} seed - SeedStore class object
+ * @param {string} accountName
+ * @param {function} notificationFn - New transaction callback function
+ * @param {function} genFn
+ * @param {boolean} [withQuorum]
+ *
+ * @returns {function} dispatch
+ */
 export const getAccountInfo = (seed, accountName, notificationFn, navigator = null, genFn, withQuorum = false) => {
     return (dispatch, getState) => {
         dispatch(accountInfoFetchRequest());
@@ -239,6 +259,14 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
             });
     };
 };
+
+/**
+ * Dispatch when an error occurs during the process of fetching information for an additional account
+ *
+ * @method fullAccountInfoFetchError
+ *
+ * @returns {{type: {string} }}
+ */
 
 export const fullAccountInfoFetchError = () => ({
     type: AccountsActionTypes.FULL_ACCOUNT_INFO_FETCH_ERROR,
@@ -322,6 +350,16 @@ export const fullAccountInfoFetchSuccess = (payload) => ({
     payload,
 });
 
+/**
+ * Gets full account information for the first seed added to the wallet.
+ *
+ * @method getFullAccountInfo
+ * @param {object} seedStore - SeedStore class object
+ * @param {string} accountName
+ * @param {boolean} [quorum]
+ *
+ * @returns {function} dispatch
+ */
 export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
     return (dispatch, getState) => {
         dispatch(fullAccountInfoFetchRequest());

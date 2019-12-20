@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for Icon component Render the Icon component 1`] = `
+<span
+  className="icon hlx"
+  style={
+    Object {
+      "color": "#ff0000",
+      "fontSize": 32,
+      "lineHeight": "32px",
+    }
+  }
+/>
+`;

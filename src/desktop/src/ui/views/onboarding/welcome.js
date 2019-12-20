@@ -12,20 +12,27 @@ import Language from 'ui/components/input/language';
 import Button from 'ui/components/button';
 import Logos from 'ui/components/logos';
 import css from './welcome.scss';
-import { NEWTERMS, newTermsNotice } from 'shared/config';
+import { newTerms } from '../../../../../shared/config';
 /**
  * Nautilus Welcome Screen component
  */
 class Welcome extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         acceptedPrivacy: PropTypes.bool.isRequired,
+        /** @ignore */
         acceptedTerms: PropTypes.bool.isRequired,
+        /** @ignore */
         acceptTerms: PropTypes.func.isRequired,
+        /** @ignore */
         acceptPrivacy: PropTypes.func.isRequired,
+        /** @ignore */
         forceUpdate: PropTypes.bool.isRequired,
     };
     state = {
@@ -34,15 +41,7 @@ class Welcome extends React.PureComponent {
     };
 
     onNextClick = () => {
-        const {
-            history,
-            acceptedTerms,
-            acceptedPrivacy,
-            acceptTerms,
-            acceptPrivacy,
-            acceptNewTerms,
-            updateNewTermsNotice,
-        } = this.props;
+        const { history, acceptedTerms, acceptedPrivacy, acceptTerms, acceptPrivacy, acceptNewTerms } = this.props;
         const { step } = this.state;
 
         if (acceptedTerms && acceptedPrivacy) {
@@ -65,8 +64,7 @@ class Welcome extends React.PureComponent {
                 break;
             default:
                 acceptPrivacy();
-                acceptNewTerms(NEWTERMS);
-                updateNewTermsNotice(newTermsNotice);
+                acceptNewTerms(newTerms);
                 history.push('/onboarding/seed-intro');
         }
     };
@@ -76,20 +74,17 @@ class Welcome extends React.PureComponent {
         const { step, scrollEnd } = this.state;
         let markdown = '';
         markdown = step === 'terms' ? enTermsAndConditions : enPrivacyPolicy;
-        let styles = {
-            color: '#E9B339',
-            fontSize: '20px',
-        };
+
         return (
             <div>
                 <Logos size={20} history={history} />
                 <section className={css.home}>
                     {step === 'language' ? (
                         <React.Fragment>
-                            <h1 style={{ fontSize: '63px' }}>{t('welcome:thankYou')}</h1>
+                            <h1 className={css.language_h1}>{t('welcome:thankYou')}</h1>
                             <h6>
                                 {t('welcome:thankYouDescription')}
-                                <span style={styles}>
+                                <span className={css.span_style}>
                                     <b>.</b>
                                 </span>
                             </h6>
@@ -119,7 +114,7 @@ class Welcome extends React.PureComponent {
                             : !scrollEnd
                             ? t('terms:readAllToContinue')
                             : t('terms:accept')}
-                        <span style={styles}> ></span>
+                        <span className={css.span_style}> ></span>
                     </Button>
                 </section>
             </div>

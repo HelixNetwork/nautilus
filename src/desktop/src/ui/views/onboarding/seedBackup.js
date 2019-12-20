@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -11,11 +12,16 @@ import SeedExport from 'ui/global/seedExport';
 import Lottie from 'react-lottie';
 import * as animationData from 'animations/export.json';
 import { Row } from 'react-bootstrap';
-
+/**
+ * Onboarding, Seed correct backup validation or existing seed input component
+ */
 class SeedBackup extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.object,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         onboardingName: PropTypes.string.isRequired,
     };
 
@@ -49,7 +55,7 @@ class SeedBackup extends React.PureComponent {
 
         return (
             <div>
-                <Row style={{ marginTop: '5vw' }}>
+                <Row className={css.done_row}>
                     <h1>
                         {t('saveYourSeed:saveYourSeed')}
                         <span className={classNames(css.text_color)}>.</span>

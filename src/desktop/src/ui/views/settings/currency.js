@@ -11,17 +11,24 @@ import { getCurrencyData } from 'actions/settings';
 import { getThemeFromState } from 'selectors/global';
 
 /**
- * currency settings component
+ * Currency settings component
  */
 
 class Currency extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         isFetchingCurrencyData: PropTypes.bool.isRequired,
+        /**@ignore */
         hasErrorFetchingCurrencyData: PropTypes.bool.isRequired,
+        /**@ignore */
         currency: PropTypes.string.isRequired,
+        /**@ignore */
         currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+        /**@ignore */
         getCurrencyData: PropTypes.func.isRequired,
+        /**@ignore */
         backPress: PropTypes.func,
+        /**@ignore */
         t: PropTypes.func.isRequired,
     };
 
@@ -40,7 +47,7 @@ class Currency extends React.PureComponent {
         return (
             <div className={classNames(css.foo_bxx12)}>
                 <form
-                    style={{ marginTop: '7vw' }}
+                    className={css.margin_form}
                     onSubmit={(e) => {
                         e.preventDefault();
                         this.setCurrency(this.state.selection);

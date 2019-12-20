@@ -12,15 +12,21 @@ import * as animationData from 'animations/done.json';
 import { Row } from 'react-bootstrap';
 import { setOnboardingComplete } from 'actions/accounts';
 
+/**
+ * Onboarding complete component
+ */
 class Done extends React.PureComponent {
     static propTypes = {
+        /* @ignore */
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
         /** On animation end event callback */
         onEnd: PropTypes.func,
         /** Should animation loop */
         loop: PropTypes.bool,
+        /** @ignore */
         setPassword: PropTypes.func.isRequired,
+        /** @ignore */
         setOnboardingComplete: PropTypes.func.isRequired,
     };
 
@@ -46,7 +52,7 @@ class Done extends React.PureComponent {
         return (
             <div>
                 <Logos history={history} />
-                <Row style={{ marginTop: '5vw' }}>
+                <Row className={css.done_row}>
                     <h1 className={classNames(css.head_h1)}>
                         {t('onboardingComplete:allDone')}
                         <span className={classNames(css.text_color)}>!</span>

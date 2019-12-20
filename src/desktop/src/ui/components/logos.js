@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import logo from 'ui/images/logo.png';
 import Icon from 'ui/components/icon';
+
+/**
+ * Animated/static logos component
+ */
 class Logos extends React.PureComponent {
     render() {
         return (
@@ -14,10 +18,7 @@ class Logos extends React.PureComponent {
                 </div>
                 {this.props.wallet.ready && (
                     <React.Fragment>
-                        <span
-                            style={{ float: 'right', cursor: 'pointer', marginRight: '50px' }}
-                            onClick={() => this.props.history.push('/wallet/')}
-                        >
+                        <span className={css.logos_span} onClick={() => this.props.history.push('/wallet/')}>
                             <Icon icon="cross" size={18} />
                         </span>
                     </React.Fragment>

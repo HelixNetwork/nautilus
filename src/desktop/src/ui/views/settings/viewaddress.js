@@ -15,42 +15,36 @@ import { formatValue, formatUnit } from 'libs/hlx/utils';
 
 class Viewaddress extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         account: PropTypes.object,
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
 
     render() {
         const { account, t } = this.props;
-
-        // const isSpent = ({ spent: { local, remote } }) => local || remote;
         const addressData = account.addressData.slice().sort((a, b) => b.index - a.index);
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <h5 style={{ marginLeft: '28vw' }}>{t('accountManagement:viewAddresses')}</h5>
+                <h5 className={css.addr_h5}>{t('accountManagement:viewAddresses')}</h5>
                 <Scrollbar style={{ height: '88%' }}>
                     <div className={classNames(css.set_bxac)}>
                         <div className={css.scroll}>
-                            <ul className={css.addresses} style={{ marginLeft: '25px', paddingTop: '0px' }}>
+                            <ul className={css.addresses}>
                                 <Scrollbar className={css.scroll_address}>
                                     {addressData.map((addressObject) => {
                                         const address = addressObject.address + addressObject.checksum;
 
                                         return (
-                                            <li key={address} style={{ overflow: 'hidden' }}>
-                                                <p
-                                                    className={css.p_style}
-                                                    style={{
-                                                        marginTop: '10px',
-                                                        float: 'left',
-                                                        width: '61%',
-                                                        marginLeft: '0%',
-                                                    }}
-                                                >
+                                            <li key={address} className={css.address_li}>
+                                                <p className={classNames(css.p_style)}>
                                                     <Clipboard
                                                         text={address}
                                                         title={t('receive:addressCopied')}
@@ -62,7 +56,7 @@ class Viewaddress extends React.PureComponent {
                                                         </span>
                                                     </Clipboard>
                                                 </p>
-                                                <strong style={{ float: 'right', marginTop: '5%' }}>
+                                                <strong className={css.addr_strong}>
                                                     {' '}
                                                     {formatValue(addressObject.balance)}{' '}
                                                     <span> {formatUnit(addressObject.balance)}</span>

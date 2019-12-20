@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,12 +13,19 @@ import { createRandomSeed, randomTxBytes } from 'libs/crypto';
 import { indexToChar } from 'libs/hlx/converter';
 import { MAX_SEED_LENGTH } from 'libs/hlx/utils';
 import { Row } from 'react-bootstrap';
+
+/**
+ * Onboarding, Seed generation component
+ */
 class SeedGenerate extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         loop: PropTypes.bool,
     };
 
@@ -301,7 +309,7 @@ class SeedGenerate extends React.PureComponent {
 
         return (
             <div>
-                <Row style={{ marginTop: '2vw' }}>
+                <Row className={css.row_main}>
                     <h1>
                         {t('newSeedSetup:generateSeed')}
                         <span className={classNames(css.text_color)}>.</span>
@@ -332,10 +340,7 @@ class SeedGenerate extends React.PureComponent {
                 <Row className={css.centerBox}>
                     <div className={css.seed_wrapper}>
                         <div className={css.seed_wrapbox}>
-                            <div
-                                className={css.seed_lotbox}
-                                style={{ width: '100%', height: '100%', display: this.state.viewReload }}
-                            >
+                            <div className={css.seed_lotbox} style={{ display: this.state.viewReload }}>
                                 <Lottie
                                     className={classNames(css.seed_lottie)}
                                     options={defaultOptions}
@@ -371,10 +376,7 @@ class SeedGenerate extends React.PureComponent {
                             </div>
                         </div>
                         <div className={css.seed_wrapbox} style={{ display: this.state.displaySeedTwo }}>
-                            <div
-                                className={css.seed_lotbox}
-                                style={{ width: '100%', height: '100%', display: this.state.viewReloadBlockTwo }}
-                            >
+                            <div className={css.seed_lotbox} style={{ display: this.state.viewReloadBlockTwo }}>
                                 <Lottie
                                     className={classNames(css.seed_lottie)}
                                     options={defaultOptions}
@@ -409,10 +411,7 @@ class SeedGenerate extends React.PureComponent {
                             </div>
                         </div>
                         <div className={css.seed_wrapbox} style={{ display: this.state.displaySeedThree }}>
-                            <div
-                                className={css.seed_lotbox}
-                                style={{ width: '100%', height: '100%', display: this.state.viewReloadBlockThree }}
-                            >
+                            <div className={css.seed_lotbox} style={{ display: this.state.viewReloadBlockThree }}>
                                 <Lottie
                                     className={classNames(css.seed_lottie)}
                                     options={defaultOptions}
@@ -447,10 +446,7 @@ class SeedGenerate extends React.PureComponent {
                             </div>
                         </div>
                         <div className={css.seed_wrapbox} style={{ display: this.state.displaySeedFour }}>
-                            <div
-                                className={css.seed_lotbox}
-                                style={{ width: '100%', height: '100%', display: this.state.viewReloadBlockFour }}
-                            >
+                            <div className={css.seed_lotbox} style={{ display: this.state.viewReloadBlockFour }}>
                                 <Lottie
                                     className={classNames(css.seed_lottie)}
                                     options={defaultOptions}

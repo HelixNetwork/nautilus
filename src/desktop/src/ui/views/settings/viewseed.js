@@ -1,3 +1,4 @@
+/* global Electron */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
@@ -23,14 +24,21 @@ import classNames from 'classnames';
 
 class Viewseed extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         accountName: PropTypes.string.isRequired,
+        /** @ignore */
         accountMeta: PropTypes.object.isRequired,
+        /** @ignore */
         password: PropTypes.object.isRequired,
+        /** @ignore */
         account: PropTypes.object.isRequired,
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
     state = {
@@ -86,8 +94,7 @@ class Viewseed extends React.PureComponent {
                                 <Icon icon="cross" size={14} />
                             </span>
                         </Button>
-                        <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewSeed')}</h5>
-                        {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
+                        <h5 className={css.seed_h5}>{t('accountManagement:viewSeed')}</h5>
 
                         {typeof accountMeta.index === 'number' && (
                             <Fragment>
@@ -132,7 +139,7 @@ class Viewseed extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className={classNames(css.foo_bxx12)}>
-                    <h5 style={{ marginLeft: '3vw' }}>{t('accountManagement:viewSeed')}</h5>
+                    <h5 className={css.seed_h5}>{t('accountManagement:viewSeed')}</h5>
                     <form>
                         <div>
                             <p className={css.seed}>
@@ -159,19 +166,13 @@ class Viewseed extends React.PureComponent {
                                 )}
                             </p>
                         </div>
-                        <div style={{ marginTop: '12vw' }}>
+                        <div className={css.seed_div}>
                             <Button
                                 className="navleft"
                                 onClick={() => this.setState({ action: action !== 'view' ? 'view' : null })}
                             >
                                 {action === 'view' ? t('settings:hide') : t('settings:show')}
                             </Button>
-                            {/* <Button
-                            className="small"
-                            onClick={() => (!seed ? this.setState({ action: 'print' }) : window.print())}
-                        >
-                            {t('paperWallet')}
-                        </Button> */}
                             <Button className="navright" onClick={() => this.setState({ action: 'export' })}>
                                 {t('seedVault:exportSeedVault')}
                             </Button>

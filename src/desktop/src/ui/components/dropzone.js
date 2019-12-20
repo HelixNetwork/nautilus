@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import shield from '../../ui/images/svg/shield.svg';
+import shield from 'ui/images/svg/shield.svg';
 import css from './dropzone.scss';
 
 /**
@@ -131,12 +131,12 @@ class Dropzone extends React.Component {
             <React.Fragment>
                 <div className={classNames(css.filebox)} onClick={this.open}>
                     <h5>
-                        <img style={{ width: '86px' }} src={shield} alt="" /> <br />
-                        <span style={{ fontSize: '14px' }}>{t('seedVault:dropInstructions')}</span>
+                        <img className={css.dropzone_img} src={shield} alt="" /> <br />
+                        <span className={css.dropzone_span}>{t('seedVault:dropInstructions')}</span>
                     </h5>
                     <input {...inputAttributes} />
                     <div className={classNames(css.dropzone, this.state.isDragActive && css.active)}>
-                        <img style={{ width: '150px' }} src={shield} alt="" />
+                        <img className={css.dropzone_sheild} src={shield} alt="" />
                         <h1>{t('seedVault:dropInstructions')}</h1>
                     </div>
                 </div>

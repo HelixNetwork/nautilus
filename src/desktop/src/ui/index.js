@@ -11,7 +11,6 @@ import { getAccountNamesFromState, isSettingUpNewAccount } from 'selectors/accou
 import { fetchNodeList } from 'actions/polling';
 import { setPassword, setSeedIndex } from 'actions/wallet';
 import { generateAlert } from 'actions/alerts';
-import About from 'ui/global/about';
 import ErrorLog from 'ui/global/errorLog';
 import Theme from 'ui/global/theme';
 import Onboarding from 'ui/views/onboarding/index';
@@ -169,7 +168,6 @@ class App extends React.Component {
         }
         return (
             <div>
-                <About />
                 <ErrorLog />
                 <LockWallet></LockWallet>
                 <UpdateWallet />

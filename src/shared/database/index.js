@@ -11,6 +11,7 @@ import some from 'lodash/some';
 import { preserveAddressLocalSpendStatus } from 'libs/hlx/addresses';
 import { serialise, parse } from '../libs/utils';
 import schemas, { getDeprecatedStoragePath, STORAGE_PATH as latestStoragePath, vSchema0 } from './schemas';
+import { __TEST__ } from '../config';
 // Initialise realm instance
 let realm = {}; // eslint-disable-line import/no-mutable-exports
 
@@ -24,6 +25,9 @@ let Realm = null;
  * @returns {object}
  */
 export const getRealm = () => {
+    if (__TEST__) {
+        return require('../libs/originalRequire')('realm');
+    }
     // eslint-disable-next-line no-undef
     return Electron.getRealm();
 };
@@ -389,7 +393,8 @@ class Wallet {
 
     static updateNewTermsNotice(payload) {
         realm.write(() => {
-            Wallet.latestSettings.newtermsupdatenotice = payload;
+            Wallet.latestSettings.newtermsupdatenotice = payload.newTermsNotice;
+            Wallet.latestSettings.newtermsdate = payload.newTermsDate;
         });
     }
 

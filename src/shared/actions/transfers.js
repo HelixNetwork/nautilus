@@ -1,92 +1,87 @@
-import assign from "lodash/assign";
-import extend from "lodash/extend";
-import has from "lodash/has";
-import head from "lodash/head";
-import find from "lodash/find";
-import map from "lodash/map";
-import join from "lodash/join";
-import orderBy from "lodash/orderBy";
-import filter from "lodash/filter";
-import isEmpty from "lodash/isEmpty";
-import some from "lodash/some";
-import size from "lodash/size";
-import every from "lodash/every";
-import includes from "lodash/includes";
-import uniq from "lodash/uniq";
-import get from "lodash/get";
+import assign from 'lodash/assign';
+import extend from 'lodash/extend';
+import has from 'lodash/has';
+import head from 'lodash/head';
+import find from 'lodash/find';
+import map from 'lodash/map';
+import join from 'lodash/join';
+import orderBy from 'lodash/orderBy';
+import filter from 'lodash/filter';
+import isEmpty from 'lodash/isEmpty';
+import some from 'lodash/some';
+import size from 'lodash/size';
+import every from 'lodash/every';
+import includes from 'lodash/includes';
+import uniq from 'lodash/uniq';
+import get from 'lodash/get';
+import { addChecksum } from '@helixnetwork/checksum';
+import { asTransactionObject } from '@helixnetwork/transaction-converter';
 import {
-  replayBundle,
-  promoteTransaction as promoteTx,
-  getTransactionsToApprove,
-  isNodeHealthy,
-  attachToTangle,
-  storeAndBroadcast
-} from "../libs/hlx/extendedApi";
+    replayBundle,
+    promoteTransaction as promoteTx,
+    getTransactionsToApprove,
+    isNodeHealthy,
+    attachToTangle,
+    storeAndBroadcast,
+} from '../libs/hlx/extendedApi';
+import { getSelectedNodeFromState, getNodesFromState, getRemotePoWFromState } from '../selectors/global';
+import { selectedAccountStateFactory } from '../selectors/accounts';
 import {
-  getSelectedNodeFromState,
-  getNodesFromState,
-  getRemotePoWFromState
-} from "../selectors/global";
-import { selectedAccountStateFactory } from "../selectors/accounts";
+    withRetriesOnDifferentNodes,
+    fetchRemoteNodes,
+    getRandomNodes,
+    noChecksum,
+    ADDRESS_LENGTH,
+} from '../libs/hlx/utils';
+import { setNextStepAsActive, reset as resetProgress } from './progress';
+import { clearSendFields } from './ui';
 import {
-  withRetriesOnDifferentNodes,
-  fetchRemoteNodes,
-  getRandomNodes,
-} from "../libs/hlx/utils";
-import { setNextStepAsActive, reset as resetProgress } from "./progress";
-import { clearSendFields } from "./ui";
+    findPromotableTail,
+    prepareTransferArray,
+    retryFailedTransaction as retry,
+    constructBundlesFromTransactions,
+    isFundedBundle,
+    isBundle,
+    filterInvalidPendingTransactions,
+    getPendingOutgoingTransfersForAddresses,
+} from '../libs/hlx/transfers';
 import {
-  findPromotableTail,
-  prepareTransferArray,
-  retryFailedTransaction as retry,
-  constructBundlesFromTransactions,
-  isFundedBundle,
-  isBundle,
-  filterInvalidPendingTransactions
-} from "../libs/hlx/transfers";
+    syncAccountAfterReattachment,
+    syncAccount,
+    syncAccountAfterSpending,
+    syncAccountOnValueTransactionFailure,
+    syncAccountOnSuccessfulRetryAttempt,
+} from '../libs/hlx/accounts';
 import {
-  syncAccountAfterReattachment,
-  syncAccount,
-  syncAccountAfterSpending,
-  syncAccountOnValueTransactionFailure,
-  syncAccountOnSuccessfulRetryAttempt
-} from "../libs/hlx/accounts";
+    updateAccountAfterReattachment,
+    updateAccountInfoAfterSpending,
+    syncAccountBeforeManualPromotion,
+} from './accounts';
 import {
-  updateAccountAfterReattachment,
-  updateAccountInfoAfterSpending,
-  syncAccountBeforeManualPromotion
-} from "./accounts";
+    isAnyAddressSpent,
+    getAddressDataUptoRemainder,
+    categoriseAddressesBySpentStatus,
+    shouldAllowSendingToAddress,
+} from '../libs/hlx/addresses';
 import {
-  isAnyAddressSpent,
-  getAddressDataUptoRemainder,
-  categoriseAddressesBySpentStatus,
-  shouldAllowSendingToAddress
-} from "../libs/hlx/addresses";
+    // getInputs,
+    getStartingSearchIndexToPrepareInputs,
+    getSpentAddressesFromTransactions,
+    getUnspentInputs,
+} from '../libs/hlx/inputs';
 import {
-  getInputs,
-  getStartingSearchIndexToPrepareInputs,
-  getSpentAddressesFromTransactions,
-  getUnspentInputs
-} from "../libs/hlx/inputs";
-import {
-  generateAlert,
-  generateTransferErrorAlert,
-  generatePromotionErrorAlert,
-  generateNodeOutOfSyncErrorAlert,
-  generateUnsupportedNodeErrorAlert,
-  generateTransactionSuccessAlert
-} from "./alerts";
-import i18next from "../libs/i18next.js";
-import Errors from "../libs/errors";
-import { DEFAULT_RETRIES } from "../config";
-import { Account } from "../database";
-
-import { noChecksum, ADDRESS_LENGTH } from "../libs/hlx/utils";
-
-import { addChecksum } from "@helixnetwork/checksum";
-
-import { asTransactionObject } from "@helixnetwork/transaction-converter";
-import { TransfersActionTypes } from "../actions/types";
+    generateAlert,
+    generateTransferErrorAlert,
+    generatePromotionErrorAlert,
+    generateNodeOutOfSyncErrorAlert,
+    generateUnsupportedNodeErrorAlert,
+    generateTransactionSuccessAlert,
+} from './alerts';
+import i18next from '../libs/i18next.js';
+import Errors from '../libs/errors';
+import { DEFAULT_RETRIES } from '../config';
+import { Account } from '../database';
+import { TransfersActionTypes } from '../actions/types';
 
 /**
  * Dispatch when a transaction is about to be manually promoted
@@ -96,9 +91,9 @@ import { TransfersActionTypes } from "../actions/types";
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-const promoteTransactionRequest = payload => ({
-  type: TransfersActionTypes.PROMOTE_TRANSACTION_REQUEST,
-  payload
+const promoteTransactionRequest = (payload) => ({
+    type: TransfersActionTypes.PROMOTE_TRANSACTION_REQUEST,
+    payload,
 });
 
 /**
@@ -109,7 +104,7 @@ const promoteTransactionRequest = payload => ({
  * @returns {{type: {string} }}
  */
 const promoteTransactionSuccess = () => ({
-  type: TransfersActionTypes.PROMOTE_TRANSACTION_SUCCESS
+    type: TransfersActionTypes.PROMOTE_TRANSACTION_SUCCESS,
 });
 
 /**
@@ -120,7 +115,7 @@ const promoteTransactionSuccess = () => ({
  * @returns {{type: {string} }}
  */
 const promoteTransactionError = () => ({
-  type: TransfersActionTypes.PROMOTE_TRANSACTION_ERROR
+    type: TransfersActionTypes.PROMOTE_TRANSACTION_ERROR,
 });
 
 /**
@@ -131,7 +126,7 @@ const promoteTransactionError = () => ({
  * @returns {{type: {string} }}
  */
 export const sendTransferRequest = () => ({
-  type: TransfersActionTypes.SEND_TRANSFER_REQUEST
+    type: TransfersActionTypes.SEND_TRANSFER_REQUEST,
 });
 
 /**
@@ -142,7 +137,7 @@ export const sendTransferRequest = () => ({
  * @returns {{type: {string} }}
  */
 export const sendTransferSuccess = () => ({
-  type: TransfersActionTypes.SEND_TRANSFER_SUCCESS
+    type: TransfersActionTypes.SEND_TRANSFER_SUCCESS,
 });
 
 /**
@@ -153,7 +148,7 @@ export const sendTransferSuccess = () => ({
  * @returns {{type: {string} }}
  */
 export const sendTransferError = () => ({
-  type: TransfersActionTypes.SEND_TRANSFER_ERROR
+    type: TransfersActionTypes.SEND_TRANSFER_ERROR,
 });
 
 /**
@@ -164,7 +159,7 @@ export const sendTransferError = () => ({
  * @returns {{type: {string} }}
  */
 export const retryFailedTransactionRequest = () => ({
-  type: TransfersActionTypes.RETRY_FAILED_TRANSACTION_REQUEST
+    type: TransfersActionTypes.RETRY_FAILED_TRANSACTION_REQUEST,
 });
 
 /**
@@ -175,9 +170,9 @@ export const retryFailedTransactionRequest = () => ({
  *
  * @returns {{type: {string}, payload: {object} }}
  */
-export const retryFailedTransactionSuccess = payload => ({
-  type: TransfersActionTypes.RETRY_FAILED_TRANSACTION_SUCCESS,
-  payload
+export const retryFailedTransactionSuccess = (payload) => ({
+    type: TransfersActionTypes.RETRY_FAILED_TRANSACTION_SUCCESS,
+    payload,
 });
 
 /**
@@ -188,7 +183,7 @@ export const retryFailedTransactionSuccess = payload => ({
  * @returns {{type: {string} }}
  */
 export const retryFailedTransactionError = () => ({
-  type: TransfersActionTypes.RETRY_FAILED_TRANSACTION_ERROR
+    type: TransfersActionTypes.RETRY_FAILED_TRANSACTION_ERROR,
 });
 
 /**
@@ -199,10 +194,10 @@ export const retryFailedTransactionError = () => ({
  *  @returns {function} dispatch
  **/
 export const completeTransfer = () => {
-  return dispatch => {
-    dispatch(clearSendFields());
-    dispatch(sendTransferSuccess());
-  };
+    return (dispatch) => {
+        dispatch(clearSendFields());
+        dispatch(sendTransferSuccess());
+    };
 };
 
 /**
@@ -217,146 +212,120 @@ export const completeTransfer = () => {
  *
  * @returns {function} dispatch
  **/
-export const promoteTransaction = (
-  bundleHash,
-  accountName,
-  seedStore,
-  withQuorum = true
-) => (dispatch, getState) => {
-  dispatch(promoteTransactionRequest(bundleHash));
+export const promoteTransaction = (bundleHash, accountName, seedStore, withQuorum = true) => (dispatch, getState) => {
+    dispatch(promoteTransactionRequest(bundleHash));
 
-  const remotePoW = getRemotePoWFromState(getState());
+    const remotePoW = getRemotePoWFromState(getState());
 
-  if (!remotePoW) {
-    dispatch(
-      generateAlert(
-        "info",
-        i18next.t("global:promotingTransaction"),
-        i18next.t("global:deviceMayBecomeUnresponsive")
-      )
-    );
-  }
-
-  let accountState = selectedAccountStateFactory(accountName)(getState());
-  const getTailTransactionsForThisBundleHash = transactions =>
-    filter(
-      transactions,
-      transaction =>
-        transaction.bundle === bundleHash && transaction.currentIndex === 0
-    );
-
-  return syncAccount(undefined, withQuorum)(accountState)
-    .then(newAccountState => {
-      accountState = newAccountState;
-
-      Account.update(accountName, accountState);
-
-      dispatch(syncAccountBeforeManualPromotion(accountState));
-
-      const transactionsForThisBundleHash = filter(
-        accountState.transactions,
-        transaction => transaction.bundle === bundleHash
-      );
-
-      if (
-        some(
-          transactionsForThisBundleHash,
-          transaction => transaction.persistence === true
-        )
-      ) {
-        throw new Error(Errors.TRANSACTION_ALREADY_CONFIRMED);
-      }
-
-      const bundles = constructBundlesFromTransactions(
-        filter(
-          accountState.transactions,
-          transaction => transaction.bundle === bundleHash
-        )
-      );
-
-      if (isEmpty(filter(bundles, isBundle))) {
-        throw new Error(Errors.NO_VALID_BUNDLES_CONSTRUCTED);
-      }
-
-      return isFundedBundle(undefined, withQuorum)(head(bundles));
-    })
-    .then(isFunded => {
-      if (!isFunded) {
-        throw new Error(Errors.BUNDLE_NO_LONGER_VALID);
-      }
-
-      return findPromotableTail()(
-        getTailTransactionsForThisBundleHash(accountState.transactions),
-        0
-      );
-    })
-    .then(consistentTail => {
-      return dispatch(
-        forceTransactionPromotion(
-          accountName,
-          consistentTail,
-          getTailTransactionsForThisBundleHash(accountState.transactions),
-          true,
-          // If proof of work configuration is set to remote,
-          // Extend seedStore object with offloadPow
-          // This property will lead to perform remote proof-of-work
-          // See: extendedApi#attachToTangle
-          remotePoW
-            ? extend(
-                {
-                  __proto__: seedStore.__proto__
-                },
-                seedStore,
-                { offloadPow: true }
-              )
-            : seedStore
-        )
-      );
-    })
-    .then(hash => {  
-      const txHash = asTransactionObject(hash[0]).hash;      
-      dispatch(
-        generateAlert(
-          "success",
-          i18next.t("global:promoted"),
-          i18next.t("global:promotedExplanation", { hash:txHash })
-        )
-      );
-
-      return dispatch(promoteTransactionSuccess());
-    })
-    .catch(err => {
-      if (err.message === Errors.BUNDLE_NO_LONGER_VALID) {
+    if (!remotePoW) {
         dispatch(
-          generateAlert(
-            "error",
-            i18next.t("global:promotionError"),
-            i18next.t("global:noLongerValid")
-          )
+            generateAlert(
+                'info',
+                i18next.t('global:promotingTransaction'),
+                i18next.t('global:deviceMayBecomeUnresponsive'),
+            ),
         );
-      } else if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
-        dispatch(
-          generateAlert(
-            "error",
-            i18next.t("global:attachToTangleUnavailable"),
-            i18next.t("global:attachToTangleUnavailableExplanationShort"),
-            10000
-          )
-        );
-      } else if (err.message === Errors.TRANSACTION_ALREADY_CONFIRMED) {
-        dispatch(
-          generateAlert(
-            "success",
-            i18next.t("global:transactionAlreadyConfirmed"),
-            i18next.t("global:transactionAlreadyConfirmedExplanation")
-          )
-        );
-      } else {
-        dispatch(generatePromotionErrorAlert(err));
-      }
+    }
 
-      return dispatch(promoteTransactionError());
-    });
+    let accountState = selectedAccountStateFactory(accountName)(getState());
+    const getTailTransactionsForThisBundleHash = (transactions) =>
+        filter(transactions, (transaction) => transaction.bundle === bundleHash && transaction.currentIndex === 0);
+
+    return syncAccount(undefined, withQuorum)(accountState)
+        .then((newAccountState) => {
+            accountState = newAccountState;
+
+            Account.update(accountName, accountState);
+
+            dispatch(syncAccountBeforeManualPromotion(accountState));
+
+            const transactionsForThisBundleHash = filter(
+                accountState.transactions,
+                (transaction) => transaction.bundle === bundleHash,
+            );
+
+            if (some(transactionsForThisBundleHash, (transaction) => transaction.persistence === true)) {
+                throw new Error(Errors.TRANSACTION_ALREADY_CONFIRMED);
+            }
+
+            const bundles = constructBundlesFromTransactions(
+                filter(accountState.transactions, (transaction) => transaction.bundle === bundleHash),
+            );
+
+            if (isEmpty(filter(bundles, isBundle))) {
+                throw new Error(Errors.NO_VALID_BUNDLES_CONSTRUCTED);
+            }
+
+            return isFundedBundle(undefined, withQuorum)(head(bundles));
+        })
+        .then((isFunded) => {
+            if (!isFunded) {
+                throw new Error(Errors.BUNDLE_NO_LONGER_VALID);
+            }
+
+            return findPromotableTail()(getTailTransactionsForThisBundleHash(accountState.transactions), 0);
+        })
+        .then((consistentTail) => {
+            return dispatch(
+                forceTransactionPromotion(
+                    accountName,
+                    consistentTail,
+                    getTailTransactionsForThisBundleHash(accountState.transactions),
+                    true,
+                    // If proof of work configuration is set to remote,
+                    // Extend seedStore object with offloadPow
+                    // This property will lead to perform remote proof-of-work
+                    // See: extendedApi#attachToTangle
+                    remotePoW
+                        ? extend(
+                              {
+                                  __proto__: seedStore.__proto__,
+                              },
+                              seedStore,
+                              { offloadPow: true },
+                          )
+                        : seedStore,
+                ),
+            );
+        })
+        .then((hash) => {
+            const txHash = asTransactionObject(hash[0]).hash;
+            dispatch(
+                generateAlert(
+                    'success',
+                    i18next.t('global:promoted'),
+                    i18next.t('global:promotedExplanation', { hash: txHash }),
+                ),
+            );
+
+            return dispatch(promoteTransactionSuccess());
+        })
+        .catch((err) => {
+            if (err.message === Errors.BUNDLE_NO_LONGER_VALID) {
+                dispatch(generateAlert('error', i18next.t('global:promotionError'), i18next.t('global:noLongerValid')));
+            } else if (err.message.includes(Errors.ATTACH_TO_TANGLE_UNAVAILABLE)) {
+                dispatch(
+                    generateAlert(
+                        'error',
+                        i18next.t('global:attachToTangleUnavailable'),
+                        i18next.t('global:attachToTangleUnavailableExplanationShort'),
+                        10000,
+                    ),
+                );
+            } else if (err.message === Errors.TRANSACTION_ALREADY_CONFIRMED) {
+                dispatch(
+                    generateAlert(
+                        'success',
+                        i18next.t('global:transactionAlreadyConfirmed'),
+                        i18next.t('global:transactionAlreadyConfirmedExplanation'),
+                    ),
+                );
+            } else {
+                dispatch(generatePromotionErrorAlert(err));
+            }
+
+            return dispatch(promoteTransactionError());
+        });
 };
 
 /**
@@ -374,97 +343,88 @@ export const promoteTransaction = (
  *   @returns {function} dispatch
  **/
 export const forceTransactionPromotion = (
-  accountName,
-  consistentTail,
-  tailTransactionHashes,
-  shouldGenerateAlert,
-  seedStore,
-  maxReplays = 1,
-  maxPromotionAttempts = 2
+    accountName,
+    consistentTail,
+    tailTransactionHashes,
+    shouldGenerateAlert,
+    seedStore,
+    maxReplays = 1,
+    maxPromotionAttempts = 2,
 ) => (dispatch, getState) => {
-  let replayCount = 0;
-  let promotionAttempt = 0;
+    let replayCount = 0;
+    let promotionAttempt = 0;
 
-  const promote = tailTransaction => {
-    const { hash } = tailTransaction;
+    const promote = (tailTransaction) => {
+        const { hash } = tailTransaction;
 
-    promotionAttempt += 1;
+        promotionAttempt += 1;
 
-    return promoteTx(null, seedStore)(hash).catch(error => {
-      const isTransactionInconsistent = includes(
-        error.message,
-        Errors.TRANSACTION_IS_INCONSISTENT
-      );
+        return promoteTx(null, seedStore)(hash).catch((error) => {
+            const isTransactionInconsistent = includes(error.message, Errors.TRANSACTION_IS_INCONSISTENT);
 
-      if (
-        isTransactionInconsistent &&
-        // If promotion attempt on this reference (hash) hasn't exceeded maximum promotion attempts
-        promotionAttempt < maxPromotionAttempts
-      ) {
-        // Retry promotion on same reference (hash)
-        return promote(tailTransaction);
-      } else if (
-        isTransactionInconsistent &&
-        promotionAttempt === maxPromotionAttempts &&
-        // If number of reattachments haven't exceeded max reattachments
-        replayCount < maxReplays
-      ) {
-        // Reset promotion attempt counter
-        promotionAttempt = 0;
+            if (
+                isTransactionInconsistent &&
+                // If promotion attempt on this reference (hash) hasn't exceeded maximum promotion attempts
+                promotionAttempt < maxPromotionAttempts
+            ) {
+                // Retry promotion on same reference (hash)
+                return promote(tailTransaction);
+            } else if (
+                isTransactionInconsistent &&
+                promotionAttempt === maxPromotionAttempts &&
+                // If number of reattachments haven't exceeded max reattachments
+                replayCount < maxReplays
+            ) {
+                // Reset promotion attempt counter
+                promotionAttempt = 0;
 
-        // Reattach and try to promote with a newly reattached reference (hash)
-        return reattachAndPromote();
-      }
+                // Reattach and try to promote with a newly reattached reference (hash)
+                return reattachAndPromote();
+            }
 
-      throw error;
-    });
-  };
+            throw error;
+        });
+    };
 
-  // Reattach a transaction and promote newly reattached transaction
-  const reattachAndPromote = () => {
-    // Increment the reattachment's count
-    replayCount += 1;
-    // Grab first tail transaction hash
-    const tailTransaction = head(tailTransactionHashes);
-    const hash = tailTransaction.hash;
+    // Reattach a transaction and promote newly reattached transaction
+    const reattachAndPromote = () => {
+        // Increment the reattachment's count
+        replayCount += 1;
+        // Grab first tail transaction hash
+        const tailTransaction = head(tailTransactionHashes);
+        const hash = tailTransaction.hash;
 
-    return replayBundle(null, seedStore)(hash).then(reattachment => {
-      if (shouldGenerateAlert) {
-        dispatch(
-          generateAlert(
-            "success",
-            i18next.t("global:reattached"),
-            i18next.t("global:reattachedExplanation", { hash }),
-            2500
-          )
-        );
-      }
+        return replayBundle(null, seedStore)(hash).then((reattachment) => {
+            if (shouldGenerateAlert) {
+                dispatch(
+                    generateAlert(
+                        'success',
+                        i18next.t('global:reattached'),
+                        i18next.t('global:reattachedExplanation', { hash }),
+                        2500,
+                    ),
+                );
+            }
 
-      const existingAccountState = selectedAccountStateFactory(accountName)(
-        getState()
-      );
-      const newState = syncAccountAfterReattachment(
-        accountName,
-        reattachment,
-        existingAccountState
-      );
+            const existingAccountState = selectedAccountStateFactory(accountName)(getState());
+            const newState = syncAccountAfterReattachment(accountName, reattachment, existingAccountState);
 
-      // Update storage (realm)
-      Account.update(accountName, newState);
+            // Update storage (realm)
+            Account.update(accountName, newState);
 
-      // Update redux store
-      dispatch(updateAccountAfterReattachment(newStagetChecksumte));
-      const tailTransaction = find(reattachment, { currentIndex: 0 });
+            // Update redux store
+            dispatch(updateAccountAfterReattachment(newState));
+            const tailTransaction = find(reattachment, { currentIndex: 0 });
 
-      return promote(tailTransaction);
-    });
-  };
+            return promote(tailTransaction);
+        });
+    };
 
-  if (has(consistentTail, "hash")) {
-    return promote(consistentTail);
-  }
+    if (has(consistentTail, 'hash')) {
+        return promote(consistentTail);
+    }
 
-  return reattachAndPromote();
+    return reattachAndPromote();
 };
 
 /**
@@ -479,527 +439,476 @@ export const forceTransactionPromotion = (
  *
  * @returns {function} dispatch
  */
-export const makeTransaction = (
-  seedStore,
-  receiveAddress,
-  value,
-  message,
-  accountName,
-  withQuorum = true,
-  genFn
-) => (dispatch, getState) => {
-  dispatch(sendTransferRequest());
+export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true, genFn) => (
+    dispatch,
+    getState,
+) => {
+    dispatch(sendTransferRequest());
 
-  const address =
-    size(receiveAddress) === ADDRESS_LENGTH
-      ? receiveAddress
-      : addChecksum(receiveAddress);
+    const address = size(receiveAddress) === ADDRESS_LENGTH ? receiveAddress : addChecksum(receiveAddress);
 
-  // Keep track if the inputs are signed
-  let hasSignedInputs = false;
+    // Keep track if the inputs are signed
+    let hasSignedInputs = false;
 
-  // Keep track if the created bundle is valid after inputs are signed
-  let isValidBundle = false;
+    // Keep track if the created bundle is valid after inputs are signed
+    let isValidBundle = false;
 
-  // Initialize account state
-  // Reassign with latest state when account is synced
-  let accountState = selectedAccountStateFactory(accountName)(getState());
-  let transferInputs = [];
+    // Initialize account state
+    // Reassign with latest state when account is synced
+    let accountState = selectedAccountStateFactory(accountName)(getState());
+    let transferInputs = [];
 
-  const withPreTransactionSecurityChecks = () => {
-    // Progressbar step => (Checking node's health)
-    dispatch(setNextStepAsActive());
-
-    return isNodeHealthy()
-      .then(isSynced => {
-        if (isSynced) {
-          // Progressbar step => (Validating receive address)
-          dispatch(setNextStepAsActive());
-
-          // Make sure that the address a user is about to send to is not already used.
-          return shouldAllowSendingToAddress()([address]);
-        }
-
-        throw new Error(Errors.NODE_NOT_SYNCED);
-      })
-      .then(shouldAllowSending => {
-        if (shouldAllowSending) {
-          // Progressbar step => (Syncing account)
-          dispatch(setNextStepAsActive());
-
-          return syncAccount()(accountState, seedStore);
-        }
-
-        throw new Error(Errors.KEY_REUSE);
-      })
-      .then(newState => {
-        // Assign latest account but do not update the local store yet.
-        // Only update the local store with updated account information after this transaction is successfully completed.
-        accountState = newState;
-
-        const valueTransfers = filter(
-          map(accountState.transfers, tx => tx),
-          tx => tx.transferValue !== 0
-        );
-
-        return filterInvalidPendingTransactions()(
-          valueTransfers,
-          accountState.addressData
-        );
-      })
-      .then(filteredTransfers => {
-        const { addressData, transfers } = accountState;
-        const startIndex = getStartingSearchIndexToPrepareInputs(addressData);
-        const spentAddressesFromTransactions = getSpentAddressesFromTransactions(
-          transfers
-        );
-
-        // Progressbar step => (Preparing inputs)
+    const withPreTransactionSecurityChecks = () => {
+        // Progressbar step => (Checking node's health)
         dispatch(setNextStepAsActive());
 
-        // Prepare inputs.
-        return getUnspentInputs()(
-          addressData,
-          spentAddressesFromTransactions,
-          filteredTransfers,
-          startIndex,
-          value,
-          null
-        );
-      })
-      .then(inputs => {
-        // Input selection prepares inputs sequentially starting from the first address with balance
-        // If total balance is less than transfer value, do not allow transaction.
-        if (get(inputs, "totalBalance") < value) {
-          throw new Error(Errors.NOT_ENOUGH_BALANCE);
+        return isNodeHealthy()
+            .then((isSynced) => {
+                if (isSynced) {
+                    // Progressbar step => (Validating receive address)
+                    dispatch(setNextStepAsActive());
 
-          // availableBalance: balance after filtering out addresses that are spent and also addresses with incoming transfers..
-          // Contains only spendable balance
-          // Note: At this point, we could leverage the change addresses and allow user making a transfer on top from those.
-        } else if (get(inputs, "availableBalance") < value) {
-          const addressData = accountState.addressData;
-          const transfers = accountState.transfers;
-          const pendingOutgoingTransfers = getPendingOutgoingTransfersForAddresses(
-            addressData,
-            transfers
-          );
+                    // Make sure that the address a user is about to send to is not already used.
+                    return shouldAllowSendingToAddress()([address]);
+                }
 
-          if (size(pendingOutgoingTransfers)) {
-            throw new Error(Errors.ADDRESS_HAS_PENDING_TRANSFERS);
-          } else {
-            if (size(get(inputs, "spentAddresses"))) {
-              throw new Error(Errors.FUNDS_AT_SPENT_ADDRESSES);
-            } else if (size(get(inputs, "addressesWithIncomingTransfers"))) {
-              throw new Error(Errors.INCOMING_TRANSFERS);
-            }
-
-            throw new Error(Errors.SOMETHING_WENT_WRONG_DURING_INPUT_SELECTION);
-          }
-        }
-
-        // Do not allow receiving address to be one of the user's own input addresses.
-        const isSendingToAnyInputAddress = some(
-          get(inputs, "inputs"),
-          input => input.address === noChecksum(address)
-        );
-
-        if (isSendingToAnyInputAddress) {
-          throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
-        }
-
-        transferInputs = get(inputs, "inputs");
-
-        return getAddressDataUptoRemainder()(
-          accountState.addressData,
-          seedStore,
-          genFn,
-          [
-            // Make sure inputs are blacklisted
-            ...map(transferInputs, input => input.address),
-            // Make sure receive address is blacklisted
-            noChecksum(receiveAddress)
-          ]
-        );
-      })
-      .then(({ remainderAddress, addressDataUptoRemainder }) => {
-        // getAddressesUptoRemainder returns the latest unused address as the remainder address
-        // Also returns updated address data including new address data for the intermediate addresses.
-        // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
-        // at index 53 it would include address data for 51, 52 and 53.
-        accountState.addressData = addressDataUptoRemainder;
-
-        return {
-          inputs: transferInputs,
-          address: remainderAddress
-        };
-      });
-  };
-
-  const isZeroValue = value === 0;
-
-  const cached = {
-    txs: [],
-    transactionObjects: []
-  };
-
-  const withInputs = isZeroValue
-    ? () => Promise.resolve(null)
-    : withPreTransactionSecurityChecks;
-  return (
-    withInputs()
-      // If we are making a zero value transaction, options would be null
-      // Otherwise, it would be a dictionary with inputs and remainder address
-      // Forward options to prepareTransfersAsync as is, because it contains a null check
-      .then(options => {
-        const transfer = prepareTransferArray(
-          address,
-          value,
-          message,
-          accountState.addressData
-        );
-        // Progressbar step => (Preparing transfers)
-        dispatch(setNextStepAsActive());
-        return seedStore.prepareTransfers(transfer, options);
-      })
-      .then(txs => {
-        if (!isZeroValue) {
-          hasSignedInputs = true;
-        }
-        cached.txs = txs;
-
-        const convertToTransactionObjects = hexString =>
-          asTransactionObject(hexString);
-        cached.transactionObjects = map(
-          cached.txs,
-          convertToTransactionObjects
-        );
-        if (isBundle(cached.transactionObjects)) {
-          isValidBundle = true;
-          // Progressbar step => (Getting transactions to approve)
-          dispatch(setNextStepAsActive());
-
-          return getTransactionsToApprove()();
-        }
-
-        throw new Error(Errors.INVALID_BUNDLE);
-      })
-      .then(({ trunkTransaction, branchTransaction }) => {
-       const shouldOffloadPow = getRemotePoWFromState(getState());
-        // Progressbar step => (Proof of work)
-        dispatch(setNextStepAsActive());
-
-        const performLocalPow = () =>
-          attachToTangle(null, seedStore)(
-            trunkTransaction,
-            branchTransaction,
-            cached.txs
-          );
-
-        if (!shouldOffloadPow) {
-          return performLocalPow();
-        }
-        // If proof of work configuration is set to remote PoW
-        // Make an attempt to offload proof of work to remote
-        // If network call fails:
-        // 1) Find nodes with PoW enabled
-        // 2) Auto retry offloading PoW
-        // 3) If auto retry fails, perform proof of work locally
-        return attachToTangle(
-          null,
-          // See: extendedApi#attachToTangle
-          extend(
-            {
-              __proto__: seedStore.__proto__
-            },
-            seedStore,
-            { offloadPow: true }
-          )
-        )(trunkTransaction, branchTransaction, cached.txs).catch(() => {
-          dispatch(
-            generateAlert(
-              "info",
-              i18next.t("global:pleaseWait"),
-              `${i18next.t("global:problemPerformingProofOfWork")} ${i18next.t(
-                "global:tryingAgainWithDifferentNode"
-              )}`,
-              20000
-            )
-          );
-          // Find nodes with proof of work enabled
-          return fetchRemoteNodes()
-            .then(remoteNodes => {
-              const nodesWithPowEnabled = map(
-                filter(remoteNodes, node => node.pow),
-                nodeWithPoWEnabled => nodeWithPoWEnabled.node
-              );
-              return withRetriesOnDifferentNodes(
-                getRandomNodes(nodesWithPowEnabled, DEFAULT_RETRIES, [
-                  getSelectedNodeFromState(getState())
-                ])
-              )(provider =>
-                attachToTangle(
-                  provider,
-                  extend(
-                    {
-                      __proto__: seedStore.__proto__
-                    },
-                    seedStore,
-                    { offloadPow: true }
-                  )
-                )
-              )(trunkTransaction, branchTransaction, cached.txs);
+                throw new Error(Errors.NODE_NOT_SYNCED);
             })
-            .then(({ result }) => result)
-            .catch(() => {
-              // If outsourced proof of work fails on all nodes, fallback to local proof of work.
-              dispatch(
-                generateAlert(
-                  "info",
-                  i18next.t("global:pleaseWait"),
-                  `${i18next.t(
-                    "global:problemPerformingProofOfWork"
-                  )} ${i18next.t("global:tryingAgainWithLocalPoW")}`
-                )
-              );
+            .then((shouldAllowSending) => {
+                if (shouldAllowSending) {
+                    // Progressbar step => (Syncing account)
+                    dispatch(setNextStepAsActive());
 
-              return performLocalPow();
+                    return syncAccount()(accountState, seedStore);
+                }
+
+                throw new Error(Errors.KEY_REUSE);
+            })
+            .then((newState) => {
+                // Assign latest account but do not update the local store yet.
+                // Only update the local store with updated account information after this transaction is successfully completed.
+                accountState = newState;
+
+                const valueTransfers = filter(map(accountState.transfers, (tx) => tx), (tx) => tx.transferValue !== 0);
+
+                return filterInvalidPendingTransactions()(valueTransfers, accountState.addressData);
+            })
+            .then((filteredTransfers) => {
+                const { addressData, transfers } = accountState;
+                const startIndex = getStartingSearchIndexToPrepareInputs(addressData);
+                const spentAddressesFromTransactions = getSpentAddressesFromTransactions(transfers);
+
+                // Progressbar step => (Preparing inputs)
+                dispatch(setNextStepAsActive());
+
+                // Prepare inputs.
+                return getUnspentInputs()(
+                    addressData,
+                    spentAddressesFromTransactions,
+                    filteredTransfers,
+                    startIndex,
+                    value,
+                    null,
+                );
+            })
+            .then((inputs) => {
+                // Input selection prepares inputs sequentially starting from the first address with balance
+                // If total balance is less than transfer value, do not allow transaction.
+                if (get(inputs, 'totalBalance') < value) {
+                    throw new Error(Errors.NOT_ENOUGH_BALANCE);
+
+                    // availableBalance: balance after filtering out addresses that are spent and also addresses with incoming transfers..
+                    // Contains only spendable balance
+                    // Note: At this point, we could leverage the change addresses and allow user making a transfer on top from those.
+                } else if (get(inputs, 'availableBalance') < value) {
+                    const addressData = accountState.addressData;
+                    const transfers = accountState.transfers;
+                    const pendingOutgoingTransfers = getPendingOutgoingTransfersForAddresses(addressData, transfers);
+
+                    if (size(pendingOutgoingTransfers)) {
+                        throw new Error(Errors.ADDRESS_HAS_PENDING_TRANSFERS);
+                    } else {
+                        if (size(get(inputs, 'spentAddresses'))) {
+                            throw new Error(Errors.FUNDS_AT_SPENT_ADDRESSES);
+                        } else if (size(get(inputs, 'addressesWithIncomingTransfers'))) {
+                            throw new Error(Errors.INCOMING_TRANSFERS);
+                        }
+
+                        throw new Error(Errors.SOMETHING_WENT_WRONG_DURING_INPUT_SELECTION);
+                    }
+                }
+
+                // Do not allow receiving address to be one of the user's own input addresses.
+                const isSendingToAnyInputAddress = some(
+                    get(inputs, 'inputs'),
+                    (input) => input.address === noChecksum(address),
+                );
+
+                if (isSendingToAnyInputAddress) {
+                    throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
+                }
+
+                transferInputs = get(inputs, 'inputs');
+
+                return getAddressDataUptoRemainder()(accountState.addressData, seedStore, genFn, [
+                    // Make sure inputs are blacklisted
+                    ...map(transferInputs, (input) => input.address),
+                    // Make sure receive address is blacklisted
+                    noChecksum(receiveAddress),
+                ]);
+            })
+            .then(({ remainderAddress, addressDataUptoRemainder }) => {
+                // getAddressesUptoRemainder returns the latest unused address as the remainder address
+                // Also returns updated address data including new address data for the intermediate addresses.
+                // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
+                // at index 53 it would include address data for 51, 52 and 53.
+                accountState.addressData = addressDataUptoRemainder;
+
+                return {
+                    inputs: transferInputs,
+                    address: remainderAddress,
+                };
             });
-        });
-      })
-      // Re-check spend statuses of all addresses in bundle
-      .then(({ txs, transactionObjects }) => {
-        // Skip this check if it's a zero value transaction
-        if (isZeroValue) {
-          return Promise.resolve({ txs, transactionObjects });
-        }
+    };
 
-        // Progressbar step => (Validating transaction addresses)
-        dispatch(setNextStepAsActive());
+    const isZeroValue = value === 0;
 
-        const addresses = uniq(
-          map(transactionObjects, transaction => transaction.address)
-        );
-        return isAnyAddressSpent(undefined, withQuorum)(addresses).then(
-          isSpent => {
-            if (isSpent) {
-              throw new Error(Errors.KEY_REUSE);
-            }
+    const cached = {
+        txs: [],
+        transactionObjects: [],
+    };
 
-            return { txs, transactionObjects };
-          }
-        );
-      })
-      .then(({ txs, transactionObjects }) => {
-        cached.txs = txs;
-        cached.transactionObjects = transactionObjects;
+    const withInputs = isZeroValue ? () => Promise.resolve(null) : withPreTransactionSecurityChecks;
+    return (
+        withInputs()
+            // If we are making a zero value transaction, options would be null
+            // Otherwise, it would be a dictionary with inputs and remainder address
+            // Forward options to prepareTransfersAsync as is, because it contains a null check
+            .then((options) => {
+                const transfer = prepareTransferArray(address, value, message, accountState.addressData);
+                // Progressbar step => (Preparing transfers)
+                dispatch(setNextStepAsActive());
+                return seedStore.prepareTransfers(transfer, options);
+            })
+            .then((txs) => {
+                if (!isZeroValue) {
+                    hasSignedInputs = true;
+                }
+                cached.txs = txs;
 
-        // Progressbar step => (Broadcasting)
-        dispatch(setNextStepAsActive());
-        
-        // Make an attempt to broadcast transaction on selected node
-        // If it fails, auto retry broadcast on random nodes
-        const selectedNode = getSelectedNodeFromState(getState());
-        const randomNodes = [
-          selectedNode,
-          ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [
-            selectedNode
-          ])
-        ];
+                const convertToTransactionObjects = (hexString) => asTransactionObject(hexString);
+                cached.transactionObjects = map(cached.txs, convertToTransactionObjects);
+                if (isBundle(cached.transactionObjects)) {
+                    isValidBundle = true;
+                    // Progressbar step => (Getting transactions to approve)
+                    dispatch(setNextStepAsActive());
 
-        return withRetriesOnDifferentNodes(
-          randomNodes,
-          // Failure callbacks.
-          // Only pass one, as we just want an alert on first broadcast failure
-          () =>
-            dispatch(
-              generateAlert(
-                "info",
-                i18next.t("global:pleaseWait"),
-                `${i18next.t(
-                  "global:problemSendingYourTransaction"
-                )} ${i18next.t("global:tryingAgainWithDifferentNode")}`,
-                20000
-              )
-            )
-        )(storeAndBroadcast)(cached.txs);
-      })
-      .then(() => {
-        return syncAccountAfterSpending(undefined, withQuorum)(
-          seedStore,
-          cached.transactionObjects,
-          accountState
-        );
-      })
-      .then(newState => {
-        // newState.addressData[0].balance = 0;
-        // newState.addressData[1].balance = 0;
-        // Update account in (Realm) storage
-        Account.update(accountName, newState);
+                    return getTransactionsToApprove()();
+                }
 
-        dispatch(
-          updateAccountInfoAfterSpending(assign({}, newState, { accountName }))
-        );
-        // Progressbar => (Progress complete)
-        dispatch(setNextStepAsActive());
-        dispatch(generateTransactionSuccessAlert(isZeroValue));
+                throw new Error(Errors.INVALID_BUNDLE);
+            })
+            .then(({ trunkTransaction, branchTransaction }) => {
+                const shouldOffloadPow = getRemotePoWFromState(getState());
+                // Progressbar step => (Proof of work)
+                dispatch(setNextStepAsActive());
 
-        setTimeout(() => {
-          dispatch(completeTransfer());
-          dispatch(resetProgress());
-        }, 3500);
-      })
-      .catch(error => {
-        dispatch(sendTransferError());
-        dispatch(resetProgress());
-        // If local PoW produces an invalid bundle we do not need to store it or mark the address as spent because the signature has not been broadcast.
-        const message = error.message;
+                const performLocalPow = () =>
+                    attachToTangle(null, seedStore)(trunkTransaction, branchTransaction, cached.txs);
 
-        if (message === Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW) {
-          isValidBundle = false;
-        }
-        // Only keep the failed hex locally if the bundle was valid
-        // In case the bundle is invalid, discard the signing as it was never broadcast
-        if (hasSignedInputs && isValidBundle) {
-          const newState = syncAccountOnValueTransactionFailure(
-            // Sort in ascending order
-            orderBy(cached.transactionObjects, ["currentIndex"]),
-            accountState
-          );
+                if (!shouldOffloadPow) {
+                    return performLocalPow();
+                }
+                // If proof of work configuration is set to remote PoW
+                // Make an attempt to offload proof of work to remote
+                // If network call fails:
+                // 1) Find nodes with PoW enabled
+                // 2) Auto retry offloading PoW
+                // 3) If auto retry fails, perform proof of work locally
+                return attachToTangle(
+                    null,
+                    // See: extendedApi#attachToTangle
+                    extend(
+                        {
+                            __proto__: seedStore.__proto__,
+                        },
+                        seedStore,
+                        { offloadPow: true },
+                    ),
+                )(trunkTransaction, branchTransaction, cached.txs).catch(() => {
+                    dispatch(
+                        generateAlert(
+                            'info',
+                            i18next.t('global:pleaseWait'),
+                            `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
+                                'global:tryingAgainWithDifferentNode',
+                            )}`,
+                            20000,
+                        ),
+                    );
+                    // Find nodes with proof of work enabled
+                    return fetchRemoteNodes()
+                        .then((remoteNodes) => {
+                            const nodesWithPowEnabled = map(
+                                filter(remoteNodes, (node) => node.pow),
+                                (nodeWithPoWEnabled) => nodeWithPoWEnabled.node,
+                            );
+                            return withRetriesOnDifferentNodes(
+                                getRandomNodes(nodesWithPowEnabled, DEFAULT_RETRIES, [
+                                    getSelectedNodeFromState(getState()),
+                                ]),
+                            )((provider) =>
+                                attachToTangle(
+                                    provider,
+                                    extend(
+                                        {
+                                            __proto__: seedStore.__proto__,
+                                        },
+                                        seedStore,
+                                        { offloadPow: true },
+                                    ),
+                                ),
+                            )(trunkTransaction, branchTransaction, cached.txs);
+                        })
+                        .then(({ result }) => result)
+                        .catch(() => {
+                            // If outsourced proof of work fails on all nodes, fallback to local proof of work.
+                            dispatch(
+                                generateAlert(
+                                    'info',
+                                    i18next.t('global:pleaseWait'),
+                                    `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
+                                        'global:tryingAgainWithLocalPoW',
+                                    )}`,
+                                ),
+                            );
 
-          // Update account in (Realm) storage
-          Account.update(accountName, newState);
+                            return performLocalPow();
+                        });
+                });
+            })
+            // Re-check spend statuses of all addresses in bundle
+            .then(({ txs, transactionObjects }) => {
+                // Skip this check if it's a zero value transaction
+                if (isZeroValue) {
+                    return Promise.resolve({ txs, transactionObjects });
+                }
 
-          dispatch(updateAccountInfoAfterSpending(newState));
-          // Clear send screen text fields
-          dispatch(clearSendFields());
+                // Progressbar step => (Validating transaction addresses)
+                dispatch(setNextStepAsActive());
 
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:rebroadcastError"),
-              i18next.t("global:signedTxBytesBroadcastErrorExplanation"),
-              20000,
-              error
-            )
-          );
-        }
+                const addresses = uniq(map(transactionObjects, (transaction) => transaction.address));
+                return isAnyAddressSpent(undefined, withQuorum)(addresses).then((isSpent) => {
+                    if (isSpent) {
+                        throw new Error(Errors.KEY_REUSE);
+                    }
 
-        if (message === Errors.NODE_NOT_SYNCED) {
-          return dispatch(generateNodeOutOfSyncErrorAlert());
-        } else if (message === Errors.UNSUPPORTED_NODE) {
-          return dispatch(generateUnsupportedNodeErrorAlert());
-        } else if (message === Errors.INVALID_LAST_BIT) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("send:invalidAddress"),
-              i18next.t("send:invalidAddressExplanation4")
-            )
-          );
-        } else if (message === Errors.KEY_REUSE) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:keyReuse"),
-              i18next.t("global:keyReuseError")
-            )
-          );
-        } else if (message === Errors.INSUFFICIENT_BALANCE) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:balanceError"),
-              i18next.t("global:balanceErrorMessage"),
-              20000
-            )
-          );
-        } else if (message === Errors.ADDRESS_HAS_PENDING_TRANSFERS) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:pleaseWait"),
-              i18next.t("global:pleaseWaitTransferExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.FUNDS_AT_SPENT_ADDRESSES) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:spentAddressExplanation"),
-              i18next.t("global:discordInformation"),
-              20000
-            )
-          );
-        } else if (message === Errors.INCOMING_TRANSFERS) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:pleaseWait"),
-              i18next.t("global:pleaseWaitIncomingTransferExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.CANNOT_SEND_TO_OWN_ADDRESS) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:cannotSendToOwn"),
-              i18next.t("global:cannotSendToOwnExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.LEDGER_ZERO_VALUE) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("ledger:cannotSendZeroValueTitle"),
-              i18next.t("ledger:cannotSendZeroValueExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.LEDGER_DISCONNECTED) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("ledger:ledgerDisconnectedTitle"),
-              i18next.t("ledger:ledgerDisconnectedExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.LEDGER_DENIED) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("ledger:ledgerDeniedTitle"),
-              i18next.t("ledger:ledgerDeniedExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.LEDGER_INVALID_INDEX) {
-          return dispatch(
-            generateAlert(
-              "error",
-              i18next.t("ledger:ledgerIncorrectIndex"),
-              i18next.t("ledger:ledgerIncorrectIndexExplanation"),
-              20000
-            )
-          );
-        } else if (message === Errors.PENDING_TRANSACTIONS_NOT_CONFIRMED) {
-          return dispatch(
-              generateAlert(
-                  "error",
-                  i18next.t("global:pending_transactions_not_confirmed"),
-                  i18next.t("global:pending_transactions_not_confirmed_explanation"),
-                  20000
-              )
-          );
-        } else if (message === Errors.LEDGER_CANCELLED) {
-          return;
-        }
-        return dispatch(generateTransferErrorAlert(error));
-      })
-  );
+                    return { txs, transactionObjects };
+                });
+            })
+            .then(({ txs, transactionObjects }) => {
+                cached.txs = txs;
+                cached.transactionObjects = transactionObjects;
+
+                // Progressbar step => (Broadcasting)
+                dispatch(setNextStepAsActive());
+
+                // Make an attempt to broadcast transaction on selected node
+                // If it fails, auto retry broadcast on random nodes
+                const selectedNode = getSelectedNodeFromState(getState());
+                const randomNodes = [
+                    selectedNode,
+                    ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode]),
+                ];
+
+                return withRetriesOnDifferentNodes(
+                    randomNodes,
+                    // Failure callbacks.
+                    // Only pass one, as we just want an alert on first broadcast failure
+                    () =>
+                        dispatch(
+                            generateAlert(
+                                'info',
+                                i18next.t('global:pleaseWait'),
+                                `${i18next.t('global:problemSendingYourTransaction')} ${i18next.t(
+                                    'global:tryingAgainWithDifferentNode',
+                                )}`,
+                                20000,
+                            ),
+                        ),
+                )(storeAndBroadcast)(cached.txs);
+            })
+            .then(() => {
+                return syncAccountAfterSpending(undefined, withQuorum)(
+                    seedStore,
+                    cached.transactionObjects,
+                    accountState,
+                );
+            })
+            .then((newState) => {
+                // newState.addressData[0].balance = 0;
+                // newState.addressData[1].balance = 0;
+                // Update account in (Realm) storage
+                Account.update(accountName, newState);
+
+                dispatch(updateAccountInfoAfterSpending(assign({}, newState, { accountName })));
+                // Progressbar => (Progress complete)
+                dispatch(setNextStepAsActive());
+                dispatch(generateTransactionSuccessAlert(isZeroValue));
+
+                setTimeout(() => {
+                    dispatch(completeTransfer());
+                    dispatch(resetProgress());
+                }, 3500);
+            })
+            .catch((error) => {
+                dispatch(sendTransferError());
+                dispatch(resetProgress());
+                // If local PoW produces an invalid bundle we do not need to store it or mark the address as spent because the signature has not been broadcast.
+                const message = error.message;
+
+                if (message === Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW) {
+                    isValidBundle = false;
+                }
+                // Only keep the failed hex locally if the bundle was valid
+                // In case the bundle is invalid, discard the signing as it was never broadcast
+                if (hasSignedInputs && isValidBundle) {
+                    const newState = syncAccountOnValueTransactionFailure(
+                        // Sort in ascending order
+                        orderBy(cached.transactionObjects, ['currentIndex']),
+                        accountState,
+                    );
+
+                    // Update account in (Realm) storage
+                    Account.update(accountName, newState);
+
+                    dispatch(updateAccountInfoAfterSpending(newState));
+                    // Clear send screen text fields
+                    dispatch(clearSendFields());
+
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:rebroadcastError'),
+                            i18next.t('global:signedTxBytesBroadcastErrorExplanation'),
+                            20000,
+                            error,
+                        ),
+                    );
+                }
+
+                if (message === Errors.NODE_NOT_SYNCED) {
+                    return dispatch(generateNodeOutOfSyncErrorAlert());
+                } else if (message === Errors.UNSUPPORTED_NODE) {
+                    return dispatch(generateUnsupportedNodeErrorAlert());
+                } else if (message === Errors.INVALID_LAST_BIT) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('send:invalidAddress'),
+                            i18next.t('send:invalidAddressExplanation4'),
+                        ),
+                    );
+                } else if (message === Errors.KEY_REUSE) {
+                    return dispatch(
+                        generateAlert('error', i18next.t('global:keyReuse'), i18next.t('global:keyReuseError')),
+                    );
+                } else if (message === Errors.INSUFFICIENT_BALANCE) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:balanceError'),
+                            i18next.t('global:balanceErrorMessage'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.ADDRESS_HAS_PENDING_TRANSFERS) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:pleaseWait'),
+                            i18next.t('global:pleaseWaitTransferExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.FUNDS_AT_SPENT_ADDRESSES) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:spentAddressExplanation'),
+                            i18next.t('global:discordInformation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.INCOMING_TRANSFERS) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:pleaseWait'),
+                            i18next.t('global:pleaseWaitIncomingTransferExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.CANNOT_SEND_TO_OWN_ADDRESS) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:cannotSendToOwn'),
+                            i18next.t('global:cannotSendToOwnExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.LEDGER_ZERO_VALUE) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('ledger:cannotSendZeroValueTitle'),
+                            i18next.t('ledger:cannotSendZeroValueExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.LEDGER_DISCONNECTED) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('ledger:ledgerDisconnectedTitle'),
+                            i18next.t('ledger:ledgerDisconnectedExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.LEDGER_DENIED) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('ledger:ledgerDeniedTitle'),
+                            i18next.t('ledger:ledgerDeniedExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.LEDGER_INVALID_INDEX) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('ledger:ledgerIncorrectIndex'),
+                            i18next.t('ledger:ledgerIncorrectIndexExplanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.PENDING_TRANSACTIONS_NOT_CONFIRMED) {
+                    return dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:pending_transactions_not_confirmed'),
+                            i18next.t('global:pending_transactions_not_confirmed_explanation'),
+                            20000,
+                        ),
+                    );
+                } else if (message === Errors.LEDGER_CANCELLED) {
+                    return;
+                }
+                return dispatch(generateTransferErrorAlert(error));
+            })
+    );
 };
 
 /**
@@ -1014,91 +923,79 @@ export const makeTransaction = (
  *
  * @returns {function} dispatch
  */
-export const retryFailedTransaction = (
-  accountName,
-  bundleHash,
-  seedStore,
-  withQuorum = true
-) => (dispatch, getState) => {
-  const existingAccountState = selectedAccountStateFactory(accountName)(
-    getState()
-  );
-  const shouldOffloadPow = getRemotePoWFromState(getState());
-  const failedTransactionsForThisBundleHash = filter(
-    existingAccountState.transactions,
-    tx => tx.bundle === bundleHash
-  );
+export const retryFailedTransaction = (accountName, bundleHash, seedStore, withQuorum = true) => (
+    dispatch,
+    getState,
+) => {
+    const existingAccountState = selectedAccountStateFactory(accountName)(getState());
+    const shouldOffloadPow = getRemotePoWFromState(getState());
+    const failedTransactionsForThisBundleHash = filter(
+        existingAccountState.transactions,
+        (tx) => tx.bundle === bundleHash,
+    );
 
-  dispatch(retryFailedTransactionRequest());
+    dispatch(retryFailedTransactionRequest());
 
-  return (
-    // First check spent statuses against transaction addresses
-    categoriseAddressesBySpentStatus(undefined, withQuorum)(
-      map(failedTransactionsForThisBundleHash, tx => tx.address)
-    )
-      // If any address (input, remainder, receive) is spent, error out
-      .then(({ spent }) => {
-        if (size(spent)) {
-          throw new Error(
-            `${Errors.ALREADY_SPENT_FROM_ADDRESSES}:${join(spent, ",")}`
-          );
-        }
+    return (
+        // First check spent statuses against transaction addresses
+        categoriseAddressesBySpentStatus(undefined, withQuorum)(
+            map(failedTransactionsForThisBundleHash, (tx) => tx.address),
+        )
+            // If any address (input, remainder, receive) is spent, error out
+            .then(({ spent }) => {
+                if (size(spent)) {
+                    throw new Error(`${Errors.ALREADY_SPENT_FROM_ADDRESSES}:${join(spent, ',')}`);
+                }
 
-        // If all addresses are still unspent, retry
-        return retry()(
-          failedTransactionsForThisBundleHash,
-          // If proof of work configuration is set to remote,
-          // Extend seedStore object with offloadPow
-          // This property will lead to perform remote proof-of-work
-          // See: extendedApi#attachToTangle
-          shouldOffloadPow
-            ? extend(
-                {
-                  __proto__: seedStore.__proto__
-                },
-                seedStore,
-                { offloadPow: true }
-              )
-            : seedStore
-        );
-      })
-      .then(({ transactionObjects }) => {
-        // Update state
-        const newState = syncAccountOnSuccessfulRetryAttempt(
-          transactionObjects,
-          existingAccountState
-        );
+                // If all addresses are still unspent, retry
+                return retry()(
+                    failedTransactionsForThisBundleHash,
+                    // If proof of work configuration is set to remote,
+                    // Extend seedStore object with offloadPow
+                    // This property will lead to perform remote proof-of-work
+                    // See: extendedApi#attachToTangle
+                    shouldOffloadPow
+                        ? extend(
+                              {
+                                  __proto__: seedStore.__proto__,
+                              },
+                              seedStore,
+                              { offloadPow: true },
+                          )
+                        : seedStore,
+                );
+            })
+            .then(({ transactionObjects }) => {
+                // Update state
+                const newState = syncAccountOnSuccessfulRetryAttempt(transactionObjects, existingAccountState);
 
-        // Persist updated state
-        Account.update(accountName, newState);
+                // Persist updated state
+                Account.update(accountName, newState);
 
-        // Since this transaction was never sent to the tangle
-        // Generate the same alert we display when a transaction is successfully sent to the tangle
-        const isZeroValue = every(transactionObjects, tx => tx.value === 0);
+                // Since this transaction was never sent to the tangle
+                // Generate the same alert we display when a transaction is successfully sent to the tangle
+                const isZeroValue = every(transactionObjects, (tx) => tx.value === 0);
 
-        dispatch(generateTransactionSuccessAlert(isZeroValue));
+                dispatch(generateTransactionSuccessAlert(isZeroValue));
 
-        return dispatch(retryFailedTransactionSuccess(newState));
-      })
-      .catch(error => {
-        dispatch(retryFailedTransactionError());
+                return dispatch(retryFailedTransactionSuccess(newState));
+            })
+            .catch((error) => {
+                dispatch(retryFailedTransactionError());
 
-        if (
-          error.message &&
-          error.message.includes(Errors.ALREADY_SPENT_FROM_ADDRESSES)
-        ) {
-          dispatch(
-            generateAlert(
-              "error",
-              i18next.t("global:broadcastError"),
-              i18next.t("global:addressesAlreadySpentFrom"),
-              20000,
-              error
-            )
-          );
-        } else {
-          dispatch(generateTransferErrorAlert(error));
-        }
-      })
-  );
+                if (error.message && error.message.includes(Errors.ALREADY_SPENT_FROM_ADDRESSES)) {
+                    dispatch(
+                        generateAlert(
+                            'error',
+                            i18next.t('global:broadcastError'),
+                            i18next.t('global:addressesAlreadySpentFrom'),
+                            20000,
+                            error,
+                        ),
+                    );
+                } else {
+                    dispatch(generateTransferErrorAlert(error));
+                }
+            })
+    );
 };

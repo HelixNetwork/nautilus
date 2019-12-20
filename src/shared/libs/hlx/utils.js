@@ -550,3 +550,64 @@ export const noChecksum = function(address) {
     }
     return addressesWithChecksum;
 };
+
+/**
+ * Set base value for hlx based on selected unit
+ *
+ * @method setBase
+ * @param {string} [selectedHlx]
+ * @param {number} [value]
+ *
+ * @returns {number}
+ */
+
+export const setBase = (selectedHlx, value) => {
+    let base = 0;
+    if (selectedHlx === 'HLX') {
+        base = 1;
+    } else if (selectedHlx === 'kHLX') {
+        base = 1000;
+    } else if (selectedHlx === 'mHLX') {
+        base = 1000000;
+    } else if (selectedHlx === 'gHLX') {
+        base = 1000000000;
+    } else if (value === 'tHLX') {
+        base = 1000000000000;
+    }
+    return base;
+};
+
+/**
+ * Converts hlx from one unit to selected unit
+ *
+ * @method unitConverter
+ * @param {string} [balance]
+ * @param {string} [selectedUnit]
+ *
+ * @returns {string}
+ */
+
+export const unitConverter = (balance, selectedUnit) => {
+    let convertedValue = 0;
+    switch (selectedUnit) {
+        case 'HLX':
+            convertedValue = balance;
+            break;
+        case 'kHLX':
+            convertedValue = balance / 1000;
+            break;
+        case 'mHLX':
+            convertedValue = balance / 1000000;
+            break;
+        case 'gHLX':
+            convertedValue = balance / 1000000000;
+            break;
+        case 'tHLX':
+            convertedValue = balance / 1000000000000;
+            break;
+        default:
+            convertedValue = balance;
+            break;
+    }
+    return convertedValue;
+};

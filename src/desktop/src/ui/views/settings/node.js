@@ -33,20 +33,28 @@ import { generateAlert } from 'actions/alerts';
  */
 class NodeSettings extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         nodes: PropTypes.array.isRequired,
+        /** @ignore */
         customNodes: PropTypes.array.isRequired,
+        /** @ignore */
         generateAlert: PropTypes.func.isRequired,
+        /** @ignore */
         settings: PropTypes.shape({
             nodeAutoSwitch: PropTypes.bool.isRequired,
             autoNodeList: PropTypes.bool.isRequired,
             node: PropTypes.object.isRequired,
             quorum: PropTypes.object.isRequired,
         }),
+        /** @ignore */
         changeAutoNodeListSetting: PropTypes.func.isRequired,
+        /** @ignore */
         updateNodeAutoSwitchSetting: PropTypes.func.isRequired,
+        /** @ignore */
         updateQuorumConfig: PropTypes.func.isRequired,
+        /** @ignore */
         setFullNode: PropTypes.func.isRequired,
-
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
 
@@ -65,17 +73,6 @@ class NodeSettings extends React.PureComponent {
         quorumSize: this.props.settings.quorum.size,
         showCustomNodes: false,
     };
-
-    // componentDidMount() {
-    //     const { settings } = this.props;
-
-    //     useEffect(() => {
-    //         if (!this.state.loading && settings.node.url !== primaryNode.url) {
-    //             setPrimaryNode(settings.node);
-    //         }
-    //     }, [settings]);
-
-    // }
 
     updateQuorumEnabled = () => {
         const { quorumEnabled, autoNodeList, quorumSize } = this.state;
@@ -293,10 +290,10 @@ class NodeSettings extends React.PureComponent {
 
         return (
             <div className={classNames(css.foo_bxx12)}>
-                <Scrollbar>
-                    <div className={classNames(css.nodebox)}>
-                        <form>
-                            <article>
+                <div className={classNames(css.nodebox)}>
+                    <form>
+                        <article>
+                            <Scrollbar>
                                 <Toggle
                                     inline={t('nodeSettings:automaticNodeManagement')}
                                     checked={autoNodeSelection}
@@ -351,27 +348,28 @@ class NodeSettings extends React.PureComponent {
                                     label={t('nodeSettings:quorumSize')}
                                     onChange={this.setQuorumSize.bind(this)}
                                 />
-                            </article>
-                            <Button
-                                loading={loading}
-                                disabled={
-                                    autoNodeList === settings.autoNodeList &&
-                                    nodeAutoSwitch === settings.nodeAutoSwitch &&
-                                    quorumEnabled === settings.quorumEnabled &&
-                                    quorumSize === settings.quorumSize &&
-                                    primaryNode.url === settings.node.url &&
-                                    primaryNode.token === settings.node.token &&
-                                    primaryNode.password === settings.node.password
-                                }
-                                type="submit"
-                                style={{ marginLeft: '178px' }}
-                                onClick={this.saveSettings}
-                            >
-                                {t('global:save')}
-                            </Button>
-                        </form>
-                    </div>
-                </Scrollbar>
+                            </Scrollbar>
+                        </article>
+
+                        <Button
+                            loading={loading}
+                            disabled={
+                                autoNodeList === settings.autoNodeList &&
+                                nodeAutoSwitch === settings.nodeAutoSwitch &&
+                                quorumEnabled === settings.quorumEnabled &&
+                                quorumSize === settings.quorumSize &&
+                                primaryNode.url === settings.node.url &&
+                                primaryNode.token === settings.node.token &&
+                                primaryNode.password === settings.node.password
+                            }
+                            type="submit"
+                            style={{ margin: '2% 0 0 50%' }}
+                            onClick={this.saveSettings}
+                        >
+                            {t('global:save')}
+                        </Button>
+                    </form>
+                </div>
             </div>
         );
     }

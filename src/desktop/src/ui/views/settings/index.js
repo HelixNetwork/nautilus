@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Top from '../../components/topbar';
-import Sidebar from '../../components/sidebar';
+import Top from 'ui/components/topbar';
+import Sidebar from 'ui/components/sidebar';
 import SettingsLanguage from 'ui/views/settings/language';
 import NodeSettings from 'ui/views/settings/node';
 import Currency from 'ui/views/settings/currency';
@@ -22,36 +22,29 @@ import AdvancedSettings from 'ui/views/settings/advancedSettings';
 import { getAccountNamesFromState } from 'selectors/accounts';
 
 /**
- * Setting component
+ * Settings component
  */
 
 class Settings extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         accounts: PropTypes.object,
         /** Wallet account names */
         accountNames: PropTypes.array.isRequired,
         /** @ignore */
         wallet: PropTypes.object,
-        // match: PropTypes.object
     };
-    // state = {
-    // match: this.props.match
-    // };
-
     render() {
-        // const match=this.props.match;
-        // const { accountIndex } = match.params;
         const { history, location } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
-        // const accountSettings = typeof accountIndex === 'string';
-        // const account = accountSettings
-        //     ? { ...accounts[accountNames[accountIndex]], ...{ accountName: accountNames[accountIndex], accountIndex } }
-        //     : null;
         return (
             <div>
                 <Top bal={'none'} main={'block'} user={'none'} history={history} />

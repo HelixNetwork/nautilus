@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import css from './wallet.scss';
@@ -14,22 +15,21 @@ import { getSelectedAccountName, getSelectedAccountMeta, getBalanceForSelectedAc
 import { generateAlert } from 'actions/alerts';
 import Checksum from 'ui/components/checksum';
 import { makeTransaction } from 'actions/transfers';
-import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from 'libs/hlx/utils';
+import { ADDRESS_LENGTH, isValidAddress, isValidMessage, setBase } from 'libs/hlx/utils';
 import ProgressBar from 'ui/components/progress';
 import { startTrackingProgress } from 'actions/progress';
 import { MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
 import { getCurrencyData } from 'actions/settings';
+
+/**
+ * Send transaction component
+ */
 
 class Send extends React.PureComponent {
     static propTypes = {
         /** @ignore */
         balance: PropTypes.number.isRequired,
         /** @ignore */
-        // settings: PropTypes.shape({
-        //     conversionRate: PropTypes.number.isRequired,
-        //     currency: PropTypes.string.isRequired,
-        //     usdPrice: PropTypes.number.isRequired,
-        // }),
         makeTransaction: PropTypes.func.isRequired,
         /** @ignore */
         t: PropTypes.func.isRequired,
@@ -170,10 +170,6 @@ class Send extends React.PureComponent {
             generateAlert('error', t('send:invalidMessage'), t('send:invalidMessageExplanation'));
             return false;
         }
-
-        // this.setState({
-        //   openModal: true
-        // });
         return true;
     }
 
@@ -197,18 +193,7 @@ class Send extends React.PureComponent {
             }
         }
         let conversion = 0.000000022;
-        let base = 0;
-        if (selectedHlx === 'HLX') {
-            base = 1;
-        } else if (selectedHlx === 'kHLX') {
-            base = 1000;
-        } else if (selectedHlx === 'mHLX') {
-            base = 1000000;
-        } else if (selectedHlx === 'gHLX') {
-            base = 1000000000;
-        } else if (e.target.value === 'tHLX') {
-            base = 1000000000000;
-        }
+        let base = setBase(selectedHlx, e.target.value);
         txamount = hlxamount1 * base;
         const base1 = conversion * txamount;
 
@@ -222,25 +207,16 @@ class Send extends React.PureComponent {
 
     amountInput(e) {
         let { txamount, selectedHlx } = this.state;
-        let base = 0;
+        // let base = 0;
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
         if (regexp.test(e.target.value)) {
             const conversion = 0.000000022;
-            if (selectedHlx === 'HLX') {
-                base = 1;
-            } else if (selectedHlx === 'kHLX') {
-                base = 1000;
-            } else if (selectedHlx === 'mHLX') {
-                base = 1000000;
-            } else if (selectedHlx === 'gHLX') {
-                base = 1000000000;
-            } else if (e.target.value === 'tHLX') {
-                base = 1000000000000;
-            }
+            let base = setBase(selectedHlx, e.target.value);
             let hlx = e.target.value / conversion;
             hlx = hlx / this.state.conversionRate;
             hlx = Math.round(hlx / base);
             txamount = hlx * base;
+
             const amount = e.target.value;
             this.setState({
                 amount: amount,
@@ -324,12 +300,10 @@ class Send extends React.PureComponent {
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-9">
-                                    <div className={classNames(css.foo_bxx1)} style={{ paddingBottom: '100px' }}>
-                                        <h5 style={{ marginLeft: '494px' }}>{t('send:sendCoins')}</h5>
-                                        <h6 style={{ opacity: '0.3', marginLeft: '275px' }}>
-                                            {t('send:irrevocableTransactionWarning')}
-                                        </h6>
-                                        <form style={{ marginLeft: '48px' }}>
+                                    <div className={classNames(css.foo_bxx1, css.send_foobxx)}>
+                                        <h5 className={css.send_coins}>{t('send:sendCoins')}</h5>
+                                        <h6 className={css.send_h6}>{t('send:irrevocableTransactionWarning')}</h6>
+                                        <form className={css.send_form}>
                                             <div>
                                                 <select
                                                     className={css.currencyBox}
@@ -344,7 +318,7 @@ class Send extends React.PureComponent {
                                                                 <option
                                                                     value={item}
                                                                     key={item}
-                                                                    style={{ backgroundColor: 'transparent' }}
+                                                                    className={css.send_options}
                                                                 >
                                                                     {item}
                                                                 </option>
@@ -354,11 +328,7 @@ class Send extends React.PureComponent {
                                                 <input
                                                     type="number"
                                                     value={amount}
-                                                    className={classNames(css.bbx_box1, css.tr_box)}
-                                                    style={{
-                                                        marginLeft: '50px',
-                                                        color: 'white',
-                                                    }}
+                                                    className={classNames(css.bbx_box1, css.tr_box, css.send_input)}
                                                     placeholder={selectedCurrency}
                                                     onChange={this.amountInput.bind(this)}
                                                 ></input>
@@ -379,11 +349,7 @@ class Send extends React.PureComponent {
                                                 <input
                                                     value={hlxamount}
                                                     type="number"
-                                                    className={classNames(css.bbx_box1, css.tr_box)}
-                                                    style={{
-                                                        marginLeft: '50px',
-                                                        color: 'white',
-                                                    }}
+                                                    className={classNames(css.bbx_box1, css.tr_box, css.send_input)}
                                                     maxLength={MAX_HLX_LENGTH}
                                                     min={0}
                                                     placeholder={selectedHlx}
@@ -392,22 +358,12 @@ class Send extends React.PureComponent {
                                             </div>
 
                                             <div>
-                                                <span
-                                                    className={css.currencyBox}
-                                                    style={{
-                                                        top: '355px',
-                                                        left: '55px',
-                                                    }}
-                                                >
+                                                <span className={classNames(css.currencyBox, css.send_span)}>
                                                     {t('send:note')}
                                                 </span>
                                                 <input
-                                                    className={css.msgBox}
+                                                    className={classNames(css.msgBox, css.send_input)}
                                                     value={message}
-                                                    style={{
-                                                        marginLeft: '50px',
-                                                        color: 'white',
-                                                    }}
                                                     placeholder="Enter note"
                                                     maxLength={MAX_NOTE_LENGTH}
                                                     onChange={this.msgChange.bind(this)}
@@ -439,23 +395,10 @@ class Send extends React.PureComponent {
                                                 isOpen={openModal}
                                                 onClose={() => this.setState({ openModal: false })}
                                             >
-                                                <div style={{ marginTop: '-60px' }}>
+                                                <div className={css.send_div}>
                                                     <br />
                                                     <div className={css.transferLoading}>
                                                         <br />
-                                                        {/*<Lottie*/}
-                                                        {/*  options={defaultOptions}*/}
-                                                        {/*  eventListeners={[*/}
-                                                        {/*    {*/}
-                                                        {/*      eventName: "complete",*/}
-                                                        {/*      callback: () => {*/}
-                                                        {/*        if (typeof onEnd === "function") {*/}
-                                                        {/*          onEnd();*/}
-                                                        {/*        }*/}
-                                                        {/*      }*/}
-                                                        {/*    }*/}
-                                                        {/*  ]}*/}
-                                                        {/*/>*/}
                                                     </div>
                                                     <br />
                                                     <div>
@@ -478,7 +421,7 @@ class Send extends React.PureComponent {
                                     {isSending && (
                                         <Modal isOpen={isSending} onClose={() => this.resetForm.bind(this)}>
                                             <ProgressBar
-                                                type={'send'}
+                                                pageType={'send'}
                                                 progress={this.state.progress}
                                                 title={progressTitle}
                                             />

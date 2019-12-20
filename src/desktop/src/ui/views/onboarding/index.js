@@ -26,16 +26,19 @@ import OnboardingLayout from 'ui/components/onboarding';
  */
 class Onboarding extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         isAuthorised: PropTypes.bool,
+        /** @ignore */
         complete: PropTypes.bool,
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
     };
-
-    state = {};
 
     steps(currentKey) {
         const steps = [
@@ -55,6 +58,7 @@ class Onboarding extends React.PureComponent {
         }
         return (
             <ul>
+                {' '}
                 {steps.map((step, index) => (
                     <li
                         key={step}
@@ -63,7 +67,7 @@ class Onboarding extends React.PureComponent {
                             index === steps.length - 1 ? css.done : null,
                         )}
                     ></li>
-                ))}
+                ))}{' '}
             </ul>
         );
     }
@@ -76,7 +80,7 @@ class Onboarding extends React.PureComponent {
         return (
             <main className={css.onboarding}>
                 <TransitionGroup>
-                    <CSSTransition classNames="slide" timeout={1000} mountOnEnter unmountOnExit>
+                    <CSSTransition classNames="slide" timeout={2000} mountOnEnter unmountOnExit>
                         <OnboardingLayout history={history}>
                             <Switch>
                                 <Route path="/onboarding/seed-intro" component={SeedIntro} />

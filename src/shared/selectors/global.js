@@ -29,7 +29,23 @@ export const getThemeFromState = createSelector(
     (themeName) => Themes[themeName] || Themes.Default,
 );
 
+/**
+ *   Selects wallet prop from state.
+ *
+ *   @method getWalletFromState
+ *   @param {object} state
+ *   @returns {object}
+ **/
 export const getWalletFromState = (state) => state.wallet || {};
+
+/**
+ *   Selects seedIndex prop from wallet reducer state object.
+ *   Uses getWalletFromState selector for slicing wallet state from the whole state object.
+ *
+ *   @method getSeedIndexFromState
+ *   @param {object} state
+ *   @returns {number}
+ **/
 
 export const getSeedIndexFromState = createSelector(
     getWalletFromState,
@@ -123,6 +139,15 @@ export const getSelectedNodeFromState = createSelector(
     getSettingsFromState,
     (state) => state.node || DEFAULT_NODE,
 );
+
+/**
+ *   Selects remotePoW prop from settings reducer state object.
+ *   Uses getSettingsFromState selector for slicing settings state from the whole state object.
+ *
+ *   @method getRemotePoWFromState
+ *   @param {object} state
+ *   @returns {object}
+ **/
 
 export const getRemotePoWFromState = createSelector(
     getSettingsFromState,

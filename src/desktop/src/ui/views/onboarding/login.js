@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import { generateAlert } from 'actions/alerts';
@@ -5,6 +6,7 @@ import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
+import Modal from 'ui/components/modal';
 import Loading from 'ui/components/loading';
 import SeedStore from 'libs/seed';
 import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
@@ -13,12 +15,15 @@ import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
-import { newTerms, newTermsNotice } from 'shared/config';
+import { newTerms, newTermsNotice, newTermsDate } from '../../../../../shared/config';
 import { acceptNewTerms, updateNewTermsNotice } from 'actions/settings';
 import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
 import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
 
+/**
+ * Login component
+ **/
 class Login extends React.PureComponent {
     static propTypes = {
         /** @ignore */
@@ -47,8 +52,6 @@ class Login extends React.PureComponent {
         setPassword: PropTypes.func.isRequired,
         /** @ignore */
         clearWalletData: PropTypes.func.isRequired,
-        /** @ignore */
-        // getCurrencyData: PropTypes.func.isRequired,
         /** @ignore */
         generateAlert: PropTypes.func.isRequired,
         /** @ignore */
@@ -82,8 +85,13 @@ class Login extends React.PureComponent {
         this.setState({ showPrivacy: false });
     }
 
+    openTermsInBrowser(e) {
+        // eslint-disable-next-line no-undef
+        Electron.openExternal(newTermsNotice);
+    }
+
     hideTermsNotificaition(e) {
-        this.props.updateNewTermsNotice(newTermsNotice);
+        this.props.updateNewTermsNotice({ newTermsNotice, newTermsDate });
         this.setState({
             showNewTermsNotification: false,
         });
@@ -208,7 +216,7 @@ class Login extends React.PureComponent {
             this.setState({
                 showTerms: true,
             });
-        } else if (newterms === newTerms && newtermsupdatenotice < newTermsNotice) {
+        } else if (newterms === newTerms && newtermsupdatenotice !== newTermsNotice) {
             this.setState({
                 showNewTermsNotification: true,
             });
@@ -223,15 +231,12 @@ class Login extends React.PureComponent {
                 />
             );
         }
-        let styles = {
-            color: '#E9B339',
-            fontSize: '20px',
-        };
+
         return (
             <div>
                 {!showTerms && !showPrivacy ? (
                     <div>
-                        <Row className={css.centerBox} style={{ marginTop: '10vw' }}>
+                        <Row className={classNames(css.centerBox, css.centerBox_Row)}>
                             <form onSubmit={(e) => this.doLogin(e)}>
                                 <h5>
                                     {t('login:enterPassword')}
@@ -285,20 +290,22 @@ class Login extends React.PureComponent {
                             className="backgroundNone"
                         >
                             {!scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
-                            <span style={styles}> ></span>
+                            <span className={css.scrollend_span}> ></span>
                         </Button>
                     </div>
                 )}
                 {showNewTermsNotification && (
-                    <div className={css.newtermsUpdateNotice}>
-                        <p>We are updating our Terms&amp;Conditions and Privacy Policy</p>
-                        <input
-                            type="checkbox"
-                            checked={!showNewTermsNotification}
-                            onChange={this.hideTermsNotificaition.bind(this)}
-                        />
-                        <label>Don't show this message again.</label>
-                    </div>
+                    <Modal
+                        isOpen={showNewTermsNotification}
+                        onClose={() => this.setState({ showNewTermsNotification: false })}
+                    >
+                        <div className={css.newtermsUpdateNotice}>
+                            <p>We are updating our Terms &amp; Conditions and Privacy Policy on {newTermsDate}</p>
+                            <br />
+                            <Button onClick={this.hideTermsNotificaition.bind(this)}>Accept</Button>
+                            <Button onClick={this.openTermsInBrowser.bind(this)}>Review</Button>
+                        </div>
+                    </Modal>
                 )}
             </div>
         );

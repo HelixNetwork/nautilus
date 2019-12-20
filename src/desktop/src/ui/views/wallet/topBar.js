@@ -1,3 +1,4 @@
+/* global Electron */
 import React, { Component } from 'react';
 import logo from 'ui/images/logo.png';
 import css from './wallet.scss';
@@ -13,13 +14,17 @@ import {
 } from 'selectors/accounts';
 import { getSeedIndexFromState } from 'selectors/global';
 import { getAccountInfo } from 'actions/accounts';
-import SeedStore from 'libs/seed';
 import { accumulateBalance } from 'libs/hlx/addresses';
+import SeedStore from 'libs/seed';
 import { setSeedIndex } from 'actions/wallet';
-
-import { formatHlx } from 'libs/hlx/utils';
+import { unitConverter, formatUnit } from 'libs/hlx/utils';
 import { IntlProvider, FormattedNumber } from 'react-intl';
 import axios from 'axios';
+
+/**
+ * Topbar component
+ */
+
 class TopBar extends Component {
     static propTypes = {
         accounts: PropTypes.object.isRequired,
@@ -38,7 +43,17 @@ class TopBar extends Component {
     };
     state = {
         amount: 0,
+        accountBalance: 0,
+        accumulatedBalance: 0,
+        selectedUnit: 'mHLX',
     };
+
+    /**
+     * Changes between accounts or invokes add account
+     *
+     * @method changeAccount
+     * @param {*} e
+     */
     changeAccount(e) {
         if (e.target.value === 'add') {
             this.props.history.push('/onboarding/seed-intro');
@@ -47,6 +62,26 @@ class TopBar extends Component {
             this.updateAccount(selection.accountName, selection.index);
         }
     }
+
+    /**
+     * Toggle balance unit according to users input
+     *
+     * @method toggleBalanceUnit
+     * @param {String} selectedUnit - Selected unit to toggle
+     */
+    toggleBalanceUnit(selectedUnit) {
+        let balance = this.state.accumulatedBalance;
+        let formattedBalance = unitConverter(balance, selectedUnit);
+        this.setState({
+            accountBalance: formattedBalance,
+            selectedUnit,
+        });
+    }
+    /**
+     * Updates the selected account
+     * @param {String} accountName
+     * @param {Integer} index - account index
+     */
 
     updateAccount = async (accountName, index) => {
         const { password, accountMeta, history, getAccountInfo, setSeedIndex } = this.props;
@@ -58,8 +93,16 @@ class TopBar extends Component {
     };
 
     componentDidMount() {
-        const { currency } = this.props;
+        const { currency, accountInfo } = this.props;
         const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+        let balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
+        let unit = formatUnit(balance);
+        let formattedBalance = unitConverter(balance, unit);
+        this.setState({
+            accumulatedBalance: balance,
+            accountBalance: formattedBalance,
+            selectedUnit: unit,
+        });
         axios.get(url).then((resp) => {
             this.setState({
                 amount: (resp.data.rates[currency] * 0.022).toFixed(3),
@@ -68,23 +111,24 @@ class TopBar extends Component {
     }
 
     render() {
-        const { accountInfo, accountNames, accountName, seedIndex, currency, conversionRate } = this.props;
+        const { accountNames, accountName, seedIndex, currency, conversionRate } = this.props;
         let { amount } = this.state;
+        // Hard coded exchange rate until hlx coin goes to exchanges
         if (conversionRate !== 0) {
             amount = (0.022 * conversionRate).toFixed(3);
         }
-        let balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
+
         return (
             <div>
                 <div className={css.top}>
                     <img src={logo} alt=" " />
                     <div className={css.topIn}>
-                        <h4 style={{ marginBottom: '-13px' }}>BALANCE</h4>
+                        <h4 className={css.topBar_h4}>BALANCE</h4>
                         <br />
                         <div>
                             {' '}
                             <span className={css.dot}></span>
-                            <h6 style={{ opacity: '0.3' }}>
+                            <h6 className={css.link_opacity}>
                                 <IntlProvider locale="en">
                                     <FormattedNumber value={amount} currency={currency} />
                                 </IntlProvider>
@@ -94,7 +138,20 @@ class TopBar extends Component {
                     </div>
                     <div className={css.topBal}>
                         <img src={hlx} alt=" " />
-                        <h2>{formatHlx(balance, true, true)}</h2>
+                        <h2>
+                            <span>{this.state.accountBalance} </span>
+                            <select
+                                value={this.state.selectedUnit}
+                                className={css.unitOption}
+                                onChange={(event) => this.toggleBalanceUnit(event.target.value)}
+                            >
+                                <option value="HLX">HLX</option>
+                                <option value="kHLX">kHLX</option>
+                                <option value="mHLX">mHLX</option>
+                                <option value="gHLX">gHLX</option>
+                                <option value="tHLX">tHLX</option>
+                            </select>
+                        </h2>
                         <hr />
                     </div>
 
