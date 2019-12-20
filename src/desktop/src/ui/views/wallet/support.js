@@ -36,7 +36,6 @@ class Support extends React.PureComponent {
         return (
             <div>
                 <section className={css.home}>
-                    {/* <Top disp={"block"} history={this.props.history} /> */}
                     <div className={classNames(css.pg1_foo3)}>
                         <div className="container">
                             <div className="row">

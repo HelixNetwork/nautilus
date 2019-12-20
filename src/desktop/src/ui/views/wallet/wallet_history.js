@@ -8,19 +8,27 @@ import { getAccountInfo } from 'actions/accounts';
 
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
+
 /**
  * Wallet History component
  */
 class WalletHistory extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         location: PropTypes.object,
+        /**@ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /**@ignore */
         t: PropTypes.func.isRequired,
+        /**@ignore */
         getAccountInfo: PropTypes.func.isRequired,
+        /**@ignore */
         accountName: PropTypes.string.isRequired,
+        /**@ignore */
         accountMeta: PropTypes.object.isRequired,
+        /**@ignore */
         password: PropTypes.object.isRequired,
     };
     state = {

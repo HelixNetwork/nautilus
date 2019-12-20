@@ -95,7 +95,6 @@ class Viewseed extends React.PureComponent {
                             </span>
                         </Button>
                         <h5 className={css.seed_h5}>{t('accountManagement:viewSeed')}</h5>
-                        {/* <input type="text" className={classNames(css.ssetting_textline)}></input><br /><br /> */}
 
                         {typeof accountMeta.index === 'number' && (
                             <Fragment>
@@ -174,12 +173,6 @@ class Viewseed extends React.PureComponent {
                             >
                                 {action === 'view' ? t('settings:hide') : t('settings:show')}
                             </Button>
-                            {/* <Button
-                            className="small"
-                            onClick={() => (!seed ? this.setState({ action: 'print' }) : window.print())}
-                        >
-                            {t('paperWallet')}
-                        </Button> */}
                             <Button className="navright" onClick={() => this.setState({ action: 'export' })}>
                                 {t('seedVault:exportSeedVault')}
                             </Button>

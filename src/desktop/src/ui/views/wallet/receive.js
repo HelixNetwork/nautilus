@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import css from './wallet.scss';
@@ -25,15 +26,19 @@ import { indexToChar } from 'libs/hlx/converter';
 import { getLatestAddressObject } from 'libs/hlx/addresses';
 import { ADDRESS_LENGTH } from 'libs/hlx/utils';
 import Scrollbar from 'ui/components/scrollbar';
+
 /**
- *
+ * Send transactions component
  */
 class Receive extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         location: PropTypes.object,
+        /**@ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /**@ignore */
         t: PropTypes.func.isRequired,
         /** @ignore */
         addressValidationRequest: PropTypes.func.isRequired,
