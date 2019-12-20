@@ -589,16 +589,25 @@ export const setBase = (selectedHlx, value) => {
 
 export const unitConverter = (balance, selectedUnit) => {
     let convertedValue = 0;
-    if (selectedUnit === 'HLX') {
-        convertedValue = balance;
-    } else if (selectedUnit === 'kHLX') {
-        convertedValue = balance / 1000;
-    } else if (selectedUnit === 'mHLX') {
-        convertedValue = balance / 1000000;
-    } else if (selectedUnit === 'gHLX') {
-        convertedValue = balance / 1000000000;
-    } else if (selectedUnit === 'tHLX') {
-        convertedValue = balance / 1000000000000;
+    switch (selectedUnit) {
+        case 'HLX':
+            convertedValue = balance;
+            break;
+        case 'kHLX':
+            convertedValue = balance / 1000;
+            break;
+        case 'mHLX':
+            convertedValue = balance / 1000000;
+            break;
+        case 'gHLX':
+            convertedValue = balance / 1000000000;
+            break;
+        case 'tHLX':
+            convertedValue = balance / 1000000000000;
+            break;
+        default:
+            convertedValue = balance;
+            break;
     }
     return convertedValue;
 };
