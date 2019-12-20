@@ -14,7 +14,7 @@ import { getSelectedAccountName, getSelectedAccountMeta, getBalanceForSelectedAc
 import { generateAlert } from 'actions/alerts';
 import Checksum from 'ui/components/checksum';
 import { makeTransaction } from 'actions/transfers';
-import { ADDRESS_LENGTH, isValidAddress, isValidMessage } from 'libs/hlx/utils';
+import { ADDRESS_LENGTH, isValidAddress, isValidMessage, setBase } from 'libs/hlx/utils';
 import ProgressBar from 'ui/components/progress';
 import { startTrackingProgress } from 'actions/progress';
 import { MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
@@ -197,18 +197,7 @@ class Send extends React.PureComponent {
             }
         }
         let conversion = 0.000000022;
-        let base = 0;
-        if (selectedHlx === 'HLX') {
-            base = 1;
-        } else if (selectedHlx === 'kHLX') {
-            base = 1000;
-        } else if (selectedHlx === 'mHLX') {
-            base = 1000000;
-        } else if (selectedHlx === 'gHLX') {
-            base = 1000000000;
-        } else if (e.target.value === 'tHLX') {
-            base = 1000000000000;
-        }
+        let base = setBase(selectedHlx, e.target.value);
         txamount = hlxamount1 * base;
         const base1 = conversion * txamount;
 
@@ -222,25 +211,16 @@ class Send extends React.PureComponent {
 
     amountInput(e) {
         let { txamount, selectedHlx } = this.state;
-        let base = 0;
+        // let base = 0;
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
         if (regexp.test(e.target.value)) {
             const conversion = 0.000000022;
-            if (selectedHlx === 'HLX') {
-                base = 1;
-            } else if (selectedHlx === 'kHLX') {
-                base = 1000;
-            } else if (selectedHlx === 'mHLX') {
-                base = 1000000;
-            } else if (selectedHlx === 'gHLX') {
-                base = 1000000000;
-            } else if (e.target.value === 'tHLX') {
-                base = 1000000000000;
-            }
+            let base = setBase(selectedHlx, e.target.value);
             let hlx = e.target.value / conversion;
             hlx = hlx / this.state.conversionRate;
             hlx = Math.round(hlx / base);
             txamount = hlx * base;
+
             const amount = e.target.value;
             this.setState({
                 amount: amount,
