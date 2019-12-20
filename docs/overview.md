@@ -32,18 +32,6 @@ Seed generation is performed during new seed set up. The user can generate a com
 
 **It is recommended that a user makes at least 16 individual letter randomisations.**
 
-Nautilus seed generation follows a simple algorithm:
-```
-do {
-randomByte = getRandomByte() // randomByte will be from 0 to 255
-} while (randomByte > 512) // Keep generating until the number is 512 or less
-charIndex = randomByte % 16
- ```
-
- For an Nautilus seed, it is necessary to generate a set of 16 possible characters. A simple way of producing the necessary characters is to return the remainder from dividing a random byte's numeric value (0-255) by 16. And then using this to index the string of possible characters: `abcdef0123456789`. By using a number range evenly divisible by the divisor it is possible to avoid bias i.e. by restricting the range from 0 to 512.
-
- The library used to generate random bytes is  [react-native-securerandom](https://github.com/rh389/react-native-securerandom).
-
 #### Seed storage
 
 Nautilus seed security follows two simple rules: minimize the time the seed spends unencrypted in memory, and encrypt the seed at rest storage.
