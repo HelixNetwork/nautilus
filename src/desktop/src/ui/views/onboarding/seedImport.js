@@ -1,3 +1,5 @@
+/* global Electron */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import css from './index.scss';
@@ -16,14 +18,24 @@ import SeedStore from 'libs/seed';
 import Icon from 'ui/components/icon';
 import { Row } from 'react-bootstrap';
 
+/**
+ * Onboarding, Seed import component
+ */
 class SeedImport extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         setAccountInfoDuringSetup: PropTypes.func.isRequired,
+        /** @ignore */
         wallet: PropTypes.object.isRequired,
+        /** @ignore */
         additionalAccountName: PropTypes.string.isRequired,
+        /** @ignore */
         additionalAccountMeta: PropTypes.object.isRequired,
+        /** @ignore */
         generateAlert: PropTypes.func.isRequired,
+        /** @ignore */
         history: PropTypes.object,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
 

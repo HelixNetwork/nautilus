@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import { connect } from 'react-redux';
 import { generateAlert } from 'actions/alerts';
@@ -20,6 +21,9 @@ import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
 import Scrollbar from 'ui/components/scrollbar';
 import ReactMarkdown from 'react-markdown';
 
+/**
+ * Login component
+ **/
 class Login extends React.PureComponent {
     static propTypes = {
         /** @ignore */
@@ -48,8 +52,6 @@ class Login extends React.PureComponent {
         setPassword: PropTypes.func.isRequired,
         /** @ignore */
         clearWalletData: PropTypes.func.isRequired,
-        /** @ignore */
-        // getCurrencyData: PropTypes.func.isRequired,
         /** @ignore */
         generateAlert: PropTypes.func.isRequired,
         /** @ignore */
