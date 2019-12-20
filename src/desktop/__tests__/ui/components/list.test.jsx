@@ -95,7 +95,7 @@ describe('Test for List component', () => {
 
     test('List all history items', () => {
         const wrapper = shallow(<ListComponent {...props} />);
-        console.log(wrapper.debug());
+        
         expect(wrapper.find('.lists')).toHaveLength(6);
     });
 
@@ -103,40 +103,40 @@ describe('Test for List component', () => {
         const wrapper = shallow(<ListComponent {...props} />);
 
         wrapper.setState({ filter: 'Received' });
-        expect(wrapper.find('.list a')).toHaveLength(1);
+        expect(wrapper.find('.lists')).toHaveLength(1);
     });
 
     test('Filter sent items', () => {
         const wrapper = shallow(<ListComponent {...props} />);
 
         wrapper.setState({ filter: 'Sent' });
-        expect(wrapper.find('.list a')).toHaveLength(2);
+        expect(wrapper.find('.lists')).toHaveLength(2);
     });
 
     test('Filter pending items', () => {
         const wrapper = shallow(<ListComponent {...props} />);
 
         wrapper.setState({ filter: 'Pending' });
-        expect(wrapper.find('.list a')).toHaveLength(3);
+        expect(wrapper.find('.lists')).toHaveLength(3);
     });
 
     test('Filter items by value search', () => {
         const wrapper = shallow(<ListComponent {...props} />);
 
         wrapper.setState({ search: '500000' });
-        expect(wrapper.find('.list a')).toHaveLength(2);
+        expect(wrapper.find('.lists')).toHaveLength(2);
     });
 
     test('Filter items by message search', () => {
         const wrapper = shallow(<ListComponent {...props} />);
 
         wrapper.setState({ search: 'dolor' });
-        expect(wrapper.find('.list a')).toHaveLength(1);
+        expect(wrapper.find('.lists')).toHaveLength(1);
     });
 
     test('Display single transaction', () => {
         const mockProps = Object.assign({}, props, {
-            currentItem: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            currentItem: '0a2955eb6f6a240336b7a53b9b89cf4f588ed2847048b150c5622f89540f0675',
         });
         const wrapper = shallow(<ListComponent {...mockProps} />);
 
