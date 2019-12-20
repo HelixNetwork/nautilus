@@ -34,28 +34,21 @@ export class ClipboardComponent extends React.PureComponent {
         }
 
         const { text, generateAlert, title, success, timeout } = this.props;
-        console.log('timeout=', timeout);
-
         Electron.clipboard(text);
         generateAlert('success', title, success, 1000);
 
         if (timeout > 0) {
-            console.log('entered');
             if (this.timeout) {
                 clearTimeout(this.timeout);
             }
             this.timeout = setTimeout(() => {
-                console.log('entered 3');
-
                 Electron.clipboard('');
             }, timeout * 1000);
         }
-        console.log('entered 2');
     };
 
     render() {
         const { children, text } = this.props;
-        console.log('entered 4');
 
         return (
             <span className={css.clipboard} onClick={this.copy}>
