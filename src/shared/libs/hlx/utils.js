@@ -606,6 +606,7 @@ export const unitConverter = (balance, selectedUnit) => {
             convertedValue = balance / 1000000000000;
             break;
         default:
+            convertedValue = balance;
             break;
     }
     return convertedValue;
