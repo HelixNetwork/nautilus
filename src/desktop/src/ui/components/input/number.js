@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import Icon from 'ui/components/icon';
-
 import css from './input.scss';
 
 /**
@@ -45,7 +44,7 @@ export default class Number extends React.PureComponent {
 
     render() {
         const { disabled, label, inline, value, onChange, max, min } = this.props;
-       
+
         return (
             <div className={classNames(css.input, css.number, inline && css.inline, disabled && css.disabled)}>
                 <fieldset>
