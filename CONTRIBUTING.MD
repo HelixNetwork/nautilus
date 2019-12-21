@@ -21,6 +21,6 @@ Please refer to our [security policy](SECURITY.MD)
 # Branch Policies
 `dev` and `master` are protected by the following policies:
 - Temporarily repository maintainer has to approve changes
-- At least one reviewer has to approve changes
+- At least one further reviewer has to approve changes 
 - Commits have to be signed ([tutorial](https://help.github.com/en/articles/signing-commits))
 - Status Checks: Pull Requests have to pass travis integration test
