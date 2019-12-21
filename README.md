@@ -1,6 +1,6 @@
 # Nautilus Wallet<img align="right" src="https://hlx.ai/images/Helix_Logo-white.svg" height="70px" />
 
-The Official Desktop Wallet for Managing Helix tokens (HLX) developed by the [Helix Network Organization](https://github/helixnetwork). The wallet is built based on the [Trinity Wallet](https://github.com/iotaledger/trinity-wallet). 
+The Official Desktop Wallet for Managing Helix tokens (HLX) developed by the [Helix Network Organization](https://github.com/helixnetwork). The wallet is built based on the [Trinity Wallet](https://github.com/iotaledger/trinity-wallet). 
 
 -   **Latest release:** v1.0.0 
 -   **License:** GPLv3
