@@ -75,7 +75,7 @@ yarn run compile:linux
 
 ## Discussion
 
-Discuss Nautilus Wallet on our discord [forums](https://discord.gg/Mh6Tafg)
+Discuss Nautilus Wallet in our [discord](https://discord.gg/Mh6Tafg).
 
 ## Want to Contribute?
 
