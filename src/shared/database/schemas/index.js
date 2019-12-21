@@ -3,8 +3,6 @@ import includes from 'lodash/includes';
 import unset from 'lodash/unset';
 import xor from 'lodash/xor';
 import vSchema0 from './v_0';
-import v1Schema, { migration as v1Migration } from './v_1';
-import v2Schema, { migration as v2Migration } from './v_2';
 import { initialState as reduxSettingsState } from '../../reducers/settings';
 import { account as reduxAccountsState } from '../../reducers/accounts';
 
@@ -100,20 +98,8 @@ export default [
         schemaVersion: 0,
         path: STORAGE_PATH,
     },
-    {
-        schema: v1Schema,
-        schemaVersion: 1,
-        migration: v1Migration,
-        path: STORAGE_PATH,
-    },
-    {
-        schema: v2Schema,
-        schemaVersion: 2,
-        path: STORAGE_PATH,
-        migration: v2Migration,
-    },
 ];
 
-export { vSchema0, v1Schema, v2Schema, STORAGE_PATH, getDeprecatedStoragePath };
+export { vSchema0, STORAGE_PATH, getDeprecatedStoragePath };
 
 // export { vSchema0, STORAGE_PATH};

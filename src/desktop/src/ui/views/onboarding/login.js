@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import { withI18n } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from 'ui/components/button';
-import Modal from 'ui/components/modal';
 import Loading from 'ui/components/loading';
 import SeedStore from 'libs/seed';
 import { getAccountInfo, getFullAccountInfo } from 'actions/accounts';
@@ -15,11 +14,6 @@ import { hash, authorize } from 'libs/crypto';
 import { setPassword, clearWalletData } from 'actions/wallet';
 import css from './index.scss';
 import { Row } from 'react-bootstrap';
-import { newTerms, newTermsNotice, newTermsDate } from '../../../../../shared/config';
-import { acceptNewTerms, updateNewTermsNotice } from 'actions/settings';
-import { enTermsAndConditions, enPrivacyPolicy } from 'terms-conditions';
-import Scrollbar from 'ui/components/scrollbar';
-import ReactMarkdown from 'react-markdown';
 
 /**
  * Login component
@@ -66,36 +60,7 @@ class Login extends React.PureComponent {
     state = {
         password: '',
         shouldMigrate: false,
-        showTerms: false,
-        showPrivacy: false,
-        scrollEnd: false,
     };
-
-    setShowTerms(e) {
-        this.setState({
-            showTerms: false,
-            showPrivacy: true,
-            scrollEnd: false,
-            showNewTermsNotification: false,
-        });
-    }
-
-    setShowPrivacy(e) {
-        this.props.acceptNewTerms(newTerms);
-        this.setState({ showPrivacy: false });
-    }
-
-    openTermsInBrowser(e) {
-        // eslint-disable-next-line no-undef
-        Electron.openExternal(newTermsNotice);
-    }
-
-    hideTermsNotificaition(e) {
-        this.props.updateNewTermsNotice({ newTermsNotice, newTermsDate });
-        this.setState({
-            showNewTermsNotification: false,
-        });
-    }
 
     componentDidMount() {
         const { password, addingAdditionalAccount } = this.props;
@@ -210,17 +175,8 @@ class Login extends React.PureComponent {
     };
 
     render() {
-        const { t, addingAdditionalAccount, ui, themeName, complete, newterms, newtermsupdatenotice } = this.props;
-        const { showPrivacy, showTerms, scrollEnd, showNewTermsNotification } = this.state;
-        if (newterms < newTerms && !this.state.showPrivacy) {
-            this.setState({
-                showTerms: true,
-            });
-        } else if (newterms === newTerms && newtermsupdatenotice !== newTermsNotice) {
-            this.setState({
-                showNewTermsNotification: true,
-            });
-        }
+        const { t, addingAdditionalAccount, ui, themeName, complete } = this.props;
+
         if (ui.isFetchingAccountInfo) {
             return (
                 <Loading
@@ -234,79 +190,39 @@ class Login extends React.PureComponent {
 
         return (
             <div>
-                {!showTerms && !showPrivacy ? (
-                    <div>
-                        <Row className={classNames(css.centerBox, css.centerBox_Row)}>
-                            <form onSubmit={(e) => this.doLogin(e)}>
-                                <h5>
-                                    {t('login:enterPassword')}
-                                    <span className={classNames(css.text_color)}>.</span>{' '}
-                                </h5>
-                                <input
-                                    type="password"
-                                    value={this.state.password}
-                                    label={t('password')}
-                                    name="password"
-                                    onChange={(e) => this.setPassword(e.target.value)}
-                                    className={classNames(css.sseed_textline)}
-                                ></input>
-                                <br />
-                                <br />
-                                <Button type="submit">{t('login:login')}</Button>
-                            </form>
-                        </Row>
-
-                        <Row>
-                            {complete ? (
-                                <React.Fragment></React.Fragment>
-                            ) : (
-                                <React.Fragment>
-                                    <Button variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>
-                                        <span>&lt;</span> {t('global:goBack')}
-                                    </Button>
-                                </React.Fragment>
-                            )}
-                        </Row>
-                    </div>
-                ) : (
-                    <div>
-                        <React.Fragment>
-                            <div className={css.privacy}>
-                                <h1>{showTerms ? 'Terms and Conditions' : t('privacyPolicy:privacyPolicy')}</h1>
-                                <article>
-                                    <Scrollbar
-                                        contentId={'terms'}
-                                        onScrollEnd={() => this.setState({ scrollEnd: true })}
-                                    >
-                                        <ReactMarkdown source={showTerms ? enTermsAndConditions : enPrivacyPolicy} />
-                                    </Scrollbar>
-                                </article>
-                            </div>
-                        </React.Fragment>
-
-                        <Button
-                            disabled={!scrollEnd}
-                            onClick={showTerms ? this.setShowTerms.bind(this) : this.setShowPrivacy.bind(this)}
-                            className="backgroundNone"
-                        >
-                            {!scrollEnd ? t('terms:readAllToContinue') : t('terms:accept')}
-                            <span className={css.scrollend_span}> ></span>
-                        </Button>
-                    </div>
-                )}
-                {showNewTermsNotification && (
-                    <Modal
-                        isOpen={showNewTermsNotification}
-                        onClose={() => this.setState({ showNewTermsNotification: false })}
-                    >
-                        <div className={css.newtermsUpdateNotice}>
-                            <p>We are updating our Terms &amp; Conditions and Privacy Policy on {newTermsDate}</p>
+                <div>
+                    <Row className={classNames(css.centerBox, css.centerBox_Row)}>
+                        <form onSubmit={(e) => this.doLogin(e)}>
+                            <h5>
+                                {t('login:enterPassword')}
+                                <span className={classNames(css.text_color)}>.</span>{' '}
+                            </h5>
+                            <input
+                                type="password"
+                                value={this.state.password}
+                                label={t('password')}
+                                name="password"
+                                onChange={(e) => this.setPassword(e.target.value)}
+                                className={classNames(css.sseed_textline)}
+                            ></input>
                             <br />
-                            <Button onClick={this.hideTermsNotificaition.bind(this)}>Accept</Button>
-                            <Button onClick={this.openTermsInBrowser.bind(this)}>Review</Button>
-                        </div>
-                    </Modal>
-                )}
+                            <br />
+                            <Button type="submit">{t('login:login')}</Button>
+                        </form>
+                    </Row>
+
+                    <Row>
+                        {complete ? (
+                            <React.Fragment></React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                <Button variant="backgroundNone" onClick={() => this.stepForward('seed-verify')}>
+                                    <span>&lt;</span> {t('global:goBack')}
+                                </Button>
+                            </React.Fragment>
+                        )}
+                    </Row>
+                </div>
             </div>
         );
     }
@@ -335,8 +251,6 @@ const mapDispatchToProps = {
     clearWalletData,
     getFullAccountInfo,
     getAccountInfo,
-    acceptNewTerms,
-    updateNewTermsNotice,
 };
 
 export default connect(
