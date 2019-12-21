@@ -15,18 +15,20 @@ import { formatValue, formatUnit } from 'libs/hlx/utils';
 
 class Viewaddress extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         account: PropTypes.object,
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
 
     render() {
         const { account, t } = this.props;
-
-        // const isSpent = ({ spent: { local, remote } }) => local || remote;
         const addressData = account.addressData.slice().sort((a, b) => b.index - a.index);
 
         return (

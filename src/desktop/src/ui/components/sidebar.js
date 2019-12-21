@@ -12,19 +12,21 @@ import { getAccountNamesFromState } from 'selectors/accounts';
  */
 class Sidebar extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         accounts: PropTypes.object,
+        /** Wallet account names */
         accountNames: PropTypes.array.isRequired,
+        /** @ignore */
         wallet: PropTypes.object,
-        // match: PropTypes.object
     };
-    // state = {
-    //   match: this.props.match
-    //   };
     render() {
         const { t, active, wallet, accountNames } = this.props;
 

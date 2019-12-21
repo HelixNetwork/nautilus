@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
@@ -23,26 +24,41 @@ import Support from 'ui/views/wallet/support';
 import DashSidebar from 'ui/components/dash_sidebar';
 import axios from 'axios';
 import Polling from 'ui/global/polling';
+
 /**
  * Wallet functionallity router wrapper component
  */
 class Wallet extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         accounts: PropTypes.object.isRequired,
+        /**@ignore */
         accountNames: PropTypes.array.isRequired,
+        /**@ignore */
         accountName: PropTypes.string.isRequired,
+        /**@ignore */
         accountMeta: PropTypes.object.isRequired,
+        /**@ignore */
         accountInfo: PropTypes.object.isRequired,
+        /**@ignore */
         getAccountInfo: PropTypes.func.isRequired,
+        /**@ignore */
         setSeedIndex: PropTypes.func.isRequired,
+        /**@ignore */
         balance: PropTypes.number.isRequired,
+        /**@ignore */
         seedIndex: PropTypes.number,
+        /**@ignore */
         location: PropTypes.object,
+        /**@ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
     };
-
+    /**
+     * Update Account
+     * @returns {Undefined}
+     */
     updateAccount = async (accountName, index) => {
         const { password, getAccountInfo, accountMeta, history } = this.props;
         await this.props.setSeedIndex(index);

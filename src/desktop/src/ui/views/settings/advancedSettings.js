@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import css from './settings.scss';
 import classNames from 'classnames';
@@ -22,18 +23,29 @@ import Toggle from 'ui/components/toggle';
 
 class AdvancedSettings extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         location: PropTypes.object,
+        /**@ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /**@ignore */
         t: PropTypes.func.isRequired,
+        /**@ignore */
         changePowSettings: PropTypes.func.isRequired,
+        /**@ignore */
         notificationLog: PropTypes.array.isRequired,
+        /**@ignore */
         setNotifications: PropTypes.func.isRequired,
+        /**@ignore */
         setProxy: PropTypes.func.isRequired,
+        /**@ignore */
         generateAlert: PropTypes.func.isRequired,
+        /**@ignore */
         changeAutoPromotionSettings: PropTypes.func.isRequired,
+        /**@ignore */
         wallet: PropTypes.object,
+        /**@ignore */
         settings: PropTypes.object.isRequired,
     };
     state = {
@@ -56,7 +68,10 @@ class AdvancedSettings extends React.PureComponent {
         this.props.setProxy(enabled);
     };
 
-    //reset wallet
+    /**
+     * Reset Wallet
+     * @returns {undefined}
+     */
     resetWallet = async () => {
         const { t, generateAlert } = this.props;
 
@@ -79,6 +94,11 @@ class AdvancedSettings extends React.PureComponent {
             return;
         }
     };
+
+    /**
+     * Confirm Reset Wallet
+     * @returns {undefined}
+     */
 
     confirmReset = () => {
         const { wallet } = this.props;

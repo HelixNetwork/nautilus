@@ -195,6 +195,13 @@ export function getMarketData() {
             .then((json) => dispatch(setMarketData(json)));
 }
 
+/**
+ * Change Currency
+ *
+ * @method changeCurrency
+ *
+ * @returns {function} dispatch
+ */
 export function changeCurrency(currency, timeframe) {
     return (dispatch) => {
         dispatch(setCurrency(currency));
@@ -203,6 +210,13 @@ export function changeCurrency(currency, timeframe) {
     };
 }
 
+/**
+ * Change Time frame
+ *
+ * @method changeTimeframe
+ *
+ * @returns {function} dispatch
+ */
 export function changeTimeframe(currency, timeframe) {
     return (dispatch) => {
         dispatch(setTimeframe(timeframe));

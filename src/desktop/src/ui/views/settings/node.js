@@ -33,20 +33,28 @@ import { generateAlert } from 'actions/alerts';
  */
 class NodeSettings extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         nodes: PropTypes.array.isRequired,
+        /** @ignore */
         customNodes: PropTypes.array.isRequired,
+        /** @ignore */
         generateAlert: PropTypes.func.isRequired,
+        /** @ignore */
         settings: PropTypes.shape({
             nodeAutoSwitch: PropTypes.bool.isRequired,
             autoNodeList: PropTypes.bool.isRequired,
             node: PropTypes.object.isRequired,
             quorum: PropTypes.object.isRequired,
         }),
+        /** @ignore */
         changeAutoNodeListSetting: PropTypes.func.isRequired,
+        /** @ignore */
         updateNodeAutoSwitchSetting: PropTypes.func.isRequired,
+        /** @ignore */
         updateQuorumConfig: PropTypes.func.isRequired,
+        /** @ignore */
         setFullNode: PropTypes.func.isRequired,
-
+        /** @ignore */
         t: PropTypes.func.isRequired,
     };
 
@@ -65,17 +73,6 @@ class NodeSettings extends React.PureComponent {
         quorumSize: this.props.settings.quorum.size,
         showCustomNodes: false,
     };
-
-    // componentDidMount() {
-    //     const { settings } = this.props;
-
-    //     useEffect(() => {
-    //         if (!this.state.loading && settings.node.url !== primaryNode.url) {
-    //             setPrimaryNode(settings.node);
-    //         }
-    //     }, [settings]);
-
-    // }
 
     updateQuorumEnabled = () => {
         const { quorumEnabled, autoNodeList, quorumSize } = this.state;

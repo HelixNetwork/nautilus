@@ -22,36 +22,29 @@ import AdvancedSettings from 'ui/views/settings/advancedSettings';
 import { getAccountNamesFromState } from 'selectors/accounts';
 
 /**
- * Setting component
+ * Settings component
  */
 
 class Settings extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         location: PropTypes.object,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         accounts: PropTypes.object,
         /** Wallet account names */
         accountNames: PropTypes.array.isRequired,
         /** @ignore */
         wallet: PropTypes.object,
-        // match: PropTypes.object
     };
-    // state = {
-    // match: this.props.match
-    // };
-
     render() {
-        // const match=this.props.match;
-        // const { accountIndex } = match.params;
         const { history, location } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
-        // const accountSettings = typeof accountIndex === 'string';
-        // const account = accountSettings
-        //     ? { ...accounts[accountNames[accountIndex]], ...{ accountName: accountNames[accountIndex], accountIndex } }
-        //     : null;
         return (
             <div>
                 <Top bal={'none'} main={'block'} user={'none'} history={history} />

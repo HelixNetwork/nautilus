@@ -15,6 +15,7 @@ class Scrollbar extends React.PureComponent {
         contentId: PropTypes.string,
         /* Scrollbar container content */
         children: PropTypes.any.isRequired,
+        /** Custom scrollbar style definitions */
         style: PropTypes.object,
     };
 

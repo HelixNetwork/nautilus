@@ -1,3 +1,4 @@
+/* global Electron */
 import React, { PureComponent } from 'react';
 import css from './settings.scss';
 import classNames from 'classnames';
@@ -75,9 +76,7 @@ class Snapshot extends PureComponent {
         if (ui.isSyncing || ui.isTransitioning || ui.isAttachingToTangle || wallet.balanceCheckFlag) {
             // eslint-disable-next-line no-undef
             Electron.updateMenu('enabled', false);
-            // this.props.setWalletBusy(true);
         } else {
-            // this.props.setWalletBusy(false);
             // eslint-disable-next-line no-undef
             Electron.updateMenu('enabled', true);
             // eslint-disable-next-line no-undef

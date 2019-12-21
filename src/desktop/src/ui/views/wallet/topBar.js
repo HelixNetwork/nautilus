@@ -1,3 +1,4 @@
+/* global Electron */
 import React, { Component } from 'react';
 import logo from 'ui/images/logo.png';
 import css from './wallet.scss';
@@ -19,6 +20,10 @@ import { setSeedIndex } from 'actions/wallet';
 import { unitConverter, formatUnit } from 'libs/hlx/utils';
 import { IntlProvider, FormattedNumber } from 'react-intl';
 import axios from 'axios';
+
+/**
+ * Topbar component
+ */
 
 class TopBar extends Component {
     static propTypes = {

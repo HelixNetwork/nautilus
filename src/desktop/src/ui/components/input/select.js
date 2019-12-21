@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import Scrollbar from 'ui/components/scrollbar';
-
 import css from './input.scss';
 
 /**
@@ -82,7 +81,7 @@ export default class Select extends React.PureComponent {
                         className={css.selectable}
                     >
                         {valueLabel || value}
-                        {/* <small>&shy;</small> */}
+                        <small>&shy;</small>
                     </div>
                     {open && (
                         <ul>

@@ -12,15 +12,21 @@ import * as animationData from 'animations/done.json';
 import { Row } from 'react-bootstrap';
 import { setOnboardingComplete } from 'actions/accounts';
 
+/**
+ * Onboarding complete component
+ */
 class Done extends React.PureComponent {
     static propTypes = {
+        /* @ignore */
         history: PropTypes.object,
         t: PropTypes.func.isRequired,
         /** On animation end event callback */
         onEnd: PropTypes.func,
         /** Should animation loop */
         loop: PropTypes.bool,
+        /** @ignore */
         setPassword: PropTypes.func.isRequired,
+        /** @ignore */
         setOnboardingComplete: PropTypes.func.isRequired,
     };
 

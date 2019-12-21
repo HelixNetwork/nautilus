@@ -11,17 +11,24 @@ import { getCurrencyData } from 'actions/settings';
 import { getThemeFromState } from 'selectors/global';
 
 /**
- * currency settings component
+ * Currency settings component
  */
 
 class Currency extends React.PureComponent {
     static propTypes = {
+        /**@ignore */
         isFetchingCurrencyData: PropTypes.bool.isRequired,
+        /**@ignore */
         hasErrorFetchingCurrencyData: PropTypes.bool.isRequired,
+        /**@ignore */
         currency: PropTypes.string.isRequired,
+        /**@ignore */
         currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+        /**@ignore */
         getCurrencyData: PropTypes.func.isRequired,
+        /**@ignore */
         backPress: PropTypes.func,
+        /**@ignore */
         t: PropTypes.func.isRequired,
     };
 

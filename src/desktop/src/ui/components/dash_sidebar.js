@@ -19,13 +19,22 @@ import { setPassword, clearWalletData } from 'actions/wallet';
  */
 export class DashSidebar extends React.PureComponent {
     static propTypes = {
+        /** @ignore */
         location: PropTypes.object,
+        /** Translation helper
+         * @param {string} translationString - locale string identifier to be translated
+         * @ignore
+         */
         t: PropTypes.func.isRequired,
+        /** @ignore */
         history: PropTypes.shape({
             push: PropTypes.func.isRequired,
         }).isRequired,
+        /** @ignore */
         accounts: PropTypes.object,
+        /** Wallet account names */
         accountNames: PropTypes.array.isRequired,
+        /** @ignore */
         wallet: PropTypes.object,
     };
 
