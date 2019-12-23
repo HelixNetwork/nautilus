@@ -1,7 +1,11 @@
 # Nautilus Wallet<img align="right" src="https://hlx.ai/images/Helix_Logo-white.svg" height="70px" />
 
-The Official Desktop Wallet for Managing Helix tokens developed by the [Helix Network](https://www.hlx.ai).The wallet is built based on [Trinity Wallet](https://github.com/iotaledger/trinity-wallet)
+The Official Desktop Wallet for Managing Helix tokens (HLX) developed by the [Helix Network Organization](https://github.com/helixnetwork). The wallet is built based on the [Trinity Wallet](https://github.com/iotaledger/trinity-wallet). 
 
+-   **Latest release:** v1.0.0 
+-   **License:** GPLv3
+
+Special thanks to all of the [IOTA Contributors](https://github.com/iotaledger/trinity-wallet/graphs/contributors)!
 
 ## Prerequisites
 
@@ -71,7 +75,7 @@ yarn run compile:linux
 
 ## Discussion
 
-Discuss Nautilus Wallet on our discord [forums](https://discord.gg/Mh6Tafg)
+Discuss Nautilus Wallet in our [discord](https://discord.gg/Mh6Tafg).
 
 ## Want to Contribute?
 
