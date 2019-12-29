@@ -5,11 +5,11 @@ import Select from 'ui/components/input/select';
 
 const props = {
     value: "Foo",
-    valueLabel: "English(International) ",
+    valueLabel: "English(International)",
     options: [
         {
             value: "Foo",
-            label: "English(International) ",
+            label: "English(International)",
         },
         {
             value: "Fizz",
@@ -28,8 +28,10 @@ describe('Test for Select component', () => {
 
     test('Select component Input value is English(International)', () => {
         const wrapper = shallow(<Select {...props} />);
+         let res = wrapper.find('.selectable').text();
+        
 
-        expect(wrapper.find('.selectable').text()).toEqual("English(International) ");
+        expect(wrapper.find('.selectable').text()).toEqual('English(International)');
     });
 
     test('Select component Input value is changed ', () => {

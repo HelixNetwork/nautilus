@@ -169,7 +169,7 @@ class App extends React.Component {
         return (
             <div>
                 <ErrorLog />
-                <LockWallet></LockWallet>
+                <LockWallet />
                 <UpdateWallet />
                 <Theme history={history} />
                 <Switch>

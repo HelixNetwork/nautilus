@@ -9,7 +9,7 @@ exports[`Test for Select component Render the Select component 1`] = `
       className="selectable"
       onClick={[Function]}
     >
-      English(International) 
+      English(International)
     </div>
     <small>
       Lorem Ipsum

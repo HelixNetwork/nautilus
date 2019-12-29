@@ -62,12 +62,12 @@
             "request": "launch",
             "name": "Jest Current File",
             "program": "${workspaceFolder}/src/desktop/node_modules/.bin/jest",
-            "args": ["${fileBasenameNoExtension}", "--rootDir", "."],
+            "args": ["${fileBasenameNoExtension}", "--rootDir", "./src/desktop/."],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "disableOptimisticBPs": true,
             "windows": {
-                "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+                "program": "${workspaceFolder}/src/desktop/node_modules/jest/bin/jest"
             }
         }
     ],

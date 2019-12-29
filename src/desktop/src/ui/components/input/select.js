@@ -81,7 +81,7 @@ export default class Select extends React.PureComponent {
                         className={css.selectable}
                     >
                         {valueLabel || value}
-                        <small>&shy;</small>
+                        {/* <small>&shy;</small> */}
                     </div>
                     {open && (
                         <ul>
