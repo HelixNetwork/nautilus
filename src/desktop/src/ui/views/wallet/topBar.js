@@ -14,7 +14,6 @@ import {
 } from 'selectors/accounts';
 import { getSeedIndexFromState } from 'selectors/global';
 import { getAccountInfo } from 'actions/accounts';
-import { accumulateBalance } from 'libs/hlx/addresses';
 import SeedStore from 'libs/seed';
 import { setSeedIndex } from 'actions/wallet';
 import { unitConverter, formatUnit } from 'libs/hlx/utils';
@@ -43,8 +42,7 @@ class TopBar extends Component {
     };
     state = {
         amount: 0,
-        accountBalance: 0,
-        accumulatedBalance: 0,
+        formattedBalance: 0,
         selectedUnit: 'mHLX',
     };
 
@@ -70,10 +68,10 @@ class TopBar extends Component {
      * @param {String} selectedUnit - Selected unit to toggle
      */
     toggleBalanceUnit(selectedUnit) {
-        let balance = this.state.accumulatedBalance;
+        const { balance } = this.props;
         let formattedBalance = unitConverter(balance, selectedUnit);
         this.setState({
-            accountBalance: formattedBalance,
+            formattedBalance,
             selectedUnit,
         });
     }
@@ -94,17 +92,15 @@ class TopBar extends Component {
     };
 
     /**
-     * Updates the balance of selected account
+     * Updates the balance of selected account in topbar
      */
 
     updateBalance = async () => {
-        const { accountInfo } = this.props;
-        let balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
+        const { balance } = this.props;
         let unit = formatUnit(balance);
         let formattedBalance = unitConverter(balance, unit);
         this.setState({
-            accumulatedBalance: balance,
-            accountBalance: formattedBalance,
+            formattedBalance,
             selectedUnit: unit,
         });
     };
@@ -121,7 +117,7 @@ class TopBar extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.accountInfo !== prevProps.accountInfo) {
+        if (this.props.balance !== prevProps.balance) {
             this.updateBalance();
         }
     }
@@ -155,7 +151,7 @@ class TopBar extends Component {
                     <div className={css.topBal}>
                         <img src={hlx} alt=" " />
                         <h2>
-                            <span>{this.state.accountBalance.toLocaleString()} </span>
+                            <span>{this.state.formattedBalance.toLocaleString()} </span>
                             <select
                                 value={this.state.selectedUnit}
                                 className={css.unitOption}
