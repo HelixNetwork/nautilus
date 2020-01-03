@@ -149,7 +149,7 @@ class TopBar extends Component {
                     <div className={css.topBal}>
                         <img src={hlx} alt=" " />
                         <h2>
-                            <span>{this.state.accountBalance} </span>
+                            <span>{this.state.accountBalance.toLocaleString()} </span>
                             <select
                                 value={this.state.selectedUnit}
                                 className={css.unitOption}
