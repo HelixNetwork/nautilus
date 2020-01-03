@@ -111,7 +111,7 @@ class TopBar extends Component {
 
     componentDidMount() {
         const { currency } = this.props;
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+        const url = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
         this.updateBalance();
         axios.get(url).then((resp) => {
             this.setState({
