@@ -71,7 +71,7 @@ class Wallet extends React.PureComponent {
         currencyValue: 0,
     };
     componentDidMount() {
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+        const url = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
         axios.get(url).then((resp) => {
             this.setState({
                 currencyValue: this.props.balance * resp.data.rates[this.props.currency],
