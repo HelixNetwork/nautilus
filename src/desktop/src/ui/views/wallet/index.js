@@ -14,7 +14,6 @@ import {
 } from 'selectors/accounts';
 import { getSeedIndexFromState } from 'selectors/global';
 import { getAccountInfo } from 'actions/accounts';
-import SeedStore from 'libs/seed';
 import { setSeedIndex } from 'actions/wallet';
 import Send from 'ui/views/wallet/send';
 import Receive from 'ui/views/wallet/receive';
@@ -55,18 +54,7 @@ class Wallet extends React.PureComponent {
             push: PropTypes.func.isRequired,
         }).isRequired,
     };
-    /**
-     * Update Account
-     * @returns {Undefined}
-     */
-    updateAccount = async (accountName, index) => {
-        const { password, getAccountInfo, accountMeta, history } = this.props;
-        await this.props.setSeedIndex(index);
-        const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
-        // eslint-disable-next-line no-undef
-        getAccountInfo(seedStore, accountName, Electron.notify);
-        history.push('/wallet/');
-    };
+
     state = {
         currencyValue: 0,
     };
