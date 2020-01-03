@@ -120,6 +120,12 @@ class TopBar extends Component {
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.accountInfo !== prevProps.accountInfo) {
+            this.updateBalance();
+        }
+    }
+
     render() {
         const { accountNames, accountName, seedIndex, currency, conversionRate } = this.props;
         let { amount } = this.state;
