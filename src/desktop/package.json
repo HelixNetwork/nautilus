@@ -1,7 +1,7 @@
 {
     "name": "nautilus-wallet",
     "productName": "Nautilus Wallet",
-    "version": "v1.0.0",
+    "version": "v1.1.0",
     "private": true,
     "author": "Helix Foundation",
     "description": "Desktop wallet for Helix",
@@ -10,7 +10,10 @@
         "src",
         "../shared"
     ],
-    "repository": "git+https://github.com/HelixNetwork/nautilus.git",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/HelixNetwork/nautilus.git"
+    },
     "dependencies": {
         "@babel/plugin-proposal-class-properties": "^7.4.4",
         "@fortawesome/fontawesome-svg-core": "^1.2.19",

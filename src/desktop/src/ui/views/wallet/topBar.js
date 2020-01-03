@@ -14,7 +14,6 @@ import {
 } from 'selectors/accounts';
 import { getSeedIndexFromState } from 'selectors/global';
 import { getAccountInfo } from 'actions/accounts';
-import { accumulateBalance } from 'libs/hlx/addresses';
 import SeedStore from 'libs/seed';
 import { setSeedIndex } from 'actions/wallet';
 import { unitConverter, formatUnit } from 'libs/hlx/utils';
@@ -43,8 +42,7 @@ class TopBar extends Component {
     };
     state = {
         amount: 0,
-        accountBalance: 0,
-        accumulatedBalance: 0,
+        formattedBalance: 0,
         selectedUnit: 'mHLX',
     };
 
@@ -70,10 +68,10 @@ class TopBar extends Component {
      * @param {String} selectedUnit - Selected unit to toggle
      */
     toggleBalanceUnit(selectedUnit) {
-        let balance = this.state.accumulatedBalance;
+        const { balance } = this.props;
         let formattedBalance = unitConverter(balance, selectedUnit);
         this.setState({
-            accountBalance: formattedBalance,
+            formattedBalance,
             selectedUnit,
         });
     }
@@ -89,25 +87,39 @@ class TopBar extends Component {
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
         // eslint-disable-next-line no-undef
         getAccountInfo(seedStore, accountName, Electron.notify);
+        this.updateBalance();
         history.push('/wallet/');
     };
 
-    componentDidMount() {
-        const { currency, accountInfo } = this.props;
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
-        let balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
+    /**
+     * Updates the balance of selected account in topbar
+     */
+
+    updateBalance = async () => {
+        const { balance } = this.props;
         let unit = formatUnit(balance);
         let formattedBalance = unitConverter(balance, unit);
         this.setState({
-            accumulatedBalance: balance,
-            accountBalance: formattedBalance,
+            formattedBalance,
             selectedUnit: unit,
         });
+    };
+
+    componentDidMount() {
+        const { currency } = this.props;
+        const url = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
+        this.updateBalance();
         axios.get(url).then((resp) => {
             this.setState({
                 amount: (resp.data.rates[currency] * 0.022).toFixed(3),
             });
         });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.balance !== prevProps.balance) {
+            this.updateBalance();
+        }
     }
 
     render() {
@@ -139,7 +151,7 @@ class TopBar extends Component {
                     <div className={css.topBal}>
                         <img src={hlx} alt=" " />
                         <h2>
-                            <span>{this.state.accountBalance} </span>
+                            <span>{this.state.formattedBalance.toLocaleString()} </span>
                             <select
                                 value={this.state.selectedUnit}
                                 className={css.unitOption}
