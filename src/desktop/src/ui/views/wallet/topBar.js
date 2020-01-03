@@ -89,12 +89,16 @@ class TopBar extends Component {
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
         // eslint-disable-next-line no-undef
         getAccountInfo(seedStore, accountName, Electron.notify);
+        this.updateBalance();
         history.push('/wallet/');
     };
 
-    componentDidMount() {
-        const { currency, accountInfo } = this.props;
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+    /**
+     * Updates the balance of selected account
+     */
+
+    updateBalance = async () => {
+        const { accountInfo } = this.props;
         let balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
         let unit = formatUnit(balance);
         let formattedBalance = unitConverter(balance, unit);
@@ -103,6 +107,12 @@ class TopBar extends Component {
             accountBalance: formattedBalance,
             selectedUnit: unit,
         });
+    };
+
+    componentDidMount() {
+        const { currency } = this.props;
+        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+        this.updateBalance();
         axios.get(url).then((resp) => {
             this.setState({
                 amount: (resp.data.rates[currency] * 0.022).toFixed(3),
