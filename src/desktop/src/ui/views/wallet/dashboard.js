@@ -11,7 +11,6 @@ import WalletHistory from 'ui/views/wallet/wallet_history';
  * Wallet dashboard component
  */
 class Dashboard extends React.PureComponent {
-    static propTypes = {};
     render() {
         return (
             <div>
@@ -27,13 +26,4 @@ class Dashboard extends React.PureComponent {
     }
 }
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = {};
-
-export default withI18n()(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    )(Dashboard),
-);
+export default withI18n()(connect()(Dashboard));
