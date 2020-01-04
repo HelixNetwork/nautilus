@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import assign from 'lodash/assign';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { MemoryRouter as Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import i18next from 'libs/i18next';
 import store from 'store';
 import Index from 'ui/index';
