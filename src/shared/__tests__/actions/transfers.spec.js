@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { asTransactionObject } from '@helixnetwork/transaction-converter';
 import * as actions from '../../actions/transfers';
 import * as addressesUtils from '../../libs/hlx/addresses';
 import * as transferUtils from '../../libs/hlx/transfers';
@@ -287,12 +288,12 @@ describe('actions: transfers', () => {
             Realm.clearTestState();
             initialise(() => Promise.resolve(new Int8Array(64)));
             seedStore = {
-                generateAddress: () => Promise.resolve('a'.repeat(64)),
+                generateAddress: () => Promise.resolve('a'.repeat(72)),
                 prepareTransfers: () => () => Promise.resolve(newZeroValueTransactionBytes),
-                performPow: (txBits) =>
+                performPow: (txs) =>
                     Promise.resolve({
-                        txBits,
-                        transactionObjects: map(txBits, hlx.utils.transactionObject),
+                        txs,
+                        transactionObjects: map(txs, asTransactionObject),
                     }),
                 getDigest: () => Promise.resolve('0'.repeat(64)),
             };
@@ -305,13 +306,21 @@ describe('actions: transfers', () => {
             nock('http://localhost:14265', {
                 reqheaders: {
                     'Content-Type': 'application/json',
-                    'X-hlx-API-Version': IRI_API_VERSION,
+                    'X-HELIX-API-Version': IRI_API_VERSION,
                 },
             })
                 .filteringRequestBody(() => '*')
                 .persist()
                 .post('/', '*')
                 .reply(200, (_, body) => {
+                    const { command } = body;
+
+                    const resultMap = {
+                        getNodeInfo: {
+                            appVersion: '1.0.0',
+                        },
+                    };
+
                     if (body.command === 'getTransactionsToApprove') {
                         return {
                             branchTransaction: '0'.repeat(64),
@@ -319,7 +328,7 @@ describe('actions: transfers', () => {
                         };
                     }
 
-                    return {};
+                    return resultMap[command] || {};
                 });
         });
 
@@ -340,92 +349,91 @@ describe('actions: transfers', () => {
         describe('zero value transactions', () => {
             it('should call prepareTransfers method on seedStore', () => {
                 const store = mockStore({ accounts, settings: { quorum: {} } });
+
                 sinon.spy(seedStore, 'prepareTransfers');
                 sinon
                     .stub(accountsUtils, 'syncAccountAfterSpending')
                     .returns(() => Promise.resolve([...transactions, ...newZeroValueTransaction]));
 
                 return store
-                    .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 0, 'foo', 'TEST', seedStore))
+                    .dispatch(actions.makeTransaction(seedStore, 'b'.repeat(64), 0, 'foo', 'TEST', true))
                     .then(() => {
                         expect(seedStore.prepareTransfers.calledOnce).to.equal(true);
                         seedStore.prepareTransfers.restore();
                         accountsUtils.syncAccountAfterSpending.restore();
                     });
             });
-            // it('should create an action of type HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING with updated account state', () => {
-            //     const store = mockStore({ accounts, settings: { quorum: {} } });
-            //     const updatedTransactions = [
-            //         ...transactions,
-            //         ...map(newZeroValueTransaction, (transaction) => ({
-            //             ...transaction,
-            //             persistence: false,
-            //             broadcasted: true,
-            //         })),
-            //     ];
-            //     const syncAccountAfterSpending = sinon.stub(accountsUtils, 'syncAccountAfterSpending').returns(() =>
-            //         Promise.resolve({
-            //             transactions: updatedTransactions,
-            //             addressData,
-            //         }),
-            //     );
 
-            //     const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
-            //     return store
-            //         .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 0, 'foo', 'TEST', seedStore))
-            //         .then(() => {
-            //             const expectedAction = {
-            //                 type: 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING',
-            //                 payload: {
-            //                     accountName: 'TEST',
-            //                     transactions: updatedTransactions,
-            //                     addressData,
-            //                 },
-            //             };
+            it('should create an action of type HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING with updated account state', () => {
+                const store = mockStore({ accounts, settings: { quorum: {} } });
+                const updatedTransactions = [
+                    ...transactions,
+                    ...map(newZeroValueTransaction, (transaction) => ({
+                        ...transaction,
+                        persistence: false,
+                        broadcasted: true,
+                    })),
+                ];
 
-            //             const actualAction = store
-            //                 .getActions()
-            //                 .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
+                sinon.stub(accountsUtils, 'syncAccountAfterSpending').returns(() =>
+                    Promise.resolve({
+                        transactions: updatedTransactions,
+                        addressData,
+                    }),
+                );
 
-            //             expect(expectedAction).to.eql(actualAction);
-            //             syncAccountAfterSpending.restore();
-            //             wereAddressesSpentFrom.restore();
-            //         });
-            // });
+                const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
+
+                return store.dispatch(actions.makeTransaction(seedStore, 'b'.repeat(72), 0, '', 'TEST')).then(() => {
+                    const expectedAction = {
+                        type: 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING',
+                        payload: {
+                            accountName: 'TEST',
+                            transactions: updatedTransactions,
+                            addressData,
+                        },
+                    };
+                    const actualAction = store
+                        .getActions()
+                        .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
+
+                    expect(expectedAction).to.eql(actualAction);
+                    accountsUtils.syncAccountAfterSpending.restore();
+                    wereAddressesSpentFrom.restore();
+                });
+            });
         });
 
         describe('value transactions', () => {
-            // describe('when receive address is used', () => {
-            //     it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that has already been spent from."', () => {
-            //         const store = mockStore({ accounts, settings: { quorum: {} } });
-            //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
-            //         // console.log(wereAddressesSpentFrom);
-            //         return store
-            //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST'))
-            //             .then(() => {
-            //                 const expectedAction = {
-            //                     category: 'error',
-            //                     closeInterval: 2000,
-            //                     message: 'You cannot send to an address that has already been spent from.',
-            //                     title: 'Sending to spent address',
-            //                     type: 'HELIX/ALERTS/SHOW',
-            //                 };
-            //                 const actualAction = store
-            //                     .getActions()
-            //                     .find(
-            //                         (action) =>
-            //                         action.type === 'HELIX/ALERTS/SHOW' &&
-            //                         action.message ===
-            //                         'You cannot send to an address that has already been spent from.',
-            //                     );
-            //                 expect(expectedAction).to.eql(actualAction);
-            //                 wereAddressesSpentFrom.restore();
-            //             });
-            //     });
-            // });
+            describe('when receive address is used', () => {
+                it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that has already been spent from."', () => {
+                    const store = mockStore({ accounts, settings: { quorum: {} } });
+                    const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
+
+                    return store
+                        .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(72), 10, 'foo', 'TEST'))
+                        .then(() => {
+                            const expectedAction = {
+                                category: 'error',
+                                closeInterval: 20000,
+                                message: 'You cannot send to an address that has already been spent from.',
+                                title: 'Sending to spent address',
+                                type: 'HELIX/ALERTS/SHOW',
+                            };
+
+                            const actualAction = store.getActions().find((action) => console.log('Action===', action));
+                            console.log('Expected1===', expectedAction);
+                            console.log('Actual1===', actualAction);
+                            expect(expectedAction).to.eql(actualAction);
+                            wereAddressesSpentFrom.restore();
+                        });
+                });
+            });
+
             // describe('when receive address is one of the input addresses', () => {
             //     it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that is being used as an input in the transaction."', () => {
             //         const store = mockStore({ accounts, settings: { quorum: {} } });
+
             //         // Stub syncAccount implementation and return mocked transactions and address data
             //         const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
             //             Promise.resolve({
@@ -433,12 +441,15 @@ describe('actions: transfers', () => {
             //                 addressData,
             //             }),
             //         );
+
             //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+
             //         // Stub getInputs implementation and return receive address (UUU...UUU)
             //         // as one of the input addresses
             //         const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
             //             Promise.resolve({
-            //                 inputs: [{
+            //                 inputs: [
+            //                     {
             //                         // Receive address
             //                         address: 'a'.repeat(64),
             //                         balance: 5,
@@ -446,7 +457,7 @@ describe('actions: transfers', () => {
             //                         security: 2,
             //                     },
             //                     {
-            //                         address: '0'.repeat(64),
+            //                         address: 'f'.repeat(64),
             //                         balance: 6,
             //                         keyIndex: 12,
             //                         security: 2,
@@ -454,25 +465,30 @@ describe('actions: transfers', () => {
             //                 ],
             //             }),
             //         );
+
             //         return store
             //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST', seedStore))
             //             .then(() => {
             //                 const expectedAction = {
             //                     category: 'error',
-            //                     closeInterval: 2000,
-            //                     message: 'You cannot send to an address that is being used as an input in the transaction.',
+            //                     closeInterval: 20000,
+            //                     message:
+            //                         'You cannot send to an address that is being used as an input in the transaction.',
             //                     title: 'Sending to an input address',
             //                     type: 'HELIX/ALERTS/SHOW',
             //                 };
+
             //                 const actualAction = store
             //                     .getActions()
             //                     .find(
             //                         (action) =>
-            //                         action.type === 'HELIX/ALERTS/SHOW' &&
-            //                         action.message ===
-            //                         'You cannot send to an address that is being used as an input in the transaction.',
+            //                             action.type === 'HELIX/ALERTS/SHOW' &&
+            //                             action.message ===
+            //                                 'You cannot send to an address that is being used as an input in the transaction.',
             //                     );
+
             //                 expect(expectedAction).to.eql(actualAction);
+
             //                 // Restore stubs
             //                 syncAccount.restore();
             //                 wereAddressesSpentFrom.restore();
@@ -480,22 +496,25 @@ describe('actions: transfers', () => {
             //             });
             //     });
             // });
+
             // describe('when constructs invalid bundle', () => {
             //     it('should create an action of type HELIX/ALERTS/SHOW with message "Something went wrong while sending your transfer. Please try again."', () => {
             //         const store = mockStore({ accounts, settings: { quorum: {} } });
             //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+
             //         // Stub prepareTransfers implementation and return invalid trytes.
             //         // Invalid trytes should lead to invalid bundle construction
             //         const prepareTransfers = sinon.stub(seedStore, 'prepareTransfers').returns(() =>
             //             Promise.resolve(
             //                 map(
             //                     newValueTransactionBytes,
-            //                     (tryteString) =>
-            //                     // Replace signature message fragments with all nines
-            //                     `${'9'.repeat(2187)}${tryteString.slice(2187)}`,
+            //                     (hexString) =>
+            //                         // Replace signature message fragments with all nines
+            //                         `${'9'.repeat(2187)}${hexString.slice(2187)}`,
             //                 ),
             //             ),
             //         );
+
             //         // Stub syncAccount implementation and return mocked transactions and address data
             //         const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
             //             Promise.resolve({
@@ -503,6 +522,7 @@ describe('actions: transfers', () => {
             //                 addressData,
             //             }),
             //         );
+
             //         const getAddressDataUptoRemainder = sinon
             //             .stub(addressesUtils, 'getAddressDataUptoRemainder')
             //             .returns(() =>
@@ -512,18 +532,23 @@ describe('actions: transfers', () => {
             //                     keyIndex: latestAddressObject.index,
             //                 }),
             //             );
+
             //         // Stub getInputs implementation and return receive address (UUU...UUU)
             //         // as one of the input addresses
             //         const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
             //             Promise.resolve({
-            //                 inputs: [{
-            //                     address: 'dbd93a6a2f3741546459e59a2e6d725f0d72dfb7b37c7e8a4374536c766321f7',
-            //                     balance: 10,
-            //                     keyIndex: 8,
-            //                     security: 2,
-            //                 }, ],
+            //                 inputs: [
+            //                     {
+            //                         address:
+            //                             'JEFTSJGSNYGDSYHTCIZF9WXPWGHOPKRJSGXGNNZIUJUZGOFEGXRHPJVGPUZNIZMQ9QSNAITO9QUYQZZEC',
+            //                         balance: 10,
+            //                         keyIndex: 8,
+            //                         security: 2,
+            //                     },
+            //                 ],
             //             }),
             //         );
+
             //         return store
             //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST', seedStore))
             //             .then(() => {
@@ -534,15 +559,18 @@ describe('actions: transfers', () => {
             //                     title: 'Transfer error',
             //                     type: 'HELIX/ALERTS/SHOW',
             //                 };
+
             //                 const actualAction = store
             //                     .getActions()
             //                     .find(
             //                         (action) =>
-            //                         action.type === 'HELIX/ALERTS/SHOW' &&
-            //                         action.message ===
-            //                         'Something went wrong while sending your transfer. Please try again.',
+            //                             action.type === 'HELIX/ALERTS/SHOW' &&
+            //                             action.message ===
+            //                                 'Something went wrong while sending your transfer. Please try again.',
             //                     );
+
             //                 expect(expectedAction).to.eql(actualAction);
+
             //                 // Restore stubs
             //                 prepareTransfers.restore();
             //                 syncAccount.restore();
@@ -552,9 +580,11 @@ describe('actions: transfers', () => {
             //             });
             //     });
             // });
+
             // describe('when successfully broadcasts', () => {
             //     it('should create an action of type HELIX/ALERTS/SHOW with message "Something went wrong while sending your transfer. Please try again."', () => {
             //         const store = mockStore({ accounts, settings: { quorum: {} } });
+
             //         const updatedTransactions = [
             //             ...transactions,
             //             ...map(newValueTransaction, (transaction) => ({
@@ -563,12 +593,14 @@ describe('actions: transfers', () => {
             //                 broadcasted: true,
             //             })),
             //         ];
+
             //         const syncAccountAfterSpending = sinon.stub(accountsUtils, 'syncAccountAfterSpending').returns(() =>
             //             Promise.resolve({
             //                 transactions: updatedTransactions,
             //                 addressData,
             //             }),
             //         );
+
             //         // Stub syncAccount implementation and return mocked transactions and address data
             //         const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
             //             Promise.resolve({
@@ -576,7 +608,9 @@ describe('actions: transfers', () => {
             //                 addressData,
             //             }),
             //         );
+
             //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+
             //         const getAddressDataUptoRemainder = sinon
             //             .stub(addressesUtils, 'getAddressDataUptoRemainder')
             //             .returns(() =>
@@ -586,18 +620,23 @@ describe('actions: transfers', () => {
             //                     keyIndex: latestAddressObject.index,
             //                 }),
             //             );
+
             //         // Stub getInputs implementation and return receive address (UUU...UUU)
             //         // as one of the input addresses
             //         const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
             //             Promise.resolve({
-            //                 inputs: [{
-            //                     address: 'dbd93a6a2f3741546459e59a2e6d725f0d72dfb7b37c7e8a4374536c766321f7',
-            //                     balance: 10,
-            //                     keyIndex: 8,
-            //                     security: 2,
-            //                 }, ],
+            //                 inputs: [
+            //                     {
+            //                         address:
+            //                             'JEFTSJGSNYGDSYHTCIZF9WXPWGHOPKRJSGXGNNZIUJUZGOFEGXRHPJVGPUZNIZMQ9QSNAITO9QUYQZZEC',
+            //                         balance: 10,
+            //                         keyIndex: 8,
+            //                         security: 2,
+            //                     },
+            //                 ],
             //             }),
             //         );
+
             //         return store
             //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST'))
             //             .then(() => {
@@ -609,12 +648,13 @@ describe('actions: transfers', () => {
             //                         addressData,
             //                     },
             //                 };
+
             //                 const actualAction = store
             //                     .getActions()
             //                     .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
-            //                 console.log(store
-            //                     .getActions());
+
             //                 expect(expectedAction).to.eql(actualAction);
+
             //                 // Restore stubs
             //                 syncAccountAfterSpending.restore();
             //                 syncAccount.restore();

@@ -559,7 +559,11 @@ const attachToTangle = (settings, seedStore) => (
 
 // Finality Update Sync Check
 const isNodeHealthy = (settings) => {
+    console.log('SETTINGS===', settings);
+
     return getNodeInfo(settings)().then(({ appVersion, currentRoundIndex, latestSolidRoundIndex }) => {
+        console.log('VERSION===', appVersion);
+
         if (['rc', 'beta', 'alpha'].some((el) => appVersion.toLowerCase().indexOf(el) > -1)) {
             throw new Error(Errors.UNSUPPORTED_NODE);
         }
