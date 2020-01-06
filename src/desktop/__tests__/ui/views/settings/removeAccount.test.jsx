@@ -5,7 +5,7 @@ describe('Settings removeaccount view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'removeaccount.test.jsx',
+            customSnapshotIdentifier: 'removeAccount.test.jsx',
         });
     }, 10000);
 });

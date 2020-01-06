@@ -6,7 +6,7 @@ describe('Settings viewseed view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'viewseed.test.jsx',
+            customSnapshotIdentifier: 'viewSeed.test.jsx',
         });
     }, 10000);
 });

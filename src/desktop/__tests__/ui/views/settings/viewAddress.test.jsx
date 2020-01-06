@@ -5,7 +5,7 @@ describe('Settings viewaddress view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'viewaddress.test.jsx',
+            customSnapshotIdentifier: 'viewAddress.test.jsx',
         });
     }, 10000);
 });

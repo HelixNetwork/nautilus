@@ -5,7 +5,7 @@ describe('Settings editname view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'editname.test.jsx',
+            customSnapshotIdentifier: 'editName.test.jsx',
         });
     }, 10000);
 });

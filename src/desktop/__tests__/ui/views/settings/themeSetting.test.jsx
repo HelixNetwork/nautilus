@@ -6,7 +6,7 @@ describe('Settings themesetting view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'themesetting.test.jsx',
+            customSnapshotIdentifier: 'themeSetting.test.jsx',
         });
     }, 10000);
 });

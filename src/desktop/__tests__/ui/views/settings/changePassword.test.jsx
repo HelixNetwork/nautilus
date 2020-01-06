@@ -6,7 +6,7 @@ describe('Settings change password view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'changepassword.test.jsx',
+            customSnapshotIdentifier: 'changePassword.test.jsx',
         });
     }, 10000);
 });

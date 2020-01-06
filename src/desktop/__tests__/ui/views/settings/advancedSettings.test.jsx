@@ -6,7 +6,7 @@ describe('Settings advanced view', () => {
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
             failureThreshold: '0.05',
             failureThresholdType: 'percent',
-            customSnapshotIdentifier: 'advancedsettings.test.jsx',
+            customSnapshotIdentifier: 'advancedSettings.test.jsx',
         });
     }, 10000);
 });
