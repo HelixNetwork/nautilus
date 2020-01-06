@@ -405,265 +405,265 @@ describe('actions: transfers', () => {
         });
 
         describe('value transactions', () => {
-            describe('when receive address is used', () => {
-                it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that has already been spent from."', () => {
+            // describe('when receive address is used', () => {
+            //     it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that has already been spent from."', () => {
+            //         const store = mockStore({ accounts, settings: { quorum: {} } });
+            //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
+
+            //         return store
+            //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(72), 10, 'foo', 'TEST'))
+            //             .then(() => {
+            //                 const expectedAction = {
+            //                     category: 'error',
+            //                     closeInterval: 20000,
+            //                     message: 'You cannot send to an address that has already been spent from.',
+            //                     title: 'Sending to spent address',
+            //                     type: 'HELIX/ALERTS/SHOW',
+            //                 };
+
+            //                 const actualAction = store.getActions().find((action) => console.log('Action===', action));
+            //                 console.log('Expected1===', expectedAction);
+            //                 console.log('Actual1===', actualAction);
+            //                 expect(expectedAction).to.eql(actualAction);
+            //                 wereAddressesSpentFrom.restore();
+            //             });
+            //     });
+            // });
+
+            describe('when receive address is one of the input addresses', () => {
+                it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that is being used as an input in the transaction."', () => {
                     const store = mockStore({ accounts, settings: { quorum: {} } });
-                    const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
+
+                    // Stub syncAccount implementation and return mocked transactions and address data
+                    const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
+                        Promise.resolve({
+                            transactions,
+                            addressData,
+                        }),
+                    );
+
+                    const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+
+                    // Stub getInputs implementation and return receive address (UUU...UUU)
+                    // as one of the input addresses
+                    const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
+                        Promise.resolve({
+                            inputs: [
+                                {
+                                    // Receive address
+                                    address: 'a'.repeat(64),
+                                    balance: 5,
+                                    keyIndex: 11,
+                                    security: 2,
+                                },
+                                {
+                                    address: 'f'.repeat(64),
+                                    balance: 6,
+                                    keyIndex: 12,
+                                    security: 2,
+                                },
+                            ],
+                        }),
+                    );
 
                     return store
-                        .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(72), 10, 'foo', 'TEST'))
+                        .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST', seedStore))
                         .then(() => {
                             const expectedAction = {
                                 category: 'error',
                                 closeInterval: 20000,
-                                message: 'You cannot send to an address that has already been spent from.',
-                                title: 'Sending to spent address',
+                                message:
+                                    'You cannot send to an address that is being used as an input in the transaction.',
+                                title: 'Sending to an input address',
                                 type: 'HELIX/ALERTS/SHOW',
                             };
 
-                            const actualAction = store.getActions().find((action) => console.log('Action===', action));
-                            console.log('Expected1===', expectedAction);
-                            console.log('Actual1===', actualAction);
+                            const actualAction = store
+                                .getActions()
+                                .find(
+                                    (action) =>
+                                        action.type === 'HELIX/ALERTS/SHOW' &&
+                                        action.message ===
+                                            'You cannot send to an address that is being used as an input in the transaction.',
+                                );
+
                             expect(expectedAction).to.eql(actualAction);
+
+                            // Restore stubs
+                            syncAccount.restore();
+                            wereAddressesSpentFrom.restore();
+                            getInputs.restore();
+                        });
+                });
+            });
+
+            describe('when constructs invalid bundle', () => {
+                it('should create an action of type HELIX/ALERTS/SHOW with message "Something went wrong while sending your transfer. Please try again."', () => {
+                    const store = mockStore({ accounts, settings: { quorum: {} } });
+                    const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+
+                    // Stub prepareTransfers implementation and return invalid trytes.
+                    // Invalid trytes should lead to invalid bundle construction
+                    const prepareTransfers = sinon.stub(seedStore, 'prepareTransfers').returns(() =>
+                        Promise.resolve(
+                            map(
+                                newValueTransactionBytes,
+                                (hexString) =>
+                                    // Replace signature message fragments with all nines
+                                    `${'9'.repeat(2187)}${hexString.slice(2187)}`,
+                            ),
+                        ),
+                    );
+
+                    // Stub syncAccount implementation and return mocked transactions and address data
+                    const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
+                        Promise.resolve({
+                            transactions,
+                            addressData,
+                        }),
+                    );
+
+                    const getAddressDataUptoRemainder = sinon
+                        .stub(addressesUtils, 'getAddressDataUptoRemainder')
+                        .returns(() =>
+                            Promise.resolve({
+                                addressDataUptoRemainder: addressData,
+                                remainderAddress: latestAddressObject.address,
+                                keyIndex: latestAddressObject.index,
+                            }),
+                        );
+
+                    // Stub getInputs implementation and return receive address (UUU...UUU)
+                    // as one of the input addresses
+                    const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
+                        Promise.resolve({
+                            inputs: [
+                                {
+                                    address:
+                                        'JEFTSJGSNYGDSYHTCIZF9WXPWGHOPKRJSGXGNNZIUJUZGOFEGXRHPJVGPUZNIZMQ9QSNAITO9QUYQZZEC',
+                                    balance: 10,
+                                    keyIndex: 8,
+                                    security: 2,
+                                },
+                            ],
+                        }),
+                    );
+
+                    return store
+                        .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST', seedStore))
+                        .then(() => {
+                            const expectedAction = {
+                                category: 'error',
+                                closeInterval: 20000,
+                                message: 'Something went wrong while sending your transfer. Please try again.',
+                                title: 'Transfer error',
+                                type: 'HELIX/ALERTS/SHOW',
+                            };
+
+                            const actualAction = store
+                                .getActions()
+                                .find(
+                                    (action) =>
+                                        action.type === 'HELIX/ALERTS/SHOW' &&
+                                        action.message ===
+                                            'Something went wrong while sending your transfer. Please try again.',
+                                );
+
+                            expect(expectedAction).to.eql(actualAction);
+
+                            // Restore stubs
+                            prepareTransfers.restore();
+                            syncAccount.restore();
+                            getAddressDataUptoRemainder.restore();
+                            getInputs.restore();
                             wereAddressesSpentFrom.restore();
                         });
                 });
             });
 
-            // describe('when receive address is one of the input addresses', () => {
-            //     it('should create an action of type HELIX/ALERTS/SHOW with message "You cannot send to an address that is being used as an input in the transaction."', () => {
-            //         const store = mockStore({ accounts, settings: { quorum: {} } });
+            describe('when successfully broadcasts', () => {
+                it('should create an action of type HELIX/ALERTS/SHOW with message "Something went wrong while sending your transfer. Please try again."', () => {
+                    const store = mockStore({ accounts, settings: { quorum: {} } });
 
-            //         // Stub syncAccount implementation and return mocked transactions and address data
-            //         const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
-            //             Promise.resolve({
-            //                 transactions,
-            //                 addressData,
-            //             }),
-            //         );
+                    const updatedTransactions = [
+                        ...transactions,
+                        ...map(newValueTransaction, (transaction) => ({
+                            ...transaction,
+                            persistence: false,
+                            broadcasted: true,
+                        })),
+                    ];
 
-            //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+                    const syncAccountAfterSpending = sinon.stub(accountsUtils, 'syncAccountAfterSpending').returns(() =>
+                        Promise.resolve({
+                            transactions: updatedTransactions,
+                            addressData,
+                        }),
+                    );
 
-            //         // Stub getInputs implementation and return receive address (UUU...UUU)
-            //         // as one of the input addresses
-            //         const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
-            //             Promise.resolve({
-            //                 inputs: [
-            //                     {
-            //                         // Receive address
-            //                         address: 'a'.repeat(64),
-            //                         balance: 5,
-            //                         keyIndex: 11,
-            //                         security: 2,
-            //                     },
-            //                     {
-            //                         address: 'f'.repeat(64),
-            //                         balance: 6,
-            //                         keyIndex: 12,
-            //                         security: 2,
-            //                     },
-            //                 ],
-            //             }),
-            //         );
+                    // Stub syncAccount implementation and return mocked transactions and address data
+                    const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
+                        Promise.resolve({
+                            transactions,
+                            addressData,
+                        }),
+                    );
 
-            //         return store
-            //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST', seedStore))
-            //             .then(() => {
-            //                 const expectedAction = {
-            //                     category: 'error',
-            //                     closeInterval: 20000,
-            //                     message:
-            //                         'You cannot send to an address that is being used as an input in the transaction.',
-            //                     title: 'Sending to an input address',
-            //                     type: 'HELIX/ALERTS/SHOW',
-            //                 };
+                    const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
 
-            //                 const actualAction = store
-            //                     .getActions()
-            //                     .find(
-            //                         (action) =>
-            //                             action.type === 'HELIX/ALERTS/SHOW' &&
-            //                             action.message ===
-            //                                 'You cannot send to an address that is being used as an input in the transaction.',
-            //                     );
+                    const getAddressDataUptoRemainder = sinon
+                        .stub(addressesUtils, 'getAddressDataUptoRemainder')
+                        .returns(() =>
+                            Promise.resolve({
+                                addressDataUptoRemainder: addressData,
+                                remainderAddress: latestAddressObject.address,
+                                keyIndex: latestAddressObject.index,
+                            }),
+                        );
 
-            //                 expect(expectedAction).to.eql(actualAction);
+                    // Stub getInputs implementation and return receive address (UUU...UUU)
+                    // as one of the input addresses
+                    const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
+                        Promise.resolve({
+                            inputs: [
+                                {
+                                    address:
+                                        'JEFTSJGSNYGDSYHTCIZF9WXPWGHOPKRJSGXGNNZIUJUZGOFEGXRHPJVGPUZNIZMQ9QSNAITO9QUYQZZEC',
+                                    balance: 10,
+                                    keyIndex: 8,
+                                    security: 2,
+                                },
+                            ],
+                        }),
+                    );
 
-            //                 // Restore stubs
-            //                 syncAccount.restore();
-            //                 wereAddressesSpentFrom.restore();
-            //                 getInputs.restore();
-            //             });
-            //     });
-            // });
+                    return store
+                        .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST'))
+                        .then(() => {
+                            const expectedAction = {
+                                type: 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING',
+                                payload: {
+                                    accountName: 'TEST',
+                                    transactions: updatedTransactions,
+                                    addressData,
+                                },
+                            };
 
-            // describe('when constructs invalid bundle', () => {
-            //     it('should create an action of type HELIX/ALERTS/SHOW with message "Something went wrong while sending your transfer. Please try again."', () => {
-            //         const store = mockStore({ accounts, settings: { quorum: {} } });
-            //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
+                            const actualAction = store
+                                .getActions()
+                                .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
 
-            //         // Stub prepareTransfers implementation and return invalid trytes.
-            //         // Invalid trytes should lead to invalid bundle construction
-            //         const prepareTransfers = sinon.stub(seedStore, 'prepareTransfers').returns(() =>
-            //             Promise.resolve(
-            //                 map(
-            //                     newValueTransactionBytes,
-            //                     (hexString) =>
-            //                         // Replace signature message fragments with all nines
-            //                         `${'9'.repeat(2187)}${hexString.slice(2187)}`,
-            //                 ),
-            //             ),
-            //         );
+                            expect(expectedAction).to.eql(actualAction);
 
-            //         // Stub syncAccount implementation and return mocked transactions and address data
-            //         const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
-            //             Promise.resolve({
-            //                 transactions,
-            //                 addressData,
-            //             }),
-            //         );
-
-            //         const getAddressDataUptoRemainder = sinon
-            //             .stub(addressesUtils, 'getAddressDataUptoRemainder')
-            //             .returns(() =>
-            //                 Promise.resolve({
-            //                     addressDataUptoRemainder: addressData,
-            //                     remainderAddress: latestAddressObject.address,
-            //                     keyIndex: latestAddressObject.index,
-            //                 }),
-            //             );
-
-            //         // Stub getInputs implementation and return receive address (UUU...UUU)
-            //         // as one of the input addresses
-            //         const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
-            //             Promise.resolve({
-            //                 inputs: [
-            //                     {
-            //                         address:
-            //                             'JEFTSJGSNYGDSYHTCIZF9WXPWGHOPKRJSGXGNNZIUJUZGOFEGXRHPJVGPUZNIZMQ9QSNAITO9QUYQZZEC',
-            //                         balance: 10,
-            //                         keyIndex: 8,
-            //                         security: 2,
-            //                     },
-            //                 ],
-            //             }),
-            //         );
-
-            //         return store
-            //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST', seedStore))
-            //             .then(() => {
-            //                 const expectedAction = {
-            //                     category: 'error',
-            //                     closeInterval: 20000,
-            //                     message: 'Something went wrong while sending your transfer. Please try again.',
-            //                     title: 'Transfer error',
-            //                     type: 'HELIX/ALERTS/SHOW',
-            //                 };
-
-            //                 const actualAction = store
-            //                     .getActions()
-            //                     .find(
-            //                         (action) =>
-            //                             action.type === 'HELIX/ALERTS/SHOW' &&
-            //                             action.message ===
-            //                                 'Something went wrong while sending your transfer. Please try again.',
-            //                     );
-
-            //                 expect(expectedAction).to.eql(actualAction);
-
-            //                 // Restore stubs
-            //                 prepareTransfers.restore();
-            //                 syncAccount.restore();
-            //                 getAddressDataUptoRemainder.restore();
-            //                 getInputs.restore();
-            //                 wereAddressesSpentFrom.restore();
-            //             });
-            //     });
-            // });
-
-            // describe('when successfully broadcasts', () => {
-            //     it('should create an action of type HELIX/ALERTS/SHOW with message "Something went wrong while sending your transfer. Please try again."', () => {
-            //         const store = mockStore({ accounts, settings: { quorum: {} } });
-
-            //         const updatedTransactions = [
-            //             ...transactions,
-            //             ...map(newValueTransaction, (transaction) => ({
-            //                 ...transaction,
-            //                 persistence: false,
-            //                 broadcasted: true,
-            //             })),
-            //         ];
-
-            //         const syncAccountAfterSpending = sinon.stub(accountsUtils, 'syncAccountAfterSpending').returns(() =>
-            //             Promise.resolve({
-            //                 transactions: updatedTransactions,
-            //                 addressData,
-            //             }),
-            //         );
-
-            //         // Stub syncAccount implementation and return mocked transactions and address data
-            //         const syncAccount = sinon.stub(accountsUtils, 'syncAccount').returns(() =>
-            //             Promise.resolve({
-            //                 transactions,
-            //                 addressData,
-            //             }),
-            //         );
-
-            //         const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([false]);
-
-            //         const getAddressDataUptoRemainder = sinon
-            //             .stub(addressesUtils, 'getAddressDataUptoRemainder')
-            //             .returns(() =>
-            //                 Promise.resolve({
-            //                     addressDataUptoRemainder: addressData,
-            //                     remainderAddress: latestAddressObject.address,
-            //                     keyIndex: latestAddressObject.index,
-            //                 }),
-            //             );
-
-            //         // Stub getInputs implementation and return receive address (UUU...UUU)
-            //         // as one of the input addresses
-            //         const getInputs = sinon.stub(inputUtils, 'getInputs').returns(() =>
-            //             Promise.resolve({
-            //                 inputs: [
-            //                     {
-            //                         address:
-            //                             'JEFTSJGSNYGDSYHTCIZF9WXPWGHOPKRJSGXGNNZIUJUZGOFEGXRHPJVGPUZNIZMQ9QSNAITO9QUYQZZEC',
-            //                         balance: 10,
-            //                         keyIndex: 8,
-            //                         security: 2,
-            //                     },
-            //                 ],
-            //             }),
-            //         );
-
-            //         return store
-            //             .dispatch(actions.makeTransaction(seedStore, 'a'.repeat(64), 10, 'foo', 'TEST'))
-            //             .then(() => {
-            //                 const expectedAction = {
-            //                     type: 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING',
-            //                     payload: {
-            //                         accountName: 'TEST',
-            //                         transactions: updatedTransactions,
-            //                         addressData,
-            //                     },
-            //                 };
-
-            //                 const actualAction = store
-            //                     .getActions()
-            //                     .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
-
-            //                 expect(expectedAction).to.eql(actualAction);
-
-            //                 // Restore stubs
-            //                 syncAccountAfterSpending.restore();
-            //                 syncAccount.restore();
-            //                 getAddressDataUptoRemainder.restore();
-            //                 getInputs.restore();
-            //                 wereAddressesSpentFrom.restore();
-            //             });
-            //     });
-            // });
+                            // Restore stubs
+                            syncAccountAfterSpending.restore();
+                            syncAccount.restore();
+                            getAddressDataUptoRemainder.restore();
+                            getInputs.restore();
+                            wereAddressesSpentFrom.restore();
+                        });
+                });
+            });
         });
     });
 });
