@@ -1,6 +1,6 @@
-describe('Settings changepassword view', () => {
+describe('Settings change password view', () => {
     test('Render view', async () => {
-        const snapshot = await global.__screenshot('settings/advanced', true);
+        const snapshot = await global.__screenshot('settings/advanced', true,600);
 
         expect(snapshot).toMatchImageSnapshot({
             customSnapshotsDir: `${__dirname}/__snapshots__/`,
