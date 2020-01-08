@@ -1,7 +1,5 @@
 import React from 'react';
-import { withI18n } from 'react-i18next';
 import { Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
 import Send from 'ui/views/wallet/send';
 import Receive from 'ui/views/wallet/receive';
 import Chart from 'ui/views/wallet/chart';
@@ -26,4 +24,4 @@ class Dashboard extends React.PureComponent {
     }
 }
 
-export default withI18n()(connect()(Dashboard));
+export default Dashboard;
