@@ -867,8 +867,6 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 } else if (message === Errors.LEDGER_CANCELLED) {
                     return;
                 }
-                console.log('ErrorDispatch=', error);
-
                 return dispatch(generateTransferErrorAlert(error));
             })
     );
