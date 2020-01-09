@@ -63,6 +63,7 @@ export const mapStorageToState = () => {
                 token,
                 password,
             })),
+            helixUnit: 'mHLX',
             availableCurrencies: map(settings.availableCurrencies, (currency) => currency),
             customNodes: map(filter(nodes, (node) => node.custom === true), ({ url, pow, token, password }) => ({
                 url,

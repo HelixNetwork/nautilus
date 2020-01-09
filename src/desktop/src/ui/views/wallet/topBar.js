@@ -16,7 +16,8 @@ import { getSeedIndexFromState } from 'selectors/global';
 import { getAccountInfo } from 'actions/accounts';
 import SeedStore from 'libs/seed';
 import { setSeedIndex } from 'actions/wallet';
-import { unitConverter, formatUnit } from 'libs/hlx/utils';
+import { updateHelixUnit } from 'actions/settings';
+import { unitConverter } from 'libs/hlx/utils';
 import { IntlProvider, FormattedNumber } from 'react-intl';
 import axios from 'axios';
 
@@ -69,6 +70,7 @@ class TopBar extends Component {
      */
     toggleBalanceUnit(selectedUnit) {
         const { balance } = this.props;
+        this.props.updateHelixUnit(selectedUnit);
         let formattedBalance = unitConverter(balance, selectedUnit);
         this.setState({
             formattedBalance,
@@ -97,7 +99,7 @@ class TopBar extends Component {
 
     updateBalance = async () => {
         const { balance } = this.props;
-        let unit = formatUnit(balance);
+        let unit = this.props.helixUnit;
         let formattedBalance = unitConverter(balance, unit);
         this.setState({
             formattedBalance,
@@ -223,11 +225,13 @@ const mapStateToProps = (state) => ({
     balance: getBalanceForSelectedAccount(state),
     currency: state.settings.currency,
     conversionRate: state.settings.conversionRate,
+    helixUnit: state.settings.helixUnit,
 });
 
 const mapDispatchToProps = {
     getAccountInfo,
     setSeedIndex,
+    updateHelixUnit,
 };
 
 export default connect(
