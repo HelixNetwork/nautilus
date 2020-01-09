@@ -176,12 +176,15 @@ export const setNode = (payload) => {
  *
  * @returns {{type: {string}, payload: {string} }}
  */
-export const updateHelixUnit = (accountInfo) => {
-    const balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
-    const unit = formatUnit(balance);
+export const updateHelixUnit = (payload) => {
+    if (typeof payload === 'object') {
+        const balance = accumulateBalance(payload.addressData.map((addressdata) => addressdata.balance));
+        const unit = formatUnit(balance);
+        payload = unit;
+    }
     return {
         type: SettingsActionTypes.UPDATE_HELIX_UNIT,
-        unit,
+        payload,
     };
 };
 
