@@ -88,7 +88,7 @@ class TopBar extends Component {
         await setSeedIndex(index);
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
         // eslint-disable-next-line no-undef
-        getAccountInfo(seedStore, accountName, Electron.notify);
+        getAccountInfo(seedStore, accountName, Electron.notify).then(() => this.updateBalance());
         this.updateBalance();
         history.push('/wallet/');
     };
