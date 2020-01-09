@@ -10,9 +10,8 @@ import get from 'lodash/get';
 import keys from 'lodash/keys';
 import assign from 'lodash/assign';
 import unionBy from 'lodash/unionBy';
-import { throwIfNodeNotHealthy, formatUnit } from 'libs/hlx/utils';
+import { throwIfNodeNotHealthy } from 'libs/hlx/utils';
 import Errors from 'libs/errors';
-import { accumulateBalance } from 'libs/hlx/addresses';
 import { Wallet, Node } from '../database';
 
 /**
@@ -177,11 +176,6 @@ export const setNode = (payload) => {
  * @returns {{type: {string}, payload: {string} }}
  */
 export const updateHelixUnit = (payload) => {
-    if (typeof payload === 'object') {
-        const balance = accumulateBalance(payload.addressData.map((addressdata) => addressdata.balance));
-        const unit = formatUnit(balance);
-        payload = unit;
-    }
     return {
         type: SettingsActionTypes.UPDATE_HELIX_UNIT,
         payload,
