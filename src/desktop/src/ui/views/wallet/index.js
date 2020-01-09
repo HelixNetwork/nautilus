@@ -55,18 +55,6 @@ class Wallet extends React.PureComponent {
         }).isRequired,
     };
 
-    state = {
-        currencyValue: 0,
-    };
-    componentDidMount() {
-        const url = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
-        axios.get(url).then((resp) => {
-            this.setState({
-                currencyValue: this.props.balance * resp.data.rates[this.props.currency],
-            });
-        });
-    }
-
     render() {
         const { location, history } = this.props;
         const currentKey = location.pathname.split('/')[2] || '/';
