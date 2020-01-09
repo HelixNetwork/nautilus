@@ -168,6 +168,21 @@ export const setNode = (payload) => {
 };
 
 /**
+ * Dispatch to change wallet's active node
+ *
+ * @method updateHelixUnit
+ * @param {object} payload
+ *
+ * @returns {{type: {string}, payload: {string} }}
+ */
+export const updateHelixUnit = (payload) => {
+    return {
+        type: SettingsActionTypes.UPDATE_HELIX_UNIT,
+        payload,
+    };
+};
+
+/**
  * Makes an API call to check if a node is healthy/active and then changes the selected node for wallet
  *
  * @method setFullNode

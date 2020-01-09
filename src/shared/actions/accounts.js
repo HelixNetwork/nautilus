@@ -9,6 +9,7 @@ import {
     getAccountInfoDuringSetup,
     selectedAccountStateFactory,
 } from 'selectors/accounts';
+import { accumulateBalance } from 'libs/hlx/addresses';
 import Errors from 'libs/errors';
 import {
     generateAccountInfoErrorAlert,
@@ -24,14 +25,14 @@ import {
 import { nodesConfigurationFactory, getNodesFromState, getSelectedNodeFromState } from 'selectors/global';
 import { syncAccount, getAccountData } from 'libs/hlx/accounts';
 
-import { withRetriesOnDifferentNodes, getRandomNodes } from 'libs/hlx/utils';
+import { withRetriesOnDifferentNodes, getRandomNodes, formatUnit } from 'libs/hlx/utils';
 
 import NodesManager from 'libs/hlx/NodeManager';
 import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
 import { Account, Wallet } from '../database';
 import { setSeedIndex } from './wallet';
-import { changeNode } from './settings';
+import { changeNode, updateHelixUnit } from './settings';
 import { DEFAULT_RETRIES } from '../config';
 import { AccountsActionTypes } from './types';
 /**
@@ -246,6 +247,9 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
             () => dispatch(generateAccountSyncRetryAlert()),
         )((...args) => syncAccount(...[...args, withQuorum]))(existingAccountState, seed, genFn, notificationFn)
             .then(({ node, result }) => {
+                const balance = accumulateBalance(result.addressData.map((addressdata) => addressdata.balance));
+                const unit = formatUnit(balance);
+                updateHelixUnit(unit);
                 dispatch(changeNode(node));
                 dispatch(accountInfoFetchSuccess(result));
             })
