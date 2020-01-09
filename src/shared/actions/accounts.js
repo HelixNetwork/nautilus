@@ -9,7 +9,7 @@ import {
     getAccountInfoDuringSetup,
     selectedAccountStateFactory,
 } from 'selectors/accounts';
-import { accumulateBalance } from 'libs/hlx/addresses';
+import updateHelixUnit from 'actions/settings';
 import Errors from 'libs/errors';
 import {
     generateAccountInfoErrorAlert,
@@ -25,14 +25,14 @@ import {
 import { nodesConfigurationFactory, getNodesFromState, getSelectedNodeFromState } from 'selectors/global';
 import { syncAccount, getAccountData } from 'libs/hlx/accounts';
 
-import { withRetriesOnDifferentNodes, getRandomNodes, formatUnit } from 'libs/hlx/utils';
+import { withRetriesOnDifferentNodes, getRandomNodes } from 'libs/hlx/utils';
 
 import NodesManager from 'libs/hlx/NodeManager';
 import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
 import { Account, Wallet } from '../database';
 import { setSeedIndex } from './wallet';
-import { changeNode, updateHelixUnit } from './settings';
+import { changeNode } from './settings';
 import { DEFAULT_RETRIES } from '../config';
 import { AccountsActionTypes } from './types';
 /**
@@ -247,9 +247,7 @@ export const getAccountInfo = (seed, accountName, notificationFn, navigator = nu
             () => dispatch(generateAccountSyncRetryAlert()),
         )((...args) => syncAccount(...[...args, withQuorum]))(existingAccountState, seed, genFn, notificationFn)
             .then(({ node, result }) => {
-                const balance = accumulateBalance(result.addressData.map((addressdata) => addressdata.balance));
-                const unit = formatUnit(balance);
-                updateHelixUnit(unit);
+                updateHelixUnit(result);
                 dispatch(changeNode(node));
                 dispatch(accountInfoFetchSuccess(result));
             })
@@ -376,6 +374,7 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
             () => dispatch(generateAccountSyncRetryAlert()),
         )((...args) => getAccountData(...[...args, withQuorum]))(seedStore, accountName)
             .then(({ node, result }) => {
+                updateHelixUnit(result);
                 dispatch(changeNode(node));
 
                 const seedIndex = existingAccountNames.length;
