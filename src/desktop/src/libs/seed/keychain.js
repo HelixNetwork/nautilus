@@ -177,7 +177,6 @@ class Keychain extends SeedStoreCore {
     prepareTransfers = (settings) => async (transfers, options = null) => {
         let seed = await this.getSeed(true);
         seed = bitsToChars(seed);
-
         // transfers.map(obj => obj.tag = "abcdef")
         const transfer = await prepareTransfer(settings)(seed, transfers, options);
         // for (let i = 0; i < seed.length * 8; i++) {
