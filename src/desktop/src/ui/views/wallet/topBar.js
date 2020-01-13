@@ -14,10 +14,10 @@ import {
 } from 'selectors/accounts';
 import { getSeedIndexFromState } from 'selectors/global';
 import { getAccountInfo } from 'actions/accounts';
-import { accumulateBalance } from 'libs/hlx/addresses';
 import SeedStore from 'libs/seed';
 import { setSeedIndex } from 'actions/wallet';
-import { unitConverter, formatUnit } from 'libs/hlx/utils';
+import { updateHelixUnit } from 'actions/settings';
+import { unitConverter } from 'libs/hlx/utils';
 import { IntlProvider, FormattedNumber } from 'react-intl';
 import axios from 'axios';
 
@@ -43,8 +43,7 @@ class TopBar extends Component {
     };
     state = {
         amount: 0,
-        accountBalance: 0,
-        accumulatedBalance: 0,
+        formattedBalance: 0,
         selectedUnit: 'mHLX',
     };
 
@@ -70,10 +69,11 @@ class TopBar extends Component {
      * @param {String} selectedUnit - Selected unit to toggle
      */
     toggleBalanceUnit(selectedUnit) {
-        let balance = this.state.accumulatedBalance;
+        const { balance } = this.props;
+        this.props.updateHelixUnit(selectedUnit);
         let formattedBalance = unitConverter(balance, selectedUnit);
         this.setState({
-            accountBalance: formattedBalance,
+            formattedBalance,
             selectedUnit,
         });
     }
@@ -88,30 +88,28 @@ class TopBar extends Component {
         await setSeedIndex(index);
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
         // eslint-disable-next-line no-undef
-        getAccountInfo(seedStore, accountName, Electron.notify);
+        getAccountInfo(seedStore, accountName, Electron.notify).then(() => this.updateBalance());
         this.updateBalance();
         history.push('/wallet/');
     };
 
     /**
-     * Updates the balance of selected account
+     * Updates the balance of selected account in topbar
      */
 
     updateBalance = async () => {
-        const { accountInfo } = this.props;
-        let balance = accumulateBalance(accountInfo.addressData.map((addressdata) => addressdata.balance));
-        let unit = formatUnit(balance);
+        const { balance } = this.props;
+        let unit = this.props.helixUnit;
         let formattedBalance = unitConverter(balance, unit);
         this.setState({
-            accumulatedBalance: balance,
-            accountBalance: formattedBalance,
+            formattedBalance,
             selectedUnit: unit,
         });
     };
 
     componentDidMount() {
         const { currency } = this.props;
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
+        const url = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
         this.updateBalance();
         axios.get(url).then((resp) => {
             this.setState({
@@ -121,7 +119,7 @@ class TopBar extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.accountInfo !== prevProps.accountInfo) {
+        if (this.props.balance !== prevProps.balance) {
             this.updateBalance();
         }
     }
@@ -155,7 +153,7 @@ class TopBar extends Component {
                     <div className={css.topBal}>
                         <img src={hlx} alt=" " />
                         <h2>
-                            <span>{this.state.accountBalance.toLocaleString()} </span>
+                            <span>{this.state.formattedBalance.toLocaleString()} </span>
                             <select
                                 value={this.state.selectedUnit}
                                 className={css.unitOption}
@@ -227,11 +225,13 @@ const mapStateToProps = (state) => ({
     balance: getBalanceForSelectedAccount(state),
     currency: state.settings.currency,
     conversionRate: state.settings.conversionRate,
+    helixUnit: state.settings.helixUnit,
 });
 
 const mapDispatchToProps = {
     getAccountInfo,
     setSeedIndex,
+    updateHelixUnit,
 };
 
 export default connect(

@@ -54,7 +54,6 @@ class WalletHistory extends React.PureComponent {
                                     <div className={classNames(css.foo_bxx1)}>
                                         <h3 className={css.heading}>TRANSACTION HISTORY</h3>
                                         <List
-                                            updateAccount={() => this.updateAccount()}
                                             setItem={(item) =>
                                                 item !== null
                                                     ? history.push(`/wallet/history/${item}`)
