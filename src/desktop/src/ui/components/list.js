@@ -38,8 +38,6 @@ export class ListComponent extends React.PureComponent {
         mode: PropTypes.string.isRequired,
         /** Hide empty transactions flag */
         hideEmptyTransactions: PropTypes.bool.isRequired,
-        /** Should update history */
-        updateAccount: PropTypes.func,
         /** Toggle hide empty transactions */
         toggleEmptyTransactions: PropTypes.func.isRequired,
 
@@ -186,13 +184,14 @@ export class ListComponent extends React.PureComponent {
     updateAccount = async () => {
         const { password, accountName, accountMeta } = this.props;
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
-        this.props.getAccountInfo(
+        await this.props.getAccountInfo(
             seedStore,
             accountName,
             // eslint-disable-next-line no-undef
             Electron.notify,
             true, // Sync with quorum enabled
         );
+        this.updateTx();
     };
 
     updateTx() {
@@ -294,7 +293,6 @@ export class ListComponent extends React.PureComponent {
                         <div
                             onClick={() => {
                                 this.updateAccount();
-                                this.updateTx();
                             }}
                             className={classNames(
                                 css.refresh,

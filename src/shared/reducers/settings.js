@@ -56,6 +56,7 @@ export const initialState = {
      * Selected currency for conversions in wallet
      */
     currency: 'USD',
+    helixUnit: 'mHLX',
     availableCurrencies,
     /**
      * Active theme name
@@ -177,6 +178,11 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 newtermsupdatenotice: action.payload.newTermsNotice,
                 newtermsdate: action.payload.newTermsDate,
+            };
+        case SettingsActionTypes.UPDATE_HELIX_UNIT:
+            return {
+                ...state,
+                helixUnit: action.payload,
             };
     }
     return state;

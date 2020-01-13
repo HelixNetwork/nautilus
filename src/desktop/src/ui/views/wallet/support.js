@@ -1,28 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import css from './wallet.scss';
 import style from 'ui/global/about.scss';
 import classNames from 'classnames';
-import { getSelectedAccountName, getSelectedAccountMeta } from 'selectors/accounts';
-import { getAccountInfo } from 'actions/accounts';
-import PropTypes from 'prop-types';
 import hlx from 'ui/images/logo.png';
-import { withI18n } from 'react-i18next';
 /**
  * Support component
  */
 class Support extends React.PureComponent {
-    static propTypes = {
-        location: PropTypes.object,
-        history: PropTypes.shape({
-            push: PropTypes.func.isRequired,
-        }).isRequired,
-        t: PropTypes.func.isRequired,
-        getAccountInfo: PropTypes.func.isRequired,
-        accountName: PropTypes.string.isRequired,
-        accountMeta: PropTypes.object.isRequired,
-        password: PropTypes.object.isRequired,
-    };
     state = {
         active: 'li0',
     };
@@ -41,8 +25,6 @@ class Support extends React.PureComponent {
                             <div className="row">
                                 <div className="col-lg-12">
                                     <div className={classNames(css.foo_bxx1)}>
-                                        <h3 className={css.heading}>SUPPORT</h3>
-
                                         <section className={style.about}>
                                             <div className={css.support_div}>
                                                 <img src={hlx} alt="" />
@@ -63,16 +45,4 @@ class Support extends React.PureComponent {
     }
 }
 
-const mapStateToProps = (state) => ({
-    accountName: getSelectedAccountName(state),
-    accountMeta: getSelectedAccountMeta(state),
-    password: state.wallet.password,
-});
-
-const mapDispatchToProps = {
-    getAccountInfo,
-};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(withI18n()(Support));
+export default Support;
