@@ -8,14 +8,12 @@ import Button from 'ui/components/button';
 import Icon from 'ui/components/icon';
 import PropTypes from 'prop-types';
 import { withI18n } from 'react-i18next';
-
 import {
     selectLatestAddressFromAccountFactory,
     selectAccountInfo,
     getSelectedAccountName,
     getSelectedAccountMeta,
 } from 'selectors/accounts';
-
 import { generateAlert } from 'actions/alerts';
 import { generateNewAddress, addressValidationRequest, addressValidationSuccess } from 'actions/wallet';
 import QR from 'ui/components/qr';

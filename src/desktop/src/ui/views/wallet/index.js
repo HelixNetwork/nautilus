@@ -79,7 +79,7 @@ class Wallet extends React.PureComponent {
                     <Switch>
                         <Route path="/wallet/" component={Send} />
                         <Route path="/wallet/send" component={Send} />
-                        <Route exact path="/wallet/receive" component={Receive} />
+                        <Route path="/wallet/receive" component={Receive} />
                         <Route path="/wallet/chart" component={Chart} />
                         <Route path="/wallet/history" component={WalletHistory} />
                         <Route path="/wallet/support" component={Support} />
@@ -94,7 +94,7 @@ class Wallet extends React.PureComponent {
                 <DashSidebar disp={'none'} history={history} active={currentKey} />
                 <Switch>
                     <Route path="/wallet/send" component={Send} />
-                    <Route exact path="/wallet/receive" component={Receive} />
+                    <Route path="/wallet/receive" component={Receive} />
                     <Route path="/wallet/chart" component={Chart} />
                     <Route path="/wallet/history" component={WalletHistory} />
                     <Route path="/wallet/support" component={Support} />
