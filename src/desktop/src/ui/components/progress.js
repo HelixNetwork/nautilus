@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import css from './progress.scss';
 import { Progress } from 'react-sweet-progress';
-// import 'react-sweet-progress/lib/style.css';
+import 'react-sweet-progress/lib/style.css';
 /**
  * Progress bar component
  */
