@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ADDRESS_LENGTH, VALID_SEED_REGEX } from 'libs/hlx/utils';
+import css from './checksum.scss';
 
 /**
  * Returns address with highlighted checksum
@@ -12,7 +13,7 @@ const Checksum = ({ address }) => {
     return (
         <React.Fragment>
             {!validAddress ? address : address.substr(0, 64)}
-            {validAddress && <mark>{address.substr(64)}</mark>}
+            {validAddress && <mark className={css.checksum}>{address.substr(64)}</mark>}
         </React.Fragment>
     );
 };
