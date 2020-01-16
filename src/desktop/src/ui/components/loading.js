@@ -17,14 +17,6 @@ export default class Loading extends React.PureComponent {
         onEnd: PropTypes.func,
     };
 
-    componentDidMount() {
-        Electron.updateMenu('enabled', false);
-    }
-
-    componentWillUnmount() {
-        Electron.updateMenu('enabled', true);
-    }
-
     render() {
         const { loop, inline, transparent, onEnd } = this.props;
         return (

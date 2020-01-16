@@ -3,7 +3,9 @@
 exports[`test for Checksum component Render the Checksum component 1`] = `
 <Fragment>
   a28c44524d557d2276170f1e662a9a3abccebb7cc6559a0c00b628613793a710
-  <mark>
+  <mark
+    className="checksum"
+  >
     125dc65c
   </mark>
 </Fragment>
