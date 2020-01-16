@@ -11,10 +11,6 @@ const props = {
 
 
 let wrapper;
-// beforeEach(() => {
-//     wrapper = shallow(<Text {...props} />);
-//     console.log(wrapper.debug());
-// });
 
 describe('test for Text component', () => {
     test('Render the Text component', () => {
