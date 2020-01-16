@@ -368,10 +368,10 @@ const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_
  */
 export const prepareTransfers = (settings) => (seed, transfers, options = null, signatureFn = null) => {
     let args = [seed, transfers];
-
     if (options) {
         args = [...args, { ...options, nativeGenerateSignatureFunction: signatureFn }];
     }
+
     return getHelixInstance(settings)
         .prepareTransfers(...args)
         .catch((err) => {

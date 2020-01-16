@@ -24,7 +24,7 @@ describe('Middlewares: networkMiddleware', () => {
                     type: 'HELIX/ALERTS/SHOW',
                     category: 'error',
                     title: 'No network connection',
-                    message: 'Your internet connection appears to be offline.',
+                    message: 'Your internet connection appears to be very weak or offline.',
                     closeInterval: 3600000,
                 };
 
