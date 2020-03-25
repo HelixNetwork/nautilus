@@ -1,30 +1,51 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Electron: Main",
-      "protocol": "inspector",
-      "runtimeExecutable": "${workspaceFolder}/src/desktop/node_modules/.bin/electron",
-      "runtimeArgs": ["--remote-debugging-port=9223", "."],
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      }
-    },
-    {
-      "name": "Electron: Renderer",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9223,
-      "webRoot": "${workspaceFolder}",
-      "timeout": 30000
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Electron: All",
-      "configurations": ["Electron: Main", "Electron: Renderer"]
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha current file test",
+            "program": "${workspaceFolder}/src/shared/node_modules/.bin/_mocha",
+            "args": [
+                "${workspaceFolder}/${relativeFile}",
+                "--timeout",
+                "2000",
+                "--colors",
+                "--require",
+                "@babel/register",
+                "${workspaceFolder}/${relativeFile}"
+            ],
+            "env": {
+                "NODE_ENV": "test"
+            },
+            "cwd": "${workspaceFolder}/src/shared/",
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Electron: Main",
+            "protocol": "inspector",
+            "runtimeExecutable": "${workspaceFolder}/src/desktop/node_modules/.bin/electron",
+            "runtimeArgs": ["--remote-debugging-port=9223", "."],
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            }
+        },
+        {
+            "name": "Electron: Renderer",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9223,
+            "webRoot": "${workspaceFolder}",
+            "timeout": 30000
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Electron: All",
+            "configurations": ["Electron: Main", "Electron: Renderer"]
+        }
+    ]
 }
