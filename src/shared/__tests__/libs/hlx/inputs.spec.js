@@ -109,6 +109,14 @@ describe('libs: helix/inputs', () => {
         });
 
         describe('when maxInputs is greater than zero', () => {
+            it('should select two inputs', () => {
+                const limit = 2;
+                const threshold = 15;
+
+                const result = prepareInputs(addressData, threshold, limit);
+                expect(result.inputs.length <= limit).to.equal(true);
+            });
+
             it('should not select inputs with size greater than maxInputs', () => {
                 const limit = random(1, 4);
                 const threshold = random(1, reduce(addressData, (balance, data) => balance + data.balance, 0));
