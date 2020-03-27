@@ -87,7 +87,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Build files
 /dist
+src/desktop/.management
 
 # NPM lockfiles
 package-lock.json

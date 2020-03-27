@@ -69,6 +69,7 @@ describe('Reducer: settings', () => {
                 },
                 completedMigration: false,
                 lockScreenTimeout: 3,
+                helixUnit: 'mHLX',
             };
             expect(reducer(undefined, {})).to.eql(initialState);
         });

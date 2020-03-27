@@ -5,7 +5,7 @@
     "scripts": {
         "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 2000 --exit --require @babel/register \"__tests__/**/*.spec.js\"",
         "devTest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 2000 --exit --require @babel/register \"__tests__/libs/hlx/*.spec.js\"",
-        "apitest": "NODE_ENV=test  --require @babel/register \"__tests__/dev-sample/api.js\""
+        "apitest": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 2000 --exit --require @babel/register \"__tests__/actions/transfers.spec.js\""
     },
     "license": "Apache-2.0 OR EPL-2.0",
     "dependencies": {
