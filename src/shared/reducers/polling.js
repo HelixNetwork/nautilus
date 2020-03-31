@@ -198,6 +198,11 @@ const polling = (
                 ...state,
                 pollFor: action.payload,
             };
+        case PollingActionTypes.BREAK_POLL_CYCLE:
+            return {
+                ...state,
+                retryCount: 3,
+            };
         default:
             return state;
     }

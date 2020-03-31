@@ -8,21 +8,22 @@ import reduce from 'lodash/reduce';
 import unionBy from 'lodash/unionBy';
 import isArray from 'lodash/isArray';
 import { quorum } from 'libs/hlx';
-import { fetchRemoteNodes, withRetriesOnDifferentNodes, getRandomNodes } from 'libs/hlx/utils';
+import { fetchRemoteNodes } from 'libs/hlx/utils';
 import { formatChartData, getUrlTimeFormat, getUrlNumberFormat } from 'libs/utils';
 import { constructBundlesFromTransactions, findPromotableTail, isFundedBundle } from 'libs/hlx/transfers';
 import { selectedAccountStateFactory } from 'selectors/accounts';
-import { getSelectedNodeFromState, getNodesFromState, getCustomNodesFromState } from 'selectors/global';
+import { nodesConfigurationFactory, getNodesFromState, getCustomNodesFromState } from 'selectors/global';
 import { syncAccount } from 'libs/hlx/accounts';
 import Errors from 'libs/errors';
 import i18next from 'libs/i18next';
 import { PollingActionTypes } from 'actions/types';
 import { setPrice, setChartData, setMarketData } from './marketData';
-import { setNodeList, setAutoPromotion, changeNode } from './settings';
+import { setNodeList, setAutoPromotion } from './settings';
 import { generateAccountInfoErrorAlert, generateAlert } from './alerts';
 import { forceTransactionPromotion } from './transfers';
-import { DEFAULT_NODES, DEFAULT_RETRIES } from '../config';
+import { DEFAULT_NODES } from '../config';
 import { Account } from '../database';
+import NodesManager from '../libs/hlx/NodeManager';
 /**
  * Dispatch when HELIX price information is about to be fetched
  *
@@ -264,6 +265,19 @@ export const syncAccountWhilePolling = (payload) => ({
 });
 
 /**
+ * Dispatch to break poll cycle
+ *
+ * @method breakPollCycle
+ * @param {string} payload
+ *
+ * @returns {{type: {string}, payload: {string} }}
+ */
+export const breakPollCycle = (payload) => ({
+    type: PollingActionTypes.BREAK_POLL_CYCLE,
+    payload,
+});
+
+/**
  *  Fetch HELIX market information
  *
  *   @method fetchMarketData
@@ -416,16 +430,13 @@ export const fetchChartData = () => {
  *
  * @param {array} accountNames
  * @param {function} notificationFn - New transaction callback function
- * @param {boolean} withQuorum
+ * @param {boolean} [quorum]
  *
  * @returns {function} dispatch
  **/
-export const getAccountInfoForAllAccounts = (accountNames, notificationFn, withQuorum = true) => {
+export const getAccountInfoForAllAccounts = (accountNames, notificationFn, quorum = true) => {
     return (dispatch, getState) => {
         dispatch(accountInfoForAllAccountsFetchRequest());
-
-        const selectedNode = getSelectedNodeFromState(getState());
-        const randomNodes = getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode]);
 
         const settings = getState().settings;
 
@@ -435,12 +446,11 @@ export const getAccountInfoForAllAccounts = (accountNames, notificationFn, withQ
                 return promise.then(() => {
                     const existingAccountState = selectedAccountStateFactory(accountName)(getState());
 
-                    return withRetriesOnDifferentNodes([selectedNode, ...randomNodes])((...args) =>
-                        syncAccount(...[...args, withQuorum]),
-                    )(existingAccountState, undefined, notificationFn, settings).then(({ node, result }) => {
-                        dispatch(changeNode(node));
-                        dispatch(syncAccountWhilePolling(result));
-                    });
+                    return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
+                        .withRetries()(syncAccount)(existingAccountState, undefined, notificationFn, settings)
+                        .then((result) => {
+                            dispatch(syncAccountWhilePolling(result));
+                        });
                 });
             },
             Promise.resolve(),
@@ -450,11 +460,14 @@ export const getAccountInfoForAllAccounts = (accountNames, notificationFn, withQ
             })
             .catch((err) => {
                 dispatch(accountInfoForAllAccountsFetchError());
+                if (err.message === Errors.NOT_ENOUGH_SYNCED_NODES) {
+                    //  If there are no nodes in sync, break poll cycle and skip alert
+                    return dispatch(breakPollCycle());
+                }
                 dispatch(generateAccountInfoErrorAlert(err));
             });
     };
 };
-
 /**
  * Accepts a bundle hash and all tail transaction objects relevant to the bundle.
  * Checks if a bundle is still valid.

@@ -9,31 +9,22 @@ import {
     getAccountInfoDuringSetup,
     selectedAccountStateFactory,
 } from 'selectors/accounts';
-import { accumulateBalance } from 'libs/hlx/addresses';
-import Errors from 'libs/errors';
 import {
     generateAccountInfoErrorAlert,
     generateSyncingCompleteAlert,
     generateSyncingErrorAlert,
     generateAccountDeletedAlert,
-    generateNodeOutOfSyncErrorAlert,
-    generateUnsupportedNodeErrorAlert,
     generateAccountSyncRetryAlert,
     generateErrorAlert,
 } from 'actions/alerts';
 
-import { nodesConfigurationFactory, getNodesFromState, getSelectedNodeFromState } from 'selectors/global';
+import { nodesConfigurationFactory } from 'selectors/global';
 import { syncAccount, getAccountData } from 'libs/hlx/accounts';
-
-import { withRetriesOnDifferentNodes, getRandomNodes, formatUnit } from 'libs/hlx/utils';
-
 import NodesManager from 'libs/hlx/NodeManager';
 import orderBy from 'lodash/orderBy';
 import map from 'lodash/map';
 import { Account, Wallet } from '../database';
 import { setSeedIndex } from './wallet';
-import { changeNode, updateHelixUnit } from './settings';
-import { DEFAULT_RETRIES } from '../config';
 import { AccountsActionTypes } from './types';
 /**
  * Dispatch when account information is successfully synced on login
@@ -228,38 +219,36 @@ export const accountInfoFetchRequest = () => ({
  * Gets latest account information: including transfers, balance and spend status information.
  *
  * @method getAccountInfo
- * @param {object} seed - SeedStore class object
+ * @param {object} seedStore - SeedStore class object
  * @param {string} accountName
  * @param {function} notificationFn - New transaction callback function
- * @param {function} genFn
  * @param {boolean} [withQuorum]
  *
  * @returns {function} dispatch
  */
-export const getAccountInfo = (seed, accountName, notificationFn, navigator = null, genFn, withQuorum = false) => {
+export const getAccountInfo = (seedStore, accountName, notificationFn, quorum = false) => {
     return (dispatch, getState) => {
         dispatch(accountInfoFetchRequest());
 
         const existingAccountState = selectedAccountStateFactory(accountName)(getState());
-        const selectedNode = getSelectedNodeFromState(getState());
-        return withRetriesOnDifferentNodes(
-            [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
-            () => dispatch(generateAccountSyncRetryAlert()),
-        )((...args) => syncAccount(...[...args, withQuorum]))(existingAccountState, seed, genFn, notificationFn)
-            .then(({ node, result }) => {
-                const balance = accumulateBalance(result.addressData.map((addressdata) => addressdata.balance));
-                const unit = formatUnit(balance);
-                dispatch(updateHelixUnit(unit));
-                dispatch(changeNode(node));
+        const settings = getState().settings;
+
+        return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
+            .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(syncAccount)(
+                existingAccountState,
+                seedStore,
+                notificationFn,
+                settings,
+            )
+            .then((result) => {
+                // Update account in storage (realm)
+                Account.update(accountName, result);
+
                 dispatch(accountInfoFetchSuccess(result));
             })
             .catch((err) => {
-                if (navigator) {
-                    navigator.pop({ animated: false });
-                }
-
+                setTimeout(() => dispatch(generateErrorAlert(generateAccountInfoErrorAlert, err)), 500);
                 dispatch(accountInfoFetchError());
-                dispatch(generateAccountInfoErrorAlert(err));
             });
     };
 };
@@ -364,20 +353,16 @@ export const fullAccountInfoFetchSuccess = (payload) => ({
  *
  * @returns {function} dispatch
  */
-export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) => {
+export const getFullAccountInfo = (seedStore, accountName, quorum = false) => {
     return (dispatch, getState) => {
         dispatch(fullAccountInfoFetchRequest());
 
-        const selectedNode = getSelectedNodeFromState(getState());
         const existingAccountNames = getAccountNamesFromState(getState());
         const usedExistingSeed = getAccountInfoDuringSetup(getState()).usedExistingSeed;
-        withRetriesOnDifferentNodes(
-            [selectedNode, ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode])],
-            () => dispatch(generateAccountSyncRetryAlert()),
-        )((...args) => getAccountData(...[...args, withQuorum]))(seedStore, accountName)
-            .then(({ node, result }) => {
-                dispatch(changeNode(node));
 
+        return new NodesManager(nodesConfigurationFactory({ quorum })(getState()))
+            .withRetries(() => dispatch(generateAccountSyncRetryAlert()))(getAccountData)(seedStore, accountName)
+            .then((result) => {
                 const seedIndex = existingAccountNames.length;
 
                 dispatch(setSeedIndex(seedIndex));
@@ -398,22 +383,11 @@ export const getFullAccountInfo = (seedStore, accountName, withQuorum = false) =
                 dispatch(fullAccountInfoFetchSuccess(resultWithAccountMeta));
             })
             .catch((err) => {
-                const dispatchErrors = () => {
-                    if (err.message === Errors.NODE_NOT_SYNCED) {
-                        dispatch(generateNodeOutOfSyncErrorAlert());
-                    } else if (err.message === Errors.UNSUPPORTED_NODE) {
-                        dispatch(generateUnsupportedNodeErrorAlert());
-                    } else {
-                        dispatch(generateAccountInfoErrorAlert(err));
-                    }
-                };
                 dispatch(fullAccountInfoFetchError());
-                if (existingAccountNames.length === 0) {
-                    setTimeout(dispatchErrors, 500);
-                } else {
-                    dispatchErrors();
+                if (existingAccountNames.length !== 0) {
                     seedStore.removeAccount(accountName);
                 }
+                setTimeout(() => dispatch(generateErrorAlert(generateAccountInfoErrorAlert, err)), 500);
             });
     };
 };
@@ -481,17 +455,15 @@ export const syncAccountDuringSnapshotTransition = (attachedTransactions, attach
 
     return {
         ...accountState,
-        addressData: existingAddressObject
-            ? // If address is already part of existing address data, then simply replace the existing address object with the attached one
-              map(accountState.addressData, (addressObject) => {
+        addressData: existingAddressObject // If address is already part of existing address data, then simply replace the existing address object with the attached one
+            ? map(accountState.addressData, (addressObject) => {
                   if (addressObject.address === attachedAddressObject.address) {
                       return attachedAddressObject;
                   }
 
                   return addressObject;
-              })
-            : // If address is not part of existing address data, then add it to address data
-              orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
+              }) // If address is not part of existing address data, then add it to address data
+            : orderBy([...accountState.addressData, attachedAddressObject], 'index', ['asc']),
         transactions: [
             ...accountState.transactions,
             ...map(attachedTransactions, (transaction) => ({
