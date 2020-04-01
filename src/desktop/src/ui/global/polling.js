@@ -16,6 +16,7 @@ import {
     getSelectedAccountName,
     getSelectedAccountType,
     getFailedBundleHashes,
+    getSelectedAccountMeta,
 } from 'selectors/accounts';
 import {
     fetchMarketData,
@@ -24,6 +25,7 @@ import {
     promoteTransfer,
     getAccountInfoForAllAccounts,
 } from 'actions/polling';
+import { getAccountInfo } from 'actions/accounts';
 import { retryFailedTransaction } from 'actions/transfers';
 
 /**
@@ -115,7 +117,12 @@ class Polling extends React.PureComponent {
 
         this.props.setPollFor(allPollingServices[next]);
     };
-
+    updateAccountInfo = async () => {
+        const { password, accountMeta, getAccountInfo, selectedAccountName } = this.props;
+        const seedStore = await new SeedStore[accountMeta.type](password, selectedAccountName, accountMeta);
+        // eslint-disable-next-line no-undef
+        await getAccountInfo(seedStore, selectedAccountName, Electron.notify);
+    };
     fetch = () => {
         if (this.shouldSkipCycle()) {
             return;
@@ -132,6 +139,7 @@ class Polling extends React.PureComponent {
         };
 
         dict[service] ? dict[service]() : this.props.setPollFor(this.props.allPollingServices[0]);
+        this.updateAccountInfo();
     };
 
     fetchLatestAccountInfo = async () => {
@@ -238,6 +246,7 @@ const mapStateToProps = (state) => ({
     isRetryingFailedTransaction: state.ui.isRetryingFailedTransaction,
     failedBundleHashes: getFailedBundleHashes(state),
     password: state.wallet.password,
+    accountMeta: getSelectedAccountMeta(state),
 });
 
 const mapDispatchToProps = {
@@ -247,6 +256,7 @@ const mapDispatchToProps = {
     promoteTransfer,
     getAccountInfoForAllAccounts,
     retryFailedTransaction,
+    getAccountInfo,
 };
 
 export default connect(
