@@ -30,6 +30,7 @@ class Wallet extends React.PureComponent {
         if (currentKey === '/') {
             return (
                 <div>
+                    <Polling />
                     <TopBar history={history} />
                     <DashSidebar disp={'none'} history={history} active={'send'} />
 
