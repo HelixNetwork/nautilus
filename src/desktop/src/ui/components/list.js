@@ -191,23 +191,19 @@ export class ListComponent extends React.PureComponent {
             Electron.notify,
             true, // Sync with quorum enabled
         );
-        this.updateTx();
+        this.updateTx(this.props.accountInfo);
     };
 
-    updateTx() {
-        const tx = this.getAccountTransactions(this.props.accountInfo);
+    updateTx(accountInfo) {
+        const tx = this.getAccountTransactions(accountInfo);
         this.setState({
             transactions: tx,
         });
     }
 
-    componentDidUpdate() {
-        const { transactions } = this.state;
-        const tx = this.getAccountTransactions(this.props.accountInfo);
-        if (tx.length > transactions.length) {
-            this.setState({
-                transactions: tx,
-            });
+    componentDidUpdate(prevProps) {
+        if (this.props.accountInfo !== prevProps.accountInfo) {
+            this.updateTx(this.props.accountInfo);
         }
     }
 
