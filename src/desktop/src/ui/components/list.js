@@ -83,7 +83,7 @@ export class ListComponent extends React.PureComponent {
         isRetryingFailedTransaction: false,
         transactions: [],
     };
-
+    updateTxInterval = 0;
     changeFilter(e) {
         this.switchFilter(e.target.value);
     }
@@ -163,6 +163,8 @@ export class ListComponent extends React.PureComponent {
         const currentlyPromotingBundleHash = ui.currentlyPromotingBundleHash;
         const isRetryingFailedTransaction = ui.isRetryingFailedTransaction;
         const tx = this.props.transactions ? this.props.transactions : this.getAccountTransactions(accountInfo);
+        this.updateTxInterval = setInterval(this.updateTx.bind(this), 8000);
+
         this.setState({
             isBusy: isBusy,
             isLoading: isLoading,
@@ -170,6 +172,10 @@ export class ListComponent extends React.PureComponent {
             isRetryingFailedTransaction: isRetryingFailedTransaction,
             transactions: tx,
         });
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.updateTxInterval);
     }
 
     showMessage(message) {
@@ -191,20 +197,14 @@ export class ListComponent extends React.PureComponent {
             Electron.notify,
             true, // Sync with quorum enabled
         );
-        this.updateTx(this.props.accountInfo);
+        this.updateTx();
     };
 
-    updateTx(accountInfo) {
-        const tx = this.getAccountTransactions(accountInfo);
+    updateTx() {
+        const tx = this.getAccountTransactions(this.props.accountInfo);
         this.setState({
             transactions: tx,
         });
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.accountInfo !== prevProps.accountInfo) {
-            this.updateTx(this.props.accountInfo);
-        }
     }
 
     render() {
