@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import random from 'lodash/random';
 import size from 'lodash/size';
+import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SeedStore from 'libs/seed';
@@ -17,6 +18,7 @@ import {
     getSelectedAccountType,
     getFailedBundleHashes,
     getSelectedAccountMeta,
+    selectAccountInfo,
 } from 'selectors/accounts';
 import {
     fetchMarketData,
@@ -27,6 +29,7 @@ import {
 } from 'actions/polling';
 import { getAccountInfo } from 'actions/accounts';
 import { retryFailedTransaction } from 'actions/transfers';
+import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
 
 /**
  * Background polling component
@@ -117,29 +120,21 @@ class Polling extends React.PureComponent {
 
         this.props.setPollFor(allPollingServices[next]);
     };
-    updateAccountInfo = async () => {
-        const { password, accountMeta, getAccountInfo, selectedAccountName } = this.props;
-        const seedStore = await new SeedStore[accountMeta.type](password, selectedAccountName, accountMeta);
-        // eslint-disable-next-line no-undef
-        await getAccountInfo(seedStore, selectedAccountName, Electron.notify);
-    };
+
     fetch = () => {
         if (this.shouldSkipCycle()) {
             return;
         }
 
         const service = this.props.pollFor;
-
         const dict = {
-            // promotion: this.promote,
-            marketData: this.props.fetchMarketData,
+            promotion: this.promote,
+            // marketData: this.props.fetchMarketData,
             // nodeList: this.props.fetchNodeList,
             accountInfo: this.fetchLatestAccountInfo,
             broadcast: this.retryFailedTransaction,
         };
-
         dict[service] ? dict[service]() : this.props.setPollFor(this.props.allPollingServices[0]);
-        this.updateAccountInfo();
     };
 
     fetchLatestAccountInfo = async () => {
@@ -169,6 +164,7 @@ class Polling extends React.PureComponent {
 
             this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
         } else {
+            console.log('hist');
             this.moveToNextPollService();
         }
     };
@@ -247,6 +243,7 @@ const mapStateToProps = (state) => ({
     failedBundleHashes: getFailedBundleHashes(state),
     password: state.wallet.password,
     accountMeta: getSelectedAccountMeta(state),
+    accountInfo: selectAccountInfo(state),
 });
 
 const mapDispatchToProps = {
