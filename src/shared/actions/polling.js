@@ -460,10 +460,6 @@ export const getAccountInfoForAllAccounts = (accountNames, notificationFn, quoru
             })
             .catch((err) => {
                 dispatch(accountInfoForAllAccountsFetchError());
-                if (err.message === Errors.NOT_ENOUGH_SYNCED_NODES) {
-                    //  If there are no nodes in sync, break poll cycle and skip alert
-                    return dispatch(breakPollCycle());
-                }
                 dispatch(generateAccountInfoErrorAlert(err));
             });
     };

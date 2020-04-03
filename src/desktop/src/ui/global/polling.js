@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import random from 'lodash/random';
 import size from 'lodash/size';
+import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SeedStore from 'libs/seed';
@@ -16,6 +17,8 @@ import {
     getSelectedAccountName,
     getSelectedAccountType,
     getFailedBundleHashes,
+    getSelectedAccountMeta,
+    selectAccountInfo,
 } from 'selectors/accounts';
 import {
     fetchMarketData,
@@ -24,7 +27,9 @@ import {
     promoteTransfer,
     getAccountInfoForAllAccounts,
 } from 'actions/polling';
+import { getAccountInfo } from 'actions/accounts';
 import { retryFailedTransaction } from 'actions/transfers';
+import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
 
 /**
  * Background polling component
@@ -122,15 +127,13 @@ class Polling extends React.PureComponent {
         }
 
         const service = this.props.pollFor;
-
         const dict = {
-            // promotion: this.promote,
-            marketData: this.props.fetchMarketData,
+            promotion: this.promote,
+            // marketData: this.props.fetchMarketData,
             // nodeList: this.props.fetchNodeList,
             accountInfo: this.fetchLatestAccountInfo,
             broadcast: this.retryFailedTransaction,
         };
-
         dict[service] ? dict[service]() : this.props.setPollFor(this.props.allPollingServices[0]);
     };
 
@@ -238,6 +241,8 @@ const mapStateToProps = (state) => ({
     isRetryingFailedTransaction: state.ui.isRetryingFailedTransaction,
     failedBundleHashes: getFailedBundleHashes(state),
     password: state.wallet.password,
+    accountMeta: getSelectedAccountMeta(state),
+    accountInfo: selectAccountInfo(state),
 });
 
 const mapDispatchToProps = {
@@ -247,6 +252,7 @@ const mapDispatchToProps = {
     promoteTransfer,
     getAccountInfoForAllAccounts,
     retryFailedTransaction,
+    getAccountInfo,
 };
 
 export default connect(
