@@ -164,7 +164,6 @@ class Polling extends React.PureComponent {
 
             this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
         } else {
-            console.log('hist');
             this.moveToNextPollService();
         }
     };
