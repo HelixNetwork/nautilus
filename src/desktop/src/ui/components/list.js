@@ -324,11 +324,11 @@ export class ListComponent extends React.PureComponent {
                         filteredTransactions.map((transaction, key) => {
                             const isReceived = transaction.incoming;
                             const isConfirmed = transaction.persistence;
-
+                            // temporary fix to balance delay issue in node
                             return (
                                 <div className={css.lists} key={key} onClick={() => setItem(transaction.bundle)}>
                                     {isConfirmed ? (
-                                        Date.now() - transaction.timestamp < 45 ? (
+                                        Date.now() - transaction.timestamp < 60 ? (
                                             <div className={css.column_pending}>
                                                 <div className={css.column_cnt}>
                                                     <h4 className={css.sent_heading}>PENDING</h4>
