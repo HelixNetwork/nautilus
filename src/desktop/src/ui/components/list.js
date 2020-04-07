@@ -328,7 +328,7 @@ export class ListComponent extends React.PureComponent {
                             return (
                                 <div className={css.lists} key={key} onClick={() => setItem(transaction.bundle)}>
                                     {isConfirmed ? (
-                                        Date.now() / 1000 - transaction.timestamp < 70 ? (
+                                        Date.now() / 1000 - transaction.timestamp < 85 ? (
                                             <div className={css.column_pending}>
                                                 <div className={css.column_cnt}>
                                                     <h4 className={css.sent_heading}>PENDING</h4>
