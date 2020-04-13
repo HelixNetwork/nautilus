@@ -181,6 +181,7 @@ class Send extends React.PureComponent {
 
     hlxInput(e) {
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
+        let conversion = 0.000000022;
         let { txamount, selectedHlx, hlxamount } = this.state;
 
         let hlxamount1 = e.target.value;
@@ -192,7 +193,7 @@ class Send extends React.PureComponent {
                 hlxamount1 = hlxamount;
             }
         }
-        let conversion = 0.000000022;
+
         let base = setBase(selectedHlx, e.target.value);
         txamount = hlxamount1 * base;
         const base1 = conversion * txamount;
@@ -251,11 +252,9 @@ class Send extends React.PureComponent {
     }
 
     msgChange(e) {
-        if (!isEmpty(e.target.value)) {
-            this.setState({
-                message: e.target.value,
-            });
-        }
+        this.setState({
+            message: e.target.value,
+        });
     }
 
     componentDidMount() {
