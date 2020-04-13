@@ -4,4 +4,5 @@
  */
 export const MAX_NOTE_LENGTH = 256;
 export const MAX_HLX_LENGTH = 100;
-export const CURRENCT_URL = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
+export const CURRENCT_URL = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=EUR';
+export const EXCHANGE_RATE = 0.00000002;

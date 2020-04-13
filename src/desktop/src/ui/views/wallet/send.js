@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import css from './wallet.scss';
 import classNames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import ic1 from 'ui/images/svg/send.svg';
 import { withI18n } from 'react-i18next';
@@ -18,7 +17,7 @@ import { makeTransaction } from 'actions/transfers';
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage, setBase } from 'libs/hlx/utils';
 import ProgressBar from 'ui/components/progress';
 import { startTrackingProgress } from 'actions/progress';
-import { CURRENCT_URL, MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
+import { CURRENCT_URL, EXCHANGE_RATE, MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
 import { getCurrencyData } from 'actions/settings';
 
 /**
@@ -181,7 +180,6 @@ class Send extends React.PureComponent {
 
     hlxInput(e) {
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
-        let conversion = 0.000000022;
         let { txamount, selectedHlx, hlxamount } = this.state;
 
         let hlxamount1 = e.target.value;
@@ -196,7 +194,7 @@ class Send extends React.PureComponent {
 
         let base = setBase(selectedHlx, e.target.value);
         txamount = hlxamount1 * base;
-        const base1 = conversion * txamount;
+        const base1 = EXCHANGE_RATE * txamount;
 
         let amount = this.state.conversionRate * base1;
         this.setState({
@@ -211,9 +209,8 @@ class Send extends React.PureComponent {
         // let base = 0;
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
         if (regexp.test(e.target.value)) {
-            const conversion = 0.000000022;
             let base = setBase(selectedHlx, e.target.value);
-            let hlx = e.target.value / conversion;
+            let hlx = e.target.value / EXCHANGE_RATE;
             hlx = hlx / this.state.conversionRate;
             hlx = Math.round(hlx / base);
             txamount = hlx * base;
@@ -259,6 +256,7 @@ class Send extends React.PureComponent {
     componentDidMount() {
         const { currency } = this.props;
         axios.get(CURRENCT_URL).then((resp) => {
+            resp.data.rates['EUR'] = 1; // fix to bug where the API Doesn't return value for EUR
             this.setState({
                 selectedCurrency: currency,
                 conversionRate: resp.data.rates[currency],
