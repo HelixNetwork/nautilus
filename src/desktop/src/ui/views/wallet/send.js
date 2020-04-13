@@ -18,7 +18,7 @@ import { makeTransaction } from 'actions/transfers';
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage, setBase } from 'libs/hlx/utils';
 import ProgressBar from 'ui/components/progress';
 import { startTrackingProgress } from 'actions/progress';
-import { MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
+import { CURRENCT_URL, MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
 import { getCurrencyData } from 'actions/settings';
 
 /**
@@ -229,8 +229,7 @@ class Send extends React.PureComponent {
 
     currencyChange(e) {
         let selectedCurrency = e.target.value;
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
-        axios.get(url).then((resp) => {
+        axios.get(CURRENCT_URL).then((resp) => {
             this.setState({
                 selectedCurrency: selectedCurrency,
                 conversionRate: resp.data.rates[selectedCurrency],
@@ -259,8 +258,7 @@ class Send extends React.PureComponent {
 
     componentDidMount() {
         const { currency } = this.props;
-        const url = 'https://trinity-exchange-rates.herokuapp.com/api/latest?base=USD';
-        axios.get(url).then((resp) => {
+        axios.get(CURRENCT_URL).then((resp) => {
             this.setState({
                 selectedCurrency: currency,
                 conversionRate: resp.data.rates[currency],
