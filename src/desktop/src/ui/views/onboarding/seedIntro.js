@@ -62,6 +62,7 @@ class SeedIntro extends React.PureComponent {
                 </Row>
                 <Row>
                     <Button
+                        id="to-seed-intro"
                         className="navleft"
                         variant="backgroundNone"
                         onClick={() => this.stepForward('seed-import', true)}

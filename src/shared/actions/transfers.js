@@ -13,26 +13,18 @@ import size from 'lodash/size';
 import every from 'lodash/every';
 import includes from 'lodash/includes';
 import uniq from 'lodash/uniq';
-import get from 'lodash/get';
 import { addChecksum } from '@helixnetwork/checksum';
 import { asTransactionObject } from '@helixnetwork/transaction-converter';
 import {
     replayBundle,
     promoteTransaction as promoteTx,
     getTransactionsToApprove,
-    isNodeHealthy,
     attachToTangle,
     storeAndBroadcast,
 } from '../libs/hlx/extendedApi';
-import { getSelectedNodeFromState, getNodesFromState, getRemotePoWFromState } from '../selectors/global';
+import { getRemotePoWFromState, nodesConfigurationFactory } from '../selectors/global';
 import { selectedAccountStateFactory } from '../selectors/accounts';
-import {
-    withRetriesOnDifferentNodes,
-    fetchRemoteNodes,
-    getRandomNodes,
-    noChecksum,
-    ADDRESS_LENGTH,
-} from '../libs/hlx/utils';
+import { noChecksum, ADDRESS_LENGTH } from '../libs/hlx/utils';
 import { setNextStepAsActive, reset as resetProgress } from './progress';
 import { clearSendFields } from './ui';
 import {
@@ -42,14 +34,12 @@ import {
     constructBundlesFromTransactions,
     isFundedBundle,
     isBundle,
-    filterInvalidPendingTransactions,
-    getPendingOutgoingTransfersForAddresses,
 } from '../libs/hlx/transfers';
 import {
     syncAccountAfterReattachment,
     syncAccount,
     syncAccountAfterSpending,
-    syncAccountOnValueTransactionFailure,
+    syncAccountOnErrorAfterSigning,
     syncAccountOnSuccessfulRetryAttempt,
 } from '../libs/hlx/accounts';
 import {
@@ -61,14 +51,8 @@ import {
     isAnyAddressSpent,
     getAddressDataUptoRemainder,
     categoriseAddressesBySpentStatus,
-    shouldAllowSendingToAddress,
 } from '../libs/hlx/addresses';
-import {
-    // getInputs,
-    getStartingSearchIndexToPrepareInputs,
-    getSpentAddressesFromTransactions,
-    getUnspentInputs,
-} from '../libs/hlx/inputs';
+import { getInputs } from '../libs/hlx/inputs';
 import {
     generateAlert,
     generateTransferErrorAlert,
@@ -76,12 +60,13 @@ import {
     generateNodeOutOfSyncErrorAlert,
     generateUnsupportedNodeErrorAlert,
     generateTransactionSuccessAlert,
+    prepareLogUpdate,
 } from './alerts';
 import i18next from '../libs/i18next.js';
 import Errors from '../libs/errors';
-import { DEFAULT_RETRIES } from '../config';
 import { Account } from '../database';
 import { TransfersActionTypes } from '../actions/types';
+import NodesManager from '../libs/hlx/NodeManager';
 
 /**
  * Dispatch when a transaction is about to be manually promoted
@@ -435,11 +420,11 @@ export const forceTransactionPromotion = (
  * @param {number} value
  * @param {string} message
  * @param {string} accountName
- * @param {boolean} [withQuorum]
+ * @param {boolean} [quorum]
  *
  * @returns {function} dispatch
  */
-export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, withQuorum = true, genFn) => (
+export const makeTransaction = (seedStore, receiveAddress, value, message, accountName, quorum = true) => (
     dispatch,
     getState,
 ) => {
@@ -450,124 +435,90 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
     // Keep track if the inputs are signed
     let hasSignedInputs = false;
 
+    // Keep track if the bundle was successfully broadcasted
+    let hasBroadcast = false;
+
     // Keep track if the created bundle is valid after inputs are signed
     let isValidBundle = false;
+
+    let maxInputs = 0;
 
     // Initialize account state
     // Reassign with latest state when account is synced
     let accountState = selectedAccountStateFactory(accountName)(getState());
-    let transferInputs = [];
 
-    const withPreTransactionSecurityChecks = () => {
-        // Progressbar step => (Checking node's health)
+    const withPreTransactionSecurityChecks = (settings, withQuorum) => () => {
+        // Progressbar step => (Validating receive address)
         dispatch(setNextStepAsActive());
 
-        return isNodeHealthy()
-            .then((isSynced) => {
-                if (isSynced) {
-                    // Progressbar step => (Validating receive address)
-                    dispatch(setNextStepAsActive());
+        const maxInput = typeof seedStore.getMaxInputs === 'function' ? seedStore.getMaxInputs() : Promise.resolve(0);
 
-                    // Make sure that the address a user is about to send to is not already used.
-                    return shouldAllowSendingToAddress()([address]);
-                }
+        return Promise.resolve(maxInput)
+            .then((maxInputResponse) => {
+                maxInputs = maxInputResponse;
 
-                throw new Error(Errors.NODE_NOT_SYNCED);
-            })
-            .then((shouldAllowSending) => {
-                if (shouldAllowSending) {
+                // Make sure that the address a user is about to send to is not already used.
+                return isAnyAddressSpent(settings, withQuorum)([address]).then((isSpent) => {
+                    if (isSpent) {
+                        throw new Error(Errors.KEY_REUSE);
+                    }
+
                     // Progressbar step => (Syncing account)
                     dispatch(setNextStepAsActive());
 
-                    return syncAccount()(accountState, seedStore);
-                }
-
-                throw new Error(Errors.KEY_REUSE);
+                    return syncAccount(settings, withQuorum)(accountState, seedStore);
+                });
             })
             .then((newState) => {
                 // Assign latest account but do not update the local store yet.
                 // Only update the local store with updated account information after this transaction is successfully completed.
                 accountState = newState;
 
-                const valueTransfers = filter(map(accountState.transfers, (tx) => tx), (tx) => tx.transferValue !== 0);
-
-                return filterInvalidPendingTransactions()(valueTransfers, accountState.addressData);
-            })
-            .then((filteredTransfers) => {
-                const { addressData, transfers } = accountState;
-                const startIndex = getStartingSearchIndexToPrepareInputs(addressData);
-                const spentAddressesFromTransactions = getSpentAddressesFromTransactions(transfers);
-
                 // Progressbar step => (Preparing inputs)
                 dispatch(setNextStepAsActive());
 
-                // Prepare inputs.
-                return getUnspentInputs()(
-                    addressData,
-                    spentAddressesFromTransactions,
-                    filteredTransfers,
-                    startIndex,
+                return getInputs(settings, withQuorum)(
+                    accountState.addressData,
+                    accountState.transactions,
                     value,
-                    null,
+                    maxInputs,
                 );
             })
-            .then((inputs) => {
-                // Input selection prepares inputs sequentially starting from the first address with balance
-                // If total balance is less than transfer value, do not allow transaction.
-                if (get(inputs, 'totalBalance') < value) {
-                    throw new Error(Errors.NOT_ENOUGH_BALANCE);
-
-                    // availableBalance: balance after filtering out addresses that are spent and also addresses with incoming transfers..
-                    // Contains only spendable balance
-                    // Note: At this point, we could leverage the change addresses and allow user making a transfer on top from those.
-                } else if (get(inputs, 'availableBalance') < value) {
-                    const addressData = accountState.addressData;
-                    const transfers = accountState.transfers;
-                    const pendingOutgoingTransfers = getPendingOutgoingTransfersForAddresses(addressData, transfers);
-
-                    if (size(pendingOutgoingTransfers)) {
-                        throw new Error(Errors.ADDRESS_HAS_PENDING_TRANSFERS);
-                    } else {
-                        if (size(get(inputs, 'spentAddresses'))) {
-                            throw new Error(Errors.FUNDS_AT_SPENT_ADDRESSES);
-                        } else if (size(get(inputs, 'addressesWithIncomingTransfers'))) {
-                            throw new Error(Errors.INCOMING_TRANSFERS);
-                        }
-
-                        throw new Error(Errors.SOMETHING_WENT_WRONG_DURING_INPUT_SELECTION);
-                    }
-                }
-
+            .then(({ inputs }) => {
                 // Do not allow receiving address to be one of the user's own input addresses.
-                const isSendingToAnyInputAddress = some(
-                    get(inputs, 'inputs'),
-                    (input) => input.address === noChecksum(address),
-                );
+                const isSendingToAnyInputAddress = some(inputs, (input) => input.address === noChecksum(address));
 
                 if (isSendingToAnyInputAddress) {
                     throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
                 }
 
-                transferInputs = get(inputs, 'inputs');
+                if (isSendingToAnyInputAddress) {
+                    throw new Error(Errors.CANNOT_SEND_TO_OWN_ADDRESS);
+                }
 
-                return getAddressDataUptoRemainder()(accountState.addressData, seedStore, genFn, [
-                    // Make sure inputs are blacklisted
-                    ...map(transferInputs, (input) => input.address),
-                    // Make sure receive address is blacklisted
-                    noChecksum(receiveAddress),
-                ]);
-            })
-            .then(({ remainderAddress, addressDataUptoRemainder }) => {
-                // getAddressesUptoRemainder returns the latest unused address as the remainder address
-                // Also returns updated address data including new address data for the intermediate addresses.
-                // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
-                // at index 53 it would include address data for 51, 52 and 53.
-                accountState.addressData = addressDataUptoRemainder;
+                return getAddressDataUptoRemainder(settings, withQuorum)(
+                    accountState.addressData,
+                    accountState.transactions,
+                    seedStore,
+                    [
+                        // Make sure inputs are blacklisted
+                        ...map(inputs, (input) => input.address),
+                        // Make sure receive address is blacklisted
+                        noChecksum(receiveAddress),
+                    ],
+                ).then(({ remainderAddress, remainderIndex, addressDataUptoRemainder }) => {
+                    // getAddressesUptoRemainder returns the latest unused address as the remainder address
+                    // Also returns updated address data including new address data for the intermediate addresses.
+                    // E.g: If latest locally stored address has an index 50 and remainder address was calculated to be
+                    // at index 53 it would include address data for 51, 52 and 53.
+                    accountState.addressData = addressDataUptoRemainder;
 
-                return {
-                    inputs: transferInputs,
-                    address: remainderAddress,
-                };
+                    return {
+                        inputs,
+                        address: remainderAddress,
+                        keyIndex: remainderIndex,
+                    };
+                });
             });
     };
 
@@ -578,9 +529,13 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
         transactionObjects: [],
     };
 
-    const withInputs = isZeroValue ? () => Promise.resolve(null) : withPreTransactionSecurityChecks;
     return (
-        withInputs()
+        (isZeroValue
+            ? Promise.resolve(null)
+            : new NodesManager(nodesConfigurationFactory({ quorum })(getState())).withRetries()(
+                  withPreTransactionSecurityChecks,
+              )()
+        )
             // If we are making a zero value transaction, options would be null
             // Otherwise, it would be a dictionary with inputs and remainder address
             // Forward options to prepareTransfersAsync as is, because it contains a null check
@@ -588,28 +543,37 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 const transfer = prepareTransferArray(address, value, message, accountState.addressData);
                 // Progressbar step => (Preparing transfers)
                 dispatch(setNextStepAsActive());
-                return seedStore.prepareTransfers(transfer, options);
-            })
-            .then((txs) => {
-                if (!isZeroValue) {
-                    hasSignedInputs = true;
-                }
-                cached.txs = txs;
 
-                const convertToTransactionObjects = (hexString) => asTransactionObject(hexString);
-                cached.transactionObjects = map(cached.txs, convertToTransactionObjects);
-                if (isBundle(cached.transactionObjects)) {
-                    isValidBundle = true;
-                    // Progressbar step => (Getting transactions to approve)
-                    dispatch(setNextStepAsActive());
+                return new NodesManager(nodesConfigurationFactory({ quorum })(getState())).withRetries()(
+                    (settings) => () => {
+                        return seedStore
+                            .prepareTransfers(settings)(transfer, options)
+                            .then((txs) => {
+                                if (!isZeroValue) {
+                                    hasSignedInputs = true;
+                                }
 
-                    return getTransactionsToApprove()();
-                }
+                                cached.txs = txs;
 
-                throw new Error(Errors.INVALID_BUNDLE);
+                                const convertToTransactionObjects = (hexString) => asTransactionObject(hexString);
+                                cached.transactionObjects = map(cached.txs, convertToTransactionObjects);
+
+                                if (isBundle(cached.transactionObjects)) {
+                                    isValidBundle = true;
+                                    // Progressbar step => (Getting transactions to approve)
+                                    dispatch(setNextStepAsActive());
+
+                                    return getTransactionsToApprove(settings)();
+                                }
+
+                                throw new Error(Errors.INVALID_BUNDLE);
+                            });
+                    },
+                )();
             })
             .then(({ trunkTransaction, branchTransaction }) => {
                 const shouldOffloadPow = getRemotePoWFromState(getState());
+
                 // Progressbar step => (Proof of work)
                 dispatch(setNextStepAsActive());
 
@@ -619,73 +583,51 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 if (!shouldOffloadPow) {
                     return performLocalPow();
                 }
-                // If proof of work configuration is set to remote PoW
-                // Make an attempt to offload proof of work to remote
-                // If network call fails:
-                // 1) Find nodes with PoW enabled
-                // 2) Auto retry offloading PoW
-                // 3) If auto retry fails, perform proof of work locally
-                return attachToTangle(
-                    null,
-                    // See: extendedApi#attachToTangle
-                    extend(
-                        {
-                            __proto__: seedStore.__proto__,
-                        },
-                        seedStore,
-                        { offloadPow: true },
-                    ),
-                )(trunkTransaction, branchTransaction, cached.txs).catch(() => {
-                    dispatch(
-                        generateAlert(
-                            'info',
-                            i18next.t('global:pleaseWait'),
-                            `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
-                                'global:tryingAgainWithDifferentNode',
-                            )}`,
-                            20000,
-                        ),
-                    );
-                    // Find nodes with proof of work enabled
-                    return fetchRemoteNodes()
-                        .then((remoteNodes) => {
-                            const nodesWithPowEnabled = map(
-                                filter(remoteNodes, (node) => node.pow),
-                                (nodeWithPoWEnabled) => nodeWithPoWEnabled.node,
-                            );
-                            return withRetriesOnDifferentNodes(
-                                getRandomNodes(nodesWithPowEnabled, DEFAULT_RETRIES, [
-                                    getSelectedNodeFromState(getState()),
-                                ]),
-                            )((provider) =>
-                                attachToTangle(
-                                    provider,
-                                    extend(
-                                        {
-                                            __proto__: seedStore.__proto__,
-                                        },
-                                        seedStore,
-                                        { offloadPow: true },
-                                    ),
-                                ),
-                            )(trunkTransaction, branchTransaction, cached.txs);
-                        })
-                        .then(({ result }) => result)
-                        .catch(() => {
-                            // If outsourced proof of work fails on all nodes, fallback to local proof of work.
-                            dispatch(
-                                generateAlert(
-                                    'info',
-                                    i18next.t('global:pleaseWait'),
-                                    `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
-                                        'global:tryingAgainWithLocalPoW',
-                                    )}`,
-                                ),
-                            );
 
-                            return performLocalPow();
-                        });
-                });
+                // Find nodes with proof of work enabled
+                return new NodesManager(
+                    nodesConfigurationFactory({
+                        quorum,
+                        useOnlyPowNodes: true,
+                    })(getState()),
+                )
+                    .withRetries(() =>
+                        dispatch(
+                            generateAlert(
+                                'info',
+                                i18next.t('global:pleaseWait'),
+                                `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
+                                    'global:tryingAgainWithDifferentNode',
+                                )}`,
+                                20000,
+                            ),
+                        ),
+                    )((settings) =>
+                        attachToTangle(
+                            settings,
+                            extend(
+                                {
+                                    __proto__: seedStore.__proto__,
+                                },
+                                seedStore,
+                                { offloadPow: true },
+                            ),
+                        ),
+                    )(trunkTransaction, branchTransaction, cached.txs)
+                    .catch(() => {
+                        // If outsourced proof of work fails on all nodes, fallback to local proof of work.
+                        dispatch(
+                            generateAlert(
+                                'info',
+                                i18next.t('global:pleaseWait'),
+                                `${i18next.t('global:problemPerformingProofOfWork')} ${i18next.t(
+                                    'global:tryingAgainWithLocalPoW',
+                                )}`,
+                            ),
+                        );
+
+                        return performLocalPow();
+                    });
             })
             // Re-check spend statuses of all addresses in bundle
             .then(({ txs, transactionObjects }) => {
@@ -698,13 +640,20 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 dispatch(setNextStepAsActive());
 
                 const addresses = uniq(map(transactionObjects, (transaction) => transaction.address));
-                return isAnyAddressSpent(undefined, withQuorum)(addresses).then((isSpent) => {
-                    if (isSpent) {
-                        throw new Error(Errors.KEY_REUSE);
-                    }
 
-                    return { txs, transactionObjects };
-                });
+                return new NodesManager(
+                    nodesConfigurationFactory({
+                        quorum,
+                    })(getState()),
+                )
+                    .withRetries()(isAnyAddressSpent)(addresses)
+                    .then((isSpent) => {
+                        if (isSpent) {
+                            throw new Error(Errors.KEY_REUSE);
+                        }
+
+                        return { txs, transactionObjects };
+                    });
             })
             .then(({ txs, transactionObjects }) => {
                 cached.txs = txs;
@@ -715,14 +664,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
 
                 // Make an attempt to broadcast transaction on selected node
                 // If it fails, auto retry broadcast on random nodes
-                const selectedNode = getSelectedNodeFromState(getState());
-                const randomNodes = [
-                    selectedNode,
-                    ...getRandomNodes(getNodesFromState(getState()), DEFAULT_RETRIES, [selectedNode]),
-                ];
-
-                return withRetriesOnDifferentNodes(
-                    randomNodes,
+                return new NodesManager(nodesConfigurationFactory({ quorum })(getState())).withRetries(
                     // Failure callbacks.
                     // Only pass one, as we just want an alert on first broadcast failure
                     () =>
@@ -739,19 +681,29 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 )(storeAndBroadcast)(cached.txs);
             })
             .then(() => {
-                return syncAccountAfterSpending(undefined, withQuorum)(
-                    seedStore,
-                    cached.transactionObjects,
-                    accountState,
-                );
+                hasBroadcast = true;
+                return new NodesManager(
+                    nodesConfigurationFactory({
+                        quorum,
+                    })(getState()),
+                )
+                    .withRetries()(syncAccountAfterSpending)(seedStore, cached.transactionObjects, accountState)
+                    .catch((error) => {
+                        dispatch(prepareLogUpdate(error));
+                        return syncAccountOnErrorAfterSigning(
+                            // Sort in ascending order
+                            orderBy(cached.transactionObjects, ['currentIndex']),
+                            accountState,
+                            hasBroadcast,
+                        );
+                    });
             })
             .then((newState) => {
-                // newState.addressData[0].balance = 0;
-                // newState.addressData[1].balance = 0;
                 // Update account in (Realm) storage
                 Account.update(accountName, newState);
 
                 dispatch(updateAccountInfoAfterSpending(assign({}, newState, { accountName })));
+
                 // Progressbar => (Progress complete)
                 dispatch(setNextStepAsActive());
                 dispatch(generateTransactionSuccessAlert(isZeroValue));
@@ -770,13 +722,14 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 if (message === Errors.INVALID_BUNDLE_CONSTRUCTED_WITH_LOCAL_POW) {
                     isValidBundle = false;
                 }
-                // Only keep the failed hex locally if the bundle was valid
+                // Only keep the failed txs locally if the bundle was valid
                 // In case the bundle is invalid, discard the signing as it was never broadcast
                 if (hasSignedInputs && isValidBundle) {
-                    const newState = syncAccountOnValueTransactionFailure(
+                    const newState = syncAccountOnErrorAfterSigning(
                         // Sort in ascending order
                         orderBy(cached.transactionObjects, ['currentIndex']),
                         accountState,
+                        hasBroadcast,
                     );
 
                     // Update account in (Realm) storage
@@ -798,9 +751,9 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                 }
 
                 if (message === Errors.NODE_NOT_SYNCED) {
-                    return dispatch(generateNodeOutOfSyncErrorAlert());
+                    return dispatch(generateNodeOutOfSyncErrorAlert(error));
                 } else if (message === Errors.UNSUPPORTED_NODE) {
-                    return dispatch(generateUnsupportedNodeErrorAlert());
+                    return dispatch(generateUnsupportedNodeErrorAlert(error));
                 } else if (message === Errors.INVALID_LAST_BIT) {
                     return dispatch(
                         generateAlert(
@@ -808,10 +761,18 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('send:invalidAddress'),
                             i18next.t('send:invalidAddressExplanation4'),
                         ),
+                        undefined,
+                        error,
                     );
                 } else if (message === Errors.KEY_REUSE) {
                     return dispatch(
-                        generateAlert('error', i18next.t('global:keyReuse'), i18next.t('global:keyReuseError')),
+                        generateAlert(
+                            'error',
+                            i18next.t('global:keyReuse'),
+                            i18next.t('global:keyReuseError'),
+                            undefined,
+                            error,
+                        ),
                     );
                 } else if (message === Errors.INSUFFICIENT_BALANCE) {
                     return dispatch(
@@ -819,7 +780,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             'error',
                             i18next.t('global:balanceError'),
                             i18next.t('global:balanceErrorMessage'),
-                            20000,
+                            undefined,
+                            error,
                         ),
                     );
                 } else if (message === Errors.ADDRESS_HAS_PENDING_TRANSFERS) {
@@ -829,6 +791,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('global:pleaseWait'),
                             i18next.t('global:pleaseWaitTransferExplanation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.FUNDS_AT_SPENT_ADDRESSES) {
@@ -838,6 +801,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('global:spentAddressExplanation'),
                             i18next.t('global:discordInformation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.INCOMING_TRANSFERS) {
@@ -847,6 +811,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('global:pleaseWait'),
                             i18next.t('global:pleaseWaitIncomingTransferExplanation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.CANNOT_SEND_TO_OWN_ADDRESS) {
@@ -856,6 +821,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('global:cannotSendToOwn'),
                             i18next.t('global:cannotSendToOwnExplanation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.LEDGER_ZERO_VALUE) {
@@ -865,6 +831,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('ledger:cannotSendZeroValueTitle'),
                             i18next.t('ledger:cannotSendZeroValueExplanation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.LEDGER_DISCONNECTED) {
@@ -874,6 +841,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('ledger:ledgerDisconnectedTitle'),
                             i18next.t('ledger:ledgerDisconnectedExplanation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.LEDGER_DENIED) {
@@ -883,6 +851,7 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             i18next.t('ledger:ledgerDeniedTitle'),
                             i18next.t('ledger:ledgerDeniedExplanation'),
                             20000,
+                            error,
                         ),
                     );
                 } else if (message === Errors.LEDGER_INVALID_INDEX) {
@@ -891,16 +860,8 @@ export const makeTransaction = (seedStore, receiveAddress, value, message, accou
                             'error',
                             i18next.t('ledger:ledgerIncorrectIndex'),
                             i18next.t('ledger:ledgerIncorrectIndexExplanation'),
-                            20000,
-                        ),
-                    );
-                } else if (message === Errors.PENDING_TRANSACTIONS_NOT_CONFIRMED) {
-                    return dispatch(
-                        generateAlert(
-                            'error',
-                            i18next.t('global:pending_transactions_not_confirmed'),
-                            i18next.t('global:pending_transactions_not_confirmed_explanation'),
-                            20000,
+                            undefined,
+                            error,
                         ),
                     );
                 } else if (message === Errors.LEDGER_CANCELLED) {

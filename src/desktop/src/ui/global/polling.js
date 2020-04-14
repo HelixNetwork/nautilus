@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import random from 'lodash/random';
 import size from 'lodash/size';
+import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SeedStore from 'libs/seed';
@@ -16,17 +17,19 @@ import {
     getSelectedAccountName,
     getSelectedAccountType,
     getFailedBundleHashes,
+    getSelectedAccountMeta,
+    selectAccountInfo,
 } from 'selectors/accounts';
 import {
-    // fetchMarketData,
-    fetchChartData,
-    fetchPrice,
+    fetchMarketData,
     fetchNodeList,
     setPollFor,
     promoteTransfer,
     getAccountInfoForAllAccounts,
 } from 'actions/polling';
+import { getAccountInfo } from 'actions/accounts';
 import { retryFailedTransaction } from 'actions/transfers';
+import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
 
 /**
  * Background polling component
@@ -46,7 +49,7 @@ class Polling extends React.PureComponent {
         /** @ignore */
         allPollingServices: PropTypes.array.isRequired,
         /** @ignore */
-        // isPollingMarketData: PropTypes.bool.isRequired,
+        isPollingMarketData: PropTypes.bool.isRequired,
         /** @ignore */
         unconfirmedBundleTails: PropTypes.object.isRequired,
         /** @ignore */
@@ -54,15 +57,9 @@ class Polling extends React.PureComponent {
         /** @ignore */
         setPollFor: PropTypes.func.isRequired,
         /** @ignore */
-        // marketData: PropTypes.object.isRequired,
-        /** @ignore */
-        // fetchMarketData: PropTypes.func.isRequired,
-        /** @ignore */
-        fetchPrice: PropTypes.func.isRequired,
+        fetchMarketData: PropTypes.func.isRequired,
         /** @ignore */
         fetchNodeList: PropTypes.func.isRequired,
-        /** @ignore */
-        fetchChartData: PropTypes.func.isRequired,
         /** @ignore */
         promoteTransfer: PropTypes.func.isRequired,
         /** Bundle hashes for failed transactions categorised by account name & type */
@@ -74,6 +71,28 @@ class Polling extends React.PureComponent {
         retryFailedTransaction: PropTypes.func.isRequired,
         /** @ignore */
         password: PropTypes.object.isRequired,
+        /** @ignore */
+        isPollingPrice: PropTypes.bool.isRequired,
+        /** @ignore */
+        isPollingChartData: PropTypes.bool.isRequired,
+        /** @ignore */
+        isPollingAccountInfo: PropTypes.bool.isRequired,
+        /** @ignore */
+        isAutoPromoting: PropTypes.bool.isRequired,
+        /** @ignore */
+        isTransitioning: PropTypes.bool.isRequired,
+        /** @ignore */
+        isRetryingFailedTransaction: PropTypes.bool.isRequired,
+        /** @ignore */
+        isSyncing: PropTypes.bool.isRequired,
+        /** @ignore */
+        addingAdditionalAccount: PropTypes.bool.isRequired,
+        /** @ignore */
+        isGeneratingReceiveAddress: PropTypes.bool.isRequired,
+        /** @ignore */
+        isSendingTransfer: PropTypes.bool.isRequired,
+        /** @ignore */
+        isFetchingAccountInfo: PropTypes.bool.isRequired,
     };
 
     state = {
@@ -89,40 +108,8 @@ class Polling extends React.PureComponent {
         this.interval = setInterval(this.onPollTick, 8000);
     }
 
-    componentDidUpdate(prevProps) {
-        // const { marketData, isPollingMarketData } = this.props;
-        // /**
-        //  * Send updated marketData to Tray application
-        //  */
-        // if (prevProps.isPollingMarketData && !isPollingMarketData) {
-        //     Electron.storeUpdate(JSON.stringify({ marketData }));
-        // }
-    }
-
     componentWillUnmount() {
         clearInterval(this.interval);
-    }
-
-    shouldSkipCycle() {
-        const props = this.props;
-
-        const isAlreadyDoingSomeHeavyLifting =
-            props.isSyncing ||
-            props.isSendingTransfer ||
-            props.isGeneratingReceiveAddress ||
-            props.isFetchingAccountInfo || // In case the app is already fetching latest account info, stop polling because the market related data is already fetched on login
-            props.addingAdditionalAccount ||
-            props.isTransitioning ||
-            props.isRetryingFailedTransaction;
-
-        const isAlreadyPollingSomething =
-            props.isPollingPrice ||
-            props.isPollingChartData ||
-            // props.isPollingMarketData ||
-            props.isPollingAccountInfo ||
-            props.isAutoPromoting;
-
-        return isAlreadyDoingSomeHeavyLifting || isAlreadyPollingSomething;
     }
 
     moveToNextPollService = () => {
@@ -140,17 +127,13 @@ class Polling extends React.PureComponent {
         }
 
         const service = this.props.pollFor;
-
         const dict = {
             promotion: this.promote,
             // marketData: this.props.fetchMarketData,
-            price: this.props.fetchPrice,
-            chartData: this.props.fetchChartData,
-            nodeList: this.props.fetchNodeList,
+            // nodeList: this.props.fetchNodeList,
             accountInfo: this.fetchLatestAccountInfo,
             broadcast: this.retryFailedTransaction,
         };
-
         dict[service] ? dict[service]() : this.props.setPollFor(this.props.allPollingServices[0]);
     };
 
@@ -176,6 +159,7 @@ class Polling extends React.PureComponent {
             const bundleHashes = keys(failedBundleHashes);
             const bundleForRetry = head(bundleHashes);
             const { name, type } = failedBundleHashes[bundleForRetry];
+
             const seedStore = await new SeedStore[type](password, name);
 
             this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
@@ -200,7 +184,8 @@ class Polling extends React.PureComponent {
 
                 const { accountName } = unconfirmedBundleTails[bundleHashToPromote];
 
-                const seedStore = await new SeedStore[selectedAccountType](password, accountName);
+                // eslint-disable-next-line no-restricted-globals
+                const seedStore = await new SeedStore[selectedAccountType](password, name);
 
                 return this.props.promoteTransfer(bundleHashToPromote, accountName, seedStore);
             }
@@ -208,6 +193,26 @@ class Polling extends React.PureComponent {
 
         return this.moveToNextPollService();
     };
+
+    shouldSkipCycle() {
+        const isAlreadyDoingSomeHeavyLifting =
+            this.props.isSyncing ||
+            this.props.isSendingTransfer ||
+            this.props.isGeneratingReceiveAddress ||
+            this.props.isFetchingAccountInfo || // In case the app is already fetching latest account info, stop polling because the market related data is already fetched on login
+            this.props.addingAdditionalAccount ||
+            this.props.isTransitioning ||
+            this.props.isRetryingFailedTransaction;
+
+        const isAlreadyPollingSomething =
+            this.props.isPollingPrice ||
+            this.props.isPollingChartData ||
+            this.props.isPollingMarketData ||
+            this.props.isPollingAccountInfo ||
+            this.props.isAutoPromoting;
+
+        return isAlreadyDoingSomeHeavyLifting || isAlreadyPollingSomething;
+    }
 
     render() {
         return null;
@@ -219,7 +224,7 @@ const mapStateToProps = (state) => ({
     allPollingServices: state.polling.allPollingServices,
     isPollingPrice: state.polling.isFetchingPrice,
     isPollingChartData: state.polling.isFetchingChartData,
-    // isPollingMarketData: state.polling.isFetchingMarketData,
+    isPollingMarketData: state.polling.isFetchingMarketData,
     isPollingAccountInfo: state.polling.isFetchingAccountInfo,
     isAutoPromoting: state.polling.isAutoPromoting,
     isSyncing: state.ui.isSyncing,
@@ -236,18 +241,18 @@ const mapStateToProps = (state) => ({
     isRetryingFailedTransaction: state.ui.isRetryingFailedTransaction,
     failedBundleHashes: getFailedBundleHashes(state),
     password: state.wallet.password,
-    // marketData: state.marketData,
+    accountMeta: getSelectedAccountMeta(state),
+    accountInfo: selectAccountInfo(state),
 });
 
 const mapDispatchToProps = {
-    // fetchMarketData,
-    fetchChartData,
-    fetchPrice,
+    fetchMarketData,
     fetchNodeList,
     setPollFor,
     promoteTransfer,
     getAccountInfoForAllAccounts,
     retryFailedTransaction,
+    getAccountInfo,
 };
 
 export default connect(

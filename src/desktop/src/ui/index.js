@@ -54,7 +54,8 @@ class App extends React.Component {
     componentDidMount() {
         this.onMenuToggle = this.menuToggle.bind(this);
         this.onAccountSwitch = this.accountSwitch.bind(this);
-        this.props.fetchNodeList();
+        // TODO
+        // this.props.fetchNodeList();
 
         // eslint-disable-next-line no-undef
         Electron.onEvent('menu', this.onMenuToggle);
@@ -110,7 +111,17 @@ class App extends React.Component {
     }
 
     Init = (props) => {
-        return <Loading loop={false} onEnd={() => this.props.history.push('/onboarding/')} />;
+        // return <Loading loop={false} onEnd={() => this.props.history.push('/onboarding/')} />;
+        return (
+            <Loading
+                inline
+                transparent
+                {...props}
+                loop={false}
+                onEnd={() => this.props.history.push('/onboarding/')}
+                themeName={this.props.themeName}
+            />
+        );
     };
 
     /**
@@ -169,7 +180,7 @@ class App extends React.Component {
         return (
             <div>
                 <ErrorLog />
-                <LockWallet></LockWallet>
+                <LockWallet />
                 <UpdateWallet />
                 <Theme history={history} />
                 <Switch>

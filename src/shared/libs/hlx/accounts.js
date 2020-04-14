@@ -362,3 +362,29 @@ export const syncAccountDuringSnapshotTransition = (attachedTransactions, attach
         ],
     };
 };
+
+/**
+ *  Sync local account in case signed inputs were exposed to the network (and a network call failed)
+ *
+ *   @method syncAccountOnErrorAfterSigning
+ *   @param {array} newTransactionObjects
+ *   @param {object} accountState
+ *   @param {boolean} hasBroadcast
+ *
+ *   @returns {object}
+ **/
+export const syncAccountOnErrorAfterSigning = (newTransactionObjects, accountState, hasBroadcast = false) => {
+    const failedTransactions = map(newTransactionObjects, (transaction) => ({
+        ...transaction,
+        persistence: false,
+        broadcasted: hasBroadcast,
+        fatalErrorOnRetry: false,
+    }));
+    const addressData = markAddressesAsSpentSync([failedTransactions], accountState.addressData);
+
+    return {
+        ...accountState,
+        addressData,
+        transactions: [...accountState.transactions, ...failedTransactions],
+    };
+};

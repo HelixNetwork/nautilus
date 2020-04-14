@@ -109,20 +109,11 @@ export const generateAlert = (category, title, message, closeInterval = 2000, er
  * @returns {function} dispatch
  */
 export const generateAccountInfoErrorAlert = (err) => (dispatch) => {
-    // TODO , temperoray message for internet connectivity
-    // dispatch(
-    //     generateAlert(
-    //         'error',
-    //         i18next.t('global:invalidResponse'),
-    //         i18next.t('global:invalidResponseFetchingAccount') + err,
-    //         9000,
-    //     ),
-    // );
     dispatch(
         generateAlert(
             'error',
-            i18next.t('global:noNetworkConnection'),
-            i18next.t('global:noNetworkConnectionExplanation'),
+            i18next.t('global:invalidResponse'),
+            i18next.t('global:invalidResponseFetchingAccount'),
             9000,
         ),
     );

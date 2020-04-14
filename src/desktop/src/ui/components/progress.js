@@ -24,7 +24,7 @@ export default class ProgressBar extends React.PureComponent {
         /** Progress bar subtitle */
         subtitle: PropTypes.string,
         /** Progress bar style type */
-        type: PropTypes.oneOf(['large']),
+        type: PropTypes.oneOf(['send', 'circle']),
     };
     state = {
         color: 'error',

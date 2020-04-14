@@ -5,7 +5,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import css from './scrollbar.scss';
 
 /**
- * Inner scrollbar container componten
+ * Inner scrollbar container component
  */
 class Scrollbar extends React.PureComponent {
     static propTypes = {

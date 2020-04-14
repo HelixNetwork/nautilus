@@ -1,27 +1,14 @@
 /* global Electron */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'react-i18next';
 import { withRouter, Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
 import TopBar from './topBar';
-import {
-    getSelectedAccountName,
-    getSelectedAccountMeta,
-    getAccountNamesFromState,
-    selectAccountInfo,
-    getBalanceForSelectedAccount,
-} from 'selectors/accounts';
-import { getSeedIndexFromState } from 'selectors/global';
-import { getAccountInfo } from 'actions/accounts';
-import { setSeedIndex } from 'actions/wallet';
 import Send from 'ui/views/wallet/send';
 import Receive from 'ui/views/wallet/receive';
 import Chart from 'ui/views/wallet/chart';
 import WalletHistory from 'ui/views/wallet/wallet_history';
 import Support from 'ui/views/wallet/support';
 import DashSidebar from 'ui/components/dash_sidebar';
-import axios from 'axios';
 import Polling from 'ui/global/polling';
 
 /**
@@ -29,24 +16,6 @@ import Polling from 'ui/global/polling';
  */
 class Wallet extends React.PureComponent {
     static propTypes = {
-        /**@ignore */
-        accounts: PropTypes.object.isRequired,
-        /**@ignore */
-        accountNames: PropTypes.array.isRequired,
-        /**@ignore */
-        accountName: PropTypes.string.isRequired,
-        /**@ignore */
-        accountMeta: PropTypes.object.isRequired,
-        /**@ignore */
-        accountInfo: PropTypes.object.isRequired,
-        /**@ignore */
-        getAccountInfo: PropTypes.func.isRequired,
-        /**@ignore */
-        setSeedIndex: PropTypes.func.isRequired,
-        /**@ignore */
-        balance: PropTypes.number.isRequired,
-        /**@ignore */
-        seedIndex: PropTypes.number,
         /**@ignore */
         location: PropTypes.object,
         /**@ignore */
@@ -61,13 +30,14 @@ class Wallet extends React.PureComponent {
         if (currentKey === '/') {
             return (
                 <div>
+                    <Polling />
                     <TopBar history={history} />
                     <DashSidebar disp={'none'} history={history} active={'send'} />
 
                     <Switch>
                         <Route path="/wallet/" component={Send} />
                         <Route path="/wallet/send" component={Send} />
-                        <Route exact path="/wallet/receive" component={Receive} />
+                        <Route path="/wallet/receive" component={Receive} />
                         <Route path="/wallet/chart" component={Chart} />
                         <Route path="/wallet/history" component={WalletHistory} />
                         <Route path="/wallet/support" component={Support} />
@@ -82,7 +52,7 @@ class Wallet extends React.PureComponent {
                 <DashSidebar disp={'none'} history={history} active={currentKey} />
                 <Switch>
                     <Route path="/wallet/send" component={Send} />
-                    <Route exact path="/wallet/receive" component={Receive} />
+                    <Route path="/wallet/receive" component={Receive} />
                     <Route path="/wallet/chart" component={Chart} />
                     <Route path="/wallet/history" component={WalletHistory} />
                     <Route path="/wallet/support" component={Support} />
@@ -91,25 +61,5 @@ class Wallet extends React.PureComponent {
         );
     }
 }
-const mapStateToProps = (state) => ({
-    accounts: state.accounts,
-    accountNames: getAccountNamesFromState(state),
-    accountMeta: getSelectedAccountMeta(state),
-    password: state.wallet.password,
-    accountName: getSelectedAccountName(state),
-    accountInfo: selectAccountInfo(state),
-    seedIndex: getSeedIndexFromState(state),
-    balance: getBalanceForSelectedAccount(state),
-    currency: state.settings.currency,
-});
 
-const mapDispatchToProps = {
-    getAccountInfo,
-    setSeedIndex,
-};
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    )(withI18n()(Wallet)),
-);
+export default withRouter(Wallet);

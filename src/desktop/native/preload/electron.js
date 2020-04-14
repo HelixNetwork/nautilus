@@ -479,13 +479,14 @@ const Electron = {
             message = message.replace('{{value}}', formatHlx(confirmations[0].transferValue));
         }
 
-        const notification = new Notification('Helix', {
-            body: message.replace('{{account}}', accountName),
-        });
+        // Temporarily disabling notification
+        // const notification = new Notification('Helix', {
+        //     body: message.replace('{{account}}', accountName),
+        // });
 
-        notification.onclick = () => {
-            remote.getCurrentWindow().webContents.send('account.switch', accountName);
-        };
+        // notification.onclick = () => {
+        //     remote.getCurrentWindow().webContents.send('account.switch', accountName);
+        // };
     },
     /**
      * Generate address

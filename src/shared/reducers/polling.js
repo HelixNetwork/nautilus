@@ -44,11 +44,12 @@ const polling = (
         /**
          * Polling service names
          */
-        allPollingServices: ['promotion', 'broadcast', 'marketData', 'price', 'chartData', 'nodeList', 'accountInfo'],
+        // allPollingServices: ['promotion', 'broadcast', 'marketData', 'price', 'chartData', 'nodeList', 'accountInfo'],
+        allPollingServices: ['promotion', 'broadcast', 'accountInfo'],
         /**
          * Determines the service currently being run during the poll cycle
          */
-        pollFor: 'promotion',
+        pollFor: 'accountInfo',
         /**
          * Retry count in case a service fails to run during poll cycle
          */
@@ -197,6 +198,11 @@ const polling = (
             return {
                 ...state,
                 pollFor: action.payload,
+            };
+        case PollingActionTypes.BREAK_POLL_CYCLE:
+            return {
+                ...state,
+                retryCount: 3,
             };
         default:
             return state;

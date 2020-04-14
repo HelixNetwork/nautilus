@@ -11,7 +11,7 @@ import { setLocale } from 'actions/settings';
 /**
  * Interface locale selection component
  */
-class LanguageSelect extends React.PureComponent {
+export class LanguageSelect extends React.PureComponent {
     static propTypes = {
         locale: PropTypes.string,
         /** Locale change event function

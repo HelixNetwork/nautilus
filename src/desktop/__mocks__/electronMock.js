@@ -19,6 +19,7 @@ module.exports = ({ version }, stateMock) => {
             window.onboardingSeed = Array(64).fill(0);
             window.isGenerated = isGenerated;
         },
+        getOnboardingName: () => 'helix',
         getOnboardingSeed: () => window.onboardingSeed,
         getOnboardingGenerated: () => window.isGenerated,
         getStorage: (key) => JSON.stringify(window.__STATE_MOCK__[key.replace('reduxPersist:', '')]),

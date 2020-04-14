@@ -89,7 +89,6 @@ class TopBar extends Component {
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
         // eslint-disable-next-line no-undef
         getAccountInfo(seedStore, accountName, Electron.notify).then(() => this.updateBalance());
-        this.updateBalance();
         history.push('/wallet/');
     };
 
@@ -126,7 +125,7 @@ class TopBar extends Component {
 
     render() {
         const { accountNames, accountName, seedIndex, currency, conversionRate } = this.props;
-        let { amount } = this.state;
+        let { amount, formattedBalance } = this.state;
         // Hard coded exchange rate until hlx coin goes to exchanges
         if (conversionRate !== 0) {
             amount = (0.022 * conversionRate).toFixed(3);
@@ -140,7 +139,6 @@ class TopBar extends Component {
                         <h4 className={css.topBar_h4}>BALANCE</h4>
                         <br />
                         <div>
-                            {' '}
                             <span className={css.dot}></span>
                             <h6 className={css.link_opacity}>
                                 <IntlProvider locale="en">
@@ -153,7 +151,7 @@ class TopBar extends Component {
                     <div className={css.topBal}>
                         <img src={hlx} alt=" " />
                         <h2>
-                            <span>{this.state.formattedBalance.toLocaleString()} </span>
+                            <span>{formattedBalance.toLocaleString()} </span>
                             <select
                                 value={this.state.selectedUnit}
                                 className={css.unitOption}

@@ -1,27 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { ADDRESS_LENGTH, VALID_SEED_REGEX } from "libs/hlx/utils";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { ADDRESS_LENGTH, VALID_SEED_REGEX } from 'libs/hlx/utils';
+import css from './checksum.scss';
 
 /**
  * Returns address with highlighted checksum
  */
 const Checksum = ({ address }) => {
-  const validAddress =
-    typeof address === "string" &&
-    address.length === ADDRESS_LENGTH &&
-    address.match(VALID_SEED_REGEX);
+    const validAddress =
+        typeof address === 'string' && address.length === ADDRESS_LENGTH && address.match(VALID_SEED_REGEX);
 
-  return (
-    <React.Fragment>
-      {!validAddress ? address : address.substr(0, 81)}
-      {validAddress && <mark>{address.substr(81)}</mark>}
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            {!validAddress ? address : address.substr(0, 64)}
+            {validAddress && <mark className={css.checksum}>{address.substr(64)}</mark>}
+        </React.Fragment>
+    );
 };
 
 Checksum.propTypes = {
-  /** Target address */
-  address: PropTypes.string.isRequired
+    /** Target address */
+    address: PropTypes.string.isRequired,
 };
 
 export default Checksum;

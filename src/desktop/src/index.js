@@ -66,9 +66,9 @@ const init = () => {
                     <React.Fragment>
                         <Alerts />
                         <Index />
-                    </React.Fragment>
-                </Router>
-            </I18nextProvider>
+                    </React.Fragment>{' '}
+                </Router>{' '}
+            </I18nextProvider>{' '}
         </Provider>,
         document.getElementById('root'),
     );

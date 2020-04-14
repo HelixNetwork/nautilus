@@ -173,13 +173,11 @@ const getLatestInclusion = (settings, withQuorum = false) => (hashes) =>
         ? quorum.getLatestInclusion(hashes).catch((err) => {
               throw new Error(err);
           })
-        : quorum.getLatestInclusion(hashes).catch((err) => {
-              throw new Error(err);
-          });
-
-// getHelixInstance(settings, getApiTimeout("getInclusionStates"))
-//     .getLatestInclusion(hashes)
-//     .catch(err =>{ throw new Error(err)});
+        : getHelixInstance(settings, getApiTimeout('getInclusionStates'))
+              .getInclusionStates(hashes, [])
+              .catch((err) => {
+                  throw new Error(err);
+              });
 
 /**
  * Helix promoteTransaction with an option to perform PoW locally
@@ -368,10 +366,10 @@ const getTransactionsToApprove = (settings) => (reference = {}, depth = DEFAULT_
  */
 export const prepareTransfers = (settings) => (seed, transfers, options = null, signatureFn = null) => {
     let args = [seed, transfers];
-
     if (options) {
         args = [...args, { ...options, nativeGenerateSignatureFunction: signatureFn }];
     }
+
     return getHelixInstance(settings)
         .prepareTransfers(...args)
         .catch((err) => {

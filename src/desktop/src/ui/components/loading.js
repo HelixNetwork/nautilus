@@ -1,3 +1,4 @@
+/* global Electron */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from 'ui/components/logo';
@@ -15,6 +16,7 @@ export default class Loading extends React.PureComponent {
         /** On animation end event callback */
         onEnd: PropTypes.func,
     };
+
     render() {
         const { loop, inline, transparent, onEnd } = this.props;
         return (
