@@ -53,42 +53,42 @@ describe('actions: transfers', () => {
             clearRealm();
             Account.create({ name: 'TEST', index: 0 });
             Wallet.createIfNotExists();
+            nock('https://hlxtest.net:8085', {
+                reqheaders: {
+                    'Content-Type': 'application/json',
+                    'X-HELIX-API-Version': IRI_API_VERSION,
+                },
+            })
+                .filteringRequestBody(() => '*')
+                .persist()
+                .post('/', '*')
+                .reply(200, (_, body) => {
+                    const { command } = body;
 
-            // nock('https://helixmain.net:8085', {
-            //     reqheaders: {
-            //         'Content-Type': 'application/json',
-            //         'X-HELIX-API-Version': IRI_API_VERSION,
-            //     },
-            // })
-            //     .filteringRequestBody(() => '*')
-            //     .persist()
-            //     .post('/', '*')
-            //     .reply(200, (_, body) => {
-            //         const { command } = body;
+                    const resultMap = {
+                        getNodeInfo: {
+                            appVersion: '1.0.0',
+                        },
+                    };
 
-            //         const resultMap = {
-            //             getNodeInfo: {
-            //                 appVersion: '1.0.0',
-            //             },
-            //         };
+                    if (body.command === 'getTransactionsToApprove') {
+                        return {
+                            branchTransaction: '0'.repeat(64),
+                            trunkTransaction: '0'.repeat(64),
+                        };
+                    }
 
-            //         if (body.command === 'getTransactionsToApprove') {
-            //             return {
-            //                 branchTransaction: '0'.repeat(72),
-            //                 trunkTransaction: '0'.repeat(72),
-            //             };
-            //         }
-
-            //         return resultMap[command] || {};
-            //     });
+                    return resultMap[command] || {};
+                });
         });
 
         afterEach(() => {
-            clearRealm();
+            // clearRealm();
             nock.cleanAll();
         });
 
         after(() => {
+            clearRealm();
             Realm.clearTestState();
         });
 
@@ -111,7 +111,7 @@ describe('actions: transfers', () => {
             });
 
             it('should create an action of type HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING with updated account state', () => {
-                const store = mockStore({ accounts, settings: { remotePoW: true, quorum: {} } });
+                const store = mockStore({ accounts, settings: { quorum: {} } });
                 const updatedTransactions = [
                     ...transactions,
                     ...map(newZeroValueTransaction, (transaction) => ({
@@ -130,25 +130,27 @@ describe('actions: transfers', () => {
 
                 const wereAddressesSpentFrom = sinon.stub(quorum, 'wereAddressesSpentFrom').resolves([true]);
 
-                Promise.resolve(
-                    store
-                        .dispatch(actions.makeTransaction(seedStore, '9'.repeat(72), 0, 'foo', 'TEST', true))
-                        .then(() => {
-                            const expectedAction = {
-                                type: 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING',
-                                payload: {
-                                    accountName: 'TEST',
-                                    transactions: updatedTransactions,
-                                    addressData,
-                                },
-                            };
-                            const actualAction = store
-                                .getActions()
-                                .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
-
-                            expect(expectedAction).to.eql(actualAction);
-                        }),
-                );
+                // Promise.resolve(
+                store
+                    .dispatch(actions.makeTransaction(seedStore, '9'.repeat(72), 0, 'foo', 'TEST', true))
+                    .then(() => {
+                        const expectedAction = {
+                            type: 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING',
+                            payload: {
+                                accountName: 'TEST',
+                                transactions: updatedTransactions,
+                                addressData,
+                            },
+                        };
+                        const actualAction = store.getActions();
+                        // .find((action) => action.type === 'HELIX/ACCOUNTS/UPDATE_ACCOUNT_INFO_AFTER_SPENDING');
+                        console.log(actualAction);
+                        expect(expectedAction).to.eql(actualAction);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+                // );
                 accountsUtils.syncAccountAfterSpending.restore();
                 wereAddressesSpentFrom.restore();
             });
