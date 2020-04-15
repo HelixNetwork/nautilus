@@ -76,7 +76,7 @@ class Send extends React.PureComponent {
     };
 
     sendTransfer = (seedStore, address, value, message) => {
-        const { ui, accountName, generateAlert, t } = this.props;
+        const { ui, accountName, generateAlert, quorum, t } = this.props;
 
         if (ui.isSyncing) {
             generateAlert('error', t('global:syncInProgress'), t('global:syncInProgressExplanation'));
@@ -95,7 +95,7 @@ class Send extends React.PureComponent {
             value,
             message,
             accountName,
-            null,
+            quorum.enabled,
             // eslint-disable-next-line no-undef
             Electron.genFn,
         );
@@ -447,6 +447,7 @@ const mapStateToProps = (state) => ({
     isSending: state.ui.isSendingTransfer,
     progress: state.progress,
     currency: state.settings.currency,
+    quorum: state.settings.quorum,
 });
 
 const mapDispatchToProps = {
