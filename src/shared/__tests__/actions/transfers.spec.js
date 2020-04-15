@@ -83,7 +83,7 @@ describe('actions: transfers', () => {
         });
 
         afterEach(() => {
-            // clearRealm();
+            clearRealm();
             nock.cleanAll();
         });
 
