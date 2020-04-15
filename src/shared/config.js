@@ -3,7 +3,7 @@ export const __TEST__ = process.env.NODE_ENV === 'test';
 /** Default IRI node object */
 export const DEFAULT_NODE = __TEST__
     ? {
-          url: 'http://localhost:14265',
+          url: 'https://helixmain.net:8085',
           pow: false,
           token: '',
           password: '',
