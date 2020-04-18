@@ -19,6 +19,7 @@ import {
     ATTACH_TO_TANGLE_REQUEST_TIMEOUT,
     GET_TRANSACTIONS_TO_APPROVE_REQUEST_TIMEOUT,
     IRI_API_VERSION,
+    MAX_MILESTONE_FALLBEHIND,
 } from '../../config';
 import {
     sortTransactionTxBytesArray,
@@ -561,7 +562,8 @@ const isNodeHealthy = (settings) => {
         if (['rc', 'beta', 'alpha'].some((el) => appVersion.toLowerCase().indexOf(el) > -1)) {
             throw new Error(Errors.UNSUPPORTED_NODE);
         }
-        if (currentRoundIndex - latestSolidRoundIndex < 50) {
+        const roundGap = currentRoundIndex - latestSolidRoundIndex;
+        if (roundGap < MAX_MILESTONE_FALLBEHIND && roundGap > 0) {
             return true;
         }
         throw new Error(Errors.NODE_NOT_SYNCED);
