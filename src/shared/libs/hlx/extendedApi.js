@@ -563,7 +563,7 @@ const isNodeHealthy = (settings) => {
             throw new Error(Errors.UNSUPPORTED_NODE);
         }
         const roundGap = currentRoundIndex - latestSolidRoundIndex;
-        if (roundGap < MAX_MILESTONE_FALLBEHIND && roundGap > 0) {
+        if (roundGap < MAX_MILESTONE_FALLBEHIND && roundGap >= 0) {
             return true;
         }
         throw new Error(Errors.NODE_NOT_SYNCED);
