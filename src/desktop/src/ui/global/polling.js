@@ -142,6 +142,7 @@ class Polling extends React.PureComponent {
         this.props.getAccountInfoForAllAccounts(
             [selectedAccountName, ...filter(accountNames, (name) => name !== selectedAccountName)],
             Electron.notify,
+            false, // quorum false recheck
         );
     };
 
@@ -162,7 +163,7 @@ class Polling extends React.PureComponent {
 
             const seedStore = await new SeedStore[type](password, name);
 
-            this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
+            this.props.retryFailedTransaction(name, bundleForRetry, seedStore, false); // recheck sachu quorum false
         } else {
             this.moveToNextPollService();
         }
