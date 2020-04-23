@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import random from 'lodash/random';
 import size from 'lodash/size';
-import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SeedStore from 'libs/seed';
@@ -29,7 +28,6 @@ import {
 } from 'actions/polling';
 import { getAccountInfo } from 'actions/accounts';
 import { retryFailedTransaction } from 'actions/transfers';
-import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
 
 /**
  * Background polling component
