@@ -87,17 +87,7 @@ class Send extends React.PureComponent {
             return;
         }
         this.setProgressSteps(value === 0);
-
-        this.props.makeTransaction(
-            seedStore,
-            address,
-            value,
-            message,
-            accountName,
-            quorum.enabled,
-            // eslint-disable-next-line no-undef
-            Electron.genFn,
-        );
+        this.props.makeTransaction(seedStore, address, value, message, accountName, quorum.enabled);
         this.resetForm();
     };
 

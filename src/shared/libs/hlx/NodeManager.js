@@ -22,7 +22,7 @@ export default class NodesManager {
     }
 
     /**
-     * Retries IOTA api calls on different nodes.
+     * Retries HELIX api calls on different nodes.
      * Always tries to first connect to the priority node
      *
      * @method withRetries

@@ -142,6 +142,7 @@ class Polling extends React.PureComponent {
         this.props.getAccountInfoForAllAccounts(
             [selectedAccountName, ...filter(accountNames, (name) => name !== selectedAccountName)],
             Electron.notify,
+            this.props.quorumEnabled,
         );
     };
 
@@ -162,7 +163,7 @@ class Polling extends React.PureComponent {
 
             const seedStore = await new SeedStore[type](password, name);
 
-            this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
+            this.props.retryFailedTransaction(name, bundleForRetry, seedStore, this.props.quorumEnabled);
         } else {
             this.moveToNextPollService();
         }
@@ -243,6 +244,7 @@ const mapStateToProps = (state) => ({
     password: state.wallet.password,
     accountMeta: getSelectedAccountMeta(state),
     accountInfo: selectAccountInfo(state),
+    quorumEnabled: state.settings.quorum.enabled,
 });
 
 const mapDispatchToProps = {
