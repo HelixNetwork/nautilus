@@ -98,8 +98,13 @@ class TopBar extends Component {
 
     updateBalance = async () => {
         const { balance } = this.props;
-        let unit = this.props.helixUnit;
-        let formattedBalance = unitConverter(balance, unit);
+        let unit = 'HLX',
+            formattedBalance = balance;
+        if (balance > 1000) {
+            unit = this.props.helixUnit;
+            formattedBalance = unitConverter(balance, unit);
+        }
+
         this.setState({
             formattedBalance,
             selectedUnit: unit,
