@@ -14,6 +14,7 @@ import {
     getSelectedAccountName,
     getSelectedAccountMeta,
 } from 'selectors/accounts';
+import { getSelectedNodeFromState } from 'selectors/global';
 import { generateAlert } from 'actions/alerts';
 import { generateNewAddress, addressValidationRequest, addressValidationSuccess } from 'actions/wallet';
 import QR from 'ui/components/qr';
@@ -117,12 +118,15 @@ export class Receive extends React.PureComponent {
         });
 
         const seedStore = await new SeedStore[accountMeta.type](password, accountName, accountMeta);
+        const { selectedNode, quorumEnabled } = this.props;
         this.props.generateNewAddress(
             seedStore,
             accountName,
             account,
             // eslint-disable-next-line no-undef
             Electron.genFn,
+            selectedNode,
+            quorumEnabled,
         );
     };
 
@@ -354,6 +358,8 @@ const mapStateToProps = (state) => ({
     password: state.wallet.password,
     isValidatingAddress: state.wallet.isValidatingAddress,
     accountInfo: selectAccountInfo(state),
+    quorumEnabled: state.settings.quorum.enabled,
+    selectedNode: getSelectedNodeFromState(state),
 });
 
 const mapDispatchToProps = {
