@@ -20,6 +20,7 @@ import { updateHelixUnit } from 'actions/settings';
 import { unitConverter } from 'libs/hlx/utils';
 import { IntlProvider, FormattedNumber } from 'react-intl';
 import axios from 'axios';
+import { CURRENCT_URL, BTC_USDT_TICKER, mHLX_BTC_TICKER } from '../../../constants';
 
 /**
  * Topbar component
@@ -113,11 +114,14 @@ class TopBar extends Component {
 
     componentDidMount() {
         const { currency } = this.props;
-        const url = 'https://nautilus-exchange-rates.herokuapp.com/api/latest?base=USD';
         this.updateBalance();
-        axios.get(url).then((resp) => {
+        axios.get(CURRENCT_URL).then(async (resp) => {
+            let BTC_USDT = await axios.get(BTC_USDT_TICKER);
+            let mHLX_BTC = await axios.get(mHLX_BTC_TICKER);
             this.setState({
-                amount: (resp.data.rates[currency] * 0.022).toFixed(3),
+                amount: (resp.data.rates[currency] * BTC_USDT.data.current_price * mHLX_BTC.data.current_price).toFixed(
+                    3,
+                ),
             });
         });
     }
@@ -129,12 +133,8 @@ class TopBar extends Component {
     }
 
     render() {
-        const { accountNames, accountName, seedIndex, currency, conversionRate } = this.props;
+        const { accountNames, accountName, seedIndex, currency } = this.props;
         let { amount, formattedBalance } = this.state;
-        // Hard coded exchange rate until hlx coin goes to exchanges
-        if (conversionRate !== 0) {
-            amount = (0.022 * conversionRate).toFixed(3);
-        }
 
         return (
             <div>

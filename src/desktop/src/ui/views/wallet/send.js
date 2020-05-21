@@ -17,7 +17,7 @@ import { makeTransaction } from 'actions/transfers';
 import { ADDRESS_LENGTH, isValidAddress, isValidMessage, setBase } from 'libs/hlx/utils';
 import ProgressBar from 'ui/components/progress';
 import { startTrackingProgress } from 'actions/progress';
-import { CURRENCT_URL, EXCHANGE_RATE, MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
+import { CURRENCT_URL, BTC_USDT_TICKER, mHLX_BTC_TICKER, MAX_NOTE_LENGTH, MAX_HLX_LENGTH } from '../../../constants';
 import { getCurrencyData } from 'actions/settings';
 
 /**
@@ -44,6 +44,7 @@ class Send extends React.PureComponent {
         selectedHlx: 'mHLX',
         conversionRate: 1,
         progress: '',
+        exchangeRate: 0,
     };
 
     validateInputs = (e) => {
@@ -170,45 +171,43 @@ class Send extends React.PureComponent {
 
     hlxInput(e) {
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
-        let { txamount, selectedHlx, hlxamount } = this.state;
+        let { txamount, selectedHlx, hlxamount, exchangeRate } = this.state;
 
-        let hlxamount1 = e.target.value;
-        hlxamount1 = hlxamount1.toString();
-        if (selectedHlx === 'HLX' && hlxamount1.indexOf('.') !== -1) {
-            hlxamount1 = hlxamount;
+        let hlxInput = e.target.value;
+        hlxInput = hlxInput.toString();
+        if (selectedHlx === 'HLX' && hlxInput.indexOf('.') !== -1) {
+            hlxInput = hlxamount;
         } else {
-            if (!regexp.test(hlxamount1)) {
-                hlxamount1 = hlxamount;
+            if (!regexp.test(hlxInput)) {
+                hlxInput = hlxamount;
             }
         }
 
-        let base = setBase(selectedHlx, e.target.value);
-        txamount = hlxamount1 * base;
-        const base1 = EXCHANGE_RATE * txamount;
-
+        let base = setBase(selectedHlx);
+        txamount = hlxInput * base;
+        const base1 = (exchangeRate * txamount) / 1000000;
         let amount = this.state.conversionRate * base1;
         this.setState({
-            hlxamount: hlxamount1,
+            hlxamount: hlxInput,
             amount: amount.toFixed(2),
             txamount: txamount,
         });
     }
 
     amountInput(e) {
-        let { txamount, selectedHlx } = this.state;
+        let { txamount, selectedHlx, exchangeRate, conversionRate } = this.state;
         // let base = 0;
         let regexp = /^[0-9]*(\.[0-9]{0,2})?$/;
         if (regexp.test(e.target.value)) {
-            let base = setBase(selectedHlx, e.target.value);
-            let hlx = e.target.value / EXCHANGE_RATE;
-            hlx = hlx / this.state.conversionRate;
-            hlx = Math.round(hlx / base);
-            txamount = hlx * base;
-
+            exchangeRate *= this.state.conversionRate;
+            let totalHLX = (e.target.value / (exchangeRate * conversionRate)) * 1000000;
+            let base = setBase(selectedHlx);
+            let hlxamount = totalHLX / base;
+            hlxamount = selectedHlx === 'HLX' ? hlxamount.toFixed(0) : hlxamount.toFixed(2);
             const amount = e.target.value;
             this.setState({
                 amount: amount,
-                hlxamount: hlx,
+                hlxamount,
                 txamount: txamount,
             });
         }
@@ -245,9 +244,12 @@ class Send extends React.PureComponent {
 
     componentDidMount() {
         const { currency } = this.props;
-        axios.get(CURRENCT_URL).then((resp) => {
+        axios.get(CURRENCT_URL).then(async (resp) => {
             resp.data.rates['EUR'] = 1; // fix to bug where the API Doesn't return value for EUR
+            let BTC_USDT = await axios.get(BTC_USDT_TICKER);
+            let mHLX_BTC = await axios.get(mHLX_BTC_TICKER);
             this.setState({
+                exchangeRate: BTC_USDT.data.current_price * mHLX_BTC.data.current_price,
                 selectedCurrency: currency,
                 conversionRate: resp.data.rates[currency],
             });

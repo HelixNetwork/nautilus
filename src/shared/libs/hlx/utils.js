@@ -561,7 +561,7 @@ export const noChecksum = function(address) {
  * @returns {number}
  */
 
-export const setBase = (selectedHlx, value) => {
+export const setBase = (selectedHlx) => {
     let base = 0;
     if (selectedHlx === 'HLX') {
         base = 1;
@@ -571,7 +571,7 @@ export const setBase = (selectedHlx, value) => {
         base = 1000000;
     } else if (selectedHlx === 'gHLX') {
         base = 1000000000;
-    } else if (value === 'tHLX') {
+    } else if (selectedHlx === 'tHLX') {
         base = 1000000000000;
     }
     return base;
