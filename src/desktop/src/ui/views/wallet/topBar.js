@@ -119,9 +119,7 @@ class TopBar extends Component {
             let BTC_USDT = await axios.get(BTC_USDT_TICKER);
             let mHLX_BTC = await axios.get(mHLX_BTC_TICKER);
             this.setState({
-                amount: (resp.data.rates[currency] * BTC_USDT.data.current_price * mHLX_BTC.data.current_price).toFixed(
-                    3,
-                ),
+                amount: resp.data.rates[currency] * BTC_USDT.data.current_price * mHLX_BTC.data.current_price,
             });
         });
     }
@@ -133,7 +131,7 @@ class TopBar extends Component {
     }
 
     render() {
-        const { accountNames, accountName, seedIndex, currency } = this.props;
+        const { accountNames, accountName, seedIndex } = this.props;
         let { amount, formattedBalance } = this.state;
 
         return (
@@ -147,7 +145,12 @@ class TopBar extends Component {
                             <span className={css.dot}></span>
                             <h6 className={css.link_opacity}>
                                 <IntlProvider locale="en">
-                                    <FormattedNumber value={amount} currency={currency} />
+                                    <FormattedNumber
+                                        value={amount}
+                                        style={'currency'}
+                                        currency={'USD'}
+                                        minimumFractionDigits={6}
+                                    />
                                 </IntlProvider>
                                 /mHLX
                             </h6>
