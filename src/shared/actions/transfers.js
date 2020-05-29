@@ -22,7 +22,7 @@ import {
     attachToTangle,
     storeAndBroadcast,
 } from '../libs/hlx/extendedApi';
-import { getRemotePoWFromState, nodesConfigurationFactory } from '../selectors/global';
+import { getRemotePoWFromState, nodesConfigurationFactory, getSelectedNodeFromState } from '../selectors/global';
 import { selectedAccountStateFactory } from '../selectors/accounts';
 import { noChecksum, ADDRESS_LENGTH } from '../libs/hlx/utils';
 import { setNextStepAsActive, reset as resetProgress } from './progress';
@@ -890,6 +890,7 @@ export const retryFailedTransaction = (accountName, bundleHash, seedStore, withQ
 ) => {
     const existingAccountState = selectedAccountStateFactory(accountName)(getState());
     const shouldOffloadPow = getRemotePoWFromState(getState());
+    const selectedNodeFromState = getSelectedNodeFromState(getState());
     const failedTransactionsForThisBundleHash = filter(
         existingAccountState.transactions,
         (tx) => tx.bundle === bundleHash,
@@ -899,7 +900,7 @@ export const retryFailedTransaction = (accountName, bundleHash, seedStore, withQ
 
     return (
         // First check spent statuses against transaction addresses
-        categoriseAddressesBySpentStatus(undefined, withQuorum)(
+        categoriseAddressesBySpentStatus(selectedNodeFromState, withQuorum)(
             map(failedTransactionsForThisBundleHash, (tx) => tx.address),
         )
             // If any address (input, remainder, receive) is spent, error out

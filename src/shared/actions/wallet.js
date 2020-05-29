@@ -74,10 +74,10 @@ export const generateNewAddressRequest = () => ({
  *
  * @returns {function(*): Promise<any>}
  */
-export const generateNewAddress = (seed, accountName, existingAccountData, genFn) => {
+export const generateNewAddress = (seed, accountName, existingAccountData, genFn, settings, withQuorum = false) => {
     return (dispatch) => {
         dispatch(generateNewAddressRequest());
-        return syncAddresses()(seed, existingAccountData.addressData, genFn)
+        return syncAddresses(settings, withQuorum)(seed, existingAccountData.addressData, genFn)
             .then((latestAddressData) => {
                 dispatch(updateAddresses(accountName, latestAddressData));
                 dispatch(generateNewAddressSuccess());

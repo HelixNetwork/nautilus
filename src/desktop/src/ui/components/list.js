@@ -147,7 +147,7 @@ export class ListComponent extends React.PureComponent {
 
         const { accountMeta, password } = this.props;
         const seedStore = await new SeedStore[accountMeta.type](password);
-        this.props.retryFailedTransaction(this.props.accountName, bundle, seedStore);
+        this.props.retryFailedTransaction(this.props.accountName, bundle, seedStore, this.props.quorumEnabled);
     }
 
     getAccountTransactions = (accountData) => {
@@ -195,7 +195,7 @@ export class ListComponent extends React.PureComponent {
             accountName,
             // eslint-disable-next-line no-undef
             Electron.notify,
-            true, // Sync with quorum enabled
+            this.props.quorumEnabled,
         );
         this.updateTx();
     };
@@ -488,6 +488,7 @@ const mapStateToProps = (state) => ({
     ui: state.ui,
     hideEmptyTransactions: state.settings.hideEmptyTransactions,
     password: state.wallet.password,
+    quorumEnabled: state.settings.quorum.enabled,
 });
 
 const mapDispatchToProps = {

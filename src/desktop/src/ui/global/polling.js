@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import random from 'lodash/random';
 import size from 'lodash/size';
-import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SeedStore from 'libs/seed';
@@ -29,7 +28,6 @@ import {
 } from 'actions/polling';
 import { getAccountInfo } from 'actions/accounts';
 import { retryFailedTransaction } from 'actions/transfers';
-import { mapNormalisedTransactions, formatRelevantTransactions } from 'libs/hlx/transfers';
 
 /**
  * Background polling component
@@ -142,6 +140,7 @@ class Polling extends React.PureComponent {
         this.props.getAccountInfoForAllAccounts(
             [selectedAccountName, ...filter(accountNames, (name) => name !== selectedAccountName)],
             Electron.notify,
+            this.props.quorumEnabled,
         );
     };
 
@@ -162,7 +161,7 @@ class Polling extends React.PureComponent {
 
             const seedStore = await new SeedStore[type](password, name);
 
-            this.props.retryFailedTransaction(name, bundleForRetry, seedStore);
+            this.props.retryFailedTransaction(name, bundleForRetry, seedStore, this.props.quorumEnabled);
         } else {
             this.moveToNextPollService();
         }
@@ -243,6 +242,7 @@ const mapStateToProps = (state) => ({
     password: state.wallet.password,
     accountMeta: getSelectedAccountMeta(state),
     accountInfo: selectAccountInfo(state),
+    quorumEnabled: state.settings.quorum.enabled,
 });
 
 const mapDispatchToProps = {
