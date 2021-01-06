@@ -15,7 +15,7 @@
         "@helixnetwork/core": "^1.0.0-alpha.8",
         "@helixnetwork/transaction-converter": "^1.0.0-alpha.6",
         "@helixnetwork/validators": "^1.0.0-alpha.6",
-        "axios": "^0.19.0",
+        "axios": "^0.21.1",
         "bignumber.js": "^8.1.1",
         "i18next": "^15.1.1",
         "lodash": "^4.17.11",
