@@ -19,7 +19,7 @@
         "bignumber.js": "^8.1.1",
         "i18next": "^15.1.1",
         "lodash": "^4.17.11",
-        "moment": "^2.24.0",
+        "moment": "^2.29.2",
         "moment-timezone": "^0.5.25",
         "proxy-polyfill": "git+https://git@github.com/GoogleChrome/proxy-polyfill#9c009d7",
         "react": "^16.8.6",
